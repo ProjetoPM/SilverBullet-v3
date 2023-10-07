@@ -1,0 +1,276 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id
+  name          String
+  email         String          @unique
+  password      String
+  phone         String?
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  UserWorkspace UserWorkspace[]
+  UserProject   UserProject[]
+  Stakeholder   Stakeholder[]
+
+  @@map("users")
+}
+
+enum InviteStatuses {
+  PENDING
+  ACTIVE
+  BLOCKED
+}
+
+enum PlanStatuses {
+  ACTIVE
+  INACTIVE
+}
+
+enum PlanTypes {
+  FREE
+  SUBSCRIPTION
+}
+
+model Workspace {
+  id            String          @id
+  name          String
+  description   String?         @db.VarChar(500)
+  plan          PlanTypes
+  plan_status   PlanStatuses
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  Project       Project[]
+  UserWorkspace UserWorkspace[]
+
+  @@map("workspaces")
+}
+
+enum WorkspaceRoles {
+  ADMIN
+  USER
+}
+
+model UserWorkspace {
+  id                 String              @id
+  workspace          Workspace           @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace_id       String
+  user               User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id            String
+  status             InviteStatuses
+  created_at         DateTime            @default(now())
+  updated_at         DateTime            @updatedAt
+  UserWorkspaceRoles UserWorkspaceRole[]
+
+  @@unique([workspace_id, user_id])
+  @@map("user_workspaces")
+}
+
+model UserWorkspaceRole {
+  user_workspace    UserWorkspace  @relation(fields: [user_workspace_id], references: [id], onDelete: Cascade)
+  user_workspace_id String
+  role              WorkspaceRoles
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
+
+  @@id([user_workspace_id, role])
+  @@map("user_workspace_roles")
+}
+
+model Project {
+  id                     String                   @id
+  name                   String
+  description            String?                  @db.VarChar(500)
+  workspace              Workspace                @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace_id           String
+  created_at             DateTime                 @default(now())
+  updated_at             DateTime                 @updatedAt
+  UserProject            UserProject[]
+  BusinessCase           BusinessCase[]
+  BenefitsManagementPlan BenefitsManagementPlan[]
+  AssumptionLog          AssumptionLog[]
+  Stakeholder            Stakeholder[]
+  ProjectCharter         ProjectCharter[]
+
+  @@map("projects")
+}
+
+enum ProjectRoles {
+  ADMIN
+  PROJECT_MANAGER
+  PROFESSOR
+  STAKEHOLDER
+  DEVELOPER
+  SPONSOR
+}
+
+model UserProject {
+  id               String            @id
+  project          Project           @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id       String
+  user             User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id          String
+  status           InviteStatuses
+  UserProjectRoles UserProjectRole[]
+
+  @@unique([project_id, user_id])
+  @@map("user_projects")
+}
+
+model UserProjectRole {
+  user_project    UserProject  @relation(fields: [user_project_id], references: [id], onDelete: Cascade)
+  user_project_id String
+  role            ProjectRoles
+
+  @@id([user_project_id, role])
+  @@map("user_project_roles")
+}
+
+// Initiating
+model ProjectCharter {
+  id                               String   @id
+  project_name                     String
+  high_level_project_description   String   @db.Text
+  start_date                       DateTime
+  end_date                         DateTime
+  project_purpose                  String?
+  measurable_project_objectives    String?  @db.Text
+  key_benefits                     String?  @db.Text
+  high_level_requirements          String?  @db.Text
+  boundaries                       String?  @db.Text
+  overall_project_risk             String?  @db.Text
+  summary_milestone_schedule       String?  @db.Text
+  pre_approved_financial_resources String?  @db.Text
+  project_approval_requirements    String?  @db.Text
+  success_criteria                 String?  @db.Text
+  project_exit_criteria            String?  @db.Text
+  signed                           Boolean?
+  project                          Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id                       String   @unique
+  created_at                       DateTime @default(now())
+  updated_at                       DateTime @updatedAt
+
+  @@map("project_charters")
+}
+
+model BusinessCase {
+  id                 String   @id
+  business_needs     String
+  situation_analysis String
+  recommendation     String
+  evaluation         String
+  project            Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id         String   @unique
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  @@map("business_case")
+}
+
+model BenefitsManagementPlan {
+  id                  String   @id
+  target_benefits     String
+  strategic_alignment String
+  schedule_benefits   String
+  benefits_owner      String
+  indicators          String
+  premises            String
+  risks               String
+  project             Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id          String   @unique
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  @@map("benefits_management_plans")
+}
+
+enum AssumptionTypes {
+  ASSUMPTION
+  CONTRAINT
+}
+
+model AssumptionLog {
+  id          String          @id
+  description String          @db.VarChar(2000)
+  type        AssumptionTypes
+  project     Project         @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id  String
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @updatedAt
+
+  @@map("assumption_logs")
+}
+
+enum StakeholderTypes {
+  EXTERNAL
+  INTERNAL
+}
+
+enum StakeholderRoles {
+  CLIENT
+  TEAM
+  PROVIDER
+  PROJECT_MANAGER
+  SPONSOR
+  OTHERS
+}
+
+model Stakeholder {
+  id                          String                      @id
+  type                        StakeholderTypes
+  main_project_role           StakeholderRoles
+  email                       String
+  organization                String
+  organization_position       String
+  main_project_responsibility String
+  phone                       String
+  workplace                   String
+  essential_requirements      String
+  main_expectations           String
+  greater_interest_phase      String
+  observations                String
+  user                        User?                       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id                     String                      @unique
+  project                     Project                     @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id                  String
+  created_at                  DateTime                    @default(now())
+  updated_at                  DateTime                    @updatedAt
+  StakeholderEngagementPlan   StakeholderEngagementPlan[]
+
+  @@map("stakeholders")
+}
+
+enum Engagements {
+  UNAWARE
+  SUPPORTIVE
+  LEADING
+  NEUTRAL
+  RESISTANT
+}
+
+model StakeholderEngagementPlan {
+  id                                  String      @id
+  stakeholder                         Stakeholder @relation(fields: [stakeholder_id], references: [id], onDelete: Cascade)
+  stakeholder_id                      String
+  current_engagement                  Engagements
+  desired_engagement                  Engagements
+  interest_level                      Int
+  power_level                         Int
+  influence_level                     Int
+  engagement_management_strategy      String      @db.VarChar(2000)
+  scope_impact_changes_to_stakeholder String      @db.VarChar(2000)
+  observations                        String      @db.VarChar(2000)
+  created_at                          DateTime    @default(now())
+  updated_at                          DateTime    @updatedAt
+
+  @@map("stakeholder_engagement_plans")
+}

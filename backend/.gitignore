@@ -1,0 +1,7 @@
+.env
+node_modules
+dist
+src/infra/http/i18n/locales/*
+.DS_*
+prisma/dev.*
+prisma/migrations/migration_lock.toml
