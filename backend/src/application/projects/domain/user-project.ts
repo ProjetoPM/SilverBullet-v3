@@ -1,10 +1,10 @@
 import { UserProjectProps, UserProjectSchema } from './user-project.schema'
 import { ZodValidationError } from '@/core/domain/errors/ZodValidationError'
 import { Either, left, right } from '@/core/logic/either'
-import { Entity } from '@/core/domain/entity'
+import { RelationshipEntity } from '@/core/domain/relationship-entity'
 
-export class UserProject extends Entity<UserProjectProps> {
-  private constructor(props: UserProjectProps, id?: string) {
+export class UserProject extends RelationshipEntity<UserProjectProps> {
+  private constructor(props: UserProjectProps) {
     super(props)
   }
 
@@ -18,6 +18,6 @@ export class UserProject extends Entity<UserProjectProps> {
       return left(new ZodValidationError(result.error))
     }
 
-    return right(new UserProject(result.data, id))
+    return right(new UserProject(result.data))
   }
 }

@@ -11,16 +11,18 @@ datasource db {
 }
 
 model User {
-  id            String          @id
-  name          String
-  email         String          @unique
-  password      String
-  phone         String?
-  created_at    DateTime        @default(now())
-  updated_at    DateTime        @updatedAt
-  UserWorkspace UserWorkspace[]
-  UserProject   UserProject[]
-  Stakeholder   Stakeholder[]
+  id                String              @id
+  name              String
+  email             String              @unique
+  password          String
+  phone             String?
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  UserWorkspace     UserWorkspace[]
+  UserWorkspaceRole UserWorkspaceRole[]
+  UserProject       UserProject[]
+  Stakeholder       Stakeholder[]
+  UserProjectRole   UserProjectRole[]
 
   @@map("users")
 }
@@ -42,15 +44,16 @@ enum PlanTypes {
 }
 
 model Workspace {
-  id            String          @id
-  name          String
-  description   String?         @db.VarChar(500)
-  plan          PlanTypes
-  plan_status   PlanStatuses
-  created_at    DateTime        @default(now())
-  updated_at    DateTime        @updatedAt
-  Project       Project[]
-  UserWorkspace UserWorkspace[]
+  id                String              @id
+  name              String
+  description       String?             @db.VarChar(500)
+  plan              PlanTypes
+  plan_status       PlanStatuses
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  Project           Project[]
+  UserWorkspace     UserWorkspace[]
+  UserWorkspaceRole UserWorkspaceRole[]
 
   @@map("workspaces")
 }
@@ -61,28 +64,28 @@ enum WorkspaceRoles {
 }
 
 model UserWorkspace {
-  id                 String              @id
-  workspace          Workspace           @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  workspace_id       String
-  user               User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id            String
-  status             InviteStatuses
-  created_at         DateTime            @default(now())
-  updated_at         DateTime            @updatedAt
-  UserWorkspaceRoles UserWorkspaceRole[]
+  workspace    Workspace      @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace_id String
+  user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id      String
+  status       InviteStatuses
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
 
-  @@unique([workspace_id, user_id])
+  @@id([workspace_id, user_id])
   @@map("user_workspaces")
 }
 
 model UserWorkspaceRole {
-  user_workspace    UserWorkspace  @relation(fields: [user_workspace_id], references: [id], onDelete: Cascade)
-  user_workspace_id String
-  role              WorkspaceRoles
-  created_at        DateTime       @default(now())
-  updated_at        DateTime       @updatedAt
+  workspace    Workspace      @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace_id String
+  user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id      String
+  role         WorkspaceRoles
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
 
-  @@id([user_workspace_id, role])
+  @@id([workspace_id, user_id, role])
   @@map("user_workspace_roles")
 }
 
@@ -100,6 +103,7 @@ model Project {
   AssumptionLog          AssumptionLog[]
   Stakeholder            Stakeholder[]
   ProjectCharter         ProjectCharter[]
+  UserProjectRole        UserProjectRole[]
 
   @@map("projects")
 }
@@ -114,24 +118,24 @@ enum ProjectRoles {
 }
 
 model UserProject {
-  id               String            @id
-  project          Project           @relation(fields: [project_id], references: [id], onDelete: Cascade)
-  project_id       String
-  user             User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id          String
-  status           InviteStatuses
-  UserProjectRoles UserProjectRole[]
+  project    Project        @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id String
+  user       User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  status     InviteStatuses
 
-  @@unique([project_id, user_id])
+  @@id([project_id, user_id])
   @@map("user_projects")
 }
 
 model UserProjectRole {
-  user_project    UserProject  @relation(fields: [user_project_id], references: [id], onDelete: Cascade)
-  user_project_id String
-  role            ProjectRoles
+  project    Project      @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id String
+  user       User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  role       ProjectRoles
 
-  @@id([user_project_id, role])
+  @@id([project_id, user_id, role])
   @@map("user_project_roles")
 }
 

@@ -27,25 +27,24 @@ CREATE TABLE `workspaces` (
 
 -- CreateTable
 CREATE TABLE `user_workspaces` (
-    `id` VARCHAR(191) NOT NULL,
     `workspace_id` VARCHAR(191) NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
     `status` ENUM('PENDING', 'ACTIVE', 'BLOCKED') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `user_workspaces_workspace_id_user_id_key`(`workspace_id`, `user_id`),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`workspace_id`, `user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `user_workspace_roles` (
-    `user_workspace_id` VARCHAR(191) NOT NULL,
+    `workspace_id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `role` ENUM('ADMIN', 'USER') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    PRIMARY KEY (`user_workspace_id`, `role`)
+    PRIMARY KEY (`workspace_id`, `user_id`, `role`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -62,21 +61,20 @@ CREATE TABLE `projects` (
 
 -- CreateTable
 CREATE TABLE `user_projects` (
-    `id` VARCHAR(191) NOT NULL,
     `project_id` VARCHAR(191) NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
     `status` ENUM('PENDING', 'ACTIVE', 'BLOCKED') NOT NULL,
 
-    UNIQUE INDEX `user_projects_project_id_user_id_key`(`project_id`, `user_id`),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`project_id`, `user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `user_project_roles` (
-    `user_project_id` VARCHAR(191) NOT NULL,
+    `project_id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `role` ENUM('ADMIN', 'PROJECT_MANAGER', 'PROFESSOR', 'STAKEHOLDER', 'DEVELOPER', 'SPONSOR') NOT NULL,
 
-    PRIMARY KEY (`user_project_id`, `role`)
+    PRIMARY KEY (`project_id`, `user_id`, `role`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -200,7 +198,10 @@ ALTER TABLE `user_workspaces` ADD CONSTRAINT `user_workspaces_workspace_id_fkey`
 ALTER TABLE `user_workspaces` ADD CONSTRAINT `user_workspaces_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `user_workspace_roles` ADD CONSTRAINT `user_workspace_roles_user_workspace_id_fkey` FOREIGN KEY (`user_workspace_id`) REFERENCES `user_workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `user_workspace_roles` ADD CONSTRAINT `user_workspace_roles_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `user_workspace_roles` ADD CONSTRAINT `user_workspace_roles_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `projects` ADD CONSTRAINT `projects_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -212,7 +213,10 @@ ALTER TABLE `user_projects` ADD CONSTRAINT `user_projects_project_id_fkey` FOREI
 ALTER TABLE `user_projects` ADD CONSTRAINT `user_projects_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `user_project_roles` ADD CONSTRAINT `user_project_roles_user_project_id_fkey` FOREIGN KEY (`user_project_id`) REFERENCES `user_projects`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `user_project_roles` ADD CONSTRAINT `user_project_roles_project_id_fkey` FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `user_project_roles` ADD CONSTRAINT `user_project_roles_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `project_charters` ADD CONSTRAINT `project_charters_project_id_fkey` FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

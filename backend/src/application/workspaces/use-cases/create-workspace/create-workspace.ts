@@ -1,13 +1,18 @@
 import { Either, left, right } from '@/core/logic/either'
-import { Workspace } from '../../domain/workspace'
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
-import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
-import PLAN_STATUSES from '../../domain/plan-statuses.enum'
-import INVITE_STATUSES from '@/application/user-workspaces/domain/invite-status.enum'
+
 import PLANS from '../../domain/plans.enum'
-import { ICreateUserWorkspacesUseCase } from '@/application/user-workspaces/use-cases/ICreateUserWorkspacesUseCase'
-import { WorkspaceNotCreatedError } from '../errors/WorkspaceNotCreatedError'
+import PLAN_STATUSES from '../../domain/plan-statuses.enum'
+import InviteStatuses from '../../domain/invite-statuses.enum'
+
+import Roles from '../../domain/roles.schema'
+import { Workspace } from '../../domain/workspace'
+import { UserWorkspace } from '../../domain/user-workspace'
+import { UserWorkspaceRole } from '../../domain/user-workspace-role'
+
+import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+
+import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 
 type CreateWorkspaceRequest = {
   name: string
@@ -21,7 +26,6 @@ export class CreateWorkspace {
   constructor(
     private workspacesRepository: IWorkspacesRepository,
     private usersRepository: IUsersRepository,
-    private createUserWorkspaces: ICreateUserWorkspacesUseCase,
   ) {}
 
   async execute({
@@ -48,13 +52,35 @@ export class CreateWorkspace {
 
     const workspace = workspaceOrError.value
 
-    await this.workspacesRepository.create(workspace)
-
-    await this.createUserWorkspaces.execute({
+    const userWorkspaceOrError = UserWorkspace.create({
+      userId: userId,
       workspaceId: workspace.id,
-      userId,
-      status: INVITE_STATUSES.ACTIVE,
+      status: InviteStatuses.ACTIVE,
     })
+
+    if (userWorkspaceOrError.isLeft()) {
+      return left(userWorkspaceOrError.value)
+    }
+
+    const userWorkspace = userWorkspaceOrError.value
+
+    const userWorkspaceRoleOrError = UserWorkspaceRole.create({
+      userId: userId,
+      workspaceId: workspace.id,
+      role: Roles.ADMIN,
+    })
+
+    if (userWorkspaceRoleOrError.isLeft()) {
+      return left(userWorkspaceRoleOrError.value)
+    }
+
+    const userWorkspaceRole = userWorkspaceRoleOrError.value
+
+    await this.workspacesRepository.create(
+      workspace,
+      userWorkspace,
+      userWorkspaceRole,
+    )
 
     return right(workspace)
   }

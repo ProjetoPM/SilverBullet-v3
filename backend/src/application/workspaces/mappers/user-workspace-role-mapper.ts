@@ -6,7 +6,8 @@ import ROLES from '../domain/roles.schema'
 export class UserWorkspaceRoleMapper {
   static toDomain(raw: PersistenceUserWorkspaceRole) {
     const workspaceOrError = UserWorkspaceRole.create({
-      userWorkspaceId: raw.user_workspace_id,
+      userId: raw.user_id,
+      workspaceId: raw.workspace_id,
       role: raw.role as unknown as ROLES,
     })
 
@@ -22,7 +23,8 @@ export class UserWorkspaceRoleMapper {
 
   static async toPersistence(userWorkspaceRole: UserWorkspaceRole) {
     return {
-      user_workspace_id: userWorkspaceRole.props.userWorkspaceId,
+      user_id: userWorkspaceRole.props.userId,
+      workspace_id: userWorkspaceRole.props.workspaceId,
       role: userWorkspaceRole.props.role,
     }
   }

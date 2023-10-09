@@ -5,7 +5,8 @@ import { z } from 'zod'
 import PROJECT_ROLES from './roles.schema'
 
 export const UserProjectRoleSchema = z.object({
-  userProjectId: z.string().uuid({ message: 'Invalid id for user project' }),
+  userId: z.string().uuid({ message: 'Invalid id for user' }),
+  projectId: z.string().uuid({ message: 'Invalid id for project' }),
   role: z.nativeEnum(PROJECT_ROLES),
 })
 

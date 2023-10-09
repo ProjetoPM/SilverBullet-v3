@@ -7,7 +7,7 @@ import {
 } from './user-project-role.schema'
 
 export class UserProjectRole extends RelationshipEntity<UserProjectRoleProps> {
-  private constructor(props: UserProjectRoleProps, id?: string) {
+  private constructor(props: UserProjectRoleProps) {
     super(props)
   }
 

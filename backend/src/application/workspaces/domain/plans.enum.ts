@@ -1,6 +1,6 @@
-enum PlanType  {
-    FREE = 'FREE',
-    SUBSCRIPTION = 'SUBSCRIPTION'
+enum PlanTypes {
+  FREE = 'FREE',
+  SUBSCRIPTION = 'SUBSCRIPTION',
 }
 
-export default PlanType
+export default PlanTypes

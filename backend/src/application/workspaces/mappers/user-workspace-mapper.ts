@@ -1,18 +1,15 @@
 import { UserWorkspace as PersistenceUserWorkspace } from '@prisma/client'
 import { UserWorkspace } from '../domain/user-workspace'
 import { t } from 'i18next'
-import InviteStatus from '../domain/invite-status.enum'
+import InviteStatus from '../domain/invite-statuses.enum'
 
 export class UserWorkspaceMapper {
   static toDomain(raw: PersistenceUserWorkspace) {
-    const workspaceOrError = UserWorkspace.create(
-      {
-        workspaceId: raw.workspace_id,
-        userId: raw.user_id,
-        status: raw.status as unknown as InviteStatus
-      },
-      raw.id,
-    )
+    const workspaceOrError = UserWorkspace.create({
+      workspaceId: raw.workspace_id,
+      userId: raw.user_id,
+      status: raw.status as unknown as InviteStatus,
+    })
 
     if (workspaceOrError.isLeft()) {
       throw new Error(t('errors.invalid_workspace'))
@@ -26,10 +23,9 @@ export class UserWorkspaceMapper {
 
   static async toPersistence(userWorkspace: UserWorkspace) {
     return {
-      id: userWorkspace.id,
       workspace_id: userWorkspace.props.workspaceId,
       user_id: userWorkspace.props.userId,
-      status: userWorkspace.props.status
+      status: userWorkspace.props.status,
     }
   }
 }

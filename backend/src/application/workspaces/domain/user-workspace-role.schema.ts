@@ -5,9 +5,8 @@ import { z } from 'zod'
 import ROLES from './roles.schema'
 
 export const UserWorkspaceRoleSchema = z.object({
-  userWorkspaceId: z
-    .string()
-    .uuid({ message: 'Invalid id for user workspace' }),
+  userId: z.string().uuid({ message: 'Invalid id for user' }),
+  workspaceId: z.string().uuid({ message: 'Invalid id for workspace' }),
   role: z.nativeEnum(ROLES),
 })
 

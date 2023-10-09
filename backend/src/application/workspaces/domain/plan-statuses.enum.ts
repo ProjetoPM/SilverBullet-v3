@@ -1,6 +1,6 @@
-enum PlanStatus {
+enum PlanStatuses {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
 
-export default PlanStatus
+export default PlanStatuses

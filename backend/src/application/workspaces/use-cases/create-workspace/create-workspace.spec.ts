@@ -3,47 +3,36 @@ import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 import { InMemoryWorkspacesRepository } from '../../repositories/in-memory/InMemoryWorkspacesRepository'
 import { CreateWorkspace } from './create-workspace'
 import { Workspace } from '../../domain/workspace'
-import { CreateUserWorkspace } from '@/application/user-workspaces/use-cases/create-user-workspace/create-user-workspace'
-import { CreateUserWorkspaceRoles } from '@/application/user-workspace-roles/use-cases/create-user-workspace-roles/create-user-workspace-roles'
-import { IUserWorkspacesRepository } from '@/application/user-workspaces/repositories/IUserWorkspaceRepository'
-import { IUserWorkspaceRolesRepository } from '@/application/user-workspace-roles/repositories/IUserWorkspaceRolesRepository'
-import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
-import { InMemoryUserWorkspaceRolesRepository } from '@/application/user-workspace-roles/repositories/in-memory/InMemoryUserWorkspaceRolesRepository'
-import { InMemoryUserWorkspacesRepository } from '@/application/user-workspaces/repositories/in-memory/InMemoryUserWorkspacesRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { User } from '@/application/users/domain/user'
+import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
+import { InMemoryUserWorkspacesRepository } from '../../repositories/in-memory/InMemoryUserWorkspacesRepository'
+import { IUserWorkspacesRepository } from '../../repositories/IUserWorkspaceRepository'
+import { IUserWorkspaceRolesRepository } from '../../repositories/IUserWorkspaceRolesRepository'
+import { InMemoryUserWorkspaceRolesRepository } from '../../repositories/in-memory/InMemoryUserWorkspaceRolesRepository'
 
 let workspacesRepository: IWorkspacesRepository
 let userWorkspacesRepository: IUserWorkspacesRepository
 let userWorkspaceRolesRepository: IUserWorkspaceRolesRepository
+
 let usersRepository: IUsersRepository
 
 let createWorkspace: CreateWorkspace
-let createUserWorkspace: CreateUserWorkspace
-let createUserWorkspaceRoles: CreateUserWorkspaceRoles
 
 describe('Create a workspace', async () => {
   beforeAll(async () => {
     usersRepository = new InMemoryUsersRepository()
-    workspacesRepository = new InMemoryWorkspacesRepository()
     userWorkspacesRepository = new InMemoryUserWorkspacesRepository()
     userWorkspaceRolesRepository = new InMemoryUserWorkspaceRolesRepository()
 
-    createUserWorkspaceRoles = new CreateUserWorkspaceRoles(
+    workspacesRepository = new InMemoryWorkspacesRepository(
+      [],
+      userWorkspacesRepository,
       userWorkspaceRolesRepository,
     )
 
-    createUserWorkspace = new CreateUserWorkspace(
-      userWorkspacesRepository,
-      createUserWorkspaceRoles,
-    )
-
-    createWorkspace = new CreateWorkspace(
-      workspacesRepository,
-      usersRepository,
-      createUserWorkspace,
-    )
+    createWorkspace = new CreateWorkspace(workspacesRepository, usersRepository)
   })
 
   const user = User.create({
