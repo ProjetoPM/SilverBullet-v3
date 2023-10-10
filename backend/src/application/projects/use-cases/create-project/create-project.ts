@@ -9,6 +9,8 @@ import ProjectRoles from '../../domain/roles.schema'
 import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
+import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
+import { IUserWorkspacesRepository } from '../../repositories/IUserWorkspacesRepository'
 
 type CreateProjectRequest = {
   name: string
@@ -18,7 +20,9 @@ type CreateProjectRequest = {
 }
 
 type CreateProjectResponse = Either<
-  UserDoesNotExistError | WorkspaceDoesNotExistError,
+  | UserDoesNotExistError
+  | WorkspaceDoesNotExistError
+  | UserDoesNotBelongToWorkspaceError,
   Project
 >
 
@@ -27,6 +31,7 @@ export class CreateProject {
     private projectsRepository: IProjectsRepository,
     private usersRepository: IUsersRepository,
     private workspacesRepository: IWorkspacesRepository,
+    private userWorkspacesRepository: IUserWorkspacesRepository,
   ) {}
 
   async execute({
@@ -39,11 +44,25 @@ export class CreateProject {
 
     const user = await this.usersRepository.findById(userId)
 
-    if (user) {
+    if (!user) {
       return left(new UserDoesNotExistError())
     }
 
     const workspace = await this.workspacesRepository.findById(workspaceId)
+
+    if (!workspace) {
+      return left(new WorkspaceDoesNotExistError())
+    }
+
+    const userInWorkspace =
+      await this.userWorkspacesRepository.verifyActiveWorkspace(
+        user.id,
+        workspace.id,
+      )
+
+    if (!userInWorkspace) {
+      return left(new UserDoesNotBelongToWorkspaceError())
+    }
 
     const projectOrError = Project.create({
       name,

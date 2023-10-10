@@ -123,6 +123,8 @@ model UserProject {
   user       User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String
   status     InviteStatuses
+  created_at DateTime       @default(now())
+  updated_at DateTime       @updatedAt
 
   @@id([project_id, user_id])
   @@map("user_projects")
@@ -134,6 +136,8 @@ model UserProjectRole {
   user       User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String
   role       ProjectRoles
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
 
   @@id([project_id, user_id, role])
   @@map("user_project_roles")

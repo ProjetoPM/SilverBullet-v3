@@ -1,6 +1,6 @@
 import { Controller } from '@/core/infra/controller'
-import { CreateProjectController } from '@/application/projects/use-cases/create-user-project/create-project.controller'
-import { CreateProject } from '@/application/projects/use-cases/create-user-project/create-project'
+import { CreateProjectController } from '@/application/projects/use-cases/create-project/create-project.controller'
+import { CreateProject } from '@/application/projects/use-cases/create-project/create-project'
 import { PrismaProjectsRepository } from '@/application/projects/repositories/prisma/PrismaProjectsRepository'
 import { PrismaUserProjectsRepository } from '@/application/projects/repositories/prisma/PrismaUserProjectsRepository'
 import { PrismaUserProjectRolesRepository } from '@/application/projects/repositories/prisma/PrismaUserProjectRolesRepository'

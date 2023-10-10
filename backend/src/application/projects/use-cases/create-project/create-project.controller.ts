@@ -2,11 +2,15 @@ import { Controller } from '@/core/infra/controller'
 import {
   HttpResponse,
   clientError,
-  conflict,
   created,
+  forbidden,
+  notFound,
 } from '@/core/infra/http-response'
 import { t } from 'i18next'
 import { CreateProject } from './create-project'
+import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
+import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
+import { User } from '@/application/users/domain/user'
 
 type CreateProjectControllerRequest = {
   name: string
@@ -14,10 +18,6 @@ type CreateProjectControllerRequest = {
   workspaceId: string
   currentUserId: string
 }
-
-// @TODO
-// Error for invalid workspaceId
-// Verify if user belongs to workspace
 
 export class CreateProjectController implements Controller {
   constructor(private createProject: CreateProject) {}
@@ -29,6 +29,10 @@ export class CreateProjectController implements Controller {
       const error = result.value
 
       switch (error.constructor) {
+        case UserDoesNotBelongToWorkspaceError:
+          return forbidden(error)
+        case UserDoesNotExistError:
+          return notFound(error)
         default:
           return clientError(error)
       }
