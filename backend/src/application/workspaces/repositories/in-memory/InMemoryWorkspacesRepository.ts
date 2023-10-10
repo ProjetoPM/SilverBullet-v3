@@ -12,6 +12,14 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
     private userWorkspaceRolesRepository: IUserWorkspaceRolesRepository,
   ) {}
 
+  async findById(id: string): Promise<Workspace | null> {
+    const workspace = this.workspaces.find((workspace) => workspace.id === id)
+
+    if (!workspace) return null
+
+    return workspace
+  }
+
   async create(
     workspace: Workspace,
     userWorkspace: UserWorkspace,

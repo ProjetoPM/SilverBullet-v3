@@ -8,4 +8,6 @@ export interface IWorkspacesRepository {
     userWorkspace: UserWorkspace,
     userWorkspaceRole: UserWorkspaceRole,
   ): Promise<void>
+
+  findById(id: string): Promise<Workspace | null>
 }

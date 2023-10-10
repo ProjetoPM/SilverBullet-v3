@@ -1,9 +1,14 @@
 import { Either, left, right } from '@/core/logic/either'
 import { Project } from '../../domain/project'
 import { IProjectsRepository } from '../../repositories/IProjectsRepository'
-import { ICreateUserProjectsUseCase } from '@/application/user-projects/use-cases/ICreateUserProjectsUseCase'
-import InviteStatus from '@/application/user-projects/domain/invite-status.enum'
 import { WorkspaceDoesNotExistError } from '../errors/WorkspaceDoesNotExistError'
+import { UserProject } from '../../domain/user-project'
+import InviteStatuses from '../../domain/invite-statuses.enum'
+import { UserProjectRole } from '../../domain/user-project-role'
+import ProjectRoles from '../../domain/roles.schema'
+import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
+import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 
 type CreateProjectRequest = {
   name: string
@@ -12,12 +17,16 @@ type CreateProjectRequest = {
   currentUserId: string
 }
 
-type CreateProjectResponse = Either<WorkspaceDoesNotExistError, Project>
+type CreateProjectResponse = Either<
+  UserDoesNotExistError | WorkspaceDoesNotExistError,
+  Project
+>
 
 export class CreateProject {
   constructor(
     private projectsRepository: IProjectsRepository,
-    private createUserProjects: ICreateUserProjectsUseCase,
+    private usersRepository: IUsersRepository,
+    private workspacesRepository: IWorkspacesRepository,
   ) {}
 
   async execute({
@@ -26,6 +35,16 @@ export class CreateProject {
     workspaceId,
     currentUserId: userId,
   }: CreateProjectRequest): Promise<CreateProjectResponse> {
+    let projectRoles: UserProjectRole[] = []
+
+    const user = await this.usersRepository.findById(userId)
+
+    if (user) {
+      return left(new UserDoesNotExistError())
+    }
+
+    const workspace = await this.workspacesRepository.findById(workspaceId)
+
     const projectOrError = Project.create({
       name,
       description,
@@ -38,13 +57,45 @@ export class CreateProject {
 
     const project = projectOrError.value
 
-    await this.projectsRepository.create(project)
-
-    await this.createUserProjects.execute({
+    const userProjectOrError = UserProject.create({
+      userId: userId,
       projectId: project.id,
-      userId,
-      status: InviteStatus.ACTIVE,
+      status: InviteStatuses.ACTIVE,
     })
+
+    if (userProjectOrError.isLeft()) {
+      return left(userProjectOrError.value)
+    }
+
+    const userProject = userProjectOrError.value
+
+    const userProjectRoleOrError = UserProjectRole.create({
+      userId: userId,
+      projectId: project.id,
+      role: ProjectRoles.ADMIN,
+    })
+
+    if (userProjectRoleOrError.isLeft()) {
+      return left(userProjectRoleOrError.value)
+    }
+
+    const userProjectRole = userProjectRoleOrError.value
+    projectRoles.push(userProjectRole)
+
+    const userProjectSecondRoleOrError = UserProjectRole.create({
+      userId: userId,
+      projectId: project.id,
+      role: ProjectRoles.PROJECT_MANAGER,
+    })
+
+    if (userProjectSecondRoleOrError.isLeft()) {
+      return left(userProjectSecondRoleOrError.value)
+    }
+
+    const userProjectSecondRole = userProjectSecondRoleOrError.value
+    projectRoles.push(userProjectSecondRole)
+
+    await this.projectsRepository.create(project, userProject, projectRoles)
 
     return right(project)
   }

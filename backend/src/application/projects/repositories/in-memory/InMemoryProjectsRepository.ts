@@ -1,24 +1,27 @@
 import { Project } from '../../domain/project'
+import { UserProject } from '../../domain/user-project'
+import { UserProjectRole } from '../../domain/user-project-role'
 import { IProjectsRepository } from '../IProjectsRepository'
+import { IUserProjectsRepository } from '../IUserProjectRepository'
+import { IUserProjectRolesRepository } from '../IUserProjectRolesRepository'
 
 export class InMemoryProjectsRepository implements IProjectsRepository {
-  constructor(public projects: Project[] = []) {}
+  constructor(
+    public projects: Project[] = [],
+    private userProjectsRepository: IUserProjectsRepository,
+    private userProjectRolesRepository: IUserProjectRolesRepository,
+  ) {}
 
-  async save(project: Project): Promise<void> {
-    const projectIndex = this.projects.findIndex(
-      (project) => project.id === project.id,
-    )
-    this.projects[projectIndex] = project
-  }
-
-  async create(project: Project): Promise<string | null> {
+  async create(
+    project: Project,
+    userProject: UserProject,
+    userProjectRoles: UserProjectRole[],
+  ): Promise<void> {
     this.projects.push(project)
 
-    const dbProject = this.projects.pop()
+    this.userProjectsRepository.create(userProject)
 
-    if (!dbProject) return null
-
-    return dbProject.id
+    this.userProjectRolesRepository.createMany(userProjectRoles)
   }
 
   async findById(id: string): Promise<Project | null> {

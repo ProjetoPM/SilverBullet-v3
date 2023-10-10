@@ -1,4 +1,4 @@
-enum PROJECT_ROLES {
+enum ProjectRoles {
   ADMIN = 'ADMIN',
   PROJECT_MANAGER = 'PROJECT_MANAGER',
   PROFESSOR = 'PROFESSOR',
@@ -7,4 +7,4 @@ enum PROJECT_ROLES {
   SPONSOR = 'SPONSOR',
 }
 
-export default PROJECT_ROLES
+export default ProjectRoles

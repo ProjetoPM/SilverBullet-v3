@@ -8,10 +8,7 @@ export class UserProject extends RelationshipEntity<UserProjectProps> {
     super(props)
   }
 
-  static create(
-    props: UserProjectProps,
-    id?: string,
-  ): Either<Error, UserProject> {
+  static create(props: UserProjectProps): Either<Error, UserProject> {
     const result = UserProjectSchema.safeParse(props)
 
     if (!result.success) {

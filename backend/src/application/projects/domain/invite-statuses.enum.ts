@@ -1,7 +1,7 @@
-enum InviteStatus {
+enum InviteStatuses {
   ACTIVE = 'ACTIVE',
   PENDING = 'PENDING',
   BLOCKED = 'BLOCKED',
 }
 
-export default InviteStatus
+export default InviteStatuses

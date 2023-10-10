@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import INVITE_STATUSES from './invite-status.enum'
+import INVITE_STATUSES from './invite-statuses.enum'
 
 export const UserProjectSchema = z.object({
   projectId: z.string().uuid({ message: 'Invalid id for project' }),

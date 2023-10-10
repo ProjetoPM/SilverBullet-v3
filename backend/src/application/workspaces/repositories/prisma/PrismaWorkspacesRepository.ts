@@ -28,4 +28,12 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
 
     await this.userWorkspaceRolesRepository.create(userWorkspaceRole)
   }
+
+  async findById(id: string): Promise<Workspace | null> {
+    const data = await prismaClient.workspace.findUnique({ where: { id: id } })
+
+    if (!data) return null
+
+    return WorkspaceMapper.toDomain(data)
+  }
 }
