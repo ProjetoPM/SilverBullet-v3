@@ -2,7 +2,9 @@ import { prismaClient } from '@/infra/prisma/client'
 import InviteStatuses from '../../domain/invite-statuses.enum'
 import { IUserWorkspacesRepository } from '../IUserWorkspacesRepository'
 
-export class PrismaProjectsRepository implements IUserWorkspacesRepository {
+export class PrismaUserWorkspacesRepository
+  implements IUserWorkspacesRepository
+{
   constructor() {}
 
   async verifyActiveWorkspace(

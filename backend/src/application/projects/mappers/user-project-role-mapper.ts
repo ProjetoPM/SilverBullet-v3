@@ -6,7 +6,8 @@ import PROJECT_ROLES from '../domain/roles.schema'
 export class UserProjectRoleMapper {
   static toDomain(raw: PersistenceUserProjectRole) {
     const projectOrError = UserProjectRole.create({
-      userProjectId: raw.user_project_id,
+      userId: raw.user_id,
+      projectId: raw.project_id,
       role: raw.role as unknown as PROJECT_ROLES,
     })
 
@@ -22,7 +23,8 @@ export class UserProjectRoleMapper {
 
   static async toPersistence(userProjectRole: UserProjectRole) {
     return {
-      user_project_id: userProjectRole.props.userProjectId,
+      user_id: userProjectRole.props.userId,
+      project_id: userProjectRole.props.projectId,
       role: userProjectRole.props.role,
     }
   }
