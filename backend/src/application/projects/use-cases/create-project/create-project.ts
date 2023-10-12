@@ -2,15 +2,12 @@ import { Either, left, right } from '@/core/logic/either'
 import { Project } from '../../domain/project'
 import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 import { WorkspaceDoesNotExistError } from '../errors/WorkspaceDoesNotExistError'
-import { UserProject } from '../../domain/user-project'
-import InviteStatuses from '../../domain/invite-statuses.enum'
-import { UserProjectRole } from '../../domain/user-project-role'
-import ProjectRoles from '../../domain/roles.schema'
+import { InviteStatuses } from '../../domain/invite-statuses.enum'
+import { ProjectRoles } from '../../domain/project-roles.schema'
 import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
-import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
-import { IUserWorkspacesRepository } from '../../repositories/IUserWorkspacesRepository'
+import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 
 type CreateProjectRequest = {
   name: string
@@ -31,7 +28,6 @@ export class CreateProject {
     private projectsRepository: IProjectsRepository,
     private usersRepository: IUsersRepository,
     private workspacesRepository: IWorkspacesRepository,
-    private userWorkspacesRepository: IUserWorkspacesRepository,
   ) {}
 
   async execute({
@@ -40,8 +36,6 @@ export class CreateProject {
     workspaceId,
     currentUserId: userId,
   }: CreateProjectRequest): Promise<CreateProjectResponse> {
-    let projectRoles: UserProjectRole[] = []
-
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
@@ -55,7 +49,7 @@ export class CreateProject {
     }
 
     const userInWorkspace =
-      await this.userWorkspacesRepository.verifyActiveWorkspace(
+      await this.workspacesRepository.verifyActiveWorkspace(
         user.id,
         workspace.id,
       )
@@ -76,45 +70,10 @@ export class CreateProject {
 
     const project = projectOrError.value
 
-    const userProjectOrError = UserProject.create({
-      userId: userId,
-      projectId: project.id,
-      status: InviteStatuses.ACTIVE,
-    })
-
-    if (userProjectOrError.isLeft()) {
-      return left(userProjectOrError.value)
-    }
-
-    const userProject = userProjectOrError.value
-
-    const userProjectRoleOrError = UserProjectRole.create({
-      userId: userId,
-      projectId: project.id,
-      role: ProjectRoles.ADMIN,
-    })
-
-    if (userProjectRoleOrError.isLeft()) {
-      return left(userProjectRoleOrError.value)
-    }
-
-    const userProjectRole = userProjectRoleOrError.value
-    projectRoles.push(userProjectRole)
-
-    const userProjectSecondRoleOrError = UserProjectRole.create({
-      userId: userId,
-      projectId: project.id,
-      role: ProjectRoles.PROJECT_MANAGER,
-    })
-
-    if (userProjectSecondRoleOrError.isLeft()) {
-      return left(userProjectSecondRoleOrError.value)
-    }
-
-    const userProjectSecondRole = userProjectSecondRoleOrError.value
-    projectRoles.push(userProjectSecondRole)
-
-    await this.projectsRepository.create(project, userProject, projectRoles)
+    await this.projectsRepository.create(project, user, [
+      ProjectRoles.ADMIN,
+      ProjectRoles.PROJECT_MANAGER,
+    ])
 
     return right(project)
   }

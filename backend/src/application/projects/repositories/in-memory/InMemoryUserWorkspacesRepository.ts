@@ -1,6 +1,6 @@
 import InviteStatuses from '../../domain/invite-statuses.enum'
 import { UserWorkspace } from '../../domain/user-workspace'
-import { IUserWorkspacesRepository } from '../IUserWorkspacesRepository'
+import { IUserWorkspacesRepository } from '../IWorkspacesRepository'
 
 export class InMemoryUserWorkspacesRepository
   implements IUserWorkspacesRepository

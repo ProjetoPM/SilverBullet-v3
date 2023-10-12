@@ -16,7 +16,7 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
           create: {
             user_id: user.id,
             status: 'ACTIVE',
-            role: 'ADMIN',
+            role,
           },
         },
       },

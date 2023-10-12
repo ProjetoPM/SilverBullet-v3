@@ -2,15 +2,14 @@ import { Stakeholder as PersistenceStakeholder } from '@prisma/client'
 import { Stakeholder } from '../domain/stakeholder'
 import { t } from 'i18next'
 import TYPES from '../domain/types.enum'
-import { ResolvedTestEnvironment } from 'vitest'
 import ROLES from '../domain/roles.enum'
 
 export class StakeholderMapper {
   static toDomain(raw: PersistenceStakeholder) {
-    const StakeholderOrError = Stakeholder.create(
+    const stakeholderOrError = Stakeholder.create(
       {
-        type: raw.type as unknown as TYPES,
-        mainProjectRole: raw.main_project_role as unknown as ROLES,
+        type: raw.type as TYPES,
+        mainProjectRole: raw.main_project_role as ROLES,
         email: raw.email,
         organization: raw.organization,
         organizationPosition: raw.organization_position,
@@ -27,14 +26,11 @@ export class StakeholderMapper {
       raw.id,
     )
 
-    if (StakeholderOrError.isLeft()) {
+    if (stakeholderOrError.isLeft()) {
       throw new Error(t('errors.invalid_stakeholder'))
     }
 
-    if (StakeholderOrError.isRight()) {
-      return StakeholderOrError.value
-    }
-    return null
+    return stakeholderOrError.value
   }
 
   static async toPersistence(stakeholder: Stakeholder) {

@@ -4,9 +4,6 @@ import { CreateProject } from '@/application/projects/use-cases/create-project/c
 import { PrismaProjectsRepository } from '@/application/projects/repositories/prisma/PrismaProjectsRepository'
 import { PrismaUserProjectsRepository } from '@/application/projects/repositories/prisma/PrismaUserProjectsRepository'
 import { PrismaUserProjectRolesRepository } from '@/application/projects/repositories/prisma/PrismaUserProjectRolesRepository'
-import { PrismaUserWorkspacesRepository as Teste } from '@/application/projects/repositories/prisma/PrismaUserWorkspacesRepository'
-import { PrismaUserWorkspacesRepository } from '@/application/workspaces/repositories/prisma/PrismaUserWorkspacesRepository'
-import { PrismaUserWorkspaceRolesRepository } from '@/application/workspaces/repositories/prisma/PrismaUserWorkspaceRolesRepository'
 import { PrismaWorkspacesRepository } from '@/application/workspaces/repositories/prisma/PrismaWorkspacesRepository'
 import { PrismaUsersRepository } from '@/application/users/repositories/prisma/PrismaUsersRepository'
 
@@ -19,21 +16,11 @@ export function makeCreateProjectController(): Controller {
     prismaUserProjectRolesRepository,
   )
 
-  const prismaUserWorkspacesRepository = new PrismaUserWorkspacesRepository()
-  const prismaUserWorkspaceRolesRepository =
-    new PrismaUserWorkspaceRolesRepository()
-  const workspacesRepository = new PrismaWorkspacesRepository(
-    prismaUserWorkspacesRepository,
-    prismaUserWorkspaceRolesRepository,
-  )
-
   const usersRepository = new PrismaUsersRepository()
 
   const createProject = new CreateProject(
     prismaProjectsRepository,
     usersRepository,
-    workspacesRepository,
-    new Teste(),
   )
 
   return new CreateProjectController(createProject)

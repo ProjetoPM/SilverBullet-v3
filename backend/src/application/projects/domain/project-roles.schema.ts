@@ -7,4 +7,4 @@ enum ProjectRoles {
   SPONSOR = 'SPONSOR',
 }
 
-export default ProjectRoles
+export { ProjectRoles }

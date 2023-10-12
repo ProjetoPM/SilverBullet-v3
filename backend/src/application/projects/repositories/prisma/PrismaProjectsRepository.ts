@@ -2,17 +2,10 @@ import { prismaClient } from '@/infra/prisma/client'
 import { Project } from '../../domain/project'
 import { ProjectMapper } from '../../mappers/project-mapper'
 import { IProjectsRepository } from '../IProjectsRepository'
-import { IUserProjectsRepository } from '../IUserProjectRepository'
-import { IUserProjectRolesRepository } from '../IUserProjectRolesRepository'
-import { UserProject } from '../../domain/user-project'
-import { UserProjectRole } from '../../domain/user-project-role'
+import { ProjectRoles } from '../../domain/project-roles.schema'
+import { User } from '@/application/users/domain/user'
 
 export class PrismaProjectsRepository implements IProjectsRepository {
-  constructor(
-    private userProjectsRepository: IUserProjectsRepository,
-    private userProjectRolesRepository: IUserProjectRolesRepository,
-  ) {}
-
   async findById(id: string): Promise<Project | null> {
     const data = await prismaClient.project.findUnique({ where: { id } })
 
@@ -23,17 +16,27 @@ export class PrismaProjectsRepository implements IProjectsRepository {
 
   async create(
     project: Project,
-    userProject: UserProject,
-    userProjectRoles: UserProjectRole[],
+    user: User,
+    roles: ProjectRoles[],
   ): Promise<void> {
-    const data = await ProjectMapper.toPersistence(project)
+    const persistenceProject = await ProjectMapper.toPersistence(project)
 
     await prismaClient.project.create({
-      data,
+      data: {
+        ...persistenceProject,
+        UserProject: {
+          create: {
+            user_id: user.id,
+            status: 'ACTIVE',
+          },
+        },
+        UserProjectRole: {
+          create: roles.map((role) => ({
+            user_id: user.id,
+            role,
+          })),
+        },
+      },
     })
-
-    await this.userProjectsRepository.create(userProject)
-
-    await this.userProjectRolesRepository.createMany(userProjectRoles)
   }
 }

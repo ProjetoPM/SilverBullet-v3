@@ -11,18 +11,17 @@ datasource db {
 }
 
 model User {
-  id                String              @id
-  name              String
-  email             String              @unique
-  password          String
-  phone             String?
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  UserWorkspace     UserWorkspace[]
-  UserWorkspaceRole UserWorkspaceRole[]
-  UserProject       UserProject[]
-  Stakeholder       Stakeholder[]
-  UserProjectRole   UserProjectRole[]
+  id              String            @id
+  name            String
+  email           String            @unique
+  password        String
+  phone           String?
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  UserWorkspace   UserWorkspace[]
+  UserProject     UserProject[]
+  Stakeholder     Stakeholder[]
+  UserProjectRole UserProjectRole[]
 
   @@map("users")
 }
@@ -44,16 +43,15 @@ enum PlanTypes {
 }
 
 model Workspace {
-  id                String              @id
-  name              String
-  description       String?             @db.VarChar(500)
-  plan              PlanTypes
-  plan_status       PlanStatuses
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  Project           Project[]
-  UserWorkspace     UserWorkspace[]
-  UserWorkspaceRole UserWorkspaceRole[]
+  id            String          @id
+  name          String
+  description   String?         @db.VarChar(500)
+  plan          PlanTypes
+  plan_status   PlanStatuses
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  Project       Project[]
+  UserWorkspace UserWorkspace[]
 
   @@map("workspaces")
 }
@@ -69,24 +67,12 @@ model UserWorkspace {
   user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id      String
   status       InviteStatuses
+  role         WorkspaceRoles
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
 
   @@id([workspace_id, user_id])
   @@map("user_workspaces")
-}
-
-model UserWorkspaceRole {
-  workspace    Workspace      @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
-  workspace_id String
-  user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id      String
-  role         WorkspaceRoles
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-
-  @@id([workspace_id, user_id, role])
-  @@map("user_workspace_roles")
 }
 
 model Project {

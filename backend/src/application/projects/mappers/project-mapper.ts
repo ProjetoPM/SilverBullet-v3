@@ -4,7 +4,7 @@ import { t } from 'i18next'
 
 export class ProjectMapper {
   static toDomain(raw: PersistenceProject) {
-    const ProjectOrError = Project.create(
+    const projectOrError = Project.create(
       {
         name: raw.name,
         description: raw.description,
@@ -13,14 +13,11 @@ export class ProjectMapper {
       raw.id,
     )
 
-    if (ProjectOrError.isLeft()) {
+    if (projectOrError.isLeft()) {
       throw new Error(t('errors.invalid_project'))
     }
 
-    if (ProjectOrError.isRight()) {
-      return ProjectOrError.value
-    }
-    return null
+    return projectOrError.value
   }
 
   static async toPersistence(project: Project) {
