@@ -10,7 +10,6 @@ import { t } from 'i18next'
 import { CreateProject } from './create-project'
 import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
-import { User } from '@/application/users/domain/user'
 
 type CreateProjectControllerRequest = {
   name: string

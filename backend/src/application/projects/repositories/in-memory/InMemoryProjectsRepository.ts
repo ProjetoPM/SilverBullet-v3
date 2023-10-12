@@ -1,27 +1,44 @@
+import { User } from '@/application/users/domain/user'
 import { Project } from '../../domain/project'
-import { UserProject } from '../../domain/user-project'
-import { UserProjectRole } from '../../domain/user-project-role'
 import { IProjectsRepository } from '../IProjectsRepository'
-import { IUserProjectsRepository } from '../IUserProjectRepository'
-import { IUserProjectRolesRepository } from '../IUserProjectRolesRepository'
+import { ProjectRoles } from '../../domain/project-roles.schema'
+import { InviteStatuses } from '../../domain/invite-statuses.enum'
+
+type UserProject = {
+  userId: string
+  projectId: string
+  status: InviteStatuses
+}
+
+type UserProjectRole = {
+  userId: string
+  projectId: string
+  role: ProjectRoles
+}
 
 export class InMemoryProjectsRepository implements IProjectsRepository {
   constructor(
     public projects: Project[] = [],
-    private userProjectsRepository: IUserProjectsRepository,
-    private userProjectRolesRepository: IUserProjectRolesRepository,
+    public userProjects: UserProject[] = [],
+    public userProjectRoles: UserProjectRole[] = [],
   ) {}
 
   async create(
     project: Project,
-    userProject: UserProject,
-    userProjectRoles: UserProjectRole[],
+    user: User,
+    status: InviteStatuses,
+    roles: ProjectRoles[],
   ): Promise<void> {
     this.projects.push(project)
+    this.userProjects.push({ userId: user.id, projectId: project.id, status })
 
-    this.userProjectsRepository.create(userProject)
-
-    this.userProjectRolesRepository.createMany(userProjectRoles)
+    roles.map((role) => {
+      this.userProjectRoles.push({
+        userId: user.id,
+        projectId: project.id,
+        role,
+      })
+    })
   }
 
   async findById(id: string): Promise<Project | null> {

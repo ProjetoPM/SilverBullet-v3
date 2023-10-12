@@ -1,21 +1,18 @@
 import { beforeAll, describe, expect, test } from 'vitest'
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
-import { InMemoryWorkspacesRepository } from '../../repositories/in-memory/InMemoryWorkspacesRepository'
-import { CreateWorkspace } from './create-workspace'
-import { Workspace } from '../../domain/workspace'
-import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+
 import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
-import { User } from '@/application/users/domain/user'
+
+import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
+import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+import { InMemoryWorkspacesRepository } from '../../repositories/in-memory/InMemoryWorkspacesRepository'
 import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
-import { InMemoryUserWorkspacesRepository } from '../../repositories/in-memory/InMemoryUserWorkspacesRepository'
-import { IUserWorkspacesRepository } from '../../repositories/IUserWorkspaceRepository'
-import { IUserWorkspaceRolesRepository } from '../../repositories/IUserWorkspaceRolesRepository'
-import { InMemoryUserWorkspaceRolesRepository } from '../../repositories/in-memory/InMemoryUserWorkspaceRolesRepository'
+
+import { Workspace } from '../../domain/workspace'
+import { User } from '@/application/users/domain/user'
+
+import { CreateWorkspace } from './create-workspace'
 
 let workspacesRepository: IWorkspacesRepository
-let userWorkspacesRepository: IUserWorkspacesRepository
-let userWorkspaceRolesRepository: IUserWorkspaceRolesRepository
-
 let usersRepository: IUsersRepository
 
 let createWorkspace: CreateWorkspace
@@ -23,14 +20,8 @@ let createWorkspace: CreateWorkspace
 describe('Create a workspace', async () => {
   beforeAll(async () => {
     usersRepository = new InMemoryUsersRepository()
-    userWorkspacesRepository = new InMemoryUserWorkspacesRepository()
-    userWorkspaceRolesRepository = new InMemoryUserWorkspaceRolesRepository()
 
-    workspacesRepository = new InMemoryWorkspacesRepository(
-      [],
-      userWorkspacesRepository,
-      userWorkspaceRolesRepository,
-    )
+    workspacesRepository = new InMemoryWorkspacesRepository()
 
     createWorkspace = new CreateWorkspace(workspacesRepository, usersRepository)
   })
@@ -46,7 +37,7 @@ describe('Create a workspace', async () => {
 
     const data = {
       name: 'workspace',
-      description: 'My fucking workspace',
+      description: 'A simple workspace',
       currentUserId: user.id,
     }
 

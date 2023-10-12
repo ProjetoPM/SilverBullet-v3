@@ -2,11 +2,17 @@ import { prismaClient } from '@/infra/prisma/client'
 import { Workspace } from '../../domain/workspace'
 import { WorkspaceMapper } from '../../mappers/workspace-mapper'
 import { IWorkspacesRepository } from '../IWorkspacesRepository'
-import { Roles } from '../../domain/roles.schema'
+import { Roles } from '../../domain/workspace-roles.schema'
 import { User } from '@/application/users/domain/user'
+import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
 export class PrismaWorkspacesRepository implements IWorkspacesRepository {
-  async create(workspace: Workspace, user: User, role: Roles): Promise<void> {
+  async create(
+    workspace: Workspace,
+    user: User,
+    status: InviteStatuses,
+    role: Roles,
+  ): Promise<void> {
     const persistenceWorkspace = await WorkspaceMapper.toPersistence(workspace)
 
     await prismaClient.workspace.create({
@@ -15,7 +21,7 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
         UserWorkspace: {
           create: {
             user_id: user.id,
-            status: 'ACTIVE',
+            status,
             role,
           },
         },

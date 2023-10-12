@@ -1,10 +1,10 @@
 import { Either, left, right } from '@/core/logic/either'
 
-import { PlanTypes } from '../../domain/plans.enum'
+import { PlanTypes } from '../../domain/plan-types.enum'
 import { PlanStatuses } from '../../domain/plan-statuses.enum'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
-import { Roles } from '../../domain/roles.schema'
+import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { Workspace } from '../../domain/workspace'
 
 import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
@@ -50,7 +50,12 @@ export class CreateWorkspace {
 
     const workspace = workspaceOrError.value
 
-    await this.workspacesRepository.create(workspace, user, Roles.ADMIN)
+    await this.workspacesRepository.create(
+      workspace,
+      user,
+      InviteStatuses.ACTIVE,
+      WorkspaceRoles.ADMIN,
+    )
 
     return right(workspace)
   }

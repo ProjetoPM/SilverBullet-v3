@@ -17,7 +17,11 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   }
 
   async exists(id: string): Promise<boolean> {
-    const data = await prismaClient.project.findUnique({ where: { id } })
+    const data = await prismaClient.workspace.findUnique({ where: { id } })
+
+    console.log(id)
+
+    console.log(data)
 
     return !!data
   }

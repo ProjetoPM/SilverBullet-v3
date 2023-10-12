@@ -1,13 +1,16 @@
 import { Either, left, right } from '@/core/logic/either'
+
 import { Project } from '../../domain/project'
-import { IProjectsRepository } from '../../repositories/IProjectsRepository'
-import { WorkspaceDoesNotExistError } from '../errors/WorkspaceDoesNotExistError'
-import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { ProjectRoles } from '../../domain/project-roles.schema'
-import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
-import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
-import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
+import { InviteStatuses } from '../../domain/invite-statuses.enum'
+
+import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
+import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+
+import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
+import { WorkspaceDoesNotExistError } from '../errors/WorkspaceDoesNotExistError'
+import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
 
 type CreateProjectRequest = {
   name: string
@@ -70,7 +73,7 @@ export class CreateProject {
 
     const project = projectOrError.value
 
-    await this.projectsRepository.create(project, user, [
+    await this.projectsRepository.create(project, user, InviteStatuses.ACTIVE, [
       ProjectRoles.ADMIN,
       ProjectRoles.PROJECT_MANAGER,
     ])

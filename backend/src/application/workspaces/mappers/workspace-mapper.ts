@@ -1,8 +1,8 @@
 import { Workspace as PersistenceWorkspace } from '@prisma/client'
 import { Workspace } from '../domain/workspace'
 import { t } from 'i18next'
-import PlanType from '../domain/plans.enum'
-import PlanStatus from '../domain/plan-statuses.enum'
+import { PlanTypes } from '../domain/plan-types.enum'
+import { PlanStatuses } from '../domain/plan-statuses.enum'
 
 export class WorkspaceMapper {
   static toDomain(raw: PersistenceWorkspace) {
@@ -10,8 +10,8 @@ export class WorkspaceMapper {
       {
         name: raw.name,
         description: raw.description,
-        plan: raw.plan as unknown as PlanType,
-        planStatus: raw.plan_status as unknown as PlanStatus,
+        plan: raw.plan as PlanTypes,
+        planStatus: raw.plan_status as PlanStatuses,
       },
       raw.id,
     )
