@@ -42,16 +42,16 @@ export class CreateProject {
       return left(new UserDoesNotExistError())
     }
 
-    const workspace = await this.workspacesRepository.findById(workspaceId)
+    const workspaceExists = await this.workspacesRepository.exists(workspaceId)
 
-    if (!workspace) {
+    if (!workspaceExists) {
       return left(new WorkspaceDoesNotExistError())
     }
 
     const userInWorkspace =
-      await this.workspacesRepository.verifyActiveWorkspace(
+      await this.workspacesRepository.verifyUserBelongsToWorkspace(
         user.id,
-        workspace.id,
+        workspaceId,
       )
 
     if (!userInWorkspace) {
