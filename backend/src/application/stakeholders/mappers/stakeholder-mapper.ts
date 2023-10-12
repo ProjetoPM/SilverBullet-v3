@@ -1,15 +1,15 @@
 import { Stakeholder as PersistenceStakeholder } from '@prisma/client'
 import { Stakeholder } from '../domain/stakeholder'
 import { t } from 'i18next'
-import TYPES from '../domain/types.enum'
-import ROLES from '../domain/roles.enum'
+import { Types } from '../domain/types.enum'
+import { Roles } from '../domain/roles.enum'
 
 export class StakeholderMapper {
   static toDomain(raw: PersistenceStakeholder) {
     const stakeholderOrError = Stakeholder.create(
       {
-        type: raw.type as TYPES,
-        mainProjectRole: raw.main_project_role as ROLES,
+        type: raw.type as Types,
+        mainProjectRole: raw.main_project_role as Roles,
         email: raw.email,
         organization: raw.organization,
         organizationPosition: raw.organization_position,

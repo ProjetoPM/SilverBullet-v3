@@ -3,4 +3,4 @@ enum Types {
   INTERNAL = 'INTERNAL',
 }
 
-export default Types
+export { Types }

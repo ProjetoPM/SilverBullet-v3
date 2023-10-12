@@ -4,9 +4,6 @@ import { StakeholderMapper } from '../../mappers/stakeholder-mapper'
 import { IStakeholdersRepository } from '../IStakeholdersRepository'
 
 export class PrismaStakeholdersRepository implements IStakeholdersRepository {
-  findById(id: string): Promise<Stakeholder | null> {
-    throw new Error('Method not implemented.')
-  }
   async findByEmail(id: string): Promise<Stakeholder | null> {
     const stakeholder = await prismaClient.stakeholder.findUnique({
       where: {
@@ -14,9 +11,7 @@ export class PrismaStakeholdersRepository implements IStakeholdersRepository {
       },
     })
 
-    if (!stakeholder) {
-      return null
-    }
+    if (!stakeholder) return null
 
     return StakeholderMapper.toDomain(stakeholder)
   }

@@ -1,10 +1,10 @@
 import { z } from 'zod'
-import TYPES from './types.enum'
-import ROLES from './roles.enum'
+import { Types } from './types.enum'
+import { Roles } from './roles.enum'
 
 export const StakeholderSchema = z.object({
-  type: z.nativeEnum(TYPES),
-  mainProjectRole: z.nativeEnum(ROLES),
+  type: z.nativeEnum(Types),
+  mainProjectRole: z.nativeEnum(Roles),
   email: z.string().min(3).max(255),
   organization: z.string().min(3).max(255),
   organizationPosition: z.string().min(3).max(255),

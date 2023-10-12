@@ -1,4 +1,4 @@
-enum ROLES {
+enum Roles {
   CLIENT = 'CLIENT',
   TEAM = 'TEAM',
   PROVIDER = 'PROVIDER',
@@ -7,4 +7,4 @@ enum ROLES {
   OTHERS = 'OTHERS',
 }
 
-export default ROLES
+export { Roles }
