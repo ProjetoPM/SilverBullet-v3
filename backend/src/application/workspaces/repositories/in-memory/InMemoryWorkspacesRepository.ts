@@ -1,16 +1,10 @@
-import { UserWorkspace } from '../../domain/user-workspace'
-import { UserWorkspaceRole } from '../../domain/user-workspace-role'
+import { User } from '@/application/users/domain/user'
 import { Workspace } from '../../domain/workspace'
-import { IUserWorkspacesRepository } from '../IUserWorkspaceRepository'
-import { IUserWorkspaceRolesRepository } from '../IUserWorkspaceRolesRepository'
 import { IWorkspacesRepository } from '../IWorkspacesRepository'
+import { Roles } from '../../domain/roles.schema'
 
 export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
-  constructor(
-    public workspaces: Workspace[] = [],
-    private userWorkspacesRepository: IUserWorkspacesRepository,
-    private userWorkspaceRolesRepository: IUserWorkspaceRolesRepository,
-  ) {}
+  constructor(public workspaces: Workspace[] = []) {}
 
   async findById(id: string): Promise<Workspace | null> {
     const workspace = this.workspaces.find((workspace) => workspace.id === id)
@@ -20,15 +14,7 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
     return workspace
   }
 
-  async create(
-    workspace: Workspace,
-    userWorkspace: UserWorkspace,
-    userWorkspaceRole: UserWorkspaceRole,
-  ): Promise<void> {
+  async create(workspace: Workspace, user: User, role: Roles): Promise<void> {
     this.workspaces.push(workspace)
-
-    await this.userWorkspacesRepository.create(userWorkspace)
-
-    await this.userWorkspaceRolesRepository.create(userWorkspaceRole)
   }
 }

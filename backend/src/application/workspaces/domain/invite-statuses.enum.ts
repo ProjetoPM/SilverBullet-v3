@@ -4,4 +4,4 @@ enum InviteStatuses {
   BLOCKED = 'BLOCKED',
 }
 
-export default InviteStatuses
+export { InviteStatuses }

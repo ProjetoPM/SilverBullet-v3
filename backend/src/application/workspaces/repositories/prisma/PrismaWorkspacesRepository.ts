@@ -2,31 +2,25 @@ import { prismaClient } from '@/infra/prisma/client'
 import { Workspace } from '../../domain/workspace'
 import { WorkspaceMapper } from '../../mappers/workspace-mapper'
 import { IWorkspacesRepository } from '../IWorkspacesRepository'
-import { IUserWorkspaceRolesRepository } from '../IUserWorkspaceRolesRepository'
-import { IUserWorkspacesRepository } from '../IUserWorkspaceRepository'
-import { UserWorkspace } from '../../domain/user-workspace'
-import { UserWorkspaceRole } from '../../domain/user-workspace-role'
+import { Roles } from '../../domain/roles.schema'
+import { User } from '@/application/users/domain/user'
 
 export class PrismaWorkspacesRepository implements IWorkspacesRepository {
-  constructor(
-    private userWorkspacesRepository: IUserWorkspacesRepository,
-    private userWorkspaceRolesRepository: IUserWorkspaceRolesRepository,
-  ) {}
-
-  async create(
-    workspace: Workspace,
-    userWorkspace: UserWorkspace,
-    userWorkspaceRole: UserWorkspaceRole,
-  ): Promise<void> {
-    const data = await WorkspaceMapper.toPersistence(workspace)
+  async create(workspace: Workspace, user: User, role: Roles): Promise<void> {
+    const persistenceWorkspace = await WorkspaceMapper.toPersistence(workspace)
 
     await prismaClient.workspace.create({
-      data,
+      data: {
+        ...persistenceWorkspace,
+        UserWorkspace: {
+          create: {
+            user_id: user.id,
+            status: 'ACTIVE',
+            role: 'ADMIN',
+          },
+        },
+      },
     })
-
-    await this.userWorkspacesRepository.create(userWorkspace)
-
-    await this.userWorkspaceRolesRepository.create(userWorkspaceRole)
   }
 
   async findById(id: string): Promise<Workspace | null> {

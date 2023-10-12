@@ -1,13 +1,9 @@
 import { Workspace } from '../domain/workspace'
-import { UserWorkspaceRole } from '../domain/user-workspace-role'
-import { UserWorkspace } from '../domain/user-workspace'
+import { User } from '@/application/users/domain/user'
+import { Roles } from '../domain/roles.schema'
 
 export interface IWorkspacesRepository {
-  create(
-    workspace: Workspace,
-    userWorkspace: UserWorkspace,
-    userWorkspaceRole: UserWorkspaceRole,
-  ): Promise<void>
+  create(workspace: Workspace, user: User, role: Roles): Promise<void>
 
   findById(id: string): Promise<Workspace | null>
 }

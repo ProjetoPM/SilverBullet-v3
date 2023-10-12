@@ -3,4 +3,4 @@ enum PlanStatuses {
   INACTIVE = 'INACTIVE',
 }
 
-export default PlanStatuses
+export { PlanStatuses }

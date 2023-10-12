@@ -3,4 +3,4 @@ enum PlanTypes {
   SUBSCRIPTION = 'SUBSCRIPTION',
 }
 
-export default PlanTypes
+export { PlanTypes }
