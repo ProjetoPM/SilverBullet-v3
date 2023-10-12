@@ -28,21 +28,16 @@ export class PrismaUsersRepository implements IUsersRepository {
     return !!userExists
   }
 
-  async findById(id: string): Promise<User | null> {  
-
+  async findById(id: string): Promise<User | null> {
     const user = await prismaClient.user.findUnique({
       where: {
         id,
       },
-    });
+    })
 
-    if(!user) return null
+    if (!user) return null
 
     return UserMapper.toDomain(user)
-  }
-
-  async save(user: User): Promise<void> {
-    throw new Error('Method not implemented.')
   }
 
   async create(user: User): Promise<void> {
