@@ -12,7 +12,8 @@
     "prisma:studio": "prisma studio",
     "prisma:generate": "prisma generate dev",
     "prisma:migrate": "prisma migrate dev",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "translate": "i18nexus pull -p ./src/infra/http/i18n/locales -k fwqGCwQe20eQ6_AGr_9_Yg"
   },
   "keywords": [],
   "author": "",
