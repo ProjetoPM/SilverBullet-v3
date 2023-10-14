@@ -1,5 +1,11 @@
 import { AccessDeniedError } from '@/core/domain/errors/AccessDeniedError'
-import { HttpResponse, fail, forbidden, ok } from '@/core/infra/http-response'
+import {
+  HttpResponse,
+  fail,
+  forbidden,
+  ok,
+  unauthorized,
+} from '@/core/infra/http-response'
 import { Middleware } from '@/core/infra/middleware'
 import { decode } from 'jsonwebtoken'
 
@@ -19,17 +25,22 @@ export class EnsureAuthenticatedMiddleware implements Middleware {
   ): Promise<HttpResponse> {
     try {
       const { jwt } = request
-      const [_, token] = jwt.split(' ')
 
-      if (!token) return forbidden(new AccessDeniedError())
-
-      try {
-        const { sub } = decode(token) as DecodedJwt
-        return ok({ userId: sub })
-      } catch (err) {
-        return forbidden(new AccessDeniedError())
+      if (!jwt) {
+        return unauthorized(new AccessDeniedError())
       }
 
+      if (jwt) {
+        const [_, token] = jwt.split(' ')
+
+        try {
+          const decoded = decode(token) as DecodedJwt
+          return ok({ userId: decoded.sub })
+        } catch (err) {
+          return forbidden(new AccessDeniedError())
+        }
+      }
+      return forbidden(new AccessDeniedError())
     } catch (error: any) {
       return fail(error)
     }
