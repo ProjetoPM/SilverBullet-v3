@@ -17,6 +17,9 @@ import { CreateProject } from './create-project'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
+import { Project } from '../../domain/project'
+import { ProjectRoles } from '../../domain/project-roles.schema'
+import { ProjectWithSameNameExistsError } from '../errors/ProjectWithSameNameExistsError'
 
 let usersRepository: IUsersRepository
 let projectsRepository: IProjectsRepository
@@ -71,5 +74,39 @@ describe('Create a project', async () => {
     const response = await createProject.execute(data)
 
     expect(response.isRight()).toBeTruthy()
+  })
+
+  test('should not create a project with same name', async () => {
+    const existingProject = (await Project.create({
+      name: 'project',
+      description: 'description',
+      workspaceId: workspace.id,
+    }).value) as Project
+
+    await projectsRepository.create(
+      existingProject,
+      user,
+      InviteStatuses.ACTIVE,
+      [ProjectRoles.ADMIN],
+    )
+    await usersRepository.create(user)
+    await workspacesRepository.create(
+      workspace,
+      user,
+      InviteStatuses.ACTIVE,
+      WorkspaceRoles.ADMIN,
+    )
+
+    const data = {
+      name: 'project',
+      description: 'A simple project',
+      workspaceId: workspace.id,
+      currentUserId: user.id,
+    }
+
+    const response = await createProject.execute(data)
+
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new ProjectWithSameNameExistsError())
   })
 })
