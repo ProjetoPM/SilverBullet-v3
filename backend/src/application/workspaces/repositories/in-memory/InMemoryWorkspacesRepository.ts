@@ -17,14 +17,6 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
     public userWorkspaces: UserWorkspace[] = [],
   ) {}
 
-  async findById(id: string): Promise<Workspace | null> {
-    const workspace = this.workspaces.find((workspace) => workspace.id === id)
-
-    if (!workspace) return null
-
-    return workspace
-  }
-
   async create(
     workspace: Workspace,
     user: User,
@@ -38,5 +30,19 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
       status,
       role,
     })
+  }
+
+  async verifyUserBelongsToWorkspace(
+    userId: string,
+    workspaceId: string,
+  ): Promise<boolean> {
+    return this.userWorkspaces.some(
+      (userWorkspace) =>
+        userWorkspace.workspaceId === workspaceId &&
+        userWorkspace.userId === userId,
+    )
+  }
+  async exists(id: string): Promise<boolean> {
+    return this.workspaces.some((workspace) => workspace.id === id)
   }
 }

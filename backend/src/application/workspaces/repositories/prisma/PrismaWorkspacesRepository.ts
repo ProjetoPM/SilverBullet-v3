@@ -2,7 +2,7 @@ import { prismaClient } from '@/infra/prisma/client'
 import { Workspace } from '../../domain/workspace'
 import { WorkspaceMapper } from '../../mappers/workspace-mapper'
 import { IWorkspacesRepository } from '../IWorkspacesRepository'
-import { Roles } from '../../domain/workspace-roles.schema'
+import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { User } from '@/application/users/domain/user'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
@@ -11,7 +11,7 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
     workspace: Workspace,
     user: User,
     status: InviteStatuses,
-    role: Roles,
+    role: WorkspaceRoles,
   ): Promise<void> {
     const persistenceWorkspace = await WorkspaceMapper.toPersistence(workspace)
 
@@ -29,11 +29,27 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
     })
   }
 
-  async findById(id: string): Promise<Workspace | null> {
-    const data = await prismaClient.workspace.findUnique({ where: { id: id } })
+  async verifyUserBelongsToWorkspace(
+    userId: string,
+    workspaceId: string,
+  ): Promise<boolean> {
+    const data = await prismaClient.userWorkspace.findFirst({
+      where: {
+        user_id: userId,
+        workspace_id: workspaceId,
+      },
+    })
 
-    if (!data) return null
+    return !!data
+  }
 
-    return WorkspaceMapper.toDomain(data)
+  async exists(id: string): Promise<boolean> {
+    const data = await prismaClient.workspace.findUnique({ where: { id } })
+
+    console.log(id)
+
+    console.log(data)
+
+    return !!data
   }
 }

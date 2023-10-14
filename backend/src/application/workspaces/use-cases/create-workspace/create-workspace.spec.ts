@@ -63,7 +63,7 @@ describe('Create a workspace', async () => {
     expect(workspaceSaved.props.description).toBe(undefined)
   })
 
-  test('invalid user id', async () => {
+  test('should not create a workspace with invalid user id', async () => {
     const data = {
       name: 'workspace',
       currentUserId: '1234invalic',
@@ -75,7 +75,7 @@ describe('Create a workspace', async () => {
     expect(response.value).toEqual(new UserDoesNotExistError())
   })
 
-  test('workspace name too short', async () => {
+  test('should not create a workspace with workspace name too short', async () => {
     await usersRepository.create(user)
 
     const data = {

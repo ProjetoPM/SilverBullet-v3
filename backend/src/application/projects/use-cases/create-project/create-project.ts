@@ -5,12 +5,12 @@ import { ProjectRoles } from '../../domain/project-roles.schema'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
 import { IProjectsRepository } from '../../repositories/IProjectsRepository'
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 
 import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { WorkspaceDoesNotExistError } from '../errors/WorkspaceDoesNotExistError'
 import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
+import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 
 type CreateProjectRequest = {
   name: string

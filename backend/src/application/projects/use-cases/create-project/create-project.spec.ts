@@ -4,19 +4,19 @@ import { User } from '@/application/users/domain/user'
 import { Workspace } from '@/application/workspaces/domain/workspace'
 import { PlanTypes } from '@/application/workspaces/domain/plan-types.enum'
 import { PlanStatuses } from '@/application/workspaces/domain/plan-statuses.enum'
-import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
 import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 import { InMemoryProjectsRepository } from '../../repositories/in-memory/InMemoryProjectsRepository'
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
-import { InMemoryWorkspacesRepository } from '../../repositories/in-memory/InMemoryWorkspacesRepository'
 
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
 
 import { CreateProject } from './create-project'
+import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
+import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
+import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
 
 let usersRepository: IUsersRepository
 let projectsRepository: IProjectsRepository
@@ -52,14 +52,14 @@ describe('Create a project', async () => {
     description: 'SimpleWorkspace',
   }).value as Workspace
 
-  const userWorkspace = {
-    userId: user.id,
-    workspaceId: workspace.id,
-    status: InviteStatuses.ACTIVE,
-  }
-
   test('should create a project', async () => {
     await usersRepository.create(user)
+    await workspacesRepository.create(
+      workspace,
+      user,
+      InviteStatuses.ACTIVE,
+      WorkspaceRoles.ADMIN,
+    )
 
     const data = {
       name: 'project',
