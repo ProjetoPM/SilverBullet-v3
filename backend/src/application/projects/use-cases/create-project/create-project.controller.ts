@@ -10,6 +10,7 @@ import { t } from 'i18next'
 import { CreateProject } from './create-project'
 import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
+import { Validator } from '@/core/infra/validator'
 
 type CreateProjectControllerRequest = {
   name: string
@@ -19,9 +20,20 @@ type CreateProjectControllerRequest = {
 }
 
 export class CreateProjectController implements Controller {
-  constructor(private createProject: CreateProject) {}
+  constructor(
+    private readonly validator: Validator<CreateProjectControllerRequest>,
+    private createProject: CreateProject,
+  ) {}
 
   async handle(request: CreateProjectControllerRequest): Promise<HttpResponse> {
+    const validated = this.validator.validate(request)
+
+    if (validated.isLeft()) {
+      console.log(validated.value)
+
+      return clientError(validated.value)
+    }
+
     const result = await this.createProject.execute(request)
 
     if (result.isLeft()) {

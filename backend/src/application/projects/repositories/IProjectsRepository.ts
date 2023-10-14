@@ -11,4 +11,5 @@ export interface IProjectsRepository {
     roles: ProjectRoles[],
   ): Promise<void>
   findById(id: string): Promise<Project | null>
+  findByName(name: string): Promise<Project | null>
 }

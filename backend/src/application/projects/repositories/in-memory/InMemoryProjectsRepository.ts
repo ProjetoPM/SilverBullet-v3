@@ -22,6 +22,13 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
     public userProjects: UserProject[] = [],
     public userProjectRoles: UserProjectRole[] = [],
   ) {}
+  async findByName(name: string): Promise<Project | null> {
+    const project = this.projects.find((project) => project.props.name === name)
+
+    if (!project) return null
+
+    return project
+  }
 
   async create(
     project: Project,

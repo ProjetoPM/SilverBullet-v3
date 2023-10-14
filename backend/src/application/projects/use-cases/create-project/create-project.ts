@@ -11,6 +11,7 @@ import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { WorkspaceDoesNotExistError } from '../errors/WorkspaceDoesNotExistError'
 import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
+import { ProjectWithSameNameExistsError } from '../errors/ProjectWithSameNameExistsError'
 
 type CreateProjectRequest = {
   name: string
@@ -22,7 +23,8 @@ type CreateProjectRequest = {
 type CreateProjectResponse = Either<
   | UserDoesNotExistError
   | WorkspaceDoesNotExistError
-  | UserDoesNotBelongToWorkspaceError,
+  | UserDoesNotBelongToWorkspaceError
+  | ProjectWithSameNameExistsError,
   Project
 >
 
@@ -59,6 +61,12 @@ export class CreateProject {
 
     if (!userInWorkspace) {
       return left(new UserDoesNotBelongToWorkspaceError())
+    }
+
+    const projectWithSameName = await this.projectsRepository.findByName(name)
+
+    if (projectWithSameName) {
+      return left(new ProjectWithSameNameExistsError())
     }
 
     const projectOrError = Project.create({
