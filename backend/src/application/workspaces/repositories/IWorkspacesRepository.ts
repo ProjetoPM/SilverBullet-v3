@@ -1,6 +1,6 @@
 import { Workspace } from '../domain/workspace'
 import { User } from '@/application/users/domain/user'
-import { Roles } from '../domain/workspace-roles.schema'
+import { WorkspaceRoles } from '../domain/workspace-roles.schema'
 import { InviteStatuses } from '../domain/invite-statuses.enum'
 
 export interface IWorkspacesRepository {
@@ -8,6 +8,6 @@ export interface IWorkspacesRepository {
     workspace: Workspace,
     user: User,
     status: InviteStatuses,
-    role: Roles,
+    role: WorkspaceRoles,
   ): Promise<void>
 }

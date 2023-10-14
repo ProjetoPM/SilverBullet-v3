@@ -1,14 +1,14 @@
 import { User } from '@/application/users/domain/user'
 import { Workspace } from '../../domain/workspace'
 import { IWorkspacesRepository } from '../IWorkspacesRepository'
-import { Roles } from '../../domain/workspace-roles.schema'
+import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
 type UserWorkspace = {
   userId: string
   workspaceId: string
   status: InviteStatuses
-  role: Roles
+  role: WorkspaceRoles
 }
 
 export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
@@ -29,7 +29,7 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
     workspace: Workspace,
     user: User,
     status: InviteStatuses,
-    role: Roles,
+    role: WorkspaceRoles,
   ): Promise<void> {
     this.workspaces.push(workspace)
     this.userWorkspaces.push({

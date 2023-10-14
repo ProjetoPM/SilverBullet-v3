@@ -74,4 +74,17 @@ describe('Create a workspace', async () => {
     expect(response.isLeft()).toBeTruthy()
     expect(response.value).toEqual(new UserDoesNotExistError())
   })
+
+  test('workspace name too short', async () => {
+    await usersRepository.create(user)
+
+    const data = {
+      name: 'ww',
+      currentUserId: user.id,
+    }
+
+    const response = await createWorkspace.execute(data)
+
+    expect(response.isLeft()).toBeTruthy()
+  })
 })
