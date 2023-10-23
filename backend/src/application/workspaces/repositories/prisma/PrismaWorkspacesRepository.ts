@@ -62,7 +62,9 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   }
 
   async list(): Promise<Workspace[]> {
-    const data = await prismaClient.workspace.findMany()
+    const data = await prismaClient.workspace.findMany({
+      orderBy: { created_at: 'desc' },
+    })
     return data.map(WorkspaceMapper.toDomain)
   }
 
