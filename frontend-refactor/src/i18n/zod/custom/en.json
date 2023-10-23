@@ -1,0 +1,4 @@
+{
+  "required": "Required",
+  "max": "String must contain at most {{value}} character(s)"
+}
