@@ -85,7 +85,7 @@ export function TableTopContent<TData>({
                 className="w-full sm:max-w-xs lg:max-w-sm"
               />
             )}
-            <div className="hidden sm:flex gap-2">
+            <div className="flex gap-2">
               <TableFilterButton type={type} setType={setType} />
               {fn && (
                 <TableDeleteButton
