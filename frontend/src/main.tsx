@@ -21,7 +21,7 @@ export const App = () => {
     <React.StrictMode>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Loading color="default" />}>
             <RouterProvider router={router} />
           </Suspense>
         </QueryClientProvider>
