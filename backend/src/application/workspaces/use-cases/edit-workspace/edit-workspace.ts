@@ -11,51 +11,56 @@ import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
 
-type CreateWorkspaceRequest = {
+type EditWorkspaceRequest = {
+  workspaceId: string
   name: string
   description?: string
   currentUserId: string
 }
 
-type CreateWorkspaceResponse = Either<UserDoesNotExistError, Workspace>
+type EditWorkspaceResponse = Either<UserDoesNotExistError, Workspace>
 
-export class CreateWorkspace {
+export class EditWorkspace {
   constructor(
     private workspacesRepository: IWorkspacesRepository,
     private usersRepository: IUsersRepository,
   ) {}
 
   async execute({
-    name,
-    description,
     currentUserId: userId,
-  }: CreateWorkspaceRequest): Promise<CreateWorkspaceResponse> {
+    workspaceId,
+    ...request
+  }: EditWorkspaceRequest): Promise<EditWorkspaceResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
       return left(new UserDoesNotExistError())
     }
 
-    const workspaceOrError = Workspace.create({
-      name,
-      description,
-      plan: PlanTypes.FREE,
-      planStatus: PlanStatuses.ACTIVE,
-    })
+    const workspaceExists =
+      await this.workspacesRepository.findById(workspaceId)
+
+    if (!workspaceExists) {
+      return left(new WorkspaceDoesNotExistError())
+    }
+
+    const workspaceOrError = Workspace.create(
+      {
+        ...request,
+        plan: PlanTypes.FREE,
+        planStatus: PlanStatuses.ACTIVE,
+      },
+      workspaceId,
+    )
 
     if (workspaceOrError.isLeft()) {
       return left(workspaceOrError.value)
     }
 
     const workspace = workspaceOrError.value
-
-    await this.workspacesRepository.create(
-      workspace,
-      user,
-      InviteStatuses.ACTIVE,
-      WorkspaceRoles.ADMIN,
-    )
+    await this.workspacesRepository.update(workspace)
 
     return right(workspace)
   }

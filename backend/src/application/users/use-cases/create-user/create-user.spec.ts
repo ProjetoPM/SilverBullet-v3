@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test } from 'vitest'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository'
 import { CreateUser } from './create-user'
-import { UserAlreadyExistsError } from '../errors/UserAlreadyExistsError'
+import { UserAlreadyExistsError } from './errors/UserAlreadyExistsError'
 
 let usersRepository: IUsersRepository
 let createUser: CreateUser

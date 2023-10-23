@@ -3,6 +3,7 @@ import { CreateWorkspaceController } from '@/application/workspaces/use-cases/cr
 import { CreateWorkspace } from '@/application/workspaces/use-cases/create-workspace/create-workspace'
 import { PrismaWorkspacesRepository } from '@/application/workspaces/repositories/prisma/PrismaWorkspacesRepository'
 import { PrismaUsersRepository } from '@/application/users/repositories/prisma/PrismaUsersRepository'
+import { ValidatorCompositor } from '@/infra/validation/ValidatorCompositor'
 
 export function makeCreateWorkspaceController(): Controller {
   const prismaWorkspacesRepository = new PrismaWorkspacesRepository()
@@ -13,5 +14,7 @@ export function makeCreateWorkspaceController(): Controller {
     prismaUsersRepository,
   )
 
-  return new CreateWorkspaceController(createWorkspace)
+  const validator = new ValidatorCompositor([])
+
+  return new CreateWorkspaceController(validator, createWorkspace)
 }

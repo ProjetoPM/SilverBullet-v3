@@ -8,7 +8,7 @@ import {
 import { Validator } from '@/core/infra/validator'
 import { t } from 'i18next'
 import { CreateUser } from './create-user'
-import { UserAlreadyExistsError } from '../errors/UserAlreadyExistsError'
+import { UserAlreadyExistsError } from './errors/UserAlreadyExistsError'
 
 type CreateUserControllerRequest = {
   email: string

@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/logic/either'
 import { User } from '../../domain/user'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
-import { UserAlreadyExistsError } from '../errors/UserAlreadyExistsError'
+import { UserAlreadyExistsError } from './errors/UserAlreadyExistsError'
 
 type CreateUserRequest = {
   email: string
@@ -15,18 +15,8 @@ type CreateUserResponse = Either<UserAlreadyExistsError, User>
 export class CreateUser {
   constructor(private usersRepository: IUsersRepository) {}
 
-  async execute({
-    email,
-    name,
-    password,
-    phone,
-  }: CreateUserRequest): Promise<CreateUserResponse> {
-    const userOrError = User.create({
-      email,
-      name,
-      password,
-      phone,
-    })
+  async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
+    const userOrError = User.create(request)
 
     if (userOrError.isLeft()) {
       return left(userOrError.value)

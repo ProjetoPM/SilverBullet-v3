@@ -10,10 +10,13 @@ export interface IWorkspacesRepository {
     status: InviteStatuses,
     role: WorkspaceRoles,
   ): Promise<void>
-
   verifyUserBelongsToWorkspace(
     userId: string,
     workspaceId: string,
   ): Promise<boolean>
+  update(workspace: Workspace): Promise<void>
   exists(id: string): Promise<boolean>
+  list(): Promise<Workspace[]>
+  findById(id: string): Promise<Workspace | null>
+  deleteMany(ids: string[]): Promise<void>
 }

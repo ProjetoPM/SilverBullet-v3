@@ -1,13 +1,9 @@
 import { Controller } from '@/core/infra/controller'
-import {
-  HttpResponse,
-  clientError,
-  created,
-  notFound,
-} from '@/core/infra/http-response'
+import { HttpResponse, clientError, created } from '@/core/infra/http-response'
 import { t } from 'i18next'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { CreateWorkspace } from './create-workspace'
-import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
+import { Validator } from '../../../../core/infra/validator'
 
 type CreateWorkspaceControllerRequest = {
   name: string
@@ -16,11 +12,20 @@ type CreateWorkspaceControllerRequest = {
 }
 
 export class CreateWorkspaceController implements Controller {
-  constructor(private createWorkspace: CreateWorkspace) {}
+  constructor(
+    private readonly validator: Validator<CreateWorkspaceControllerRequest>,
+    private createWorkspace: CreateWorkspace,
+  ) {}
 
   async handle(
     request: CreateWorkspaceControllerRequest,
   ): Promise<HttpResponse> {
+    const validated = this.validator.validate(request)
+
+    if (validated.isLeft()) {
+      return clientError(validated.value)
+    }
+
     const result = await this.createWorkspace.execute(request)
 
     if (result.isLeft()) {
@@ -28,11 +33,12 @@ export class CreateWorkspaceController implements Controller {
 
       switch (error.constructor) {
         case UserDoesNotExistError:
-          return notFound(error)
+          return clientError(error)
         default:
           return clientError(error)
       }
     }
+
     return created({ message: t('workspace.created') })
   }
 }

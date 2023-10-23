@@ -1,10 +1,10 @@
+import { User } from '@/application/users/domain/user'
 import { prismaClient } from '@/infra/prisma/client'
+import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { Workspace } from '../../domain/workspace'
+import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { WorkspaceMapper } from '../../mappers/workspace-mapper'
 import { IWorkspacesRepository } from '../IWorkspacesRepository'
-import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
-import { User } from '@/application/users/domain/user'
-import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
 export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   async create(
@@ -13,20 +13,33 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
     status: InviteStatuses,
     role: WorkspaceRoles,
   ): Promise<void> {
-    const persistenceWorkspace = await WorkspaceMapper.toPersistence(workspace)
+    const data = await WorkspaceMapper.toPersistence(workspace)
 
     await prismaClient.workspace.create({
       data: {
-        ...persistenceWorkspace,
+        ...data,
         UserWorkspace: {
           create: {
-            user_id: user.id,
+            user: { connect: { id: user.id } },
             status,
             role,
           },
         },
       },
     })
+  }
+
+  async update(workspace: Workspace): Promise<void> {
+    const data = await WorkspaceMapper.toPersistence(workspace)
+
+    await prismaClient.workspace
+      .update({
+        where: { id: workspace.id },
+        data,
+      })
+      .catch(() => {
+        throw new Error('Error on update workspace')
+      })
   }
 
   async verifyUserBelongsToWorkspace(
@@ -46,5 +59,19 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   async exists(id: string): Promise<boolean> {
     const data = await prismaClient.workspace.findUnique({ where: { id } })
     return !!data
+  }
+
+  async list(): Promise<Workspace[]> {
+    const data = await prismaClient.workspace.findMany()
+    return data.map(WorkspaceMapper.toDomain)
+  }
+
+  async findById(id: string): Promise<Workspace | null> {
+    const data = await prismaClient.workspace.findUnique({ where: { id } })
+    return data ? WorkspaceMapper.toDomain(data) : null
+  }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    await prismaClient.workspace.deleteMany({ where: { id: { in: ids } } })
   }
 }

@@ -32,6 +32,14 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
     })
   }
 
+  async update(workspace: Workspace): Promise<void> {
+    const index = this.workspaces.findIndex(
+      (workspaceItem) => workspaceItem.id === workspace.id,
+    )
+
+    this.workspaces[index] = workspace
+  }
+
   async verifyUserBelongsToWorkspace(
     userId: string,
     workspaceId: string,
@@ -42,7 +50,22 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
         userWorkspace.userId === userId,
     )
   }
+
   async exists(id: string): Promise<boolean> {
     return this.workspaces.some((workspace) => workspace.id === id)
+  }
+
+  async list(): Promise<Workspace[]> {
+    return this.workspaces
+  }
+
+  async findById(id: string): Promise<Workspace | null> {
+    return this.workspaces.find((workspace) => workspace.id === id) || null
+  }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    this.workspaces = this.workspaces.filter(
+      (workspace) => !ids.includes(workspace.id),
+    )
   }
 }

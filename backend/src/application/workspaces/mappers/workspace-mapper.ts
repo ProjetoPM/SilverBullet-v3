@@ -20,10 +20,7 @@ export class WorkspaceMapper {
       throw new Error(t('errors.invalid_workspace'))
     }
 
-    if (workspaceOrError.isRight()) {
-      return workspaceOrError.value
-    }
-    return null
+    return workspaceOrError.value
   }
 
   static async toPersistence(workspace: Workspace) {

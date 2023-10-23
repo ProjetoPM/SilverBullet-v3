@@ -29,8 +29,6 @@ export class CreateProjectController implements Controller {
     const validated = this.validator.validate(request)
 
     if (validated.isLeft()) {
-      console.log(validated.value)
-
       return clientError(validated.value)
     }
 
