@@ -1,10 +1,12 @@
 import { GridLayout } from '@/components/ui/Grid'
 import { SubmitButton } from '@/components/ui/SubmitButton'
-import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useFetch } from '@/hooks/useFetch'
 import { backend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
+
+import { Combobox } from '@/components/ui/combobox/Combobox'
+import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useTranslation } from 'react-i18next'
 import {
   WorkspaceData,
@@ -15,6 +17,57 @@ import {
 type WorkspaceFormProps = {
   data?: WorkspaceDataWithId
 }
+
+const items = [
+  {
+    key: '1',
+    label: 'Item 1'
+  },
+  {
+    key: '2',
+    label: 'Item 2'
+  },
+  {
+    key: '3',
+    label: 'Item 3'
+  },
+  {
+    key: '4',
+    label: 'Item 4'
+  },
+  {
+    key: '12',
+    label: 'Item 1'
+  },
+  {
+    key: '22',
+    label: 'Item 2'
+  },
+  {
+    key: '32',
+    label: 'Item 3'
+  },
+  {
+    key: '42',
+    label: 'Item 4'
+  },
+  {
+    key: '13',
+    label: 'Item 1'
+  },
+  {
+    key: '23',
+    label: 'Item 2'
+  },
+  {
+    key: '33',
+    label: 'Item 3'
+  },
+  {
+    key: '43',
+    label: 'Item 4'
+  }
+]
 
 export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   const { t } = useTranslation('workspaces')
@@ -75,6 +128,36 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
             />
           )}
         />
+        <GridLayout cols="2">
+          <Controller
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <Combobox
+                field={field}
+                label={t('form.description.label')}
+                items={items.map((item) => ({
+                  key: item.key,
+                  value: item.label
+                }))}
+              />
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <Combobox
+                field={field}
+                label={t('form.name.label')}
+                items={items.map((item) => ({
+                  key: item.key,
+                  value: item.label
+                }))}
+              />
+            )}
+          />
+        </GridLayout>
       </GridLayout>
       <SubmitButton
         isEdit={!!data}

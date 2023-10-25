@@ -62,7 +62,7 @@ export const UserDropdown = () => {
               color="danger"
               variant="faded"
               startContent={<LogOut className="w-5 h-5" />}
-              onClick={signOut}
+              onPress={signOut}
               textValue="logout"
             >
               Logout
