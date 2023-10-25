@@ -13,13 +13,14 @@ import { editorStyles, placeholderStyles } from './config/style'
 import { BubbleMenu } from './menus/BubbleMenu'
 import { FixedMenu } from './menus/FixedMenu'
 
-type EditorProps = Omit<EditorContentProps, 'editor' | 'ref'> & {
+type EditorProps = Omit<EditorContentProps, 'editor' | 'ref' | 'value'> & {
   limit?: number
   isFixed?: boolean
   as?: 'textarea-3' | 'textarea-4' | 'textarea-5'
-  onChange?: (content: string) => void
   label?: string
   errorMessage?: string
+  value?: string | number | null
+  onChange?: (content: string) => void
 }
 
 const getSizeTextarea = ({ as }: Pick<EditorProps, 'as'>) => {
@@ -108,7 +109,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
       const oldValue = editor?.getHTML()
 
       if (newValue !== oldValue && editor) {
-        editor.commands.setContent(value?.toString())
+        editor.commands.setContent(value?.toString() ?? '')
       }
     }, [editor, value])
 
@@ -125,6 +126,16 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
         <div className="relative">
           {editor && (
             <>
+              <RichEditorChars editor={editor} limit={limit} />
+              <input
+                {...props}
+                id={id}
+                className="absolute w-0 h-0 opacity-0"
+                onFocus={() => editor.commands.focus()}
+                tabIndex={-1}
+                ref={ref}
+                autoComplete="off"
+              />
               <FixedMenu
                 isFixed={fixed}
                 setFixed={handleFixed}
@@ -141,20 +152,8 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             className="[&>*]:data-[is-fixed=true]:rounded-t-none w-full"
             data-is-fixed={fixed}
             editor={editor}
+            allowFullScreen
           />
-          {editor && (
-            <>
-              <RichEditorChars editor={editor} limit={limit} />
-              <input
-                id={id}
-                {...props}
-                className="absolute w-0 h-0 opacity-0"
-                onFocus={() => editor.commands.focus()}
-                tabIndex={-1}
-                ref={ref}
-              />
-            </>
-          )}
         </div>
         {errorMessage && (
           <p className="pt-1 px-1 text-tiny text-danger">{errorMessage}</p>
