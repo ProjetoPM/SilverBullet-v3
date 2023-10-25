@@ -6,7 +6,7 @@ import { Underline } from '@tiptap/extension-underline'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { forwardRef, useEffect, useId, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
 import { starterKitConfigs } from './config'
 import { editorStyles, placeholderStyles } from './config/style'
@@ -42,11 +42,11 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
       isFixed = false,
       label,
       errorMessage,
+      limit = 1000,
       ...props
     },
     ref
   ) => {
-    const { t } = useTranslation('editor')
     const [fixed, setFixed] = useState(isFixed)
     const id = useId()
 
@@ -74,7 +74,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             emptyEditorClass: placeholderStyles
           }),
           CharacterCount.configure({
-            limit: props.limit
+            limit
           }),
           Underline
         ],
@@ -104,11 +104,11 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
      * not convenient.
      */
     useEffect(() => {
-      const newValue = value.toString()
+      const newValue = value?.toString()
       const oldValue = editor?.getHTML()
 
       if (newValue !== oldValue && editor) {
-        editor.commands.setContent(value.toString())
+        editor.commands.setContent(value?.toString())
       }
     }, [editor, value])
 
@@ -118,9 +118,6 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
     const handleFixed = () => {
       setFixed((previous) => !previous)
     }
-
-    const chars = editor?.storage.characterCount.characters() ?? 0
-    const words = editor?.storage.characterCount.words() ?? 0
 
     return (
       <div className={cn('h-full flex flex-col w-full', props.className)}>
@@ -147,15 +144,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
           />
           {editor && (
             <>
-              <span className="absolute text-[11.25px] text-default-400 -top-6 right-0 selection:select-none">
-                {props.limit && chars + '/' + props.limit}
-                <span className="hidden xss:inline-flex">
-                  &nbsp;{props.limit && `${t('characters')} |`}&nbsp;
-                </span>
-                <span className="hidden xss:inline-flex">
-                  {words} {t(words > 1 ? 'words' : 'word')}
-                </span>
-              </span>
+              <RichEditorChars editor={editor} limit={limit} />
               <input
                 id={id}
                 {...props}

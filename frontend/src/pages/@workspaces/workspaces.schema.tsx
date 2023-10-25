@@ -8,8 +8,8 @@ export const WorkspaceSchema = z.object({
     .refine((v) => max(v, 100), message('max', 100)),
   description: z
     .string()
-    .refine((v) => max(v, 1000))
-    .optional()
+    .refine((v) => max(v, 1000), message('max', 1000))
+    .nullish()
 })
 
 export type WorkspaceData = z.infer<typeof WorkspaceSchema>
