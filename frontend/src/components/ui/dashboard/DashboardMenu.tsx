@@ -1,7 +1,7 @@
 import { dashboardItems } from '@/constants/dashboard-menu-items'
 import { clearHTMLTags } from '@/utils/replace-html-tags'
 import { Chip, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react'
-import { Fragment, useState } from 'react'
+import { Fragment, startTransition, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AreaItem } from './composite/AreaItem'
 import { DashboardModal } from './composite/ModalMenu'
@@ -39,7 +39,7 @@ export const DashboardMenu = ({
               phase.name().toLowerCase().includes(search.toLowerCase()) ||
               phase.area.toLowerCase().includes(search.toLowerCase())
           )
-      : null
+      : undefined
 
   return (
     <>
@@ -83,7 +83,9 @@ export const DashboardMenu = ({
                     dashboardItems.map((area) => (
                       <Fragment key={area.id}>
                         <AreaItem
-                          onClick={() => setSearch(area.name)}
+                          onClick={() =>
+                            startTransition(() => setSearch(area.name()))
+                          }
                           item={{
                             ...area,
                             name: area.name()
