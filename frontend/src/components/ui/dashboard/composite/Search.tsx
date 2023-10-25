@@ -1,5 +1,6 @@
 import { Input } from '@nextui-org/react'
 import { Search as SearchIcon } from 'lucide-react'
+import { startTransition } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type DashboardInputProps = {
@@ -10,13 +11,19 @@ type DashboardInputProps = {
 export const Search = ({ search, setSearch }: DashboardInputProps) => {
   const { t } = useTranslation('menu')
 
+  const handleChange = (e) => {
+    startTransition(() => {
+      setSearch(e.target.value)
+    })
+  }
+
   return (
     <Input
       id="dashboard-search"
       value={search}
       variant="underlined"
       color="primary"
-      onChange={(e) => setSearch(e.target.value)}
+      onChange={handleChange}
       startContent={
         <SearchIcon className="w-5 h-5 top-1 text-foreground-500" />
       }

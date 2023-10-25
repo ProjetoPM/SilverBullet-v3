@@ -37,9 +37,9 @@ export const PhaseItem = ({ item }: PhaseItemProps) => {
         shadow={'sm'}
       >
         <CardHeader className="px-5">
-          <h3 className="flex gap-2 items-center text-xl">
-            {item.icon}
-            {t(item.area)}
+          <h3 className="flex gap-2 items-center text-lg">
+            <div className="min-w-max">{item.icon}</div>
+            <span>{item.name}</span>
           </h3>
         </CardHeader>
         <CardBody className="pt-1 pb-1 flex flex-col justify-between gap-2">

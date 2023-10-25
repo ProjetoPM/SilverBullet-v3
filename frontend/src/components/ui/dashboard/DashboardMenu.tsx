@@ -36,7 +36,7 @@ export const DashboardMenu = ({
           )
           .filter(
             (phase) =>
-              phase.name.toLowerCase().includes(search.toLowerCase()) ||
+              phase.name().toLowerCase().includes(search.toLowerCase()) ||
               phase.area.toLowerCase().includes(search.toLowerCase())
           )
       : null
@@ -47,7 +47,9 @@ export const DashboardMenu = ({
         <ModalContent>
           {() => (
             <>
-              {hasSearch && <Search search={search} setSearch={setSearch} />}
+              {hasSearch && isOpen && (
+                <Search search={search} setSearch={setSearch} />
+              )}
               <ModalHeader className="flex flex-col gap-1">
                 <div className="flex items-center justify-between gap-2 pb-0 relative">
                   <h3 className="text-2xl">
@@ -92,7 +94,12 @@ export const DashboardMenu = ({
                   {!!filtered?.length &&
                     filtered.map((phase) => (
                       <Fragment key={phase.id}>
-                        <PhaseItem item={phase} />
+                        <PhaseItem
+                          item={{
+                            ...phase,
+                            name: phase.name()
+                          }}
+                        />
                       </Fragment>
                     ))}
                 </div>
