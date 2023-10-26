@@ -19,7 +19,7 @@ import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.
 import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
 import { Project } from '../../domain/project'
 import { ProjectRoles } from '../../domain/project-roles.schema'
-import { ProjectWithSameNameExistsError } from '../errors/ProjectWithSameNameExistsError'
+import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
 
 let usersRepository: IUsersRepository
 let projectsRepository: IProjectsRepository

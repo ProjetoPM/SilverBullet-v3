@@ -4,10 +4,10 @@ import { Project } from '../../domain/project'
 import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 
-import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
-import { ProjectWithSameNameExistsError } from '../errors/ProjectWithSameNameExistsError'
-import { UserDoesNotBelongToProjectError } from '../errors/UserDoesNotBelongToProjectError'
-import { ProjectDoesNotExistError } from '../errors/ProjectDoesNotExistError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
+import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
+import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
 
 type EditProjectRequest = {
   name: string
@@ -46,6 +46,16 @@ export class EditProject {
 
     if (!dbProject) {
       return left(new ProjectDoesNotExistError())
+    }
+
+    const userBelongsToProject =
+      await this.projectsRepository.verifyUserBelongsToProject(
+        userId,
+        projectId,
+      )
+
+    if (!userBelongsToProject) {
+      return left(new UserDoesNotBelongToProjectError())
     }
 
     const projectWithSameNameAlreadyExists =

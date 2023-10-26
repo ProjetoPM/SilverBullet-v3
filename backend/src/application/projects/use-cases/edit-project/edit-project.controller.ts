@@ -9,11 +9,11 @@ import {
 } from '@/core/infra/http-response'
 import { t } from 'i18next'
 import { EditProject } from './edit-project'
-import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
 import { Validator } from '@/core/infra/validator'
-import { UserDoesNotBelongToProjectError } from '../errors/UserDoesNotBelongToProjectError'
-import { ProjectDoesNotExistError } from '../errors/ProjectDoesNotExistError'
-import { ProjectWithSameNameExistsError } from '../errors/ProjectWithSameNameExistsError'
+import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
+import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
 
 type EditProjectControllerRequest = {
   name: string
@@ -41,12 +41,12 @@ export class EditProjectController implements Controller {
       const error = result.value
 
       switch (error.constructor) {
-        case UserDoesNotBelongToProjectError:
-          return forbidden(error)
         case ProjectWithSameNameExistsError:
           return conflict(error)
         case ProjectDoesNotExistError:
           return notFound(error)
+        case UserDoesNotBelongToProjectError:
+          return forbidden(error)
         case UserDoesNotExistError:
           return notFound(error)
         default:

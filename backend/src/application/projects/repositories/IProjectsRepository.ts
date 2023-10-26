@@ -11,11 +11,20 @@ export interface IProjectsRepository {
     roles: ProjectRoles[],
   ): Promise<void>
   update(project: Project): Promise<void>
+  listUserProjectsByWorkspaceId(
+    workspaceId: string,
+    userId: string,
+  ): Promise<Project[]>
   findById(id: string): Promise<Project | null>
   findByName(name: string): Promise<Project | null>
   existsByNameAndId(
     name: string,
     workspaceId: string,
+    projectId: string,
+  ): Promise<boolean>
+
+  verifyUserBelongsToProject(
+    userId: string,
     projectId: string,
   ): Promise<boolean>
 }

@@ -7,11 +7,11 @@ import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 
-import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
-import { WorkspaceDoesNotExistError } from '../errors/WorkspaceDoesNotExistError'
-import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
+import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
-import { ProjectWithSameNameExistsError } from '../errors/ProjectWithSameNameExistsError'
+import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
 
 type CreateProjectRequest = {
   name: string

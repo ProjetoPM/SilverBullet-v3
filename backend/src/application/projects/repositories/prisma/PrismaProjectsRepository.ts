@@ -47,6 +47,37 @@ export class PrismaProjectsRepository implements IProjectsRepository {
       })
   }
 
+  async listUserProjectsByWorkspaceId(
+    workspaceId: string,
+    userId: string,
+  ): Promise<Project[]> {
+    // Get the IDs of the projects that the user belongs to
+    const userProjectIds = await prismaClient.userProject
+      .findMany({
+        where: {
+          user_id: userId, // replace with the actual user id
+        },
+        select: {
+          project_id: true, // only select the project IDs
+        },
+      })
+      .then((userProjects) =>
+        userProjects.map((userProject) => userProject.project_id),
+      )
+
+    // Get the projects with these IDs and the specified workspaceId
+    const projects = await prismaClient.project.findMany({
+      where: {
+        id: {
+          in: userProjectIds,
+        },
+        workspace_id: workspaceId, // replace with the actual workspace id
+      },
+    })
+
+    return projects.map(ProjectMapper.toDomain)
+  }
+
   async findByName(name: string): Promise<Project | null> {
     const data = await prismaClient.project.findFirst({ where: { name } })
 
@@ -74,6 +105,20 @@ export class PrismaProjectsRepository implements IProjectsRepository {
         NOT: {
           id,
         },
+      },
+    })
+
+    return !!data
+  }
+
+  async verifyUserBelongsToProject(
+    userId: string,
+    projectId: string,
+  ): Promise<boolean> {
+    const data = await prismaClient.userProject.findFirst({
+      where: {
+        project_id: projectId,
+        user_id: userId,
       },
     })
 
