@@ -10,6 +10,12 @@ export interface IProjectsRepository {
     status: InviteStatuses,
     roles: ProjectRoles[],
   ): Promise<void>
+  update(project: Project): Promise<void>
   findById(id: string): Promise<Project | null>
   findByName(name: string): Promise<Project | null>
+  existsByNameAndId(
+    name: string,
+    workspaceId: string,
+    projectId: string,
+  ): Promise<boolean>
 }

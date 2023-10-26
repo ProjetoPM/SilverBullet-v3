@@ -48,11 +48,31 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
     })
   }
 
+  async update(project: Project): Promise<void> {
+    const index = this.projects.findIndex(
+      (projectItem) => projectItem.id === project.id,
+    )
+
+    this.projects[index] = project
+  }
+
   async findById(id: string): Promise<Project | null> {
     const project = this.projects.find((project) => project.id === id)
 
     if (!project) return null
 
     return project
+  }
+
+  async existsByNameAndId(
+    name: string,
+    workspaceId: string,
+    id: string,
+  ): Promise<boolean> {
+    const project = this.projects.find(
+      (project) => project.props.name === name && project.id !== id,
+    )
+
+    return !!project
   }
 }
