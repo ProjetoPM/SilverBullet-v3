@@ -6,11 +6,11 @@ import {
   forbidden,
   notFound,
 } from '@/core/infra/http-response'
+import { Validator } from '@/core/infra/validator'
 import { t } from 'i18next'
 import { CreateProject } from './create-project'
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
-import { Validator } from '@/core/infra/validator'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 
 type CreateProjectControllerRequest = {
   name: string

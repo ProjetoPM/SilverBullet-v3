@@ -1,17 +1,17 @@
 import { Either, left, right } from '@/core/logic/either'
 
+import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { Project } from '../../domain/project'
 import { ProjectRoles } from '../../domain/project-roles.schema'
-import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
-import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
-import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
-import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
+import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
 
 type CreateProjectRequest = {
   name: string
