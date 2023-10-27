@@ -15,7 +15,7 @@ import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 type CreateProjectControllerRequest = {
   name: string
   description?: string
-  workspaceId: string
+  currentWorkspaceId: string
   currentUserId: string
 }
 
