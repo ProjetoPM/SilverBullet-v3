@@ -2,8 +2,8 @@ import { HttpResponse, fail, ok } from '@/core/infra/http-response'
 import { Middleware } from '@/core/infra/middleware'
 
 type GetCurrentWorkspaceAndProjectMiddlewareRequest = {
-  workspaceId: string
-  projectId: string
+  currentWorkspaceId: string
+  currentProjectId: string
 }
 
 export class GetCurrentWorkspaceAndProjectMiddleware implements Middleware {
@@ -13,8 +13,11 @@ export class GetCurrentWorkspaceAndProjectMiddleware implements Middleware {
     request: GetCurrentWorkspaceAndProjectMiddlewareRequest,
   ): Promise<HttpResponse> {
     try {
-      const { workspaceId, projectId } = request
-      return ok({ workspaceId, projectId })
+      const { currentWorkspaceId, currentProjectId } = request
+      return ok({
+        workspaceId: currentWorkspaceId,
+        projectId: currentProjectId,
+      })
     } catch (error: any) {
       return fail(error)
     }

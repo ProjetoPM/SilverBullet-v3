@@ -39,6 +39,10 @@ export class EditWorkspace {
       return left(new UserDoesNotExistError())
     }
 
+    if (!workspaceId) {
+      return left(new WorkspaceDoesNotExistError())
+    }
+
     const workspaceExists =
       await this.workspacesRepository.findById(workspaceId)
 

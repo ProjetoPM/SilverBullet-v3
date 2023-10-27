@@ -10,10 +10,10 @@ import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
 import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
 
 type EditProjectRequest = {
+  projectId: string
   name: string
   description?: string
   currentUserId: string
-  projectId: string
 }
 
 type EditProjectResponse = Either<

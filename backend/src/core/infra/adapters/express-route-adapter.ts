@@ -8,8 +8,8 @@ export const adaptRoute = (controller: Controller) => {
       ...request.params,
       ...request.query,
       currentUserId: request.userId,
-      workspaceId: request.workspaceId,
-      projectId: request.projectId,
+      currentWorkspaceId: request.workspaceId,
+      currentProjectId: request.projectId,
     }
 
     const httpResponse = await controller.handle(requestData)

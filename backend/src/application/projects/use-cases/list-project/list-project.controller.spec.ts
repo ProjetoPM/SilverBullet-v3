@@ -8,9 +8,9 @@ import { StatusCodes } from 'http-status-codes'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
-import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
-import { PrismaWorkspacesRepository } from '../../repositories/prisma/PrismaWorkspacesRepository'
+import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
+import { PrismaWorkspacesRepository } from '@/application/workspaces/repositories/prisma/PrismaWorkspacesRepository'
+import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 
 let workspaceIds: string[] = []
 let usersRepository: IUsersRepository

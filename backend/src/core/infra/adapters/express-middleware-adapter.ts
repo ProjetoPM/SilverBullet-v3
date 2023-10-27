@@ -6,8 +6,8 @@ export const adaptMiddleware = (middleware: Middleware) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const requestData = {
       jwt: request.headers.authorization,
-      workspaceId: request.headers['current-workspace-id'],
-      projectId: request.headers['current-project-id'],
+      currentWorkspaceId: request.headers['current-workspace-id'],
+      currentProjectId: request.headers['current-project-id'],
       ...request.headers,
     }
 
