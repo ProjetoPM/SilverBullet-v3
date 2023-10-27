@@ -22,6 +22,12 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
     public userProjects: UserProject[] = [],
     public userProjectRoles: UserProjectRole[] = [],
   ) {}
+  listUserProjectsByWorkspaceId(
+    workspaceId: string,
+    userId: string,
+  ): Promise<Project[]> {
+    throw new Error('Method not implemented.')
+  }
   async findByName(name: string): Promise<Project | null> {
     const project = this.projects.find((project) => project.props.name === name)
 
@@ -48,11 +54,46 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
     })
   }
 
+  async update(project: Project): Promise<void> {
+    const index = this.projects.findIndex(
+      (projectItem) => projectItem.id === project.id,
+    )
+
+    this.projects[index] = project
+  }
+
   async findById(id: string): Promise<Project | null> {
     const project = this.projects.find((project) => project.id === id)
 
     if (!project) return null
 
     return project
+  }
+
+  async existsByNameAndId(
+    name: string,
+    workspaceId: string,
+    id: string,
+  ): Promise<boolean> {
+    const project = this.projects.find(
+      (project) =>
+        project.props.name === name &&
+        project.props.workspaceId === workspaceId &&
+        project.id !== id,
+    )
+
+    return !!project
+  }
+
+  async verifyUserBelongsToProject(
+    userId: string,
+    projectId: string,
+  ): Promise<boolean> {
+    const data = this.userProjects.find(
+      (userProject) =>
+        userProject.projectId === projectId && userProject.userId === userId,
+    )
+
+    return !!data
   }
 }

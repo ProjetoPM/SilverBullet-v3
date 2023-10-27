@@ -13,21 +13,26 @@ import { InMemoryProjectsRepository } from '../../repositories/in-memory/InMemor
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
 
-import { CreateProject } from './create-project'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
 import { Project } from '../../domain/project'
 import { ProjectRoles } from '../../domain/project-roles.schema'
-import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
+import { ProjectWithSameNameExistsError } from '../create-project/errors/ProjectWithSameNameExistsError'
+import { EditProject } from './edit-project'
 
 let usersRepository: IUsersRepository
 let projectsRepository: IProjectsRepository
 let workspacesRepository: IWorkspacesRepository
 
-let createProject: CreateProject
+let editProject: EditProject
 
-describe('Create a project', async () => {
+describe('Edit a project', async () => {
+  let user: User
+  let workspace: Workspace
+  let project: Project
+  let secondProject: Project
+
   beforeAll(async () => {
     usersRepository = new InMemoryUsersRepository()
 
@@ -35,27 +40,35 @@ describe('Create a project', async () => {
 
     projectsRepository = new InMemoryProjectsRepository()
 
-    createProject = new CreateProject(
-      projectsRepository,
-      usersRepository,
-      workspacesRepository,
-    )
+    editProject = new EditProject(projectsRepository, usersRepository)
   })
 
-  const user = User.create({
+  user = User.create({
     name: 'Thiago',
     email: 'tmelo387@gmail.com',
     password: 'bacon@123',
   }).value as User
 
-  const workspace = Workspace.create({
+  workspace = Workspace.create({
     name: 'My Workspace',
     plan: PlanTypes.FREE,
     planStatus: PlanStatuses.ACTIVE,
     description: 'SimpleWorkspace',
   }).value as Workspace
 
-  test('should create a project', async () => {
+  project = Project.create({
+    name: 'My Project',
+    description: 'Simple Project',
+    workspaceId: workspace.id,
+  }).value as Project
+
+  secondProject = Project.create({
+    name: 'My other project',
+    description: 'Simple Project',
+    workspaceId: workspace.id,
+  }).value as Project
+
+  test('should edit a project', async () => {
     await usersRepository.create(user)
     await workspacesRepository.create(
       workspace,
@@ -63,25 +76,35 @@ describe('Create a project', async () => {
       InviteStatuses.ACTIVE,
       WorkspaceRoles.ADMIN,
     )
+    await projectsRepository.create(project, user, InviteStatuses.ACTIVE, [
+      ProjectRoles.ADMIN,
+    ])
 
     const data = {
-      name: 'project',
+      name: 'new project name',
       description: 'A simple project',
-      workspaceId: workspace.id,
       currentUserId: user.id,
+      projectId: project.id,
     }
 
-    const response = await createProject.execute(data)
+    const response = await editProject.execute(data)
 
     expect(response.isRight()).toBeTruthy()
   })
 
-  test('should not create a project with same name', async () => {
-    const existingProject = (await Project.create({
+  test('should not update a project to an existing project name', async () => {
+    await projectsRepository.create(
+      secondProject,
+      user,
+      InviteStatuses.ACTIVE,
+      [ProjectRoles.ADMIN],
+    )
+
+    const existingProject = Project.create({
       name: 'project',
       description: 'description',
       workspaceId: workspace.id,
-    }).value) as Project
+    }).value as Project
 
     await projectsRepository.create(
       existingProject,
@@ -98,13 +121,13 @@ describe('Create a project', async () => {
     )
 
     const data = {
-      name: 'project',
+      name: 'My other project',
       description: 'A simple project',
-      workspaceId: workspace.id,
+      projectId: project.id,
       currentUserId: user.id,
     }
 
-    const response = await createProject.execute(data)
+    const response = await editProject.execute(data)
 
     expect(response.isLeft()).toBeTruthy()
     expect(response.value).toEqual(new ProjectWithSameNameExistsError())

@@ -8,8 +8,8 @@ import {
 } from '@/core/infra/http-response'
 import { t } from 'i18next'
 import { CreateProject } from './create-project'
-import { UserDoesNotExistError } from '../errors/UserDoesNotExistError'
-import { UserDoesNotBelongToWorkspaceError } from '../errors/UserDoesNotBelongToWorkspaceError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
 import { Validator } from '@/core/infra/validator'
 
 type CreateProjectControllerRequest = {
