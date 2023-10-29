@@ -1,3 +1,4 @@
+import { useToken } from '@/hooks/useToken'
 import { frontend } from '@/routes/routes'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -8,7 +9,7 @@ type GuestGuardProps = {
 
 export const GuestGuard = ({ children }: GuestGuardProps) => {
   const isMounted = useRef(false)
-  const token = localStorage.getItem('token')
+  const { token } = useToken()
   const navigate = useNavigate()
 
   useEffect(() => {

@@ -21,7 +21,6 @@ const validateWorkspace = () => {
 
 export const WorkspaceGuard = ({ children }: WorkspaceGuardProps) => {
   const { t } = useTranslation('errors')
-  const workspace = localStorage.getItem('workspace')
   const navigate = useNavigate()
   const isMounted = useRef(false)
 
@@ -35,7 +34,7 @@ export const WorkspaceGuard = ({ children }: WorkspaceGuardProps) => {
       toast.error(t('workspace.not_found'))
       navigate(frontend.workspaces.index)
     }
-  }, [workspace, t, navigate])
+  }, [t, navigate])
 
   return <>{children}</>
 }

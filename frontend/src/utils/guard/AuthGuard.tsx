@@ -1,8 +1,8 @@
 import { useAuth } from '@/hooks/useAuth'
+import { useToken } from '@/hooks/useToken'
 import { useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { isTokenExpired } from '../parse-jwt'
 
 type AuthGuardProps = {
   children: React.ReactNode
@@ -11,7 +11,7 @@ type AuthGuardProps = {
 export const AuthGuard = ({ children }: AuthGuardProps) => {
   const isMounted = useRef(false)
   const { t } = useTranslation('errors')
-  const token = localStorage.getItem('token')
+  const { token, isExpired } = useToken()
   const { signOut } = useAuth()
 
   useEffect(() => {
@@ -24,11 +24,14 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
       signOut()
     }
 
-    if (isTokenExpired(token)) {
-      toast.error(t('token_expired'))
+    if (isExpired()) {
+      toast.error(t('token_expired'), {
+        id: 'token_expired',
+        duration: Infinity
+      })
       signOut()
     }
-  }, [t, token, signOut])
+  }, [t, token, isExpired, signOut])
 
   return <>{children}</>
 }

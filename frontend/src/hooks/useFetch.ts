@@ -8,6 +8,7 @@ import {
 } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
+import { useToken } from './useToken'
 
 type FetchProps = {
   baseUrl: string
@@ -42,6 +43,7 @@ export const useFetch = <T>({
   const { promise } = useMutate()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const { isExpired: isTokenExpired } = useToken()
 
   /**
    * Método para buscar um registro, seja ele qual for.
@@ -62,7 +64,7 @@ export const useFetch = <T>({
       return await api
         .get(`${baseUrl}/${fetch?.id}`)
         .then((res) => res.data?.dto)
-        .catch((err) => toast.error(err.message))
+        .catch((err) => !isTokenExpired() && toast.error(err.message))
     },
     {
       enabled: !!fetch?.get
@@ -80,7 +82,7 @@ export const useFetch = <T>({
       return await api
         .get(`${baseUrl}`)
         .then((res) => res.data?.dto)
-        .catch((err) => toast.error(err.message))
+        .catch((err) => !isTokenExpired() && toast.error(err.message))
     },
     {
       enabled: !!fetch?.list
