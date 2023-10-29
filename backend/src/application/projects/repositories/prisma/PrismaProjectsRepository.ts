@@ -51,27 +51,26 @@ export class PrismaProjectsRepository implements IProjectsRepository {
     workspaceId: string,
     userId: string,
   ): Promise<Project[]> {
-    // Get the IDs of the projects that the user belongs to
     const userProjectIds = await prismaClient.userProject
       .findMany({
         where: {
-          user_id: userId, // replace with the actual user id
+          user_id: userId,
+          status: 'ACTIVE',
         },
         select: {
-          project_id: true, // only select the project IDs
+          project_id: true,
         },
       })
       .then((userProjects) =>
         userProjects.map((userProject) => userProject.project_id),
       )
 
-    // Get the projects with these IDs and the specified workspaceId
     const projects = await prismaClient.project.findMany({
       where: {
         id: {
           in: userProjectIds,
         },
-        workspace_id: workspaceId, // replace with the actual workspace id
+        workspace_id: workspaceId,
       },
     })
 
@@ -123,5 +122,9 @@ export class PrismaProjectsRepository implements IProjectsRepository {
     })
 
     return !!data
+  }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    await prismaClient.project.deleteMany({ where: { id: { in: ids } } })
   }
 }

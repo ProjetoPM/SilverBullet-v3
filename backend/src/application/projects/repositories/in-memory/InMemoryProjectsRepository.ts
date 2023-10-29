@@ -22,11 +22,32 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
     public userProjects: UserProject[] = [],
     public userProjectRoles: UserProjectRole[] = [],
   ) {}
-  listUserProjectsByWorkspaceId(
+  async deleteMany(ids: string[]): Promise<void> {
+    this.projects = this.projects.filter(
+      (workspace) => !ids.includes(workspace.id),
+    )
+  }
+  async listUserProjectsByWorkspaceId(
     workspaceId: string,
     userId: string,
   ): Promise<Project[]> {
-    throw new Error('Method not implemented.')
+    const userProjects = this.userProjects.filter(
+      (userProject) =>
+        userProject.userId === userId && userProject.status === 'ACTIVE',
+    )
+
+    const projects = this.projects.filter((project) => {
+      if (project.props.workspaceId !== workspaceId) return
+
+      const userBelongsToProject = userProjects.some(
+        (userProject) => userProject.projectId === project.id,
+      )
+      if (!userBelongsToProject) return
+
+      return project
+    })
+
+    return projects
   }
   async findByName(name: string): Promise<Project | null> {
     const project = this.projects.find((project) => project.props.name === name)

@@ -4,7 +4,6 @@ import { CreateProjectController } from '@/application/projects/use-cases/create
 import { PrismaUsersRepository } from '@/application/users/repositories/prisma/PrismaUsersRepository'
 import { PrismaWorkspacesRepository } from '@/application/workspaces/repositories/prisma/PrismaWorkspacesRepository'
 import { Controller } from '@/core/infra/controller'
-import { RequiredFieldsValidator } from '@/infra/validation/RequiredFieldsValidator'
 import { ValidatorCompositor } from '@/infra/validation/ValidatorCompositor'
 
 export function makeCreateProjectController(): Controller {
