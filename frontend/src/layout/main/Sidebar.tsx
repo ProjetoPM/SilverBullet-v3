@@ -10,7 +10,7 @@ export const Sidebar = () => {
 
   return (
     <div className="w-full min-w-[250px] border-r-1 px-3 py-2.5 border-default-200 dark:border-default-100">
-      <Listbox variant="flat" aria-label="Listbox menu">
+      <Listbox variant="flat" aria-label="Listbox menu" className="relative">
         {sidebarItems.map((division) => {
           return (
             <ListboxSection key={division.id} title={t(division.label ?? '')}>
@@ -19,7 +19,14 @@ export const Sidebar = () => {
                   <ListboxItem
                     key={item.id}
                     textValue={t(item.label)}
-                    description={t(item.description ?? '')}
+                    description={
+                      <span
+                        className="flex before:content-['└'] before:pr-1 line-clamp-1"
+                        id={item.id}
+                      >
+                        {t(item.description ?? '')}
+                      </span>
+                    }
                     startContent={item.icon}
                     className={cn(
                       'w-full h-full',
