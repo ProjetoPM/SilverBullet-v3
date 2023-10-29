@@ -26,7 +26,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
     defaultValues: data
   })
 
-  const { create, update } = useFetch({
+  const { create, update } = useFetch<WorkspaceData>({
     baseUrl: backend.workspaces.baseUrl,
     query: ['workspaces'],
     fetch: {
@@ -49,41 +49,43 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
       noValidate
     >
       <GridLayout cols="1">
-        <Controller
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <RichEditor
-              label={t('form.name.label')}
-              placeholder={t('form.name.placeholder')}
-              errorMessage={form.formState.errors.name?.message}
-              limit={100}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <RichEditor
-              label={t('form.description.label')}
-              placeholder={t('form.description.placeholder')}
-              errorMessage={form.formState.errors.description?.message}
-              as="textarea-3"
-              limit={1000}
-              {...field}
-            />
-          )}
-        />
+        <fieldset>
+          <Controller
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <RichEditor
+                label={t('form.name.label')}
+                placeholder={t('form.name.placeholder')}
+                errorMessage={form.formState.errors.name?.message}
+                limit={100}
+                {...field}
+              />
+            )}
+          />
+        </fieldset>
+        <fieldset>
+          <Controller
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <RichEditor
+                label={t('form.description.label')}
+                placeholder={t('form.description.placeholder')}
+                errorMessage={form.formState.errors.description?.message}
+                as="textarea-3"
+                limit={1000}
+                {...field}
+              />
+            )}
+          />
+        </fieldset>
       </GridLayout>
       <SubmitButton
         isEdit={!!data}
         fnResetButton={form.reset}
         isLoading={create.isLoading || update.isLoading}
-      >
-        {data ? t('common:btn.edit') : t('common:btn.save')}
-      </SubmitButton>
+      />
     </form>
   )
 }

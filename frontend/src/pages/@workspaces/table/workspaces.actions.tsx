@@ -1,6 +1,7 @@
 import { AlertModal } from '@/components/ui/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/replace-params'
 import {
   Button,
@@ -12,7 +13,14 @@ import {
   Link,
   useDisclosure
 } from '@nextui-org/react'
-import { Copy, FileSignature, MoreHorizontal, Trash } from 'lucide-react'
+import {
+  Copy,
+  FileSignature,
+  FolderOpen,
+  MoreHorizontal,
+  Trash
+} from 'lucide-react'
+import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { WorkspaceColumns } from './workspaces.columns'
 
@@ -21,8 +29,9 @@ type WorkspaceActionsProps = {
 }
 
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['default', 'workspaces'])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [openWorkspace] = useWorkspaceStore((store) => [store.openWorkspace])
 
   const { removeMany } = useFetch<WorkspaceColumns>({
     baseUrl: backend.workspaces.baseUrl,
@@ -31,6 +40,11 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
 
   const handleDelete = async () => {
     await removeMany.mutateAsync(row)
+  }
+
+  const handleOpen = async () => {
+    openWorkspace(row)
+    toast.success(t('workspaces:actions.workspace_opened'))
   }
 
   return (
@@ -43,6 +57,17 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="dropdown reporter">
           <DropdownSection title={t('table.actions')}>
+            <DropdownItem textValue="open">
+              <Link
+                href={frontend.projects.index}
+                color="foreground"
+                onClick={handleOpen}
+                className="flex gap-2"
+              >
+                <FolderOpen className="w-5 h-5" />
+                {t('btn.open')}
+              </Link>
+            </DropdownItem>
             <DropdownItem textValue="edit">
               <Link
                 href={replaceParams(frontend.workspaces.edit, [row.id])}
@@ -72,12 +97,12 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownMenu>
       </Dropdown>
       <AlertModal
-        title={t('common:are_you_certain.title')}
+        title={t('are_you_certain.title')}
         onAction={handleDelete}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
-        {t('common:are_you_certain_delete.description')}
+        {t('are_you_certain_delete.description')}
       </AlertModal>
     </>
   )

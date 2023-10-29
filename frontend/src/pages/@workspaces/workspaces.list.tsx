@@ -9,7 +9,7 @@ import { WorkspaceToolbar } from './workspaces.toolbar'
 export const WorkspaceListPage = () => {
   const { title, breadcrumb } = usePageUtils('workspaces')
 
-  const { get, removeMany } = useFetch<WorkspaceColumns[]>({
+  const { list, removeMany } = useFetch<WorkspaceColumns[]>({
     baseUrl: backend.workspaces.baseUrl,
     query: ['workspaces'],
     fetch: {
@@ -20,12 +20,12 @@ export const WorkspaceListPage = () => {
   return (
     <PageLayout
       title={title()}
-      isLoading={get.isLoading}
+      isLoading={list.isLoading}
       breadcrumb={breadcrumb()}
     >
       <DataTable
         columns={columns}
-        data={get.data ?? []}
+        data={list.data ?? []}
         toolbarButtons={<WorkspaceToolbar />}
         fn={removeMany.mutateAsync}
       />

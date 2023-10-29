@@ -74,7 +74,7 @@ export const columns = [
 
       return (
         <Chip color={colors[status]}>
-          {t(`workspaces:form.plan_status.options.${status.toLowerCase()}`)}
+          {t(`workspaces:form.plan_status.options.${status?.toLowerCase()}`)}
         </Chip>
       )
     },
