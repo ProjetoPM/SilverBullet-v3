@@ -72,7 +72,7 @@ export class CreateProjectCharter {
         projectId,
       )
 
-    if (countProjectCharters == 1) {
+    if (countProjectCharters > 0) {
       return left(new DuplicatedProjectCharterError())
     }
 

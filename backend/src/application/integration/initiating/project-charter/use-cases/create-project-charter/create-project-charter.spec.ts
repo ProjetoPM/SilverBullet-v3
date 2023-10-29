@@ -18,6 +18,8 @@ import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.
 import { IProjectsRepository } from '@/application/projects/repositories/IProjectsRepository'
 import { ProjectRoles } from '@/application/projects/domain/project-roles.schema'
 import { InMemoryProjectsRepository } from '@/application/projects/repositories/in-memory/InMemoryProjectsRepository'
+import { ProjectCharterFactory } from '@/tests/factories/ProjectCharterFactory'
+import { DuplicatedProjectCharterError } from './errors/DuplicatedProjectCharterError'
 
 let workspacesRepository: IWorkspacesRepository
 let projectsRepository: IProjectsRepository
@@ -25,7 +27,7 @@ let projectCharterRepository: IProjectChartersRepository
 let usersRepository: IUsersRepository
 let createProjectCharter: CreateProjectCharter
 
-describe('Create a workspace', async () => {
+describe('Create a project charter', async () => {
   const user = UserFactory.create()
   const workspace = WorkspaceFactory.create()
   const project = ProjectFactory.create({ workspaceId: workspace.id })
@@ -47,6 +49,7 @@ describe('Create a workspace', async () => {
     ])
 
     createProjectCharter = new CreateProjectCharter(
+      projectsRepository,
       projectCharterRepository,
       usersRepository,
     )
@@ -76,5 +79,37 @@ describe('Create a workspace', async () => {
 
     const response = await createProjectCharter.execute(data)
     expect(response.isRight()).toBeTruthy()
+  })
+
+  test('should not create more than one project charter in a project', async () => {
+    const projectCharter = ProjectCharterFactory.create({
+      projectId: project.id,
+    })
+    await projectCharterRepository.create(projectCharter)
+
+    const data = {
+      projectName: 'string',
+      highLevelProjectDescription: 'string',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 192),
+      projectPurpose: 'string',
+      measurableProjectObjectives: 'string',
+      keyBenefits: 'string',
+      highLevelRequirements: 'string',
+      boundaries: 'string',
+      overallProjectRisk: 'string',
+      summaryMilestoneSchedule: 'string',
+      preApprovedFinancialResources: 'string',
+      projectApprovalRequirements: 'string',
+      successCriteria: 'string',
+      projectExitCriteria: 'string',
+      signed: false,
+      projectId: project.id,
+      userId: user.id,
+    }
+
+    const response = await createProjectCharter.execute(data)
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new DuplicatedProjectCharterError())
   })
 })
