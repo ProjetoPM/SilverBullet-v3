@@ -67,7 +67,7 @@ describe('Create a project', async () => {
     const data = {
       name: 'project',
       description: 'A simple project',
-      workspaceId: workspace.id,
+      currentWorkspaceId: workspace.id,
       currentUserId: user.id,
     }
 
@@ -100,7 +100,7 @@ describe('Create a project', async () => {
     const data = {
       name: 'project',
       description: 'A simple project',
-      workspaceId: workspace.id,
+      currentWorkspaceId: workspace.id,
       currentUserId: user.id,
     }
 

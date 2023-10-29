@@ -18,7 +18,7 @@ let projectRepository: IProjectsRepository
 let usersRepository: IUsersRepository
 let deleteProject: DeleteProject
 
-describe('Delete workspace', () => {
+describe('Delete project', () => {
   const user = UserFactory.create()
 
   beforeAll(async () => {
@@ -52,10 +52,15 @@ describe('Delete workspace', () => {
     })
 
     expect(response.isRight()).toBeTruthy()
-    expect(await workspaceRepository.list()).toStrictEqual([])
+    expect(
+      await projectRepository.listUserProjectsByWorkspaceId(
+        workspace.id,
+        user.id,
+      ),
+    ).toStrictEqual([])
   })
 
-  test('should delete workspaces', async () => {
+  test('should delete projects', async () => {
     const workspace = WorkspaceFactory.create()
     const project1 = ProjectFactory.create({
       workspaceId: workspace.id,

@@ -2,6 +2,7 @@ import { Controller } from '@/core/infra/controller'
 import {
   HttpResponse,
   clientError,
+  conflict,
   created,
   forbidden,
   notFound,
@@ -11,6 +12,8 @@ import { t } from 'i18next'
 import { CreateProject } from './create-project'
 import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
+import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
 
 type CreateProjectControllerRequest = {
   name: string
@@ -42,6 +45,10 @@ export class CreateProjectController implements Controller {
           return forbidden(error)
         case UserDoesNotExistError:
           return notFound(error)
+        case WorkspaceDoesNotExistError:
+          return notFound(error)
+        case ProjectWithSameNameExistsError:
+          return conflict(error)
         default:
           return clientError(error)
       }

@@ -35,7 +35,7 @@ export class DeleteProjectController implements Controller {
 
       switch (error.constructor) {
         case ProjectNotFoundError:
-          return notFound(error)
+          return clientError(error)
         case OneOrMoreProjectNotFoundError:
           return clientError(error)
         default:

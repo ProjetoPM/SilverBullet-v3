@@ -27,11 +27,27 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
       (workspace) => !ids.includes(workspace.id),
     )
   }
-  listUserProjectsByWorkspaceId(
+  async listUserProjectsByWorkspaceId(
     workspaceId: string,
     userId: string,
   ): Promise<Project[]> {
-    throw new Error('Method not implemented.')
+    const userProjects = this.userProjects.filter(
+      (userProject) =>
+        userProject.userId === userId && userProject.status === 'ACTIVE',
+    )
+
+    const projects = this.projects.filter((project) => {
+      if (project.props.workspaceId !== workspaceId) return
+
+      const userBelongsToProject = userProjects.some(
+        (userProject) => userProject.projectId === project.id,
+      )
+      if (!userBelongsToProject) return
+
+      return project
+    })
+
+    return projects
   }
   async findByName(name: string): Promise<Project | null> {
     const project = this.projects.find((project) => project.props.name === name)

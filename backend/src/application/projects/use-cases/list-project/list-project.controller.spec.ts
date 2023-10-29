@@ -21,7 +21,7 @@ let usersRepository: IUsersRepository
 let workspacesRepository: IWorkspacesRepository
 let projectsRepository: IProjectsRepository
 
-describe('List workspaces (end-to-end)', () => {
+describe('List projects (end-to-end)', () => {
   const { jwt, user } = UserFactory.createAndAuthenticate()
   const workspace = WorkspaceFactory.create()
 
@@ -67,7 +67,7 @@ describe('List workspaces (end-to-end)', () => {
     })
   })
 
-  test('should be able to list projecs', async () => {
+  test('should be able to list projects', async () => {
     const response = await request(app)
       .get(`/api/projects/${workspace.id}/workspaces`)
       .auth(jwt.token, { type: 'bearer' })
@@ -81,7 +81,6 @@ describe('List workspaces (end-to-end)', () => {
       `/api/projects/${workspace.id}/workspaces`,
     )
 
-    expect(response.status).toBe(StatusCodes.OK)
-    expect(response.body.dto.length > 0).toBeTruthy()
+    expect(response.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 })

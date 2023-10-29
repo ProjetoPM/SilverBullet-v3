@@ -31,6 +31,7 @@ describe('Delete project (end-to-end)', async () => {
 
     const user = UserFactory.create()
     const workspace = WorkspaceFactory.create()
+    const project = ProjectFactory.create({ workspaceId: workspace.id })
 
     await usersRepository.create(user)
     await workspaceRepository.create(
@@ -40,8 +41,12 @@ describe('Delete project (end-to-end)', async () => {
       WorkspaceRoles.ADMIN,
     )
 
+    await projectRepository.create(project, user, InviteStatuses.ACTIVE, [
+      ProjectRoles.ADMIN,
+    ])
+
     const response = await request(app)
-      .del(`/api/projects/?ids=${workspace.id}`)
+      .del(`/api/projects/?ids=${project.id}`)
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.OK)
@@ -89,7 +94,7 @@ describe('Delete project (end-to-end)', async () => {
     const { jwt } = UserFactory.createAndAuthenticate()
 
     const response = await request(app)
-      .del(`/api/projects/?ids=invalid-project-id`)
+      .del(`/api/projects/?ids=invalid-id`)
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.BAD_REQUEST)
