@@ -19,7 +19,7 @@ export const BubbleMenu = ({
   return (
     <_BubbleMenu
       className={cn(
-        'flex items-center justify-center bg-accent rounded-lg divide-x divide-default-200 max-w-[300px] xs:max-w-[400px] overflow-x-auto bg-default-200 dark:bg-default-50',
+        'flex items-center justify-center bg-accent rounded-lg divide-x divide-default-200 overflow-x-auto bg-default-200 dark:bg-default-50',
         className,
         isFixed ? 'hidden' : ''
       )}
@@ -27,7 +27,7 @@ export const BubbleMenu = ({
         duration: 100,
         appendTo: 'parent',
         plugins: [hideOnEsc],
-        maxWidth: 400
+        maxWidth: 520
       }}
       editor={editor}
     >

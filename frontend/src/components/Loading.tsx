@@ -1,8 +1,13 @@
-import { CircularProgress, CircularProgressProps } from '@nextui-org/react'
+import { CircularProgress, CircularProgressProps, cn } from '@nextui-org/react'
 
-export const Loading = ({ ...props }: CircularProgressProps) => {
+export const Loading = ({ className, ...props }: CircularProgressProps) => {
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div
+      className={cn(
+        'w-full h-screen flex items-center justify-center',
+        className
+      )}
+    >
       <CircularProgress aria-label="Loading..." {...props} />
     </div>
   )
