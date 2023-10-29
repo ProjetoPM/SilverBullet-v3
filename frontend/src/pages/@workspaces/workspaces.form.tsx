@@ -1,10 +1,11 @@
 import { GridLayout } from '@/components/ui/Grid'
 import { SubmitButton } from '@/components/ui/SubmitButton'
-import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useFetch } from '@/hooks/useFetch'
 import { backend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
+
+import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useTranslation } from 'react-i18next'
 import {
   WorkspaceData,
@@ -79,7 +80,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
       <SubmitButton
         isEdit={!!data}
         fnResetButton={form.reset}
-        isLoading={create.isLoading}
+        isLoading={create.isLoading || update.isLoading}
       >
         {data ? t('common:btn.edit') : t('common:btn.save')}
       </SubmitButton>

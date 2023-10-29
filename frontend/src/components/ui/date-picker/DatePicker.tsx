@@ -26,6 +26,7 @@ type DatePickerProps<
   dateStyle?: 'short' | 'medium' | 'long'
   shouldCloseOnClick?: boolean
   errorMessage?: string
+  shouldDisableUntilToday?: boolean
 }
 
 export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
@@ -35,7 +36,8 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
   isRequired,
   errorMessage,
   dateStyle = 'medium',
-  shouldCloseOnClick = false,
+  shouldCloseOnClick = true,
+  shouldDisableUntilToday = false,
   ...props
 }: DatePickerProps<T, K>) => {
   const id = useId()
@@ -57,8 +59,8 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
   }
 
   return (
-    <>
-      {label && (
+    <div>
+      {!!label && (
         <label
           htmlFor={id}
           className="block text-small font-medium text-foreground pb-1.5 will-change-auto origin-top-left transition-all !duration-200 !ease-out motion-reduce:transition-none data-[required=true]:after:content-['*'] data-[required=true]:after:ml-0.5 after:text-danger"
@@ -97,12 +99,20 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
           <Calendar
             locale={i18next.language === 'en-US' ? enUS : ptBR}
             {...props}
+            mode="single"
+            selected={field.value}
+            onSelect={field.onChange}
+            disabled={
+              shouldDisableUntilToday
+                ? (date) => date > new Date() || date < new Date('1900-01-01')
+                : undefined
+            }
           />
         </PopoverContent>
       </Popover>
       {!!errorMessage && (
         <p className="pt-1 px-1 text-tiny text-danger">{errorMessage}</p>
       )}
-    </>
+    </div>
   )
 }

@@ -1,22 +1,22 @@
 import { Either, left, right } from '@/core/logic/either'
 
+import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { Project } from '../../domain/project'
 import { ProjectRoles } from '../../domain/project-roles.schema'
-import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
-import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+import { IProjectsRepository } from '../../repositories/IProjectsRepository'
 
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
-import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
-import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { ProjectWithSameNameExistsError } from './errors/ProjectWithSameNameExistsError'
+import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
 
 type CreateProjectRequest = {
   name: string
   description?: string
-  workspaceId: string
+  currentWorkspaceId: string
   currentUserId: string
 }
 
@@ -38,7 +38,7 @@ export class CreateProject {
   async execute({
     name,
     description,
-    workspaceId,
+    currentWorkspaceId,
     currentUserId: userId,
   }: CreateProjectRequest): Promise<CreateProjectResponse> {
     const user = await this.usersRepository.findById(userId)
@@ -47,7 +47,8 @@ export class CreateProject {
       return left(new UserDoesNotExistError())
     }
 
-    const workspaceExists = await this.workspacesRepository.exists(workspaceId)
+    const workspaceExists =
+      await this.workspacesRepository.exists(currentWorkspaceId)
 
     if (!workspaceExists) {
       return left(new WorkspaceDoesNotExistError())
@@ -56,7 +57,7 @@ export class CreateProject {
     const userInWorkspace =
       await this.workspacesRepository.verifyUserBelongsToWorkspace(
         user.id,
-        workspaceId,
+        currentWorkspaceId,
       )
 
     if (!userInWorkspace) {
@@ -72,7 +73,7 @@ export class CreateProject {
     const projectOrError = Project.create({
       name,
       description,
-      workspaceId,
+      workspaceId: currentWorkspaceId,
     })
 
     if (projectOrError.isLeft()) {

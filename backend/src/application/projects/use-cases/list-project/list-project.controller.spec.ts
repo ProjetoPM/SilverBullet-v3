@@ -9,13 +9,12 @@ import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { IProjectsRepository } from '../../repositories/IProjectsRepository'
-import { Project } from '../../domain/project'
 import { ProjectFactory } from '@/tests/factories/ProjectFactory'
-import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { PrismaProjectsRepository } from '../../repositories/prisma/PrismaProjectsRepository'
+import { ProjectRoles } from '../../domain/project-roles.schema'
+import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { PrismaWorkspacesRepository } from '@/application/workspaces/repositories/prisma/PrismaWorkspacesRepository'
 import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
-import { ProjectRoles } from '../../domain/project-roles.schema'
 
 let projectIds: string[] = []
 let usersRepository: IUsersRepository

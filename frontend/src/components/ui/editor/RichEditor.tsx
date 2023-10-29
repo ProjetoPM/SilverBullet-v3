@@ -6,20 +6,21 @@ import { Underline } from '@tiptap/extension-underline'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { forwardRef, useEffect, useId, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
 import { starterKitConfigs } from './config'
 import { editorStyles, placeholderStyles } from './config/style'
 import { BubbleMenu } from './menus/BubbleMenu'
 import { FixedMenu } from './menus/FixedMenu'
 
-type EditorProps = Omit<EditorContentProps, 'editor' | 'ref'> & {
+type EditorProps = Omit<EditorContentProps, 'editor' | 'ref' | 'value'> & {
   limit?: number
   isFixed?: boolean
   as?: 'textarea-3' | 'textarea-4' | 'textarea-5'
-  onChange?: (content: string) => void
   label?: string
   errorMessage?: string
+  value?: string | number | null
+  onChange?: (content: string) => void
 }
 
 const getSizeTextarea = ({ as }: Pick<EditorProps, 'as'>) => {
@@ -42,11 +43,11 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
       isFixed = false,
       label,
       errorMessage,
+      limit = 1000,
       ...props
     },
     ref
   ) => {
-    const { t } = useTranslation('editor')
     const [fixed, setFixed] = useState(isFixed)
     const id = useId()
 
@@ -74,7 +75,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             emptyEditorClass: placeholderStyles
           }),
           CharacterCount.configure({
-            limit: props.limit
+            limit
           }),
           Underline
         ],
@@ -104,11 +105,11 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
      * not convenient.
      */
     useEffect(() => {
-      const newValue = value.toString()
+      const newValue = value?.toString()
       const oldValue = editor?.getHTML()
 
       if (newValue !== oldValue && editor) {
-        editor.commands.setContent(value.toString())
+        editor.commands.setContent(value?.toString() ?? '')
       }
     }, [editor, value])
 
@@ -119,15 +120,22 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
       setFixed((previous) => !previous)
     }
 
-    const chars = editor?.storage.characterCount.characters() ?? 0
-    const words = editor?.storage.characterCount.words() ?? 0
-
     return (
       <div className={cn('h-full flex flex-col w-full', props.className)}>
         {label && <RichEditorLabel htmlFor={id} label={label} />}
         <div className="relative">
           {editor && (
             <>
+              <RichEditorChars editor={editor} limit={limit} />
+              <input
+                {...props}
+                id={id}
+                className="absolute w-0 h-0 opacity-0"
+                onFocus={() => editor.commands.focus()}
+                tabIndex={-1}
+                ref={ref}
+                autoComplete="off"
+              />
               <FixedMenu
                 isFixed={fixed}
                 setFixed={handleFixed}
@@ -144,28 +152,8 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             className="[&>*]:data-[is-fixed=true]:rounded-t-none w-full"
             data-is-fixed={fixed}
             editor={editor}
+            allowFullScreen
           />
-          {editor && (
-            <>
-              <span className="absolute text-[11.25px] text-default-400 -top-6 right-0 selection:select-none">
-                {props.limit && chars + '/' + props.limit}
-                <span className="hidden xss:inline-flex">
-                  &nbsp;{props.limit && `${t('characters')} |`}&nbsp;
-                </span>
-                <span className="hidden xss:inline-flex">
-                  {words} {t(words > 1 ? 'words' : 'word')}
-                </span>
-              </span>
-              <input
-                id={id}
-                {...props}
-                className="absolute w-0 h-0 opacity-0"
-                onFocus={() => editor.commands.focus()}
-                tabIndex={-1}
-                ref={ref}
-              />
-            </>
-          )}
         </div>
         {errorMessage && (
           <p className="pt-1 px-1 text-tiny text-danger">{errorMessage}</p>

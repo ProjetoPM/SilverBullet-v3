@@ -1,7 +1,7 @@
 import { adaptMiddleware } from '@/core/infra/adapters/express-middleware-adapter'
 import { adaptRoute } from '@/core/infra/adapters/express-route-adapter'
 import { Router } from 'express'
-import { makeEnsureAuthenticated } from '../factories/controllers/auth/makeEnsureAuthenticated'
+import { makeEnsureAuthenticated } from '../factories/controllers/middlewares/makeEnsureAuthenticated'
 import { makeCreateWorkspaceController } from '../factories/controllers/workspace/makeCreateWorkspaceController'
 import { makeDeleteWorkspaceController } from '../factories/controllers/workspace/makeDeleteWorkspaceController'
 import { makeEditWorkspaceController } from '../factories/controllers/workspace/makeEditWorkspaceController'

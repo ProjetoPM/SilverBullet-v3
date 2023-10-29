@@ -67,7 +67,7 @@ export const LocaleSwitcher = () => {
                   src={lang.link}
                 />
               }
-              onClick={() => setLanguage(lang.code)}
+              onPress={() => setLanguage(lang.code)}
               className={cn({ 'text-primary': lang.code === i18n.language })}
             >
               {lang.label}

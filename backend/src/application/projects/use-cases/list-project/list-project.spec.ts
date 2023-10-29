@@ -1,18 +1,16 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
-import { InMemoryWorkspacesRepository } from '../../repositories/in-memory/InMemoryWorkspacesRepository'
-
-import { Workspace } from '../../domain/workspace'
 
 import { UserFactory } from '@/tests/factories/UserFactory'
 import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { Roles } from '@/application/stakeholders/domain/roles.enum'
-import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
-import { ListWorkspace } from './list-project'
+import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
+import { ListWorkspace } from '@/application/workspaces/use-cases/list-workspace/list-workspace'
+import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
+import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 
 let workspacesRepository: IWorkspacesRepository
 let usersRepository: IUsersRepository

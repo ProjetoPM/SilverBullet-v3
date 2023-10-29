@@ -63,6 +63,7 @@ describe('Edit project (end-to-end)', () => {
     const response = await request(app)
       .put(`/api/projects/${project.id}/edit`)
       .auth(jwt.token, { type: 'bearer' })
+      .set({ 'current-workspace-id': workspace.id })
       .send(data)
 
     expect(response.status).toBe(StatusCodes.OK)

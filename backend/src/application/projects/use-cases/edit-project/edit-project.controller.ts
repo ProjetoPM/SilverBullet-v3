@@ -43,12 +43,11 @@ export class EditProjectController implements Controller {
       switch (error.constructor) {
         case ProjectWithSameNameExistsError:
           return conflict(error)
+        case UserDoesNotExistError:
         case ProjectDoesNotExistError:
           return notFound(error)
         case UserDoesNotBelongToProjectError:
           return forbidden(error)
-        case UserDoesNotExistError:
-          return notFound(error)
         default:
           return clientError(error)
       }

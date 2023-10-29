@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
-import { Middleware } from '../middleware'
 import { StatusCodes } from 'http-status-codes'
-import { t } from 'i18next'
+import { Middleware } from '../middleware'
 
 export const adaptMiddleware = (middleware: Middleware) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const requestData = {
       jwt: request.headers.authorization,
+      currentWorkspaceId: request.headers['current-workspace-id'],
+      currentProjectId: request.headers['current-project-id'],
       ...request.headers,
     }
 

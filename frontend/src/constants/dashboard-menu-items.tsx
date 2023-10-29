@@ -8,23 +8,25 @@ import {
 } from 'react-icons/fa'
 import { IoMdPricetags } from 'react-icons/io'
 
+type fn = () => string
+
 export type Areas = {
   id: string
   icon: JSX.Element
-  name: () => string
+  name: fn
   description: string
   background?: string
   border?: string
   phases: {
     id: string
-    name: string
+    name: fn
     description?: string
     badges: [string, string?]
     to?: string
   }[]
 }
 
-const t = (key: string) => translate(key, { ns: 'areas' })
+const t = (key: string) => translate(key, { ns: ['areas', 'phases'] })
 
 export const dashboardItems: Areas[] = [
   {
@@ -32,90 +34,90 @@ export const dashboardItems: Areas[] = [
     icon: <Star className="w-6 h-6" />,
     name: t('integration.label'),
     description: 'integration.description',
-    background: 'bg-neutral-600 text-white',
-    border: 'border-neutral-600',
+    background: 'bg-pink-500 text-white',
+    border: 'border-pink-500',
     phases: [
       {
         id: 'project-charter',
-        name: 'project_charter',
+        name: t('project_charter'),
         description: 'description:project_charter',
         badges: ['initiating']
       },
       {
         id: 'business-case',
-        name: 'business_case',
+        name: t('business_case'),
         description: 'description:business_case',
         badges: ['initiating']
       },
       {
         id: 'benefits-management-plan',
-        name: 'benefits_management_plan',
+        name: t('benefits_management_plan'),
         description: 'description:benefits_management_plan',
         badges: ['initiating']
       },
       {
         id: 'assumption-log',
-        name: 'assumption_log',
+        name: t('assumption_log'),
         description: 'description:assumption_log',
         badges: ['initiating']
       },
       {
         id: 'project-management-plan',
-        name: 'project_management_plan',
+        name: t('project_management_plan'),
         description: 'description:project_management_plan',
         badges: ['planning']
       },
       {
         id: 'project-performance-and-monitoring-report',
-        name: 'project_performance_and_monitoring_report',
+        name: t('project_performance_and_monitoring_report'),
         description: 'description:project_performance_and_monitoring_report',
         badges: ['executing']
       },
       {
         id: 'deliverable-status',
-        name: 'deliverable_status',
+        name: t('deliverable_status'),
         description: 'description:deliverable_status',
         badges: ['executing']
       },
       {
         id: 'work-performance-reports',
-        name: 'work_performance_reports',
+        name: t('work_performance_reports'),
         description: 'description:work_performance_reports',
         badges: ['executing']
       },
       {
         id: 'issue-log',
-        name: 'issue_log',
+        name: t('issue_log'),
         description: 'description:issue_log',
         badges: ['executing']
       },
       {
         id: 'lesson-learned-register',
-        name: 'lesson_learned_register',
+        name: t('lesson_learned_register'),
         description: 'description:lesson_learned_register',
         badges: ['executing']
       },
       {
         id: 'change-request',
-        name: 'change_request',
+        name: t('change_request'),
         description: 'description:change_request',
         badges: ['monitoring_and_controlling']
       },
       {
         id: 'change-log',
-        name: 'change_log',
+        name: t('change_log'),
         description: 'description:change_log',
         badges: ['monitoring_and_controlling']
       },
       {
         id: 'project-closure-term',
-        name: 'project_closure_term',
+        name: t('project_closure_term'),
         description: 'description:project_closure_term',
         badges: ['closing']
       },
       {
         id: 'final-report',
-        name: 'final_report',
+        name: t('final_report'),
         description: 'description:final_report',
         badges: ['closing']
       }
@@ -131,31 +133,31 @@ export const dashboardItems: Areas[] = [
     phases: [
       {
         id: 'requirements-management-plan',
-        name: 'requirements_management_plan',
+        name: t('requirements_management_plan'),
         description: 'description:requirements_management_plan',
         badges: ['planning']
       },
       {
         id: 'scope-management-plan',
-        name: 'scope_management_plan',
+        name: t('scope_management_plan'),
         description: 'description:scope_management_plan',
         badges: ['planning']
       },
       {
         id: 'requirement-documentation',
-        name: 'requirement_documentation',
+        name: t('requirement_documentation'),
         description: 'description:requirement_documentation',
         badges: ['planning']
       },
       {
         id: 'project-scope-statement',
-        name: 'project_scope_statement',
+        name: t('project_scope_statement'),
         description: 'description:project_scope_statement',
         badges: ['planning']
       },
       {
         id: 'work-breakdown-structure',
-        name: 'work_breakdown_structure',
+        name: t('work_breakdown_structure'),
         description: 'description:work_breakdown_structure',
         badges: ['planning']
       }
@@ -171,43 +173,43 @@ export const dashboardItems: Areas[] = [
     phases: [
       {
         id: 'schedule-management-plan',
-        name: 'schedule_management_plan',
+        name: t('schedule_management_plan'),
         description: 'description:schedule_management_plan',
         badges: ['planning']
       },
       {
         id: 'activity-list',
-        name: 'activity_list',
+        name: t('activity_list'),
         description: 'description:activity_list',
         badges: ['planning']
       },
       {
         id: 'earned-value-management',
-        name: 'earned_value_management',
+        name: t('earned_value_management'),
         description: 'description:earned_value_management',
         badges: ['planning']
       },
       {
         id: 'schedule-network-diagram',
-        name: 'schedule_network_diagram',
+        name: t('schedule_network_diagram'),
         description: 'description:schedule_network_diagram',
         badges: ['planning']
       },
       {
         id: 'resource-requirements',
-        name: 'resource_requirements',
+        name: t('resource_requirements'),
         description: 'description:resource_requirements',
         badges: ['planning']
       },
       {
         id: 'duration-estimates',
-        name: 'duration_estimates',
+        name: t('duration_estimates'),
         description: 'description:duration_estimates',
         badges: ['planning']
       },
       {
         id: 'stakeholder-calendars',
-        name: 'stakeholder_calendars',
+        name: t('stakeholder_calendars'),
         description: 'description:stakeholder_calendars',
         badges: ['planning']
       }
@@ -223,13 +225,13 @@ export const dashboardItems: Areas[] = [
     phases: [
       {
         id: 'cost-management-plan',
-        name: 'cost_management_plan',
+        name: t('cost_management_plan'),
         description: 'description:cost_management_plan',
         badges: ['planning']
       },
       {
         id: 'cost-estimates',
-        name: 'cost_estimates',
+        name: t('cost_estimates'),
         description: 'description:cost_estimates',
         badges: ['planning']
       }
@@ -240,24 +242,24 @@ export const dashboardItems: Areas[] = [
     icon: <FaTrophy className="w-6 h-6" />,
     name: t('quality.label'),
     description: 'quality.description',
-    background: 'bg-yellow-700 text-white',
-    border: 'border-yellow-300 dark:border-yellow-700',
+    background: 'bg-cyan-600 text-white',
+    border: 'border-cyan-600',
     phases: [
       {
         id: 'quality-management-plan',
-        name: 'quality_management_plan',
+        name: t('quality_management_plan'),
         description: 'description:quality_management_plan',
         badges: ['planning']
       },
       {
         id: 'product-quality-checklists',
-        name: 'product_quality_checklists',
+        name: t('product_quality_checklists'),
         description: 'description:product_quality_checklists',
         badges: ['executing']
       },
       {
         id: 'quality-reports',
-        name: 'quality_reports',
+        name: t('quality_reports'),
         description: 'description:quality_reports',
         badges: ['monitoring_and_controlling']
       }
@@ -273,19 +275,19 @@ export const dashboardItems: Areas[] = [
     phases: [
       {
         id: 'resource-management-plan',
-        name: 'resource_management_plan',
+        name: t('resource_management_plan'),
         description: 'description:resource_management_plan',
         badges: ['planning']
       },
       {
         id: 'resource-breakdown-structure',
-        name: 'resource_breakdown_structure',
+        name: t('resource_breakdown_structure'),
         description: 'description:resource_breakdown_structure',
         badges: ['planning']
       },
       {
         id: 'team-performance-assessments',
-        name: 'team_performance_assessments',
+        name: t('team_performance_assessments'),
         description: 'description:team_performance_assessments',
         badges: ['executing']
       }
@@ -296,12 +298,12 @@ export const dashboardItems: Areas[] = [
     icon: <FaBullhorn className="w-6 h-6" />,
     name: t('communication.label'),
     description: 'communication.description',
-    background: 'bg-yellow-950 text-white',
-    border: 'border-yellow-300 dark:border-yellow-950',
+    background: 'bg-orange-500 text-white',
+    border: 'border-orange-500',
     phases: [
       {
         id: 'communication-management-plan',
-        name: 'communication_management_plan',
+        name: t('communication_management_plan'),
         description: 'description:communication_management_plan',
         badges: ['planning']
       }
@@ -312,24 +314,24 @@ export const dashboardItems: Areas[] = [
     icon: <AlertCircle className="w-6 h-6" />,
     name: t('risk.label'),
     description: 'risk.description',
-    background: 'bg-red-800 text-white',
-    border: 'border-red-300 dark:border-red-800',
+    background: 'bg-red-700 text-white',
+    border: 'border-red-300 dark:border-red-700',
     phases: [
       {
         id: 'risk-management-plan',
-        name: 'risk_management_plan',
+        name: t('risk_management_plan'),
         description: 'description:risk_management_plan',
         badges: ['planning']
       },
       {
         id: 'risk-register',
-        name: 'risk_register',
+        name: t('risk_register'),
         description: 'description:risk_register',
         badges: ['planning']
       },
       {
         id: 'general-project-risk-checklist',
-        name: 'general_project_risk_checklist',
+        name: t('general_project_risk_checklist'),
         description: 'description:general_project_risk_checklist',
         badges: ['planning']
       }
@@ -345,19 +347,19 @@ export const dashboardItems: Areas[] = [
     phases: [
       {
         id: 'procurement-management-plan',
-        name: 'procurement_management_plan',
+        name: t('procurement_management_plan'),
         description: 'description:procurement_management_plan',
         badges: ['planning']
       },
       {
         id: 'procurement-statement-of-work',
-        name: 'procurement_statement_of_work',
+        name: t('procurement_statement_of_work'),
         description: 'description:procurement_statement_of_work',
         badges: ['planning']
       },
       {
         id: 'closed-procurement-documentation',
-        name: 'closed_procurement_documentation',
+        name: t('closed_procurement_documentation'),
         description: 'description:closed_procurement_documentation',
         badges: ['monitoring_and_controlling']
       }
@@ -373,13 +375,13 @@ export const dashboardItems: Areas[] = [
     phases: [
       {
         id: 'stakeholder-register',
-        name: 'stakeholder_register',
+        name: t('stakeholder_register'),
         description: 'description:stakeholder_register',
         badges: ['initiating']
       },
       {
         id: 'stakeholder-engagement-plan',
-        name: 'stakeholder_engagement_plan',
+        name: t('stakeholder_engagement_plan'),
         description: 'description:stakeholder_engagement_plan',
         badges: ['planning']
       }
