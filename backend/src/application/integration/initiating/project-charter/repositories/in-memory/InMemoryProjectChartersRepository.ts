@@ -15,4 +15,8 @@ export class InMemoryProjectChartersRepository
       (project) => project.props.projectId === projectId,
     ).length
   }
+
+  async deleteAll(): Promise<void> {
+    this.projectCharters = []
+  }
 }

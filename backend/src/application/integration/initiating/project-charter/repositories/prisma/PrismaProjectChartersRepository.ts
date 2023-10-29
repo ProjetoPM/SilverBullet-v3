@@ -3,7 +3,7 @@ import { ProjectCharter } from '../../domain/project-charter'
 import { IProjectChartersRepository } from '../IProjectCharters'
 import { ProjectCharterMapper } from '../../mappers/project-charter-mapper'
 
-export class PrismaStakeholdersRepository
+export class PrismaProjectChartersRepository
   implements IProjectChartersRepository
 {
   async create(projectCharter: ProjectCharter): Promise<void> {
@@ -19,5 +19,9 @@ export class PrismaStakeholdersRepository
         project_id: projectId,
       },
     })
+  }
+
+  async deleteAll(): Promise<void> {
+    await prismaClient.projectCharter.deleteMany({})
   }
 }

@@ -1,6 +1,4 @@
-import { beforeAll, describe, expect, test } from 'vitest'
-
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { afterEach, beforeAll, describe, expect, test } from 'vitest'
 
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
@@ -20,6 +18,8 @@ import { ProjectRoles } from '@/application/projects/domain/project-roles.schema
 import { InMemoryProjectsRepository } from '@/application/projects/repositories/in-memory/InMemoryProjectsRepository'
 import { ProjectCharterFactory } from '@/tests/factories/ProjectCharterFactory'
 import { DuplicatedProjectCharterError } from './errors/DuplicatedProjectCharterError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
 
 let workspacesRepository: IWorkspacesRepository
 let projectsRepository: IProjectsRepository
@@ -55,6 +55,10 @@ describe('Create a project charter', async () => {
     )
   })
 
+  afterEach(async () => {
+    await projectCharterRepository.deleteAll()
+  })
+
   test('should create a project charter', async () => {
     const data = {
       projectName: 'string',
@@ -79,6 +83,59 @@ describe('Create a project charter', async () => {
 
     const response = await createProjectCharter.execute(data)
     expect(response.isRight()).toBeTruthy()
+  })
+  test('should not create a project charter with inexistent user', async () => {
+    const data = {
+      projectName: 'string',
+      highLevelProjectDescription: 'string',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 192),
+      projectPurpose: 'string',
+      measurableProjectObjectives: 'string',
+      keyBenefits: 'string',
+      highLevelRequirements: 'string',
+      boundaries: 'string',
+      overallProjectRisk: 'string',
+      summaryMilestoneSchedule: 'string',
+      preApprovedFinancialResources: 'string',
+      projectApprovalRequirements: 'string',
+      successCriteria: 'string',
+      projectExitCriteria: 'string',
+      signed: false,
+      projectId: project.id,
+      userId: 'inexistent user',
+    }
+
+    const response = await createProjectCharter.execute(data)
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new UserDoesNotExistError())
+  })
+
+  test('should not create a project charter with inexistent project', async () => {
+    const data = {
+      projectName: 'string',
+      highLevelProjectDescription: 'string',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 192),
+      projectPurpose: 'string',
+      measurableProjectObjectives: 'string',
+      keyBenefits: 'string',
+      highLevelRequirements: 'string',
+      boundaries: 'string',
+      overallProjectRisk: 'string',
+      summaryMilestoneSchedule: 'string',
+      preApprovedFinancialResources: 'string',
+      projectApprovalRequirements: 'string',
+      successCriteria: 'string',
+      projectExitCriteria: 'string',
+      signed: false,
+      projectId: 'inexistent project',
+      userId: user.id,
+    }
+
+    const response = await createProjectCharter.execute(data)
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new ProjectDoesNotExistError())
   })
 
   test('should not create more than one project charter in a project', async () => {

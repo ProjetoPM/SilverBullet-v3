@@ -16,8 +16,8 @@ import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToPro
 type CreateProjectCharterControllerRequest = {
   projectName: string
   highLevelProjectDescription: string
-  startDate: Date
-  endDate: Date
+  startDate: string
+  endDate: string
   projectPurpose: string
   measurableProjectObjectives: string
   keyBenefits: string
@@ -40,9 +40,9 @@ export class CreateProjectCharterController implements Controller {
     private createProjectCharter: CreateProjectCharter,
   ) {}
 
-  async handle(
-    request: CreateProjectCharterControllerRequest,
-  ): Promise<HttpResponse> {
+  async handle(request: any): Promise<HttpResponse> {
+    console.log(request)
+
     const validated = this.validator.validate(request)
 
     if (validated.isLeft()) {
@@ -51,6 +51,8 @@ export class CreateProjectCharterController implements Controller {
 
     const result = await this.createProjectCharter.execute({
       ...request,
+      startDate: new Date(request.startDate),
+      endDate: new Date(request.endDate),
       projectId: request.currentProjectId,
       userId: request.currentUserId,
     })
