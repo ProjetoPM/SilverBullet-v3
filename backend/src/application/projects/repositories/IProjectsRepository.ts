@@ -27,4 +27,5 @@ export interface IProjectsRepository {
     userId: string,
     projectId: string,
   ): Promise<boolean>
+  deleteMany(ids: string[]): Promise<void>
 }

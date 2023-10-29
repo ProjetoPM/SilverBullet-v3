@@ -123,4 +123,8 @@ export class PrismaProjectsRepository implements IProjectsRepository {
 
     return !!data
   }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    await prismaClient.project.deleteMany({ where: { id: { in: ids } } })
+  }
 }

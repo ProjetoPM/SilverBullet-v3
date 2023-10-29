@@ -22,6 +22,11 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
     public userProjects: UserProject[] = [],
     public userProjectRoles: UserProjectRole[] = [],
   ) {}
+  async deleteMany(ids: string[]): Promise<void> {
+    this.projects = this.projects.filter(
+      (workspace) => !ids.includes(workspace.id),
+    )
+  }
   listUserProjectsByWorkspaceId(
     workspaceId: string,
     userId: string,
