@@ -9,4 +9,10 @@ export class InMemoryProjectChartersRepository
   async create(projectCharter: ProjectCharter): Promise<void> {
     this.projectCharters.push(projectCharter)
   }
+
+  async countProjectChartersByProjectId(projectId: string): Promise<number> {
+    return this.projectCharters.filter(
+      (project) => project.props.projectId === projectId,
+    ).length
+  }
 }

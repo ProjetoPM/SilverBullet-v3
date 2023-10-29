@@ -13,4 +13,11 @@ export class PrismaStakeholdersRepository
       data,
     })
   }
+  async countProjectChartersByProjectId(projectId: string): Promise<number> {
+    return await prismaClient.projectCharter.count({
+      where: {
+        project_id: projectId,
+      },
+    })
+  }
 }

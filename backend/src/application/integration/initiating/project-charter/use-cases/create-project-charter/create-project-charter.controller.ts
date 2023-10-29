@@ -1,9 +1,17 @@
 import { Controller } from '@/core/infra/controller'
-import { HttpResponse, clientError, created } from '@/core/infra/http-response'
+import {
+  HttpResponse,
+  clientError,
+  conflict,
+  created,
+} from '@/core/infra/http-response'
 import { t } from 'i18next'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { CreateProjectCharter } from './create-project-charter'
 import { Validator } from '@/core/infra/validator'
+import { DuplicatedProjectCharterError } from './errors/DuplicatedProjectCharterError'
+import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
+import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
 
 type CreateProjectCharterControllerRequest = {
   projectName: string
@@ -51,6 +59,12 @@ export class CreateProjectCharterController implements Controller {
       const error = result.value
 
       switch (error.constructor) {
+        case UserDoesNotBelongToProjectError:
+          return clientError(error)
+        case ProjectDoesNotExistError:
+          return clientError(error)
+        case DuplicatedProjectCharterError:
+          return conflict(error)
         case UserDoesNotExistError:
           return clientError(error)
         default:
