@@ -62,7 +62,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
             </DropdownItem>
             <DropdownItem textValue="edit">
               <Link
-                href={replaceParams(frontend.workspaces.edit, [row.id])}
+                href={replaceParams(frontend.projects.edit, [row.id])}
                 color="foreground"
                 className="flex gap-2"
               >

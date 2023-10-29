@@ -28,7 +28,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
 
   const { create, update } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
-    query: ['projects', 'create/update'],
+    query: ['projects'],
     fetch: {
       id: data?.id
     }
