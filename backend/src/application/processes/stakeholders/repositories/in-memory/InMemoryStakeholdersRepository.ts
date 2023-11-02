@@ -11,19 +11,25 @@ export class InMemoryStakeholdersRepository implements IStakeholdersRepository {
     this.stakeholders[stakeholderIndex] = stakeholder
   }
 
-  async create(stakeholder: Stakeholder): Promise<string | null> {
+  async create(stakeholder: Stakeholder): Promise<void> {
     this.stakeholders.push(stakeholder)
 
-    const dbStakeholder = this.stakeholders.pop()
-
-    if (!dbStakeholder) return null
-
-    return dbStakeholder.id
+    this.stakeholders.pop()
   }
 
   async findById(id: string): Promise<Stakeholder | null> {
     const stakeholder = this.stakeholders.find(
       (stakeholder) => stakeholder.id === id,
+    )
+
+    if (!stakeholder) return null
+
+    return stakeholder
+  }
+
+  async findByEmail(email: string): Promise<Stakeholder | null> {
+    const stakeholder = this.stakeholders.find(
+      (stakeholder) => stakeholder.props.email === email,
     )
 
     if (!stakeholder) return null

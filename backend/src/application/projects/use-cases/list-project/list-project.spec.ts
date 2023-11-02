@@ -6,7 +6,6 @@ import { InMemoryUsersRepository } from '@/application/users/repositories/in-mem
 import { UserFactory } from '@/tests/factories/UserFactory'
 import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
-import { Roles } from '@/application/stakeholders/domain/roles.enum'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { ListWorkspace } from '@/application/workspaces/use-cases/list-workspace/list-workspace'
 import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'

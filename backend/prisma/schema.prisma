@@ -233,7 +233,7 @@ model Stakeholder {
   greater_interest_phase      String
   observations                String
   user                        User?                       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                     String                      @unique
+  user_id                     String?                     @unique
   project                     Project                     @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id                  String
   created_at                  DateTime                    @default(now())

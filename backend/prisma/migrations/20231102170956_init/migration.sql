@@ -158,7 +158,7 @@ CREATE TABLE `stakeholders` (
     `main_expectations` VARCHAR(191) NOT NULL,
     `greater_interest_phase` VARCHAR(191) NOT NULL,
     `observations` VARCHAR(191) NOT NULL,
-    `user_id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NULL,
     `project_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,

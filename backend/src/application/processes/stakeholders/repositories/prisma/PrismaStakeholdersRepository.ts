@@ -16,25 +16,9 @@ export class PrismaStakeholdersRepository implements IStakeholdersRepository {
     return StakeholderMapper.toDomain(stakeholder)
   }
 
-  async exists(id: string): Promise<boolean> {
-    const stakeholderExists = await prismaClient.stakeholder.findUnique({
-      where: {
-        id,
-      },
-    })
-
-    return !!stakeholderExists
-  }
-
-  async create(stakeholder: Stakeholder): Promise<string | null> {
+  async create(stakeholder: Stakeholder): Promise<void> {
     const data = await StakeholderMapper.toPersistence(stakeholder)
 
-    const { id } = await prismaClient.stakeholder.create({
-      data,
-    })
-
-    if (!id) return null
-
-    return id
+    await prismaClient.stakeholder.create(data)
   }
 }
