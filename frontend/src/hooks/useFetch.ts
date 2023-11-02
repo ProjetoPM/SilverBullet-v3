@@ -1,4 +1,5 @@
 import { api } from '@/services/api'
+import { replaceParams } from '@/utils/replace-params'
 import toast from 'react-hot-toast'
 import {
   UseQueryOptions,
@@ -10,36 +11,47 @@ import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
 import { useToken } from './useToken'
 
+type CommonProps = { params?: (string | undefined)[] }
+type AppendOrParamsProps = { append?: string; params?: (string | undefined)[] }
+
 type FetchProps = {
-  baseUrl: string
-  query: string[]
-  fetch?: {
-    id?: string
-    get?: boolean | UseQueryOptions
-    list?: boolean | UseQueryOptions
-  }
-  redirectTo?: string
+  get?: CommonProps & { append?: string }
+  list?: CommonProps
 }
 
-type RemoveProps<T> = T & {
+type UseFetchProps = {
+  baseUrl: string
+  keys: string[]
+  fetch?: FetchProps
+  redirectTo?: string
+  options?: UseQueryOptions
+}
+
+type MutateProps = {
   id: string
   asyncFn?: () => Promise<void>
+  internalAsyncFn?: () => Promise<void>
 }
+
+type RemoveProps<T> = T & MutateProps
 
 /**
  * Hook para realizar requisições e mutações.
  *
  * @param baseUrl Rota base para a requisição.
- * @param query Query para invalidar o cache.
+ * @param keys Query para invalidar o cache.
  * @param fetch Objeto para determinar se o 'get' ou 'list' deverão ser habilitados.
- * @param redirectTo Rota para redirecionar após a requisição.
+ * @param redirectTo Rota para redirecionar após a mutação.
+ *
+ * @author Matheus Boeira Dias
  */
 export const useFetch = <T>({
   baseUrl,
-  query,
+  keys,
   fetch,
-  redirectTo
-}: FetchProps) => {
+  redirectTo,
+  options
+}: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -51,23 +63,25 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>(
-    query,
+    keys,
     async () => {
       /**
-       * Se não houver um id, possivelmente está entrando na
-       * página de criação.
+       * Determinar se a rota deve ser alterada.
        */
-      if (!fetch?.id) {
-        return
+      let _baseUrl = ''
+
+      if (fetch?.get) {
+        _baseUrl = _useAppendOrParams(baseUrl, fetch.get)
       }
 
       return await api
-        .get(`${baseUrl}/${fetch?.id}`)
+        .get(_baseUrl)
         .then((res) => res.data?.dto)
         .catch((err) => !isTokenExpired() && toast.error(err.message))
     },
     {
-      enabled: !!fetch?.get
+      ...(options as UseQueryOptions<T>),
+      enabled: !!fetch?.get?.append
     }
   )
 
@@ -77,14 +91,24 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>(
-    query,
+    keys,
     async () => {
+      /**
+       * Determinar se a rota deve ser alterada.
+       */
+      let _baseUrl = ''
+
+      if (fetch?.list) {
+        _baseUrl = _useAppendOrParams(baseUrl, fetch.list)
+      }
+
       return await api
-        .get(`${baseUrl}`)
+        .get(_baseUrl)
         .then((res) => res.data?.dto)
         .catch((err) => !isTokenExpired() && toast.error(err.message))
     },
     {
+      ...(options as UseQueryOptions<T>),
       enabled: !!fetch?.list
     }
   )
@@ -96,15 +120,19 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const create = useMutation(
-    async (data: T & { asyncFn?: () => Promise<void> }) => {
+    async (data: T & Omit<MutateProps, 'id'>) => {
       const url = `${baseUrl}/new`
       await data.asyncFn?.()
       return await promise(api.post(url, data))
     },
     {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(query)
-        navigate(`${redirectTo ?? baseUrl}`)
+      onSuccess: async (_, { internalAsyncFn }) => {
+        await queryClient.invalidateQueries(keys)
+        await internalAsyncFn?.()
+
+        if (redirectTo) {
+          navigate(redirectTo)
+        }
       }
     }
   )
@@ -116,15 +144,19 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const update = useMutation(
-    async (data: T & { asyncFn?: () => Promise<void> }) => {
-      const url = `${baseUrl}/${fetch?.id}/edit`
+    async (data: T & MutateProps) => {
+      const url = `${baseUrl}/${data.id}/edit`
       await data.asyncFn?.()
       return await promise(api.put(url, data))
     },
     {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(query)
-        navigate(`${redirectTo ?? baseUrl}`)
+      onSuccess: async (_, { internalAsyncFn }) => {
+        await queryClient.invalidateQueries(keys)
+        await internalAsyncFn?.()
+
+        if (redirectTo) {
+          navigate(redirectTo)
+        }
       }
     }
   )
@@ -142,8 +174,9 @@ export const useFetch = <T>({
       return await promise(api.delete(url))
     },
     {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(query)
+      onSuccess: async (_, { internalAsyncFn }) => {
+        await queryClient.invalidateQueries(keys)
+        await internalAsyncFn?.()
 
         if (redirectTo) {
           navigate(`${redirectTo}`)
@@ -161,19 +194,19 @@ export const useFetch = <T>({
   const removeMany = useMutation(
     async (
       data: (
-        | Omit<RemoveProps<T>, 'asyncFn'>
-        | Omit<RemoveProps<T>, 'asyncFn'>[]
-      ) & {
-        asyncFn?: () => Promise<void>
-      }
+        | Omit<RemoveProps<T>, 'asyncFn' | 'internalAsyncFn'>
+        | Omit<RemoveProps<T>, 'asyncFn' | 'internalAsyncFn'>[]
+      ) &
+        Pick<MutateProps, 'asyncFn' | 'internalAsyncFn'>
     ) => {
       const _data = Array.isArray(data) ? data : [data.id]
       await data.asyncFn?.()
       return await promise(api.delete(baseUrl, { params: { ids: _data } }))
     },
     {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(query)
+      onSuccess: async (_, { internalAsyncFn }) => {
+        await queryClient.invalidateQueries(keys)
+        await internalAsyncFn?.()
 
         if (redirectTo) {
           navigate(`${redirectTo}`)
@@ -183,4 +216,26 @@ export const useFetch = <T>({
   )
 
   return { create, update, remove, removeMany, get, list }
+}
+
+/**
+ * Determinar se a rota deve ser alterada com base nos parâmetros
+ * passados na requisição.
+ *
+ * @param baseUrl Rota base para a requisição.
+ * @returns Rota alterada.
+ */
+const _useAppendOrParams = (
+  baseUrl: string,
+  { append, params }: AppendOrParamsProps
+) => {
+  if (params) {
+    baseUrl = replaceParams(baseUrl, params)
+  }
+
+  if (append) {
+    baseUrl += `/${append}`
+  }
+
+  return baseUrl
 }
