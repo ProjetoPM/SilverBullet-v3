@@ -26,7 +26,6 @@ type CreateProjectCharterRequest = {
   projectApprovalRequirements: string
   successCriteria: string
   projectExitCriteria: string
-  signed: boolean
   projectId: string
   userId: string
 }

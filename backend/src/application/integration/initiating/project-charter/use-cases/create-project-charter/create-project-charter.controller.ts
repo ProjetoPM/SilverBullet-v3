@@ -29,7 +29,6 @@ type CreateProjectCharterControllerRequest = {
   projectApprovalRequirements: string
   successCriteria: string
   projectExitCriteria: string
-  signed: boolean
   currentProjectId: string
   currentUserId: string
 }
@@ -40,9 +39,9 @@ export class CreateProjectCharterController implements Controller {
     private createProjectCharter: CreateProjectCharter,
   ) {}
 
-  async handle(request: any): Promise<HttpResponse> {
-    console.log(request)
-
+  async handle(
+    request: CreateProjectCharterControllerRequest,
+  ): Promise<HttpResponse> {
     const validated = this.validator.validate(request)
 
     if (validated.isLeft()) {
@@ -50,7 +49,19 @@ export class CreateProjectCharterController implements Controller {
     }
 
     const result = await this.createProjectCharter.execute({
-      ...request,
+      projectName: request.projectName,
+      projectPurpose: request.projectPurpose,
+      boundaries: request.boundaries,
+      highLevelProjectDescription: request.highLevelProjectDescription,
+      highLevelRequirements: request.highLevelRequirements,
+      keyBenefits: request.keyBenefits,
+      measurableProjectObjectives: request.measurableProjectObjectives,
+      overallProjectRisk: request.overallProjectRisk,
+      preApprovedFinancialResources: request.preApprovedFinancialResources,
+      projectApprovalRequirements: request.projectApprovalRequirements,
+      projectExitCriteria: request.projectExitCriteria,
+      successCriteria: request.successCriteria,
+      summaryMilestoneSchedule: request.summaryMilestoneSchedule,
       startDate: new Date(request.startDate),
       endDate: new Date(request.endDate),
       projectId: request.currentProjectId,
@@ -74,6 +85,6 @@ export class CreateProjectCharterController implements Controller {
       }
     }
 
-    return created({ message: t('workspace.created') })
+    return created({ message: t('project_charter.created') })
   }
 }

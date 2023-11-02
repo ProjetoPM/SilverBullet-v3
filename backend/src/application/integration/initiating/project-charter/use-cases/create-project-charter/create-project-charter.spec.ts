@@ -169,4 +169,29 @@ describe('Create a project charter', async () => {
     expect(response.isLeft()).toBeTruthy()
     expect(response.value).toEqual(new DuplicatedProjectCharterError())
   })
+
+  test('should not create a project charter with signed attribute', async () => {
+    const data = {
+      projectName: 'string',
+      highLevelProjectDescription: 'string',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 192),
+      projectPurpose: 'string',
+      measurableProjectObjectives: 'string',
+      keyBenefits: 'string',
+      highLevelRequirements: 'string',
+      boundaries: 'string',
+      overallProjectRisk: 'string',
+      summaryMilestoneSchedule: 'string',
+      preApprovedFinancialResources: 'string',
+      projectApprovalRequirements: 'string',
+      successCriteria: 'string',
+      projectExitCriteria: 'string',
+      signed: true,
+      projectId: project.id,
+      userId: user.id,
+    }
+
+    await createProjectCharter.execute(data)
+  })
 })
