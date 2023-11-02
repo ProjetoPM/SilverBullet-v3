@@ -64,7 +64,11 @@ describe('Get a project charter (end-to-end)', () => {
       .send()
 
     expect(response.status).toBe(StatusCodes.OK)
-    expect(response.body.dto).toStrictEqual(projectCharter.toResponseBody())
+    expect(response.body.dto).toStrictEqual({
+      ...projectCharter.toResponseBody(),
+      startDate: projectCharter.props.startDate.toISOString(),
+      endDate: projectCharter.props.endDate.toISOString(),
+    })
   })
 
   test('should not be able to get a non existing project charter', async () => {
