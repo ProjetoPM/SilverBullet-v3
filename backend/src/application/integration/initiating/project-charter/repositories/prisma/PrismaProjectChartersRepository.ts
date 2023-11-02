@@ -13,6 +13,29 @@ export class PrismaProjectChartersRepository
       data,
     })
   }
+  async update(projectCharter: ProjectCharter): Promise<void> {
+    const data = await ProjectCharterMapper.toPersistence(projectCharter)
+
+    await prismaClient.projectCharter
+      .update({
+        where: { id: projectCharter.id },
+        data,
+      })
+      .catch(() => {
+        throw new Error('Error on update project charter')
+      })
+  }
+
+  async findById(id: string): Promise<ProjectCharter | null> {
+    const data = await prismaClient.projectCharter.findUnique({
+      where: { id: id },
+    })
+
+    if (!data) return null
+
+    return ProjectCharterMapper.toDomain(data)
+  }
+
   async countProjectChartersByProjectId(projectId: string): Promise<number> {
     return await prismaClient.projectCharter.count({
       where: {
