@@ -59,12 +59,11 @@ export class EditProjectCharter {
     if (!projectCharterExists) {
       return left(new ProjectCharterDoesNotExistError())
     }
+    const { projectId, signed } = projectCharterExists.props
 
-    if (projectCharterExists.props.signed === true) {
+    if (signed === true) {
       return left(new ProjectCharterAlreadySignedError())
     }
-
-    const { projectId } = projectCharterExists.props
 
     const userBelongsToProject =
       await this.projectRepository.verifyUserBelongsToProject(userId, projectId)
