@@ -1,4 +1,4 @@
-import { ProjectCharter } from '@/application/integration/initiating/project-charter/domain/project-charter'
+import { ProjectCharter } from '@/application/processes/integration/initiating/project-charter/domain/project-charter'
 
 type ProjectCharterOverrides = {
   projectName?: string

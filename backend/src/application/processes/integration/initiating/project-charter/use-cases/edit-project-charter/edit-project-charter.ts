@@ -9,7 +9,7 @@ import { IProjectsRepository } from '@/application/projects/repositories/IProjec
 import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
 import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
 
-type EditProjectCharterRequest = {
+export type EditProjectCharterRequest = {
   projectName: string
   highLevelProjectDescription: string
   startDate: Date

@@ -10,7 +10,10 @@ import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWo
 import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
 import { IProjectChartersRepository } from '../../repositories/IProjectCharters'
 import { InMemoryProjectChartersRepository } from '../../repositories/in-memory/InMemoryProjectChartersRepository'
-import { CreateProjectCharter } from './create-project-charter'
+import {
+  EditProjectCharter,
+  EditProjectCharterRequest,
+} from './edit-project-charter'
 import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { ProjectFactory } from '@/tests/factories/ProjectFactory'
 import { InviteStatuses } from '@/application/workspaces/domain/invite-statuses.enum'
@@ -19,18 +22,18 @@ import { IProjectsRepository } from '@/application/projects/repositories/IProjec
 import { ProjectRoles } from '@/application/projects/domain/project-roles.schema'
 import { InMemoryProjectsRepository } from '@/application/projects/repositories/in-memory/InMemoryProjectsRepository'
 import { ProjectCharterFactory } from '@/tests/factories/ProjectCharterFactory'
-import { DuplicatedProjectCharterError } from './errors/DuplicatedProjectCharterError'
 
 let workspacesRepository: IWorkspacesRepository
 let projectsRepository: IProjectsRepository
 let projectCharterRepository: IProjectChartersRepository
 let usersRepository: IUsersRepository
-let createProjectCharter: CreateProjectCharter
+let editProjectCharter: EditProjectCharter
 
-describe('Create a project charter', async () => {
+describe('Edit a project charter', async () => {
   const user = UserFactory.create()
   const workspace = WorkspaceFactory.create()
   const project = ProjectFactory.create({ workspaceId: workspace.id })
+  const projectCharter = ProjectCharterFactory.create({ projectId: project.id })
 
   beforeAll(async () => {
     usersRepository = new InMemoryUsersRepository()
@@ -42,21 +45,22 @@ describe('Create a project charter', async () => {
       InviteStatuses.ACTIVE,
       WorkspaceRoles.ADMIN,
     )
-    projectCharterRepository = new InMemoryProjectChartersRepository()
     projectsRepository = new InMemoryProjectsRepository()
     await projectsRepository.create(project, user, InviteStatuses.ACTIVE, [
       ProjectRoles.ADMIN,
     ])
+    projectCharterRepository = new InMemoryProjectChartersRepository()
+    await projectCharterRepository.create(projectCharter)
 
-    createProjectCharter = new CreateProjectCharter(
+    editProjectCharter = new EditProjectCharter(
       projectsRepository,
       projectCharterRepository,
       usersRepository,
     )
   })
 
-  test('should create a project charter', async () => {
-    const data = {
+  test('should edit a project charter', async () => {
+    const data: EditProjectCharterRequest = {
       projectName: 'string',
       highLevelProjectDescription: 'string',
       startDate: new Date(),
@@ -72,44 +76,11 @@ describe('Create a project charter', async () => {
       projectApprovalRequirements: 'string',
       successCriteria: 'string',
       projectExitCriteria: 'string',
-      signed: false,
-      projectId: project.id,
+      projectCharterId: projectCharter.id,
       userId: user.id,
     }
 
-    const response = await createProjectCharter.execute(data)
+    const response = await editProjectCharter.execute(data)
     expect(response.isRight()).toBeTruthy()
-  })
-
-  test('should not create more than one project charter in a project', async () => {
-    const projectCharter = ProjectCharterFactory.create({
-      projectId: project.id,
-    })
-    await projectCharterRepository.create(projectCharter)
-
-    const data = {
-      projectName: 'string',
-      highLevelProjectDescription: 'string',
-      startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 192),
-      projectPurpose: 'string',
-      measurableProjectObjectives: 'string',
-      keyBenefits: 'string',
-      highLevelRequirements: 'string',
-      boundaries: 'string',
-      overallProjectRisk: 'string',
-      summaryMilestoneSchedule: 'string',
-      preApprovedFinancialResources: 'string',
-      projectApprovalRequirements: 'string',
-      successCriteria: 'string',
-      projectExitCriteria: 'string',
-      signed: false,
-      projectId: project.id,
-      userId: user.id,
-    }
-
-    const response = await createProjectCharter.execute(data)
-    expect(response.isLeft()).toBeTruthy()
-    expect(response.value).toEqual(new DuplicatedProjectCharterError())
   })
 })
