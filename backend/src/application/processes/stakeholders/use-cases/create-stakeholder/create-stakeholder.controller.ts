@@ -8,12 +8,12 @@ import {
 import { t } from 'i18next'
 import { CreateStakeholder } from './create-stakeholder'
 import { StakeholderDoesNotExistError } from './errors/StakeholderDoesNotExistError'
-import TYPES from '../../domain/types.enum'
-import ROLES from '../../domain/roles.enum'
+import { Types } from '../../domain/types.enum'
+import { Roles } from '../../domain/roles.enum'
 
 type CreateStakeholderControllerRequest = {
-  type: TYPES
-  mainProjectRole: ROLES
+  type: Types
+  mainProjectRole: Roles
   email: string
   organization: string
   organizationPosition: string
@@ -38,7 +38,6 @@ export class CreateStakeholderController implements Controller {
   async handle(
     request: CreateStakeholderControllerRequest,
   ): Promise<HttpResponse> {
-
     const result = await this.createStakeholder.execute(request)
 
     if (result.isLeft()) {

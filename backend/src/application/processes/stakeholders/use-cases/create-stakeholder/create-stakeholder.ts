@@ -2,12 +2,12 @@ import { Either, left, right } from '@/core/logic/either'
 import { Stakeholder } from '../../domain/stakeholder'
 import { IStakeholdersRepository } from '../../repositories/IStakeholdersRepository'
 import { StakeholderDoesNotExistError } from './errors/StakeholderDoesNotExistError'
-import Types from '../../domain/types.enum'
-import ROLES from '../../domain/roles.enum'
+import { Types } from '../../domain/types.enum'
+import { Roles } from '../../domain/roles.enum'
 
 type CreateStakeholderRequest = {
   type: Types
-  mainProjectRole: ROLES
+  mainProjectRole: Roles
   email: string
   organization: string
   organizationPosition: string
@@ -48,7 +48,6 @@ export class CreateStakeholder {
     projectId,
     userId,
   }: CreateStakeholderRequest): Promise<CreateStakeholderResponse> {
-
     const stakeholderOrError = Stakeholder.create({
       type,
       mainProjectRole,
@@ -72,11 +71,7 @@ export class CreateStakeholder {
 
     const stakeholder = stakeholderOrError.value
 
-    const stakeholderId = await this.stakeholdersRepository.create(stakeholder)
-
-    if (!stakeholderId) {
-      return left(new StakeholderDoesNotExistError())
-    }
+    await this.stakeholdersRepository.create(stakeholder)
 
     return right(stakeholder)
   }
