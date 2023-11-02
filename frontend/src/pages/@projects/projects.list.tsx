@@ -3,15 +3,15 @@ import { useFetch } from '@/hooks/useFetch'
 import { usePageUtils } from '@/hooks/usePageTranslation'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
-import { WorkspaceColumns, columns } from './table/workspaces.columns'
-import { WorkspaceToolbar } from './workspaces.toolbar'
+import { ProjectToolbar } from './projects.toolbar'
+import { ProjectColumns, columns } from './table/projects.columns'
 
-export const WorkspaceListPage = () => {
-  const { title, breadcrumb } = usePageUtils('workspaces')
+export const ProjectListPage = () => {
+  const { title, breadcrumb } = usePageUtils('projects')
 
-  const { list, removeMany } = useFetch<WorkspaceColumns[]>({
-    baseUrl: backend.workspaces.baseUrl,
-    query: ['workspaces'],
+  const { list, removeMany } = useFetch<ProjectColumns[]>({
+    baseUrl: backend.projects.baseUrl,
+    query: ['projects'],
     fetch: {
       list: true
     }
@@ -26,7 +26,7 @@ export const WorkspaceListPage = () => {
       <DataTable
         columns={columns}
         data={list.data ?? []}
-        toolbarButtons={<WorkspaceToolbar />}
+        toolbarButtons={<ProjectToolbar />}
         fn={removeMany.mutateAsync}
       />
     </PageLayout>

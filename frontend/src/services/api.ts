@@ -1,3 +1,4 @@
+import { Workspace } from '@/stores/useWorkspaceStore'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 
@@ -5,7 +6,9 @@ const setup = () => {
   const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL_API as string,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Current-Workspace-ID': Workspace.getWorkspace()?.id,
+      'Current-Project-ID': 'not-implemented'
     }
   })
 

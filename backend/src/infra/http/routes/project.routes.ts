@@ -15,7 +15,7 @@ project.use(adaptMiddleware(makeEnsureAuthenticated()))
 project.use(adaptMiddleware(makeGetCurrentWorkspaceAndProject()))
 
 project.post('/new', adaptRoute(makeCreateProjectController()))
-project.get('/:workspaceId/workspaces', adaptRoute(makeListProjectController()))
+project.get('/', adaptRoute(makeListProjectController()))
 project.get('/:projectId', adaptRoute(makeGetProjectController()))
 project.put('/:projectId/edit', adaptRoute(makeEditProjectController()))
 project.delete('/', adaptRoute(makeDeleteProjectController()))

@@ -3,7 +3,7 @@ import { Edit, RotateCcw, Save } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 type SubmitButtonProps = ButtonProps & {
-  children: React.ReactNode
+  children?: React.ReactNode
   isEdit?: boolean
   labelResetButton?: string
   fnResetButton?: () => void
@@ -11,9 +11,9 @@ type SubmitButtonProps = ButtonProps & {
 
 export const SubmitButton = ({
   children,
-  isEdit,
   labelResetButton,
   fnResetButton,
+  isEdit = false,
   ...props
 }: SubmitButtonProps) => {
   const { t } = useTranslation()
@@ -21,8 +21,8 @@ export const SubmitButton = ({
   return (
     <div className="flex gap-2.5 mt-2.5">
       <Button color="primary" type="submit" {...props}>
-        {isEdit ? <Edit className="w-5 h-5" /> : <Save />}
-        {!children && t('btn.save')}
+        {!children && isEdit ? <Edit className="w-5 h-5" /> : <Save />}
+        {!children && isEdit ? t('common:btn.edit') : t('common:btn.save')}
         {children}
       </Button>
       {fnResetButton && (

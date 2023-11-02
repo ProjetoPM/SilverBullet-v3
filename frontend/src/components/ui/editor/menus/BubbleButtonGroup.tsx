@@ -1,9 +1,19 @@
+import {
+  Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  useDisclosure
+} from '@nextui-org/react'
 import { Editor } from '@tiptap/react'
 import {
   Bold,
   Heading1,
   Heading2,
+  Highlighter,
   Italic,
+  Link2,
+  Link2Off,
   List,
   ListOrdered,
   PanelBottomClose,
@@ -13,6 +23,7 @@ import {
   Underline,
   Undo2
 } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BubbleButton } from './BubbleButton'
 
@@ -28,6 +39,36 @@ export const BubbleButtonGroup = ({
   setFixed
 }: ButtonGroupProps) => {
   const { t } = useTranslation('editor')
+  const [url, setUrl] = useState('')
+  const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure()
+
+  const handleLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    setUrl(previousUrl)
+
+    if (url === null) {
+      return
+    }
+
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run()
+      return
+    }
+
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  }, [url, editor])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleLink()
+        onClose()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleLink, onClose])
 
   return (
     <>
@@ -95,6 +136,71 @@ export const BubbleButtonGroup = ({
           }
         >
           <Underline className="w-4 h-4" />
+        </BubbleButton>
+        <BubbleButton
+          onClick={() => editor.chain().focus().toggleHighlight().run()}
+          data-active={editor.isActive('highlight')}
+          aria-label={
+            editor.isActive('highlight')
+              ? t('editor:remove.highlight')
+              : t('editor:add.highlight')
+          }
+        >
+          <Highlighter className="w-4 h-4" />
+        </BubbleButton>
+      </div>
+      <div className="flex items-center">
+        <BubbleButton
+          onClick={() => {
+            setUrl(editor.getAttributes('link').href)
+            onOpen()
+          }}
+        >
+          <Popover
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            placement="bottom"
+          >
+            <PopoverTrigger>
+              <Link2 className="w-4 h-4" />
+            </PopoverTrigger>
+            <PopoverContent className="w-64">
+              {() => (
+                <div className="px-1 py-2 w-full">
+                  <div className="mt-2 flex flex-col gap-2 w-full">
+                    <Input
+                      size="sm"
+                      variant="faded"
+                      label="URL"
+                      labelPlacement="outside"
+                      placeholder="https://www.example.com"
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      description="Pressione Enter para confirmar"
+                      autoFocus
+                      endContent={
+                        <Link2
+                          id="link-button"
+                          className="hover:cursor-pointer"
+                          onClick={() => {
+                            handleLink()
+                            editor.chain().focus().run()
+                            onClose()
+                          }}
+                        />
+                      }
+                    />
+                  </div>
+                </div>
+              )}
+            </PopoverContent>
+          </Popover>
+        </BubbleButton>
+        <BubbleButton
+          onClick={() => editor.chain().focus().unsetLink().run()}
+          disabled={!editor.isActive('link')}
+        >
+          <Link2Off className="w-4 h-4" />
         </BubbleButton>
       </div>
       <div className="flex items-center">

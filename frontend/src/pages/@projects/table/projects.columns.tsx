@@ -1,18 +1,16 @@
 import { clearHTMLTags } from '@/utils/replace-html-tags'
-import { Checkbox, Chip } from '@nextui-org/react'
+import { Checkbox } from '@nextui-org/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
-import { WorkspaceActions } from './workspaces.actions'
+import { WorkspaceActions } from './projects.actions'
 
-export type WorkspaceColumns = {
+export type ProjectColumns = {
   id: string
   name: string
   description?: string
-  plan: string
-  planStatus: string
 }
 
-const helper = createColumnHelper<WorkspaceColumns>()
+const helper = createColumnHelper<ProjectColumns>()
 
 export const columns = [
   /**
@@ -55,29 +53,6 @@ export const columns = [
     id: 'description',
     header: () => t('workspaces:form.description.label'),
     cell: ({ row }) => clearHTMLTags(row.getValue('description')),
-    enableSorting: true,
-    enableHiding: true
-  }),
-  /**
-   * Plan Status
-   */
-  helper.accessor((row) => row.planStatus, {
-    id: 'planStatus',
-    header: () => t('workspaces:form.plan_status.label'),
-    cell: ({ row }) => {
-      const status = row.getValue('planStatus') as string
-
-      const colors = {
-        ACTIVE: 'success',
-        INACTIVE: 'danger'
-      }
-
-      return (
-        <Chip color={colors[status]}>
-          {t(`workspaces:form.plan_status.options.${status?.toLowerCase()}`)}
-        </Chip>
-      )
-    },
     enableSorting: true,
     enableHiding: true
   }),

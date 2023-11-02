@@ -1,5 +1,7 @@
 import { cn } from '@/lib/utils'
 import CharacterCount from '@tiptap/extension-character-count'
+import { Highlight } from '@tiptap/extension-highlight'
+import { Link } from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
 import { Underline } from '@tiptap/extension-underline'
@@ -77,6 +79,25 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
           CharacterCount.configure({
             limit
           }),
+          Highlight.configure({
+            HTMLAttributes: {
+              class: 'bg-yellow-300'
+            }
+          }),
+          Link.configure({
+            protocols: ['http', 'https', 'mailto'],
+            validate: (url) => {
+              return (
+                url.startsWith('http://') ||
+                url.startsWith('https://') ||
+                url.startsWith('mailto:')
+              )
+            },
+            autolink: false,
+            HTMLAttributes: {
+              class: 'text-blue-500 hover:underline hover:cursor-pointer'
+            }
+          }),
           Underline
         ],
         content: content,
@@ -149,7 +170,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             </>
           )}
           <EditorContent
-            className="[&>*]:data-[is-fixed=true]:rounded-t-none w-full"
+            className="[&>*]:data-[is-fixed=true]:rounded-t-none break-words"
             data-is-fixed={fixed}
             editor={editor}
             allowFullScreen

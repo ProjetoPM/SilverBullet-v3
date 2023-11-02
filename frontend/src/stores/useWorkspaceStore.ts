@@ -33,6 +33,7 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
  */
 const openWorkspace = (workspace: Workspace) => {
   useWorkspaceStore.setState((state) => ({ ...state, workspace }))
+  updateWorkspaceName()
 }
 
 /**
@@ -43,10 +44,23 @@ const closeWorkspace = () => {
 }
 
 /**
+ * Atualizar o nome do workspace no 'sidebar' da aplicação.
+ */
+const updateWorkspaceName = () => {
+  const workspace = useWorkspaceStore.getState().workspace?.name ?? ''
+  const sidebarWorkspaces = document.getElementById('workspaces')
+
+  if (sidebarWorkspaces) {
+    sidebarWorkspaces.innerHTML = workspace
+  }
+}
+
+/**
  * Usando sem reatividade.
  */
 export const Workspace = {
   getWorkspace: () => useWorkspaceStore.getState().workspace,
   openWorkspace: (workspace: Workspace) => openWorkspace(workspace),
-  closeWorkspace: () => closeWorkspace()
+  closeWorkspace: () => closeWorkspace(),
+  updateWorkspaceName: () => updateWorkspaceName()
 }

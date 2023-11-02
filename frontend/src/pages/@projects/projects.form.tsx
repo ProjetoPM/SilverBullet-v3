@@ -8,33 +8,33 @@ import { Controller, useForm } from 'react-hook-form'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useTranslation } from 'react-i18next'
 import {
-  WorkspaceData,
-  WorkspaceDataWithId,
-  WorkspaceSchema
-} from './workspaces.schema'
+  ProjectData,
+  ProjectDataWithId,
+  ProjectSchema
+} from './projects.schema'
 
-type WorkspaceFormProps = {
-  data?: WorkspaceDataWithId
+type ProjectFormProps = {
+  data?: ProjectDataWithId
 }
 
-export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
-  const { t } = useTranslation('workspaces')
+export const ProjectForm = ({ data }: ProjectFormProps) => {
+  const { t } = useTranslation('projects')
 
-  const form = useForm<WorkspaceData>({
+  const form = useForm<ProjectData>({
     mode: 'all',
-    resolver: zodResolver(WorkspaceSchema),
+    resolver: zodResolver(ProjectSchema),
     defaultValues: data
   })
 
-  const { create, update } = useFetch<WorkspaceData>({
-    baseUrl: backend.workspaces.baseUrl,
-    query: ['workspaces'],
+  const { create, update } = useFetch<ProjectData>({
+    baseUrl: backend.projects.baseUrl,
+    query: ['projects'],
     fetch: {
       id: data?.id
     }
   })
 
-  const onSubmit = async (form: WorkspaceData) => {
+  const onSubmit = async (form: ProjectData) => {
     if (data) {
       await update.mutateAsync(form)
       return

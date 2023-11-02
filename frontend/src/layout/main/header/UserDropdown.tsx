@@ -1,4 +1,5 @@
-import { useAuth } from '@/hooks/useAuth'
+import { getUser, useAuth } from '@/hooks/useAuth'
+import { frontend } from '@/routes/routes'
 import {
   Button,
   Dropdown,
@@ -8,9 +9,11 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { FolderPlus, LogOut, Settings, User } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 export const UserDropdown = () => {
   const { signOut } = useAuth()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -20,15 +23,22 @@ export const UserDropdown = () => {
             <Settings className="w-5 h-5" />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Profile Actions" variant="flat">
+        <DropdownMenu
+          aria-label="Profile Actions"
+          variant="flat"
+          className="max-w-[200px]"
+        >
           <DropdownItem
             key="email"
-            className="gap-3 bg-default-300/20"
+            className="gap-3 bg-default-300/20 line-clamp-1"
             textValue="email"
             startContent={<User className="w-5 h-5" />}
+            onClick={() =>
+              navigator.clipboard.writeText(getUser().user ?? 'error')
+            }
             showDivider
           >
-            <p className="font-semibold">teste@teste.com</p>
+            <span className="font-semibold">{getUser().user}</span>
           </DropdownItem>
           <DropdownItem
             key="profile"
@@ -52,6 +62,7 @@ export const UserDropdown = () => {
             className="gap-3"
             textValue="workspace"
             startContent={<FolderPlus className="w-5 h-5" />}
+            onClick={() => navigate(frontend.workspaces.new)}
             showDivider
           >
             <p className="font-semibold">New Workspace</p>

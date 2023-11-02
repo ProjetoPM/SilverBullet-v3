@@ -1,7 +1,6 @@
 import { AlertModal } from '@/components/ui/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/replace-params'
 import {
   Button,
@@ -22,29 +21,27 @@ import {
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { WorkspaceColumns } from './workspaces.columns'
+import { ProjectColumns } from './projects.columns'
 
 type WorkspaceActionsProps = {
-  row: WorkspaceColumns
+  row: ProjectColumns
 }
 
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
-  const { t } = useTranslation(['default', 'workspaces'])
+  const { t } = useTranslation(['default', 'projects'])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const [openWorkspace] = useWorkspaceStore((store) => [store.openWorkspace])
 
-  const { removeMany } = useFetch<WorkspaceColumns>({
-    baseUrl: backend.workspaces.baseUrl,
-    query: ['workspaces']
+  const { removeMany } = useFetch<ProjectColumns>({
+    baseUrl: backend.projects.baseUrl,
+    query: ['projects']
   })
 
   const handleDelete = async () => {
     await removeMany.mutateAsync(row)
   }
 
-  const handleOpen = async () => {
-    openWorkspace(row)
-    toast.success(t('workspaces:actions.workspace_opened'))
+  const handleOpen = () => {
+    toast.error('Not implemented yet')
   }
 
   return (
@@ -57,20 +54,15 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="dropdown reporter">
           <DropdownSection title={t('table.actions')}>
-            <DropdownItem textValue="open">
-              <Link
-                href={frontend.projects.index}
-                color="foreground"
-                onClick={handleOpen}
-                className="flex gap-2"
-              >
+            <DropdownItem onClick={handleOpen} textValue="open">
+              <span className="flex gap-2">
                 <FolderOpen className="w-5 h-5" />
                 {t('btn.open')}
-              </Link>
+              </span>
             </DropdownItem>
             <DropdownItem textValue="edit">
               <Link
-                href={replaceParams(frontend.workspaces.edit, [row.id])}
+                href={replaceParams(frontend.projects.edit, [row.id])}
                 color="foreground"
                 className="flex gap-2"
               >
