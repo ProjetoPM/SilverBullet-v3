@@ -61,9 +61,10 @@ export function TableTopContent<TData>({
   /**
    * Transforma o tipo de filtro em string.
    */
-  const selectedType = Array.from(type).join(', ').replace('_', ' ')
-
-  console.log(getFirstColumn?.getFilterValue())
+  const selectedType = useMemo(
+    () => Array.from(type).join(', ').replace('_', ' '),
+    [type]
+  )
 
   return (
     <>

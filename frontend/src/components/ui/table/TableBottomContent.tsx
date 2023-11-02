@@ -26,8 +26,10 @@ export const TableBottomContent = <TData,>({
       <Pagination
         isCompact
         showControls
+        loop
         showShadow
         color="primary"
+        variant="flat"
         page={table.getState().pagination.pageIndex + 1}
         total={table.getPageCount()}
         onChange={(page) => table.setPageIndex(page - 1)}

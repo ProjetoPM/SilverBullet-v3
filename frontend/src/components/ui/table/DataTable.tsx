@@ -19,6 +19,7 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 
+import { configs } from '@/configs'
 import { useMemo, useState } from 'react'
 import { TableBottomContent } from './TableBottomContent'
 import { TableTopContent } from './TableTopContent'
@@ -76,7 +77,7 @@ export const DataTable = <TData, TValue>({
       globalFilter,
       rowSelection
     },
-    debugTable: true
+    debugTable: configs.debugTable
   })
 
   return (
