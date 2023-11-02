@@ -2,12 +2,12 @@ import { Either, left, right } from '@/core/logic/either'
 
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { IProjectsRepository } from '@/application/projects/repositories/IProjectsRepository'
 import { ProjectCharter } from '../../domain/project-charter'
 import { IProjectChartersRepository } from '../../repositories/IProjectCharters'
-import { IProjectsRepository } from '@/application/projects/repositories/IProjectsRepository'
-import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
 import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { ProjectCharterDoesNotExistError } from './errors/ProjectCharterDoesNotExistError'
 
 export type EditProjectCharterRequest = {
   projectName: string
@@ -30,9 +30,7 @@ export type EditProjectCharterRequest = {
 }
 
 type EditProjectCharterResponse = Either<
-  | UserDoesNotExistError
-  | UserDoesNotBelongToProjectError
-  | ProjectDoesNotExistError,
+  UserDoesNotExistError | UserDoesNotBelongToProjectError,
   ProjectCharter
 >
 
@@ -56,7 +54,7 @@ export class EditProjectCharter {
     const projectCharterExists =
       await this.projectCharterRepository.findById(projectCharterId)
     if (!projectCharterExists) {
-      return left(new ProjectDoesNotExistError())
+      return left(new ProjectCharterDoesNotExistError())
     }
 
     const { projectId } = projectCharterExists.props

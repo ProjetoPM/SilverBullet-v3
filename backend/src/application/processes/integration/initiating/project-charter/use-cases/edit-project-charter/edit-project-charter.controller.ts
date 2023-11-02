@@ -1,16 +1,10 @@
 import { Controller } from '@/core/infra/controller'
-import {
-  HttpResponse,
-  clientError,
-  conflict,
-  created,
-} from '@/core/infra/http-response'
-import { t } from 'i18next'
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { HttpResponse, clientError, created } from '@/core/infra/http-response'
 import { Validator } from '@/core/infra/validator'
-import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'
-import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
+import { t } from 'i18next'
 import { EditProjectCharter } from './edit-project-charter'
+import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 
 type EditProjectCharterControllerRequest = {
   projectName: string
@@ -72,8 +66,6 @@ export class EditProjectCharterController implements Controller {
 
       switch (error.constructor) {
         case UserDoesNotBelongToProjectError:
-          return clientError(error)
-        case ProjectDoesNotExistError:
           return clientError(error)
         case UserDoesNotExistError:
           return clientError(error)
