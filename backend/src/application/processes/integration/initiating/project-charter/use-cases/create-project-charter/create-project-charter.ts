@@ -4,7 +4,7 @@ import { IUsersRepository } from '@/application/users/repositories/IUsersReposit
 
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { ProjectCharter } from '../../domain/project-charter'
-import { IProjectChartersRepository } from '../../repositories/IProjectCharters'
+import { IProjectChartersRepository } from '../../repositories/IProjectChartersRepository'
 import { DuplicatedProjectCharterError } from './errors/DuplicatedProjectCharterError'
 import { IProjectsRepository } from '@/application/projects/repositories/IProjectsRepository'
 import { ProjectDoesNotExistError } from './errors/ProjectDoesNotExistError'

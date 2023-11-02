@@ -8,7 +8,7 @@ import { InMemoryUsersRepository } from '@/application/users/repositories/in-mem
 import { UserFactory } from '@/tests/factories/UserFactory'
 import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
 import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
-import { IProjectChartersRepository } from '../../repositories/IProjectCharters'
+import { IProjectChartersRepository } from '../../repositories/IProjectChartersRepository'
 import { InMemoryProjectChartersRepository } from '../../repositories/in-memory/InMemoryProjectChartersRepository'
 import {
   EditProjectCharter,

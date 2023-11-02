@@ -1,5 +1,5 @@
 import { ProjectCharter } from '../../domain/project-charter'
-import { IProjectChartersRepository } from '../IProjectCharters'
+import { IProjectChartersRepository } from '../IProjectChartersRepository'
 
 export class InMemoryProjectChartersRepository
   implements IProjectChartersRepository

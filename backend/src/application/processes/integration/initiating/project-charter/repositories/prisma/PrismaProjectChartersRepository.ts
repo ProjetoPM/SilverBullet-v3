@@ -1,6 +1,6 @@
 import { prismaClient } from '@/infra/prisma/client'
 import { ProjectCharter } from '../../domain/project-charter'
-import { IProjectChartersRepository } from '../IProjectCharters'
+import { IProjectChartersRepository } from '../IProjectChartersRepository'
 import { ProjectCharterMapper } from '../../mappers/project-charter-mapper'
 
 export class PrismaProjectChartersRepository

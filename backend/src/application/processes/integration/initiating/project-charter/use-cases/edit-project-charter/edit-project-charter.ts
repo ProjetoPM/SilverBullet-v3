@@ -4,7 +4,7 @@ import { IUsersRepository } from '@/application/users/repositories/IUsersReposit
 
 import { IProjectsRepository } from '@/application/projects/repositories/IProjectsRepository'
 import { ProjectCharter } from '../../domain/project-charter'
-import { IProjectChartersRepository } from '../../repositories/IProjectCharters'
+import { IProjectChartersRepository } from '../../repositories/IProjectChartersRepository'
 import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { ProjectCharterDoesNotExistError } from './errors/ProjectCharterDoesNotExistError'
