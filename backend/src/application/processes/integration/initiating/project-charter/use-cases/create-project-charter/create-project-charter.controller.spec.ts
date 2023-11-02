@@ -81,6 +81,40 @@ describe('Create project charter (end-to-end)', async () => {
     console.log(response.body)
 
     expect(response.status).toBe(StatusCodes.CREATED)
+
+    await prismaClient.projectCharter.deleteMany({
+      where: { project_name: { contains: 'test' } },
+    })
+  })
+  test('should not be able to create a project charter with the signed attribute', async () => {
+    const data: any = {
+      projectName: 'test-projectName',
+      highLevelProjectDescription: 'test-highLevelProjectDescription',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 90),
+      projectPurpose: 'test-projectPurpose',
+      measurableProjectObjectives: 'test-measurableProjectObjectives',
+      keyBenefits: 'test-keyBenefits',
+      highLevelRequirements: 'test-highLevelRequirements',
+      boundaries: 'test-boundaries',
+      overallProjectRisk: 'test-overallProjectRisk',
+      summaryMilestoneSchedule: 'test-summaryMilestoneSchedule',
+      preApprovedFinancialResources: 'test-preApprovedFinancialResources',
+      projectApprovalRequirements: 'test-projectApprovalRequirements',
+      successCriteria: 'test-successCriteria',
+      projectExitCriteria: 'test-projectExitCriteria',
+      signed: true,
+    }
+
+    const response = await request(app)
+      .post('/api/project-charters/new')
+      .auth(jwt.token, { type: 'bearer' })
+      .set({ 'current-project-id': project.id })
+      .send(data)
+
+    console.log(response.body)
+
+    expect(response.status).toBe(StatusCodes.CREATED)
   })
 
   test('should not be able to create a project charter with invalid date', async () => {

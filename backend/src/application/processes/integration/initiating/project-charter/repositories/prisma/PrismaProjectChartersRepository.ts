@@ -10,7 +10,10 @@ export class PrismaProjectChartersRepository
     const data = await ProjectCharterMapper.toPersistence(projectCharter)
 
     await prismaClient.projectCharter.create({
-      data,
+      data: {
+        ...data,
+        signed: false,
+      },
     })
   }
   async update(projectCharter: ProjectCharter): Promise<void> {
@@ -19,7 +22,10 @@ export class PrismaProjectChartersRepository
     await prismaClient.projectCharter
       .update({
         where: { id: projectCharter.id },
-        data,
+        data: {
+          ...data,
+          signed: false,
+        },
       })
       .catch(() => {
         throw new Error('Error on update project charter')

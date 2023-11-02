@@ -28,6 +28,7 @@ type CreateProjectCharterControllerRequest = {
   preApprovedFinancialResources: string
   projectApprovalRequirements: string
   successCriteria: string
+  signed: boolean
   projectExitCriteria: string
   currentProjectId: string
   currentUserId: string
@@ -39,31 +40,27 @@ export class CreateProjectCharterController implements Controller {
     private createProjectCharter: CreateProjectCharter,
   ) {}
 
-  async handle(
-    request: CreateProjectCharterControllerRequest,
-  ): Promise<HttpResponse> {
-    const validated = this.validator.validate(request)
+  async handle({
+    startDate,
+    endDate,
+    ...request
+  }: CreateProjectCharterControllerRequest): Promise<HttpResponse> {
+    console.log(request)
+
+    const validated = this.validator.validate({
+      ...request,
+      startDate,
+      endDate,
+    })
 
     if (validated.isLeft()) {
       return clientError(validated.value)
     }
 
     const result = await this.createProjectCharter.execute({
-      projectName: request.projectName,
-      projectPurpose: request.projectPurpose,
-      boundaries: request.boundaries,
-      highLevelProjectDescription: request.highLevelProjectDescription,
-      highLevelRequirements: request.highLevelRequirements,
-      keyBenefits: request.keyBenefits,
-      measurableProjectObjectives: request.measurableProjectObjectives,
-      overallProjectRisk: request.overallProjectRisk,
-      preApprovedFinancialResources: request.preApprovedFinancialResources,
-      projectApprovalRequirements: request.projectApprovalRequirements,
-      projectExitCriteria: request.projectExitCriteria,
-      successCriteria: request.successCriteria,
-      summaryMilestoneSchedule: request.summaryMilestoneSchedule,
-      startDate: new Date(request.startDate),
-      endDate: new Date(request.endDate),
+      ...request,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       projectId: request.currentProjectId,
       userId: request.currentUserId,
     })
@@ -73,13 +70,11 @@ export class CreateProjectCharterController implements Controller {
 
       switch (error.constructor) {
         case UserDoesNotBelongToProjectError:
-          return clientError(error)
         case ProjectDoesNotExistError:
+        case UserDoesNotExistError:
           return clientError(error)
         case DuplicatedProjectCharterError:
           return conflict(error)
-        case UserDoesNotExistError:
-          return clientError(error)
         default:
           return clientError(error)
       }
