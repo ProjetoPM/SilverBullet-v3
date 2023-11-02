@@ -8,7 +8,7 @@ type GetProjectCharterControllerRequest = {
   projectCharterId: string
 }
 
-export class GetProjectController implements Controller {
+export class GetProjectCharterController implements Controller {
   constructor(
     private readonly validator: Validator<GetProjectCharterControllerRequest>,
     private getProjectCharter: GetProjectCharter,

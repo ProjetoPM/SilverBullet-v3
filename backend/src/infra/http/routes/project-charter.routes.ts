@@ -7,6 +7,7 @@ import { makeGetCurrentWorkspaceAndProject } from '../factories/controllers/midd
 import { makeDeleteProjectController } from '../factories/controllers/project/makeDeleteProjectController'
 import { makeEditProjectController } from '../factories/controllers/project/makeEditProjectController'
 import { makeGetProjectController } from '../factories/controllers/project/makeGetProjectController'
+import { makeGetProjectCharterController } from '../factories/controllers/integration/project-charter/makeGetProjectCharterController'
 
 export const projectCharter = Router()
 
@@ -14,7 +15,10 @@ projectCharter.use(adaptMiddleware(makeEnsureAuthenticated()))
 projectCharter.use(adaptMiddleware(makeGetCurrentWorkspaceAndProject()))
 
 projectCharter.post('/new', adaptRoute(makeCreateProjectCharterController()))
-projectCharter.get('/:projectCharterId', adaptRoute(makeGetProjectController()))
+projectCharter.get(
+  '/:projectCharterId',
+  adaptRoute(makeGetProjectCharterController()),
+)
 projectCharter.put(
   '/:projectCharterId/edit',
   adaptRoute(makeEditProjectController()),

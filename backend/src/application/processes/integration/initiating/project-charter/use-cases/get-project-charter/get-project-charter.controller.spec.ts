@@ -17,6 +17,7 @@ import { PrismaProjectChartersRepository } from '../../repositories/prisma/Prism
 import { PrismaProjectsRepository } from '@/application/projects/repositories/prisma/PrismaProjectsRepository'
 import { InviteStatuses } from '@/application/workspaces/domain/invite-statuses.enum'
 import { ProjectRoles } from '@/application/projects/domain/project-roles.schema'
+import { ProjectCharterFactory } from '@/tests/factories/ProjectCharterFactory'
 
 let projectCharterRepository: IProjectChartersRepository
 let projectRepository: IProjectsRepository
@@ -27,6 +28,7 @@ describe('Get a project charter (end-to-end)', () => {
   const user = UserFactory.create()
   const workspace = WorkspaceFactory.create()
   const project = ProjectFactory.create({ workspaceId: workspace.id })
+  const projectCharter = ProjectCharterFactory.create({ projectId: project.id })
 
   beforeAll(async () => {
     usersRepository = new PrismaUsersRepository()
@@ -44,6 +46,7 @@ describe('Get a project charter (end-to-end)', () => {
     await projectRepository.create(project, user, InviteStatuses.ACTIVE, [
       ProjectRoles.ADMIN,
     ])
+    await projectCharterRepository.create(projectCharter)
   })
 
   afterAll(async () => {
@@ -56,12 +59,12 @@ describe('Get a project charter (end-to-end)', () => {
     const { jwt } = UserFactory.createAndAuthenticate()
 
     const response = await request(app)
-      .get(`/api/project-charters/${project.id}`)
+      .get(`/api/project-charters/${projectCharter.id}`)
       .auth(jwt.token, { type: 'bearer' })
       .send()
 
     expect(response.status).toBe(StatusCodes.OK)
-    expect(response.body.dto).toStrictEqual(project.toResponseBody())
+    expect(response.body.dto).toStrictEqual(projectCharter.toResponseBody())
   })
 
   test('should not be able to get a non existing project charter', async () => {
@@ -77,7 +80,7 @@ describe('Get a project charter (end-to-end)', () => {
 
   test('should not be able to get a project charter with no authentication', async () => {
     const response = await request(app)
-      .get(`/api/project-charters/${project.id}`)
+      .get(`/api/project-charters/${projectCharter.id}`)
       .send()
 
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED)
