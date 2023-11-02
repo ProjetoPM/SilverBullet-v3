@@ -8,6 +8,7 @@ import { IProjectChartersRepository } from '../../repositories/IProjectCharters'
 import { UserDoesNotBelongToProjectError } from './errors/UserDoesNotBelongToProjectError'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { ProjectCharterDoesNotExistError } from './errors/ProjectCharterDoesNotExistError'
+import { ProjectCharterAlreadySignedError } from './errors/ProjectCharterAlreadySignedError'
 
 export type EditProjectCharterRequest = {
   projectName: string
@@ -30,7 +31,9 @@ export type EditProjectCharterRequest = {
 }
 
 type EditProjectCharterResponse = Either<
-  UserDoesNotExistError | UserDoesNotBelongToProjectError,
+  | UserDoesNotExistError
+  | UserDoesNotBelongToProjectError
+  | ProjectCharterAlreadySignedError,
   ProjectCharter
 >
 
@@ -55,6 +58,10 @@ export class EditProjectCharter {
       await this.projectCharterRepository.findById(projectCharterId)
     if (!projectCharterExists) {
       return left(new ProjectCharterDoesNotExistError())
+    }
+
+    if (projectCharterExists.props.signed === true) {
+      return left(new ProjectCharterAlreadySignedError())
     }
 
     const { projectId } = projectCharterExists.props
