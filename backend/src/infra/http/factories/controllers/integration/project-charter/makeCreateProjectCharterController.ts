@@ -7,6 +7,11 @@ import { Controller } from '@/core/infra/controller'
 import { CheckDateFieldsValidator } from '@/infra/validation/CheckDateFieldsValidator'
 import { ValidatorCompositor } from '@/infra/validation/ValidatorCompositor'
 
+type CheckDate = {
+  startDate: string
+  endDate: string
+}
+
 export function makeCreateProjectCharterController(): Controller {
   const prismaUsersRepository = new PrismaUsersRepository()
   const prismaProjectsRepository = new PrismaProjectsRepository()
@@ -18,7 +23,7 @@ export function makeCreateProjectCharterController(): Controller {
     prismaUsersRepository,
   )
 
-  const validator = new ValidatorCompositor([
+  const validator = new ValidatorCompositor<CheckDate>([
     new CheckDateFieldsValidator(['startDate', 'endDate']),
   ])
 
