@@ -11,10 +11,8 @@ export const WorkspaceListPage = () => {
 
   const { list, removeMany } = useFetch<WorkspaceColumns[]>({
     baseUrl: backend.workspaces.baseUrl,
-    query: ['workspaces'],
-    fetch: {
-      list: true
-    }
+    keys: ['workspaces'],
+    fetch: { list: {} }
   })
 
   return (
@@ -27,7 +25,7 @@ export const WorkspaceListPage = () => {
         columns={columns}
         data={list.data ?? []}
         toolbarButtons={<WorkspaceToolbar />}
-        fn={removeMany.mutateAsync}
+        asyncFn={removeMany.mutateAsync}
       />
     </PageLayout>
   )

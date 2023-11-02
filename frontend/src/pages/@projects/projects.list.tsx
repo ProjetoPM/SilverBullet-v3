@@ -11,9 +11,9 @@ export const ProjectListPage = () => {
 
   const { list, removeMany } = useFetch<ProjectColumns[]>({
     baseUrl: backend.projects.baseUrl,
-    query: ['projects'],
+    keys: ['projects'],
     fetch: {
-      list: true
+      list: {}
     }
   })
 
@@ -27,7 +27,7 @@ export const ProjectListPage = () => {
         columns={columns}
         data={list.data ?? []}
         toolbarButtons={<ProjectToolbar />}
-        fn={removeMany.mutateAsync}
+        asyncFn={removeMany.mutateAsync}
       />
     </PageLayout>
   )

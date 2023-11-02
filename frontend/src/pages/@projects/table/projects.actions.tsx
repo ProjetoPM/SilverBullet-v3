@@ -23,17 +23,17 @@ import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { ProjectColumns } from './projects.columns'
 
-type WorkspaceActionsProps = {
+type ProjectActionsProps = {
   row: ProjectColumns
 }
 
-export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
+export const ProjectActions = ({ row }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const { removeMany } = useFetch<ProjectColumns>({
     baseUrl: backend.projects.baseUrl,
-    query: ['projects']
+    keys: ['projects']
   })
 
   const handleDelete = async () => {
