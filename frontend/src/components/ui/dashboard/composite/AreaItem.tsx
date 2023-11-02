@@ -30,7 +30,6 @@ export const AreaItem = ({ item, onClick }: AreaItemProps) => {
         )}
         radius="sm"
         shadow={'sm'}
-        onClick={() => console.log('hasidhuashd')}
       >
         <CardHeader className="px-5">
           <h3 className="flex gap-2 items-center text-xl">
