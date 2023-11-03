@@ -69,7 +69,7 @@ describe('List projects (end-to-end)', () => {
 
   test('should be able to list projects', async () => {
     const response = await request(app)
-      .get(`/api/projects/${workspace.id}/workspaces`)
+      .get(`/api/projects`)
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.OK)

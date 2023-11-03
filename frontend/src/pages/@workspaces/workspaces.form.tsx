@@ -1,7 +1,7 @@
 import { GridLayout } from '@/components/ui/Grid'
 import { SubmitButton } from '@/components/ui/SubmitButton'
 import { useFetch } from '@/hooks/useFetch'
-import { backend } from '@/routes/routes'
+import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -28,15 +28,13 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
 
   const { create, update } = useFetch<WorkspaceData>({
     baseUrl: backend.workspaces.baseUrl,
-    query: ['workspaces'],
-    fetch: {
-      id: data?.id
-    }
+    redirectTo: frontend.workspaces.index,
+    keys: ['workspaces']
   })
 
   const onSubmit = async (form: WorkspaceData) => {
     if (data) {
-      await update.mutateAsync(form)
+      await update.mutateAsync({ ...form, id: data.id })
       return
     }
     await create.mutateAsync(form)

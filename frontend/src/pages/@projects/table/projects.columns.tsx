@@ -2,7 +2,7 @@ import { clearHTMLTags } from '@/utils/replace-html-tags'
 import { Checkbox } from '@nextui-org/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
-import { WorkspaceActions } from './projects.actions'
+import { ProjectActions } from './projects.actions'
 
 export type ProjectColumns = {
   id: string
@@ -61,7 +61,7 @@ export const columns = [
    */
   helper.display({
     id: 'actions',
-    cell: ({ row }) => <WorkspaceActions row={row.original} />,
+    cell: ({ row }) => <ProjectActions row={row.original} />,
     enableSorting: false,
     enableHiding: false
   })
