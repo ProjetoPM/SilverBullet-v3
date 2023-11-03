@@ -24,7 +24,7 @@ export const WorkspaceListPage = () => {
       <DataTable
         columns={columns}
         data={list.data ?? []}
-        toolbarButtons={<WorkspaceToolbar />}
+        toolbar={<WorkspaceToolbar />}
         asyncFn={removeMany.mutateAsync}
       />
     </PageLayout>

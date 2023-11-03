@@ -26,7 +26,7 @@ export const ProjectListPage = () => {
       <DataTable
         columns={columns}
         data={list.data ?? []}
-        toolbarButtons={<ProjectToolbar />}
+        toolbar={<ProjectToolbar />}
         asyncFn={removeMany.mutateAsync}
       />
     </PageLayout>

@@ -8,10 +8,13 @@ export const WorkspaceToolbar = () => {
   const { t } = useTranslation('workspaces')
 
   return (
-    <Link to={frontend.workspaces.new}>
-      <Button color="primary" endContent={<PlusIcon />}>
-        {t('page.new')}
-      </Button>
-    </Link>
+    <Button
+      color="primary"
+      endContent={<PlusIcon />}
+      as={Link}
+      to={frontend.workspaces.new}
+    >
+      {t('page.new')}
+    </Button>
   )
 }

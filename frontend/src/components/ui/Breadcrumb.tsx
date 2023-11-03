@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { Image } from '@nextui-org/react'
+import { Button, Image } from '@nextui-org/react'
 import { ChevronRight } from 'lucide-react'
 import { ComponentProps } from 'react'
 import { Link } from 'react-router-dom'
@@ -53,9 +53,17 @@ export const Breadcrumb = ({
                   {!isFirst && <ChevronRight size={20} />}
 
                   {item.link && (
-                    <Link className="hover:underline" to={item.link}>
+                    <Button
+                      className="text-xs font-bold uppercase tracking-wider min-w-max bg-transparent px-2 py-1 decoration-primary focus:text-primary focus-visible:text-primary hover:text-primary hover:border p-0"
+                      radius="sm"
+                      data-focus-visible={false}
+                      data-focus={false}
+                      size="sm"
+                      as={Link}
+                      to={item.link}
+                    >
                       {item.label}
-                    </Link>
+                    </Button>
                   )}
 
                   {!item.link && item.label}

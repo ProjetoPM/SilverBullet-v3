@@ -1,5 +1,6 @@
+import { tableSelect } from '@/utils/helpers/select'
 import { clearHTMLTags } from '@/utils/replace-html-tags'
-import { Checkbox, Chip } from '@nextui-org/react'
+import { Chip } from '@nextui-org/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
 import { WorkspaceActions } from './workspaces.actions'
@@ -18,26 +19,7 @@ export const columns = [
   /**
    * Select
    */
-  helper.display({
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        isIndeterminate={table.getIsSomeRowsSelected()}
-        isSelected={table.getIsAllRowsSelected()}
-        onValueChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label={t('select_all')}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        isSelected={row.getIsSelected()}
-        onValueChange={(value) => row.toggleSelected(!!value)}
-        aria-label={t('select_row')}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  }),
+  helper.display(tableSelect),
   /**
    * Name
    */
