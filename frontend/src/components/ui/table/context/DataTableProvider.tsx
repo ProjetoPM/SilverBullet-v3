@@ -4,8 +4,9 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type FilterProps = {
-  pagination: boolean
   search: boolean
+  pagination: boolean
+  visibility: boolean
 }
 
 export type DataTableContext<TData> = {
@@ -33,7 +34,8 @@ export const DataTableProvider = <T,>({
 
   const [filter, setFilter] = useState<FilterProps>({
     search: true,
-    pagination: true
+    pagination: true,
+    visibility: true
   })
 
   const toggleFilter = (filter: keyof FilterProps) => {

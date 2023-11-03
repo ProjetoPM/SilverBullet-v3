@@ -28,7 +28,10 @@ import {
   DataTableProvider
 } from './context/DataTableProvider'
 
-type DataTableProps<TData, TValue> = DataTableContext<TData> & {
+type DataTableProps<TData, TValue> = Pick<
+  DataTableContext<TData>,
+  'asyncFn'
+> & {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 } & {

@@ -21,7 +21,7 @@ export const TableFilterButton = () => {
         </DropdownTrigger>
         <DropdownMenu
           disallowEmptySelection
-          defaultSelectedKeys={Object.keys(filter).filter((key) => filter[key])}
+          selectedKeys={Object.keys(filter).filter((key) => filter[key])}
           onAction={(key) => toggleFilter(key as keyof typeof filter)}
           selectionMode="multiple"
           aria-label="Select the type of filter"

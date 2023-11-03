@@ -1,3 +1,4 @@
+import { DataTableColumnHeader } from '@/components/ui/table/helpers/DataTableHeader'
 import { tableSelect } from '@/utils/helpers/select'
 import { clearHTMLTags } from '@/utils/replace-html-tags'
 import { Chip } from '@nextui-org/react'
@@ -25,7 +26,12 @@ export const columns = [
    */
   helper.accessor((row) => row.name, {
     id: 'name',
-    header: () => t('workspaces:form.name.label'),
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        header={t('workspaces:form.name.label')}
+      />
+    ),
     cell: ({ row }) => clearHTMLTags(row.getValue('name')),
     enableSorting: true,
     enableHiding: true

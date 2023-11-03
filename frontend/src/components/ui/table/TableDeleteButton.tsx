@@ -18,6 +18,7 @@ export const TableDeleteButton = ({ isDisabled, handleDelete }) => {
         color="danger"
         onClick={onOpen}
         isDisabled={isDisabled}
+        className="self-end sm:self-auto"
         isIconOnly
       >
         <Trash className="w-5 h-5" />

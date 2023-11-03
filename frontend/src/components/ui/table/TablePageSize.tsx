@@ -11,7 +11,7 @@ export const TablePageSize = () => {
       <label className="flex items-center text-default-400 text-small">
         {t('rows_per_page')}
         <select
-          className="bg-transparent outline-none text-default-400 text-small"
+          className="bg-transparent outline-none text-default-400 text-small hover:text-primary focus:text-primary focus-visible:text-primary"
           value={table.getState().pagination.pageSize}
           onChange={(e) => table.setPageSize(+e.target.value)}
         >
