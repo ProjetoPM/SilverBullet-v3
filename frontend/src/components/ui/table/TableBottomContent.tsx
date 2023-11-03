@@ -1,21 +1,14 @@
 import { Button, Pagination } from '@nextui-org/react'
-import { Table } from '@tanstack/react-table'
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { useDataTable } from './context/DataTableProvider'
 
-type TableBottomContentProps<TData> = {
-  table: Table<TData>
-}
-
-export const TableBottomContent = <TData,>({
-  table
-}: TableBottomContentProps<TData>) => {
-  const { t } = useTranslation('table')
+export const TableBottomContent = () => {
+  const { t, table, filter } = useDataTable()
 
   return (
     <div className="py-2 px-2 flex justify-center xs:justify-between items-center">
@@ -23,17 +16,18 @@ export const TableBottomContent = <TData,>({
         {table.getFilteredSelectedRowModel().rows.length} {t('of')}{' '}
         {table.getFilteredRowModel().rows.length} {t('rows_selected')}.
       </span>
-      <Pagination
-        isCompact
-        showControls
-        loop
-        showShadow
-        color="primary"
-        variant="flat"
-        page={table.getState().pagination.pageIndex + 1}
-        total={table.getPageCount()}
-        onChange={(page) => table.setPageIndex(page - 1)}
-      />
+      {filter.pagination && (
+        <Pagination
+          isCompact
+          showControls
+          color="primary"
+          variant="flat"
+          page={table.getState().pagination.pageIndex + 1}
+          total={table.getPageCount()}
+          isDisabled={!table.getCanPreviousPage() && !table.getCanNextPage()}
+          onChange={(page) => table.setPageIndex(page - 1)}
+        />
+      )}
       <div className="hidden sm:flex justify-end gap-1">
         <Button
           size="sm"

@@ -23,12 +23,12 @@ export const TableDeleteButton = ({ isDisabled, handleDelete }) => {
         <Trash className="w-5 h-5" />
       </Button>
       <AlertModal
-        title={t('common:are_you_certain.title')}
+        title={t('common:generic_delete.title')}
         onAction={handleDelete}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
-        {t('common:are_you_certain_delete.description')}
+        {t('common:generic_delete.description')}
       </AlertModal>
     </>
   )
