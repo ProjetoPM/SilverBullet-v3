@@ -9,7 +9,7 @@ export const Sidebar = () => {
   const location = useLocation()
 
   return (
-    <div className="w-full min-w-[250px] border-r-1 px-3 py-2.5 border-default-200 dark:border-default-100">
+    <div className="w-full border-r-1 px-3 py-2.5 border-default-200 dark:border-default-100">
       <Listbox variant="flat" aria-label="Listbox menu" className="relative">
         {sidebarItems.map((division) => {
           return (
@@ -34,7 +34,8 @@ export const Sidebar = () => {
                     )}
                     classNames={{
                       base: cn(
-                        location.pathname === item.href && 'bg-default-100'
+                        location.pathname.includes(item.href) &&
+                          'bg-default-100'
                       )
                     }}
                   >
