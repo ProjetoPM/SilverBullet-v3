@@ -55,16 +55,12 @@ describe('Create a project charter', async () => {
     )
   })
 
-  afterEach(async () => {
-    await projectCharterRepository.deleteAll()
-  })
-
   test('should create a project charter', async () => {
     const data = {
       projectName: 'string',
       highLevelProjectDescription: 'string',
       startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 192),
+      endDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 2),
       projectPurpose: 'string',
       measurableProjectObjectives: 'string',
       keyBenefits: 'string',
