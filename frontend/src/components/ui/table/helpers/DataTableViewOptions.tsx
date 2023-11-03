@@ -34,9 +34,9 @@ export const DataTableViewOptions = () => {
         {table
           .getAllColumns()
           .filter((column) => column.getCanHide())
-          .map((column) => {
-            return <DropdownItem key={column.id}>{column.id}</DropdownItem>
-          })}
+          .map((column) => (
+            <DropdownItem key={column.id}>{t(column.id)}</DropdownItem>
+          ))}
       </DropdownMenu>
     </Dropdown>
   )

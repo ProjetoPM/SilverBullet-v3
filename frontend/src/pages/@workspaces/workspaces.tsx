@@ -1,5 +1,5 @@
 import { useFetch } from '@/hooks/useFetch'
-import { usePageUtils } from '@/hooks/usePageTranslation'
+import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend, frontend } from '@/routes/routes'
 import { WorkspaceForm } from './workspaces.form'

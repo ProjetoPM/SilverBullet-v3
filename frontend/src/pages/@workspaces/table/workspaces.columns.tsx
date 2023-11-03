@@ -41,7 +41,12 @@ export const columns = [
    */
   helper.accessor((row) => row.description, {
     id: 'description',
-    header: () => t('workspaces:form.description.label'),
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        header={t('workspaces:form.description.label')}
+      />
+    ),
     cell: ({ row }) => clearHTMLTags(row.getValue('description')),
     enableSorting: true,
     enableHiding: true
@@ -50,10 +55,15 @@ export const columns = [
    * Plan Status
    */
   helper.accessor((row) => row.planStatus, {
-    id: 'planStatus',
-    header: () => t('workspaces:form.plan_status.label'),
+    id: 'plan_status',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        header={t('workspaces:form.plan_status.label')}
+      />
+    ),
     cell: ({ row }) => {
-      const status = row.getValue('planStatus') as string
+      const status = row.getValue('plan_status') as string
 
       const colors = {
         ACTIVE: 'success',

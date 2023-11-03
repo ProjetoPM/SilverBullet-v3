@@ -2,7 +2,6 @@ import { useScreen } from '@/hooks/useScreen'
 import { AnimatePresence } from 'framer-motion'
 import { Search } from 'lucide-react'
 import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 import { DebouncedInput } from '../DebouncedInput'
 import { AnimateFilters } from '../animation/AnimateFilters'
 import { TableDeleteButton } from './TableDeleteButton'
@@ -16,9 +15,8 @@ type TableTopContentProps = {
 }
 
 export function TableTopContent({ toolbar }: TableTopContentProps) {
-  const { filter, table, asyncFn } = useDataTable()
+  const { t, filter, table, asyncFn } = useDataTable()
   const { screenX } = useScreen()
-  const { t } = useTranslation('table')
 
   /**
    * Deleta os itens selecionados. Esse método só irá funcionar
