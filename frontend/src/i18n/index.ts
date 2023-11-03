@@ -9,7 +9,11 @@ import { zod } from './zod'
 export type Lang = 'en-US' | 'pt-BR'
 export const langs: Array<Lang> = ['en-US', 'pt-BR']
 
-const LOAD_PATH = import.meta.env.VITE_LOAD_PATH_LOCALES
+const LOAD_PATH = import.meta.env.VITE_LOAD_PATH_I18N
+
+if (!LOAD_PATH) {
+  throw new Error('LOAD_PATH_I18N not found. Check .env file.')
+}
 
 const i18n = i18next
   .use(HttpBackend)
