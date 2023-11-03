@@ -17,6 +17,10 @@ export const AuthRoutes: RouteObject = {
       ),
       children: [
         {
+          path: '/',
+          element: <SignInPage />
+        },
+        {
           path: frontend.auth.sign_in.index,
           element: <SignInPage />
         },

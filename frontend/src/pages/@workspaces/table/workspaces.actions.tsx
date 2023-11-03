@@ -35,7 +35,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
 
   const { removeMany } = useFetch<WorkspaceColumns>({
     baseUrl: backend.workspaces.baseUrl,
-    query: ['workspaces']
+    keys: ['workspaces']
   })
 
   const handleDelete = async () => {

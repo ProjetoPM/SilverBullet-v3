@@ -19,7 +19,8 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 
-import { useState } from 'react'
+import { configs } from '@/configs'
+import { useMemo, useState } from 'react'
 import { TableBottomContent } from './TableBottomContent'
 import { TableTopContent } from './TableTopContent'
 
@@ -28,20 +29,32 @@ type DataTableProps<TData, TValue> = {
   data: TData[]
 } & {
   toolbarButtons?: React.ReactNode
-  fn?: (ids: any) => void
+  asyncFn?: (ids: any) => Promise<void>
 }
 
 export const DataTable = <TData, TValue>({
   columns,
   data,
   toolbarButtons,
-  fn
+  asyncFn
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10
+  })
+
+  const pagination = useMemo(
+    () => ({
+      pageIndex,
+      pageSize
+    }),
+    [pageIndex, pageSize]
+  )
 
   const table = useReactTable({
     data,
@@ -52,16 +65,19 @@ export const DataTable = <TData, TValue>({
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     state: {
       sorting,
+      pagination,
       columnFilters,
       columnVisibility,
       globalFilter,
       rowSelection
-    }
+    },
+    debugTable: configs.debugTable
   })
 
   return (
@@ -75,7 +91,7 @@ export const DataTable = <TData, TValue>({
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
             toolbarButtons={toolbarButtons}
-            fn={fn}
+            asyncFn={asyncFn}
           />
         }
         topContentPlacement="outside"
