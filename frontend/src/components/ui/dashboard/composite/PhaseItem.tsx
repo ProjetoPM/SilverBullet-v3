@@ -27,7 +27,7 @@ export const PhaseItem = ({ item }: PhaseItemProps) => {
   const { t } = useTranslation(['areas', 'phases', 'description'])
 
   return (
-    <Link href={item.to} key={item.id} className="cursor-pointer">
+    <Link href={item.to} className="cursor-pointer rounded-md">
       <Card
         className={cn(
           'hover:scale-105 border-l-[6px] h-full w-full',
