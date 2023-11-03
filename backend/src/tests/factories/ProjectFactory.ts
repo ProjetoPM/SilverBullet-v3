@@ -8,7 +8,7 @@ type ProjectOverrides = {
 export class ProjectFactory {
   static create(overrides: ProjectOverrides) {
     const project = Project.create({
-      name: overrides.name || 'test-name',
+      name: overrides.name || 'test-project',
       description: overrides.description || 'test-description',
       workspaceId: overrides.workspaceId,
     })

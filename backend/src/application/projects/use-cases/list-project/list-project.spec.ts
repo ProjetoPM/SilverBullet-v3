@@ -1,15 +1,15 @@
-import { afterAll, beforeAll, describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test } from 'vitest'
 
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
 
+import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
+import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
+import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
+import { ListWorkspace } from '@/application/workspaces/use-cases/list-workspace/list-workspace'
 import { UserFactory } from '@/tests/factories/UserFactory'
 import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
-import { IWorkspacesRepository } from '@/application/workspaces/repositories/IWorkspacesRepository'
-import { ListWorkspace } from '@/application/workspaces/use-cases/list-workspace/list-workspace'
-import { InMemoryWorkspacesRepository } from '@/application/workspaces/repositories/in-memory/InMemoryWorkspacesRepository'
-import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 
 let workspacesRepository: IWorkspacesRepository
 let usersRepository: IUsersRepository

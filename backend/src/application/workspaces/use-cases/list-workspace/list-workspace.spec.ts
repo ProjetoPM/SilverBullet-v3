@@ -10,7 +10,7 @@ import { Workspace } from '../../domain/workspace'
 import { UserFactory } from '@/tests/factories/UserFactory'
 import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
-import { Roles } from '@/application/stakeholders/domain/roles.enum'
+import { Roles } from '@/application/stakeholder/initiating/stakeholders/domain/roles.enum'
 import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { ListWorkspace } from './list-workspace'
 

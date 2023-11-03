@@ -5,11 +5,16 @@ import { ValidatorCompositor } from '@/infra/validation/ValidatorCompositor'
 import { CompareFieldsValidator } from '@/infra/validation/CompareFieldsValidator'
 import { Controller } from '@/core/infra/controller'
 
+type ComparableFields = {
+  password: string
+  confirmPassword: string
+}
+
 export function makeCreateUserController(): Controller {
   const prismaUsersRepository = new PrismaUsersRepository()
   const createUser = new CreateUser(prismaUsersRepository)
 
-  const validator = new ValidatorCompositor([
+  const validator = new ValidatorCompositor<ComparableFields>([
     new CompareFieldsValidator({
       field: 'password',
       fieldToCompare: 'confirmPassword',
