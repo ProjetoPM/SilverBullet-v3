@@ -17,7 +17,7 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
   useEffect(() => {
     if (isExpired()) {
       toast.error(t('token_expired'), {
-        id: 'token_expired',
+        id: 'guard:token-expired',
         duration: Infinity
       })
       signOut()

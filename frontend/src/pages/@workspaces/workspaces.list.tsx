@@ -19,7 +19,7 @@ export const WorkspaceListPage = () => {
     <PageLayout
       title={title()}
       isLoading={list.isLoading}
-      breadcrumb={breadcrumb()}
+      breadcrumb={breadcrumb({ appendTitle: true })}
     >
       <DataTable
         columns={columns}

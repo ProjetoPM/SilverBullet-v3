@@ -3,33 +3,41 @@ import { frontend } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-type PageProps = {
-  _default?: boolean
-  segments?: BreadcrumbItem[]
+type UsePageUtilsProps = {
   dynamic?: boolean
+  _default?: boolean
 }
 
-export const usePageUtils = (ns?: string | string[]) => {
+type PageProps = {
+  appendTitle?: boolean
+  segments?: BreadcrumbItem[]
+}
+
+export const usePageUtils = (
+  ns?: string | string[],
+  { dynamic = false, _default = true }: UsePageUtilsProps = {}
+) => {
   const { id } = useParams()
   const { t } = useTranslation(ns)
 
-  const title = ({ dynamic = false }: PageProps = {}) => {
+  const title = () => {
     if (dynamic) {
       return id ? t('page.edit') : t('page.new')
     }
+
     return t('page.title')
   }
 
-  const breadcrumb = ({ _default = true, segments }: PageProps = {}) => {
-    const content =
-      _default && !segments
-        ? [
-            { label: 'Home', link: frontend.workspaces.index },
-            { label: title() }
-          ]
-        : [{ label: 'Home', link: frontend.workspaces.index }]
+  const breadcrumb = ({ segments, appendTitle = false }: PageProps = {}) => {
+    const start = _default
+      ? [{ label: 'Home', link: frontend.workspaces.index }]
+      : []
 
-    return !segments ? content : [...content, ...segments]
+    const middle = start && segments ? [...start, ...segments] : [...start]
+    const end = dynamic ? [...middle, { label: title() }] : middle
+    const content = appendTitle ? [...end, { label: title() }] : end
+
+    return content
   }
 
   return { id, t, title, breadcrumb }
