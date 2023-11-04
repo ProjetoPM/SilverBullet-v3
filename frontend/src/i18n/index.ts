@@ -22,7 +22,7 @@ const i18n = i18next
   .init({
     partialBundledLanguages: true,
     fallbackLng: 'pt-BR',
-    ns: ['common'],
+    ns: ['common', 'errors'],
     defaultNS: 'common',
     supportedLngs: langs,
     backend: {
