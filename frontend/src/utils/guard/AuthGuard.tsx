@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useToken } from '@/hooks/useToken'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
@@ -9,6 +9,7 @@ type AuthGuardProps = {
 }
 
 export const AuthGuard = ({ children }: AuthGuardProps) => {
+  const [isMounted, setMounted] = useState(false)
   const { t } = useTranslation('errors')
   const { isExpired } = useToken()
   const { signOut } = useAuth()
@@ -21,7 +22,8 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
       })
       signOut()
     }
+    setMounted(true)
   }, [t, isExpired, signOut])
 
-  return <>{children}</>
+  return <>{isMounted && children}</>
 }

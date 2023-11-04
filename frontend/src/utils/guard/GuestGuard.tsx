@@ -1,6 +1,6 @@
 import { useToken } from '@/hooks/useToken'
 import { frontend } from '@/routes/routes'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 type GuestGuardProps = {
@@ -8,6 +8,7 @@ type GuestGuardProps = {
 }
 
 export const GuestGuard = ({ children }: GuestGuardProps) => {
+  const [isMounted, setMounted] = useState(false)
   const { token } = useToken()
   const navigate = useNavigate()
 
@@ -15,7 +16,8 @@ export const GuestGuard = ({ children }: GuestGuardProps) => {
     if (token) {
       navigate(frontend.workspaces.index)
     }
+    setMounted(true)
   }, [token, navigate])
 
-  return <>{children}</>
+  return <>{isMounted && children}</>
 }
