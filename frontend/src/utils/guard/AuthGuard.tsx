@@ -8,6 +8,8 @@ type AuthGuardProps = {
   children: React.ReactNode
 }
 
+export const AG_EXPIRED_TOKEN_ID = 'guard:token-expired'
+
 export const AuthGuard = ({ children }: AuthGuardProps) => {
   const [isMounted, setMounted] = useState(false)
   const { t } = useTranslation('errors')
@@ -17,7 +19,7 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
   useEffect(() => {
     if (isExpired()) {
       toast.error(t('token_expired'), {
-        id: 'guard:token-expired',
+        id: AG_EXPIRED_TOKEN_ID,
         duration: Infinity
       })
       signOut()

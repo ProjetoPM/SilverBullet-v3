@@ -84,7 +84,7 @@ export const Breadcrumb = ({
             </BreadcrumbItem>
           ))}
         </Breadcrumbs>
-        <span className="text-2xl font-bold tracking-wide">{title}</span>
+        <span className="mt-0.5 text-2xl font-bold tracking-wide">{title}</span>
       </section>
     </>
   )

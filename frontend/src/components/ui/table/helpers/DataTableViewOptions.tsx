@@ -22,7 +22,7 @@ export const DataTableViewOptions = () => {
           startContent={<Columns className="h-5 w-5" />}
           className="ml-auto gap-2 text-foreground-500"
         >
-          {t('default:Colunas')}
+          {t('columns')}
         </Button>
       </DropdownTrigger>
       <DropdownMenu

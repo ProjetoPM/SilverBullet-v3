@@ -54,7 +54,7 @@ export const useFetch = <T>({
 }: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
+  const redirect = useNavigate()
   const { isExpired: isTokenExpired } = useToken()
 
   /**
@@ -131,7 +131,7 @@ export const useFetch = <T>({
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(redirectTo)
+          redirect(redirectTo, { replace: true })
         }
       }
     }
@@ -155,7 +155,7 @@ export const useFetch = <T>({
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(redirectTo)
+          redirect(redirectTo, { replace: true })
         }
       }
     }
@@ -179,7 +179,7 @@ export const useFetch = <T>({
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(`${redirectTo}`)
+          redirect(redirectTo, { replace: true })
         }
       }
     }
@@ -209,7 +209,7 @@ export const useFetch = <T>({
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(`${redirectTo}`)
+          redirect(redirectTo, { replace: true })
         }
       }
     }

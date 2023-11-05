@@ -16,13 +16,13 @@ export const SubmitButton = ({
   isEdit = false,
   ...props
 }: SubmitButtonProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('default')
 
   return (
     <div className="flex gap-2.5 mt-2.5">
       <Button color="primary" type="submit" {...props}>
         {!children && isEdit ? <Edit className="w-5 h-5" /> : <Save />}
-        {!children && isEdit ? t('common:btn.edit') : t('common:btn.save')}
+        {!children && isEdit ? t('default:btn.edit') : t('default:btn.save')}
         {children}
       </Button>
       {fnResetButton && (
@@ -32,7 +32,7 @@ export const SubmitButton = ({
           onClick={() => fnResetButton()}
         >
           <RotateCcw className="w-5 h-5" />
-          {labelResetButton || t('btn.reset')}
+          {labelResetButton || t('default:btn.reset')}
         </Button>
       )}
     </div>

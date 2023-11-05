@@ -22,8 +22,8 @@ const i18n = i18next
   .init({
     partialBundledLanguages: true,
     fallbackLng: 'pt-BR',
-    ns: ['common', 'errors'],
-    defaultNS: 'common',
+    ns: ['default', 'errors'],
+    defaultNS: 'default',
     supportedLngs: langs,
     backend: {
       loadPath: LOAD_PATH

@@ -11,6 +11,7 @@ import { forwardRef, useEffect, useId, useState } from 'react'
 import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
 import { starterKitConfigs } from './config'
+import './config/default.css'
 import { editorStyles, placeholderStyles } from './config/style'
 import { BubbleMenu } from './menus/BubbleMenu'
 import { FixedMenu } from './menus/FixedMenu'
@@ -94,8 +95,9 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
               )
             },
             autolink: false,
+            openOnClick: false,
             HTMLAttributes: {
-              class: 'text-blue-500 hover:underline hover:cursor-pointer'
+              class: 'text-blue-500 hover:underline'
             }
           }),
           Underline
@@ -108,6 +110,21 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
       },
       []
     )
+
+    /**
+     * Following link when clicking on it while holding the 'Ctrl' key.
+     */
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.metaKey || e.ctrlKey) {
+          const selection = editor?.state.selection
+          console.log(selection)
+        }
+      }
+
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }, [editor])
 
     /**
      * Update the placeholder after changing the language.
