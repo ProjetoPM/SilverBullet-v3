@@ -7,6 +7,7 @@ import Typography from '@tiptap/extension-typography'
 import { Underline } from '@tiptap/extension-underline'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import i18next from 'i18next'
 import { forwardRef, useEffect, useId, useState } from 'react'
 import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
@@ -70,6 +71,12 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             },
             history: {
               depth: 10
+            },
+            paragraph: {
+              HTMLAttributes: {
+                class: 'hyphens-auto',
+                lang: i18next.language
+              }
             }
           }),
           Typography,
@@ -86,13 +93,9 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             }
           }),
           Link.configure({
-            protocols: ['http', 'https', 'mailto'],
+            protocols: ['http', 'https'],
             validate: (url) => {
-              return (
-                url.startsWith('http://') ||
-                url.startsWith('https://') ||
-                url.startsWith('mailto:')
-              )
+              return url.startsWith('http://') || url.startsWith('https://')
             },
             autolink: false,
             openOnClick: false,
@@ -110,21 +113,6 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
       },
       []
     )
-
-    /**
-     * Following link when clicking on it while holding the 'Ctrl' key.
-     */
-    useEffect(() => {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.metaKey || e.ctrlKey) {
-          const selection = editor?.state.selection
-          console.log(selection)
-        }
-      }
-
-      document.addEventListener('keydown', handleKeyDown)
-      return () => document.removeEventListener('keydown', handleKeyDown)
-    }, [editor])
 
     /**
      * Update the placeholder after changing the language.
