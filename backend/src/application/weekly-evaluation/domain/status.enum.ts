@@ -1,6 +1,6 @@
-enum Status {
+enum EvaluationStatuses {
   OPEN = 'OPEN',
   CLOSED = 'CLOSED',
 }
 
-export { Status }
+export { EvaluationStatuses }

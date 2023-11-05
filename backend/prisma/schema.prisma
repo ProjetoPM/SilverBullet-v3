@@ -43,16 +43,17 @@ enum PlanTypes {
 }
 
 model Workspace {
-  id              String          @id
-  name            String
-  description     String?         @db.VarChar(500)
-  plan            PlanTypes
-  plan_status     PlanStatuses
-  created_at      DateTime        @default(now())
-  updated_at      DateTime        @updatedAt
-  Project         Project[]
-  UserWorkspace   UserWorkspace[]
-  WorkspaceMetric Metric[]
+  id               String             @id
+  name             String
+  description      String?            @db.VarChar(500)
+  plan             PlanTypes
+  plan_status      PlanStatuses
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  Project          Project[]
+  UserWorkspace    UserWorkspace[]
+  WorkspaceMetric  Metric[]
+  WeeklyEvaluation WeeklyEvaluation[]
 
   @@map("workspaces")
 }
@@ -151,12 +152,16 @@ enum EvaluationStatus {
 }
 
 model WeeklyEvaluation {
-  id        String           @id
-  name      String
-  startDate DateTime
-  endDate   DateTime
-  type      EvaluationTypes
-  status    EvaluationStatus
+  id           String           @id
+  name         String
+  start_date   DateTime
+  end_date     DateTime
+  type         EvaluationTypes
+  status       EvaluationStatus
+  workspace    Workspace        @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace_id String
+  created_at   DateTime         @default(now())
+  updated_at   DateTime         @updatedAt
 }
 
 // Initiating

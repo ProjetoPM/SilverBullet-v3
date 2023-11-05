@@ -85,10 +85,13 @@ CREATE TABLE `metric` (
 CREATE TABLE `WeeklyEvaluation` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `startDate` DATETIME(3) NOT NULL,
-    `endDate` DATETIME(3) NOT NULL,
+    `start_date` DATETIME(3) NOT NULL,
+    `end_date` DATETIME(3) NOT NULL,
     `type` ENUM('INDIVIDUAL', 'GROUP') NOT NULL,
     `status` ENUM('OPEN', 'CLOSED') NOT NULL,
+    `workspace_id` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -230,6 +233,9 @@ ALTER TABLE `user_project_roles` ADD CONSTRAINT `user_project_roles_user_id_fkey
 
 -- AddForeignKey
 ALTER TABLE `metric` ADD CONSTRAINT `metric_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `WeeklyEvaluation` ADD CONSTRAINT `WeeklyEvaluation_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `project_charters` ADD CONSTRAINT `project_charters_project_id_fkey` FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
