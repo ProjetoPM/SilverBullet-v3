@@ -2,19 +2,31 @@ import { WorkspaceProps, WorkspaceSchema } from './workspace.schema'
 import { Entity } from '@/core/domain/entity'
 import { ZodValidationError } from '@/core/domain/errors/ZodValidationError'
 import { Either, left, right } from '@/core/logic/either'
+import { Metric } from './metric'
 
 export class Workspace extends Entity<WorkspaceProps> {
-  private constructor(props: WorkspaceProps, id?: string) {
+  public readonly metrics?: Metric[]
+  private constructor(props: WorkspaceProps, id?: string, metrics?: Metric[]) {
     super(props, id)
+    this.metrics = metrics
   }
 
-  static create(props: WorkspaceProps, id?: string): Either<Error, Workspace> {
+  static create(
+    props: WorkspaceProps,
+    id?: string,
+    metrics?: Metric[],
+  ): Either<Error, Workspace> {
     const result = WorkspaceSchema.safeParse(props)
-
     if (!result.success) {
       return left(new ZodValidationError(result.error))
     }
-
-    return right(new Workspace(result.data, id))
+    const workspace = new Workspace(
+      {
+        ...result.data,
+      },
+      id,
+      metrics,
+    )
+    return right(workspace)
   }
 }

@@ -11,6 +11,7 @@ import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { Metric } from '../../domain/metric'
 
 type CreateWorkspaceRequest = {
   name: string
@@ -37,12 +38,39 @@ export class CreateWorkspace {
       return left(new UserDoesNotExistError())
     }
 
-    const workspaceOrError = Workspace.create({
-      name,
-      description,
-      plan: PlanTypes.FREE,
-      planStatus: PlanStatuses.ACTIVE,
-    })
+    const metrics = [
+      Metric.create({
+        name: 'NOK',
+        value: 0,
+      }).value as Metric,
+      Metric.create({
+        name: 'PNOK',
+        value: 2.5,
+      }).value as Metric,
+      Metric.create({
+        name: 'POK',
+        value: 5,
+      }).value as Metric,
+      Metric.create({
+        name: 'PTOK',
+        value: 7.5,
+      }).value as Metric,
+      Metric.create({
+        name: 'TOK',
+        value: 10,
+      }).value as Metric,
+    ]
+
+    const workspaceOrError = Workspace.create(
+      {
+        name,
+        description,
+        plan: PlanTypes.FREE,
+        planStatus: PlanStatuses.ACTIVE,
+      },
+      undefined,
+      metrics,
+    )
 
     if (workspaceOrError.isLeft()) {
       return left(workspaceOrError.value)
