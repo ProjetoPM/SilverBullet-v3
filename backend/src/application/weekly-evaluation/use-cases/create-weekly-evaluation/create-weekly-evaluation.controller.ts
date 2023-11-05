@@ -16,7 +16,7 @@ import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToW
 import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
 import { StartDateGreaterThanEndDateError } from './errors/StartDateGreaterThanEndDateError'
 
-type CreateWeeklyEvaluationControllerRequest = {
+export type CreateWeeklyEvaluationControllerRequest = {
   name: string
   startDate: string
   endDate: string

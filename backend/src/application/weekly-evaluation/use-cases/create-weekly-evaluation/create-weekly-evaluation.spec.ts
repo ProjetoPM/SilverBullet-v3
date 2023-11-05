@@ -21,13 +21,16 @@ import { InviteStatuses } from '@/application/workspaces/domain/invite-statuses.
 import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 import { Types } from '../../domain/types.enum'
 import { EvaluationStatuses } from '../../domain/status.enum'
+import { StartDateGreaterThanEndDateError } from './errors/StartDateGreaterThanEndDateError'
+import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
+import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
 
 let weeklyEvaluationsRepository: IWeeklyEvaluationsRepository
 let workspacesRepository: IWorkspacesRepository
 let usersRepository: IUsersRepository
 let createWeeklyEvaluation: CreateWeeklyEvaluation
 
-describe('Create a workspace', async () => {
+describe('Create a evaluation', async () => {
   const user = UserFactory.create()
   const userThatDoesNotBelongsToWorkspace = UserFactory.create()
   const workspace = WorkspaceFactory.create()
@@ -65,7 +68,7 @@ describe('Create a workspace', async () => {
     expect(response.isRight()).toBeTruthy()
   })
 
-  test('should create a evaluation', async () => {
+  test('should not create a evaluation with start date greather than end date', async () => {
     const data: CreateWeeklyEvaluationRequest = {
       name: 'test-evaluation',
       startDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 3),
@@ -77,7 +80,10 @@ describe('Create a workspace', async () => {
     }
 
     const response = await createWeeklyEvaluation.execute(data)
-    expect(response.isRight()).toBeTruthy()
+    console.log(response.value)
+
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new StartDateGreaterThanEndDateError())
   })
   test('should not create a evaluation with invalid user id', async () => {
     const data: CreateWeeklyEvaluationRequest = {
@@ -91,7 +97,8 @@ describe('Create a workspace', async () => {
     }
 
     const response = await createWeeklyEvaluation.execute(data)
-    expect(response.isRight()).toBeTruthy()
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new UserDoesNotExistError())
   })
 
   test('should not create a evaluation with invalid workspace id', async () => {
@@ -106,7 +113,8 @@ describe('Create a workspace', async () => {
     }
 
     const response = await createWeeklyEvaluation.execute(data)
-    expect(response.isRight()).toBeTruthy()
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new WorkspaceDoesNotExistError())
   })
 
   test('should not create a evaluation with user that does not belong to workspace', async () => {
@@ -121,6 +129,7 @@ describe('Create a workspace', async () => {
     }
 
     const response = await createWeeklyEvaluation.execute(data)
-    expect(response.isRight()).toBeTruthy()
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toEqual(new UserDoesNotBelongToWorkspaceError())
   })
 })

@@ -72,7 +72,7 @@ export class CreateWeeklyEvaluation {
     const isStartDateGreaterThanEndDate =
       startDate.getTime() > endDate.getTime()
 
-    if (!isStartDateGreaterThanEndDate) {
+    if (isStartDateGreaterThanEndDate) {
       return left(new StartDateGreaterThanEndDateError())
     }
 
