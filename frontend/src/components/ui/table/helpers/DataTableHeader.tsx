@@ -23,15 +23,17 @@ export const DataTableColumnHeader = <TData, TValue>({
   header,
   className
 }: DataTableColumnHeaderProps<TData, TValue>) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('table')
 
   const headerIcons = useCallback(
     () => (
       <>
-        {column.getIsSorted() === 'desc' && <ArrowDown className="h-4 w-4" />}
+        {column.getIsSorted() === 'desc' && (
+          <ArrowDown className="h-4 w-4 text-foreground-500" />
+        )}
         {column.getIsSorted() === 'asc' && <ArrowUp className="h-4 w-4" />}
         {column.getIsSorted() !== 'asc' && column.getIsSorted() !== 'desc' && (
-          <ChevronDownSquare className="h-4 w-4" />
+          <ChevronDownSquare className="h-4 w-4 text-foreground-500" />
         )}
       </>
     ),
@@ -55,23 +57,23 @@ export const DataTableColumnHeader = <TData, TValue>({
           <DropdownItem
             key="asc"
             onPress={() => column.toggleSorting(false)}
-            startContent={<ArrowUp className="h-4 w-4" />}
+            startContent={<ArrowUp className="h-4 w-4 text-foreground-500" />}
           >
-            {t('asc')}
+            {t('filter.asc')}
           </DropdownItem>
           <DropdownItem
             key="desc"
             onPress={() => column.toggleSorting(true)}
-            startContent={<ArrowDown className="h-4 w-4" />}
+            startContent={<ArrowDown className="h-4 w-4 text-foreground-500" />}
           >
-            {t('desc')}
+            {t('filter.desc')}
           </DropdownItem>
           <DropdownItem
             key="hide-column"
             onPress={() => column.toggleVisibility(false)}
-            startContent={<EyeOff className="h-4 w-4" />}
+            startContent={<EyeOff className="h-4 w-4 text-foreground-500" />}
           >
-            {t('hide_column')}
+            {t('filter.hide_column')}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

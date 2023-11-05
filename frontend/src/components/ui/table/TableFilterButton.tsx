@@ -15,7 +15,11 @@ export const TableFilterButton = () => {
     <>
       <Dropdown>
         <DropdownTrigger>
-          <Button color="default" variant="flat" isIconOnly>
+          <Button
+            color="default"
+            className="bg-default-100 hover:bg-default-200"
+            isIconOnly
+          >
             <Settings2 className="text-default-500 w-5 h-5" />
           </Button>
         </DropdownTrigger>
@@ -27,7 +31,9 @@ export const TableFilterButton = () => {
           aria-label="Select the type of filter"
         >
           {Object.keys(filter).map((key) => (
-            <DropdownItem key={key}>{t(`toggle.${key}`)}</DropdownItem>
+            <DropdownItem key={key}>
+              {t(`filter.toggle.${key}.label`)}
+            </DropdownItem>
           ))}
         </DropdownMenu>
       </Dropdown>

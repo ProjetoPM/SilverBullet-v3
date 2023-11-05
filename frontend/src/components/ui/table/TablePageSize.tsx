@@ -6,10 +6,12 @@ export const TablePageSize = () => {
   return (
     <div className="flex justify-between items-center">
       <span className="text-default-400 text-small">
-        {t('total_of', { lines: table.getFilteredRowModel().rows.length })}
+        {t('table.total_of', {
+          value: table.getFilteredRowModel().rows.length
+        })}
       </span>
       <label className="flex items-center text-default-400 text-small">
-        {t('rows_per_page')}
+        {t('table.rows_per_page')}
         <select
           className="bg-transparent outline-none text-default-400 text-small hover:text-primary focus:text-primary focus-visible:text-primary"
           value={table.getState().pagination.pageSize}

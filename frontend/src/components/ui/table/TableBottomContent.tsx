@@ -14,8 +14,10 @@ export const TableBottomContent = () => {
   return (
     <div className="py-2 px-2 flex justify-center xs:justify-between items-center">
       <span className="hidden xs:flex text-small text-default-400">
-        {table.getFilteredSelectedRowModel().rows.length} {t('of')}{' '}
-        {table.getFilteredRowModel().rows.length} {t('rows_selected')}.
+        {t('table.rows_selected', {
+          rows: table.getFilteredSelectedRowModel().rows.length,
+          max_rows: table.getFilteredRowModel().rows.length
+        })}
       </span>
       <AnimateFilters>
         {filter.pagination && (

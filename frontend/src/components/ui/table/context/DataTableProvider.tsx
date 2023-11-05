@@ -14,12 +14,16 @@ export type DataTableContext<TData> = {
   asyncFn?: (ids: any) => Promise<void>
   filter: FilterProps
   toggleFilter: (filter: keyof FilterProps) => void
+  setFilter: (filter: keyof FilterProps, value: boolean) => void
   t: TFunction<'table', undefined>
 }
 
 type DataTableProviderProps<TData> = {
   children: ReactNode
-  value: Omit<DataTableContext<TData>, 'filter' | 'toggleFilter' | 't'>
+  value: Omit<
+    DataTableContext<TData>,
+    'filter' | 'toggleFilter' | 'setFilter' | 't'
+  >
 }
 
 export const DataTableContext = createContext<DataTableContext<any> | null>(
@@ -32,18 +36,24 @@ export const DataTableProvider = <T,>({
 }: DataTableProviderProps<T>) => {
   const { t } = useTranslation('table')
 
-  const [filter, setFilter] = useState<FilterProps>({
+  const [filter, _setFilter] = useState<FilterProps>({
     search: true,
     pagination: true,
     visibility: true
   })
 
   const toggleFilter = (filter: keyof FilterProps) => {
-    setFilter((prev) => ({ ...prev, [filter]: !prev[filter] }))
+    _setFilter((prev) => ({ ...prev, [filter]: !prev[filter] }))
+  }
+
+  const setFilter = (filter: keyof FilterProps, value: boolean) => {
+    _setFilter((prev) => ({ ...prev, [filter]: value }))
   }
 
   return (
-    <DataTableContext.Provider value={{ ...value, t, filter, toggleFilter }}>
+    <DataTableContext.Provider
+      value={{ ...value, t, filter, toggleFilter, setFilter }}
+    >
       {children}
     </DataTableContext.Provider>
   )

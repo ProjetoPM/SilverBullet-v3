@@ -190,7 +190,6 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             className="[&>*]:data-[is-fixed=true]:rounded-t-none break-words"
             data-is-fixed={fixed}
             editor={editor}
-            allowFullScreen
           />
         </div>
         {errorMessage && (

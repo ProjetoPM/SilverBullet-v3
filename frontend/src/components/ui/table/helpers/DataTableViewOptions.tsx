@@ -20,9 +20,9 @@ export const DataTableViewOptions = () => {
         <Button
           variant="flat"
           startContent={<Columns className="h-5 w-5" />}
-          className="ml-auto gap-2 text-foreground-500"
+          className="ml-auto gap-2 bg-default-100 hover:bg-default-200 text-foreground-500"
         >
-          {t('columns')}
+          {t('filter.visibility')}
         </Button>
       </DropdownTrigger>
       <DropdownMenu
