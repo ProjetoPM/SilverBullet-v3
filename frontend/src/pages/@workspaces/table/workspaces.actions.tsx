@@ -97,12 +97,12 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownMenu>
       </Dropdown>
       <AlertModal
-        title={t('are_you_certain.title')}
+        title={t('default:are_you_certain.title')}
         onAction={handleDelete}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
-        {t('are_you_certain_delete.description')}
+        {t('default:are_you_certain.description')}
       </AlertModal>
     </>
   )

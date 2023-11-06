@@ -6,16 +6,13 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { Columns } from 'lucide-react'
-import { useMemo } from 'react'
 import { useDataTable } from '../context/DataTableProvider'
 
 export const DataTableViewOptions = () => {
   const { t, table } = useDataTable()
 
-  const selectedColumns = useMemo(
-    () => table.getAllColumns().filter((column) => column.getIsVisible()),
-    [table]
-  )
+  const selectedColumns = () =>
+    table.getAllColumns().filter((column) => column.getIsVisible())
 
   return (
     <Dropdown>
@@ -31,7 +28,7 @@ export const DataTableViewOptions = () => {
       <DropdownMenu
         selectionMode="multiple"
         aria-label="Select the columns to show"
-        selectedKeys={selectedColumns.map((column) => column.id)}
+        selectedKeys={selectedColumns().map((column) => column.id)}
         onAction={(key) => table.getColumn(String(key))?.toggleVisibility()}
       >
         {table
