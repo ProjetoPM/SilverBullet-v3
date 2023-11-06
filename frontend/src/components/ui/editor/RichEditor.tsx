@@ -8,7 +8,7 @@ import { Underline } from '@tiptap/extension-underline'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import i18next from 'i18next'
-import { forwardRef, useEffect, useId, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useId, useState } from 'react'
 import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
 import { starterKitConfigs } from './config'
@@ -142,9 +142,10 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
     /**
      * Change between the bubble menu and fixed menu.
      */
-    const handleFixed = () => {
+    const handleFixed = useCallback(() => {
       setFixed((previous) => !previous)
-    }
+      editor?.commands.focus()
+    }, [editor])
 
     return (
       <div className={cn('h-full flex flex-col w-full', props.className)}>

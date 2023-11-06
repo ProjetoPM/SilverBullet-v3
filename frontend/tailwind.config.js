@@ -32,11 +32,7 @@ export default {
         light: {},
         dark: {
           colors: {
-            default: {
-              "50": "#141414",
-              "100": "#18181b",
-              "200": "#27272a",
-            },
+            default: {},
           }
         },
       },
