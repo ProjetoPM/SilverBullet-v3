@@ -1,7 +1,7 @@
 import { Button, useDisclosure } from '@nextui-org/react'
 import { Trash } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import { AlertModal } from '../AlertModal'
+import { useDataTable } from './context/DataTableProvider'
 
 type TableDeleteButton = {
   isDisabled: boolean
@@ -9,7 +9,7 @@ type TableDeleteButton = {
 }
 
 export const TableDeleteButton = ({ isDisabled, handleDelete }) => {
-  const { t } = useTranslation()
+  const { t } = useDataTable()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (
@@ -24,12 +24,12 @@ export const TableDeleteButton = ({ isDisabled, handleDelete }) => {
         <Trash className="w-5 h-5" />
       </Button>
       <AlertModal
-        title={t('default:generic_delete.title')}
+        title={t('generic_delete.title')}
         onAction={handleDelete}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
-        {t('default:generic_delete.description')}
+        {t('generic_delete.description')}
       </AlertModal>
     </>
   )

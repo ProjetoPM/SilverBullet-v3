@@ -6,13 +6,16 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { Columns } from 'lucide-react'
+import { useMemo } from 'react'
 import { useDataTable } from '../context/DataTableProvider'
 
 export const DataTableViewOptions = () => {
   const { t, table } = useDataTable()
-  const selectedColumns = table
-    .getAllColumns()
-    .filter((column) => column.getIsVisible())
+
+  const selectedColumns = useMemo(
+    () => table.getAllColumns().filter((column) => column.getIsVisible()),
+    [table]
+  )
 
   return (
     <Dropdown>
@@ -22,7 +25,7 @@ export const DataTableViewOptions = () => {
           startContent={<Columns className="h-5 w-5" />}
           className="ml-auto gap-2 bg-default-100 hover:bg-default-200 text-foreground-500"
         >
-          {t('filter.visibility')}
+          {t('filter.toggle.visibility')}
         </Button>
       </DropdownTrigger>
       <DropdownMenu

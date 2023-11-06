@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion'
 import { Search } from 'lucide-react'
 import { useCallback } from 'react'
 import { DebouncedInput } from '../DebouncedInput'
-import { AnimateFilters } from '../animation/AnimateFilters'
+import { DefaultAnimate } from '../animation/DefaultAnimate'
 import { TableDeleteButton } from './TableDeleteButton'
 import { TableFilterButton } from './TableFilterButton'
 import { TablePageSize } from './TablePageSize'
@@ -80,9 +80,9 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
               {filters()
                 .filter((component) => component.shouldRender)
                 .map((filter) => (
-                  <AnimateFilters key={filter.key}>
-                    <div className="w-full">{filter.component}</div>
-                  </AnimateFilters>
+                  <DefaultAnimate key={filter.key}>
+                    {filter.component}
+                  </DefaultAnimate>
                 ))}
             </AnimatePresence>
           </div>

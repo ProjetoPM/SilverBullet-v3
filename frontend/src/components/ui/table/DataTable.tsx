@@ -18,7 +18,6 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-
 import { configs } from '@/configs'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'

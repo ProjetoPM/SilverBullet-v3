@@ -5,7 +5,7 @@ import {
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react'
-import { AnimateFilters } from '../animation/AnimateFilters'
+import { DefaultAnimate } from '../animation/DefaultAnimate'
 import { useDataTable } from './context/DataTableProvider'
 
 export const TableBottomContent = () => {
@@ -19,7 +19,7 @@ export const TableBottomContent = () => {
           max_rows: table.getFilteredRowModel().rows.length
         })}
       </span>
-      <AnimateFilters>
+      <DefaultAnimate>
         {filter.pagination && (
           <Pagination
             isCompact
@@ -32,7 +32,7 @@ export const TableBottomContent = () => {
             onChange={(page) => table.setPageIndex(page - 1)}
           />
         )}
-      </AnimateFilters>
+      </DefaultAnimate>
       <div className="hidden sm:flex justify-end gap-1">
         <Button
           size="sm"

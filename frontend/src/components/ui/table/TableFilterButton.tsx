@@ -31,9 +31,7 @@ export const TableFilterButton = () => {
           aria-label="Select the type of filter"
         >
           {Object.keys(filter).map((key) => (
-            <DropdownItem key={key}>
-              {t(`filter.toggle.${key}.label`)}
-            </DropdownItem>
+            <DropdownItem key={key}>{t(`filter.toggle.${key}`)}</DropdownItem>
           ))}
         </DropdownMenu>
       </Dropdown>
