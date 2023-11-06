@@ -26,7 +26,7 @@ export const AlertModal = ({
   onAction,
   ...props
 }: AlertModal) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('table')
 
   return (
     <Modal backdrop="blur" {...props}>
@@ -40,7 +40,7 @@ export const AlertModal = ({
             <ModalBody>{children}</ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>
-                {textClose ?? t('btn.modal.on_close')}
+                {textClose ?? t('generic_delete.on_close')}
               </Button>
               <Button
                 color="primary"
@@ -49,7 +49,7 @@ export const AlertModal = ({
                   onClose()
                 }}
               >
-                {textAction ?? t('btn.modal.on_action')}
+                {textAction ?? t('generic_delete.on_action')}
               </Button>
             </ModalFooter>
           </>

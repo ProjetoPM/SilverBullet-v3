@@ -1,3 +1,4 @@
+import { configs } from '@/configs'
 import {
   Table,
   TableBody,
@@ -18,7 +19,6 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { configs } from '@/configs'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TableBottomContent } from './TableBottomContent'
@@ -98,8 +98,8 @@ export const DataTable = <TData, TValue>({
         bottomContentPlacement="outside"
         className="min-h-unit-24"
         classNames={{
-          th: 'min-w-max',
-          tr: 'data-[selected=true]:bg-default-100 hover:bg-default-100 dark:data-[selected=true]:bg-default-100 dark:hover:bg-default-100',
+          th: 'bg-default-100 dark:bg-default-200 min-w-max',
+          tr: 'data-[selected=true]:bg-default-100 hover:bg-default-100 dark:data-[selected=true]:bg-default-200 dark:hover:bg-default-200',
           td: 'group-data-[first=true]:first:rounded-tl-lg group-data-[first=true]:last:rounded-tr-lg group-data-[last=true]:first:rounded-bl-lg group-data-[last=true]:last:rounded-br-lg'
         }}
       >
