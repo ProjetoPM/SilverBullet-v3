@@ -47,10 +47,13 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   async update(workspace: Workspace): Promise<void> {
     const data = await WorkspaceMapper.toPersistence(workspace)
 
+    const { metrics,...workspacePersistence } = data
     await prismaClient.workspace
       .update({
         where: { id: workspace.id },
-        data,
+        data: {
+          ...workspacePersistence
+        },
       })
       .catch(() => {
         throw new Error('Error on update workspace')

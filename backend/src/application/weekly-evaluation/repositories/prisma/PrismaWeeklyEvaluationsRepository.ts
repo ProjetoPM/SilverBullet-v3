@@ -8,9 +8,20 @@ export class PrismaWeeklyEvaluationsRepository
 {
   async create(weeklyEvaluation: WeeklyEvaluation): Promise<void> {
     const data = await WeeklyEvaluationMapper.toPersistence(weeklyEvaluation)
-
+    
     await prismaClient.weeklyEvaluation.create({
       data,
     })
+  }
+  async listByWorkspace(workspaceId: string): Promise<WeeklyEvaluation[]> {
+    const data = await prismaClient.weeklyEvaluation.findMany({
+      where: {
+        workspace_id: workspaceId
+      }
+    })
+
+    const weeklyEvaluations = data.map(dbWeeklyEvaluations => WeeklyEvaluationMapper.toDomain(dbWeeklyEvaluations))
+
+    return weeklyEvaluations
   }
 }

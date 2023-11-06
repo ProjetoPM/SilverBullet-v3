@@ -9,8 +9,8 @@ export class WeeklyEvaluationMapper {
     const projectOrError = WeeklyEvaluation.create(
       {
         name: raw.name,
-        startDate: raw.startDate,
-        endDate: raw.endDate,
+        startDate: raw.start_date,
+        endDate: raw.end_date,
         status: raw.status as EvaluationStatuses,
         type: raw.type as Types,
         workspaceId: raw.workspace_id,

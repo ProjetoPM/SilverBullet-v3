@@ -1,14 +1,12 @@
 import { Either, left, right } from '@/core/logic/either'
 
-import { PlanTypes } from '../../domain/plan-types.enum'
 import { PlanStatuses } from '../../domain/plan-statuses.enum'
-import { InviteStatuses } from '../../domain/invite-statuses.enum'
+import { PlanTypes } from '../../domain/plan-types.enum'
 
-import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { Workspace } from '../../domain/workspace'
 
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'

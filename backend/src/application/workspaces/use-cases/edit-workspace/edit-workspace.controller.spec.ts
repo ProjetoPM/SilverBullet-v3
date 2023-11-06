@@ -52,6 +52,8 @@ describe('Edit workspace (end-to-end)', () => {
       .auth(jwt.token, { type: 'bearer' })
       .send(data)
 
+      console.log(response);
+      
     expect(response.status).toBe(StatusCodes.OK)
   })
 

@@ -15,6 +15,7 @@ export class WorkspaceMapper {
         planStatus: raw.plan_status as PlanStatuses,
       },
       raw.id,
+    
     )
 
     if (workspaceOrError.isLeft()) {

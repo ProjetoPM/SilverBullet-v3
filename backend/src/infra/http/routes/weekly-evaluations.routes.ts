@@ -4,6 +4,7 @@ import { Router } from 'express'
 import { makeEnsureAuthenticated } from '../factories/controllers/middlewares/makeEnsureAuthenticated'
 import { makeGetCurrentWorkspaceAndProject } from '../factories/controllers/middlewares/makeGetCurrentWorkspaceAndProject'
 import { makeCreateWeeklyEvaluationController } from '../factories/controllers/weekly-evaluation/makeCreateWeeklyEvaluationController'
+import { makeListWeeklyEvaluationController } from '../factories/controllers/weekly-evaluation/makeListWeeklyEvaluation'
 
 export const weeklyEvaluations = Router()
 
@@ -12,5 +13,10 @@ weeklyEvaluations.use(adaptMiddleware(makeGetCurrentWorkspaceAndProject()))
 
 weeklyEvaluations.post(
   '/new',
-  adaptRoute(makeCreateWeeklyEvaluationController()),
+  adaptRoute(makeCreateWeeklyEvaluationController())
+)
+
+weeklyEvaluations.get(
+  '/',
+  adaptRoute(makeListWeeklyEvaluationController())
 )

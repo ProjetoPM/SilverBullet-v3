@@ -1,8 +1,5 @@
 import { Metric as PersistenceMetric } from '@prisma/client'
-import { Workspace } from '../domain/workspace'
 import { t } from 'i18next'
-import { PlanTypes } from '../domain/plan-types.enum'
-import { PlanStatuses } from '../domain/plan-statuses.enum'
 import { Metric } from '../domain/metric'
 
 export class MetricMapper {
