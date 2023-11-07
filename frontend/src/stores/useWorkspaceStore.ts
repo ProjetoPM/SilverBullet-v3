@@ -1,5 +1,12 @@
+import { t } from 'i18next'
+import toast from 'react-hot-toast'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
+
+type Project = {
+  id: string
+  name: string
+}
 
 type Workspace = {
   id: string
@@ -8,6 +15,7 @@ type Workspace = {
 
 type WorkspaceStoreProps = {
   workspace: Workspace | null
+  project: Project | null
   openWorkspace: (workspace: Workspace) => void
   closeWorkspace: () => void
 }
@@ -17,6 +25,7 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
     persist<WorkspaceStoreProps>(
       () => ({
         workspace: null,
+        project: null,
         openWorkspace: (workspace) => openWorkspace(workspace),
         closeWorkspace: () => closeWorkspace()
       }),
@@ -32,15 +41,24 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
  * Abre um workspace.
  */
 const openWorkspace = (workspace: Workspace) => {
-  useWorkspaceStore.setState((state) => ({ ...state, workspace }))
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    workspace,
+    project: null
+  }))
   updateWorkspaceName()
+  toast.success(t('workspaces:actions.workspace_opened', { ns: 'workspaces' }))
 }
 
 /**
  * Fechando um workspace.
  */
 const closeWorkspace = () => {
-  useWorkspaceStore.setState((state) => ({ ...state, workspace: null }))
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    workspace: null,
+    project: null
+  }))
 }
 
 /**

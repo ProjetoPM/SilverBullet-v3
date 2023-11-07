@@ -40,7 +40,7 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
             startContent={<Search className="text-foreground-500 w-5 h-5" />}
             placeholder={t('filter.search_by')}
             classNames={{
-              inputWrapper: 'flex-grow w-full',
+              inputWrapper: 'flex-grow w-full h-fit',
               input: 'w-full min-w-96 lg:w-72'
             }}
             value={table.getState().globalFilter}

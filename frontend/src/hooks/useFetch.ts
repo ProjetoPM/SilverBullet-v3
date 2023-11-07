@@ -21,10 +21,11 @@ type FetchProps = {
 
 type UseFetchProps = {
   baseUrl: string
-  keys: string[]
+  keys: string | string[]
   fetch?: FetchProps
   redirectTo?: string
   options?: UseQueryOptions
+  invalidateQueries?: string[]
 }
 
 type MutateProps = {
@@ -50,7 +51,8 @@ export const useFetch = <T>({
   keys,
   fetch,
   redirectTo,
-  options
+  options,
+  invalidateQueries
 }: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
@@ -127,7 +129,7 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
@@ -151,7 +153,7 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
@@ -175,7 +177,7 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
@@ -205,7 +207,7 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
