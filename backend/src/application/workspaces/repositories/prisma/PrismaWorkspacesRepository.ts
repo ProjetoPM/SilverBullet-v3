@@ -76,4 +76,19 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   async deleteMany(ids: string[]): Promise<void> {
     await prismaClient.workspace.deleteMany({ where: { id: { in: ids } } })
   }
+
+  async checkUserPermission(
+    userId: string,
+    workspaceId: string,
+    roles: WorkspaceRoles[],
+  ): Promise<boolean> {
+    const data = await prismaClient.userWorkspace.findMany({
+      where: {
+        user_id: userId,
+        workspace_id: workspaceId,
+      },
+    })
+
+    return !!data.some((item) => roles.includes(item.role as WorkspaceRoles))
+  }
 }

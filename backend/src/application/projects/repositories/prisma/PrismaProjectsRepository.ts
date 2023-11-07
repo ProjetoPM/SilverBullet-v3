@@ -127,4 +127,20 @@ export class PrismaProjectsRepository implements IProjectsRepository {
   async deleteMany(ids: string[]): Promise<void> {
     await prismaClient.project.deleteMany({ where: { id: { in: ids } } })
   }
+
+  async checkUserPermission(
+    userId: string,
+    projectId: string,
+    roles: ProjectRoles[],
+  ): Promise<boolean> {
+    const data = await prismaClient.userProjectRole.findMany({
+      where: {
+        user_id: userId,
+        project_id: projectId,
+        role: { in: roles },
+      },
+    })
+
+    return !!data.some((item) => roles.includes(item.role as ProjectRoles))
+  }
 }

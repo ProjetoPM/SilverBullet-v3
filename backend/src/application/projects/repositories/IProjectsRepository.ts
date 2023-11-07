@@ -17,6 +17,7 @@ export interface IProjectsRepository {
   ): Promise<Project[]>
   findById(id: string): Promise<Project | null>
   findByName(name: string): Promise<Project | null>
+
   existsByNameAndId(
     name: string,
     workspaceId: string,
@@ -27,5 +28,12 @@ export interface IProjectsRepository {
     userId: string,
     projectId: string,
   ): Promise<boolean>
+
   deleteMany(ids: string[]): Promise<void>
+
+  checkUserPermission(
+    userId: string,
+    projectId: string,
+    roles: ProjectRoles[],
+  ): Promise<boolean>
 }
