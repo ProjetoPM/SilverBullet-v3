@@ -34,17 +34,15 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
           errorMessage={
             form.formState.errors.processes?.[index]?.group?.message
           }
-          {...form.register(`processes.${index}.group`)}
+          defaultSelectedKey={form.getValues(`processes.${index}.group`)}
+          onSelectionChange={(key) => {
+            form.setValue(`processes.${index}.group`, String(key))
+          }}
+          onClose={() => form.clearErrors(`processes.${index}.group`)}
           isRequired
         >
           {(item) => (
-            <AutocompleteItem
-              key={item.id}
-              textValue={item.label}
-              value={item.id}
-            >
-              {item.label}
-            </AutocompleteItem>
+            <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
           )}
         </Autocomplete>
       </fieldset>
@@ -55,17 +53,16 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
           labelPlacement="outside"
           placeholder={t('process.name.placeholder')}
           errorMessage={form.formState.errors.processes?.[index]?.name?.message}
-          {...form.register(`processes.${index}.name`)}
+          defaultSelectedKey={form.getValues(`processes.${index}.name`)}
+          onSelectionChange={(key) => {
+            form.setValue(`processes.${index}.name`, String(key))
+          }}
+          onClose={() => form.clearErrors(`processes.${index}.name`)}
+          isDisabled={!form.getValues(`processes.${index}.group`)}
           isRequired
         >
           {(item) => (
-            <AutocompleteItem
-              key={item.id}
-              textValue={item.label}
-              value={item.id}
-            >
-              {item.label}
-            </AutocompleteItem>
+            <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
           )}
         </Autocomplete>
       </fieldset>

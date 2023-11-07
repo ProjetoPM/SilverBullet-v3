@@ -63,17 +63,15 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
             labelPlacement="outside"
             placeholder={t('weekly_evaluation.placeholder')}
             errorMessage={form.formState.errors.weeklyEvaluationId?.message}
-            {...form.register('weeklyEvaluationId')}
+            defaultSelectedKey={form.getValues(`weeklyEvaluationId`)}
+            onSelectionChange={(key) =>
+              form.setValue(`weeklyEvaluationId`, String(key))
+            }
+            onClose={() => form.clearErrors(`weeklyEvaluationId`)}
             isRequired
           >
             {(item) => (
-              <AutocompleteItem
-                key={item.id}
-                textValue={item.label}
-                value={item.id}
-              >
-                {item.label}
-              </AutocompleteItem>
+              <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
             )}
           </Autocomplete>
         </fieldset>
@@ -100,7 +98,6 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
                 errorMessage={form.formState.errors.toolEvaluation?.message}
                 limit={1000}
                 as="textarea-4"
-                isFixed
                 {...field}
               />
             )}

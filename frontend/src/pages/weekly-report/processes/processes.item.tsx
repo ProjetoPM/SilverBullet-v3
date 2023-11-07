@@ -29,9 +29,12 @@ export const ProcessItem = ({ index }: ProcessItemProps) => {
               name={`processes.${index}.description`}
               render={({ field }) => (
                 <RichEditor
-                  label={t('tool_evaluation.label')}
-                  placeholder={t('tool_evaluation.placeholder')}
-                  errorMessage={form.formState.errors.toolEvaluation?.message}
+                  label={t('description.label')}
+                  placeholder={t('description.placeholder')}
+                  errorMessage={
+                    form.formState.errors.processes?.[index]?.description
+                      ?.message
+                  }
                   limit={1000}
                   as="textarea-4"
                   {...field}
