@@ -68,4 +68,20 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
       (workspace) => !ids.includes(workspace.id),
     )
   }
+
+  async checkUserPermission(
+    userId: string,
+    workspaceId: string,
+    roles: WorkspaceRoles[],
+  ): Promise<boolean> {
+    const data = this.userWorkspaces.find(
+      (userWorkspace) =>
+        userWorkspace.userId === userId &&
+        userWorkspace.workspaceId === workspaceId,
+    )
+
+    if (!data) return false
+
+    return roles.includes(data.role)
+  }
 }

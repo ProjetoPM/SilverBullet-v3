@@ -117,4 +117,19 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
 
     return !!data
   }
+
+  async checkUserPermission(
+    userId: string,
+    projectId: string,
+    roles: ProjectRoles[],
+  ): Promise<boolean> {
+    const data = this.userProjectRoles.find(
+      (userProjectRole) =>
+        userProjectRole.projectId === projectId &&
+        userProjectRole.userId === userId &&
+        roles.includes(userProjectRole.role),
+    )
+
+    return !!data
+  }
 }

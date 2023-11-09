@@ -21,10 +21,11 @@ type FetchProps = {
 
 type UseFetchProps = {
   baseUrl: string
-  keys: string[]
+  keys: string | string[]
   fetch?: FetchProps
   redirectTo?: string
   options?: UseQueryOptions
+  invalidateQueries?: string[]
 }
 
 type MutateProps = {
@@ -50,11 +51,12 @@ export const useFetch = <T>({
   keys,
   fetch,
   redirectTo,
-  options
+  options,
+  invalidateQueries
 }: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
+  const redirect = useNavigate()
   const { isExpired: isTokenExpired } = useToken()
 
   /**
@@ -127,11 +129,11 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(redirectTo)
+          redirect(redirectTo, { replace: true })
         }
       }
     }
@@ -151,11 +153,11 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(redirectTo)
+          redirect(redirectTo, { replace: true })
         }
       }
     }
@@ -175,11 +177,11 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(`${redirectTo}`)
+          redirect(redirectTo, { replace: true })
         }
       }
     }
@@ -205,11 +207,11 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(keys)
+        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          navigate(`${redirectTo}`)
+          redirect(redirectTo, { replace: true })
         }
       }
     }

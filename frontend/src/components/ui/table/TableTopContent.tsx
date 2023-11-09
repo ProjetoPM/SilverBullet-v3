@@ -1,49 +1,20 @@
-import { Input, Selection } from '@nextui-org/react'
-import { Table } from '@tanstack/react-table'
-
+import { AnimatePresence } from 'framer-motion'
 import { Search } from 'lucide-react'
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useCallback } from 'react'
 import { DebouncedInput } from '../DebouncedInput'
+import { DefaultAnimate } from '../animation/DefaultAnimate'
 import { TableDeleteButton } from './TableDeleteButton'
 import { TableFilterButton } from './TableFilterButton'
 import { TablePageSize } from './TablePageSize'
+import { useDataTable } from './context/DataTableProvider'
+import { DataTableViewOptions } from './helpers/DataTableViewOptions'
 
-type TableTopContentProps<TData> = {
-  table: Table<TData>
-  globalFilter: string
-  setGlobalFilter: Dispatch<SetStateAction<string>>
-  toolbarButtons?: React.ReactNode
-  asyncFn?: (ids: any) => Promise<void>
+type TableTopContentProps = {
+  toolbar?: React.ReactNode
 }
 
-export function TableTopContent<TData>({
-  globalFilter,
-  setGlobalFilter,
-  table,
-  toolbarButtons,
-  asyncFn
-}: TableTopContentProps<TData>) {
-  const { t } = useTranslation('table')
-  const [type, setType] = useState<Selection>(new Set(['first']))
-
-  const getFirstColumn = useMemo(() => {
-    /**
-     * Se a primeira coluna for o checkbox de select,
-     * retorna a segunda.
-     */
-    if (
-      table.getAllColumns().length > 1 &&
-      table.getAllColumns()?.at(0)?.id === 'select'
-    ) {
-      return table.getAllColumns?.().at(1)
-    }
-    /**
-     * Se não, retorna a primeira.
-     */
-
-    return table.getAllColumns?.().at(0)
-  }, [table])
+export function TableTopContent({ toolbar }: TableTopContentProps) {
+  const { t, filter, table, asyncFn } = useDataTable()
 
   /**
    * Deleta os itens selecionados. Esse método só irá funcionar
@@ -58,55 +29,66 @@ export function TableTopContent<TData>({
     table.toggleAllPageRowsSelected(false)
   }, [asyncFn, table])
 
-  /**
-   * Transforma o tipo de filtro em string.
-   */
-  const selectedType = useMemo(
-    () => Array.from(type).join(', ').replace('_', ' '),
-    [type]
-  )
+  const filters = useCallback(() => {
+    return [
+      {
+        key: 1,
+        shouldRender: filter.search,
+        component: (
+          <DebouncedInput
+            id="search-debounced-input"
+            startContent={<Search className="text-foreground-500 w-5 h-5" />}
+            placeholder={t('filter.search_by')}
+            classNames={{
+              inputWrapper: 'flex-grow w-full h-fit',
+              input: 'w-full min-w-96 lg:w-72'
+            }}
+            value={table.getState().globalFilter}
+            onChange={(value) => table.setGlobalFilter(String(value))}
+            onClear={() => table.setGlobalFilter('')}
+            debounce={150}
+            autoComplete="off"
+            isClearable
+          />
+        )
+      },
+      {
+        key: 2,
+        shouldRender: filter.visibility,
+        component: <DataTableViewOptions />
+      },
+      {
+        key: 3,
+        shouldRender: !!asyncFn,
+        component: (
+          <TableDeleteButton
+            isDisabled={!table.getSelectedRowModel().rows.length}
+            handleDelete={handleDelete}
+          />
+        )
+      }
+    ]
+  }, [t, table, filter.search, filter.visibility, asyncFn, handleDelete])
 
   return (
     <>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-end">
-          <div className="flex flex-grow gap-2 items-center">
-            {selectedType === 'all' && (
-              <DebouncedInput
-                id="search-debounced-input"
-                startContent={<Search className="text-default-500" />}
-                placeholder={t('filter.search_by')}
-                className="w-full sm:max-w-xs lg:max-w-sm"
-                value={globalFilter ?? ''}
-                onChange={(value) => setGlobalFilter(String(value ?? ''))}
-                debounce={225}
-              />
-            )}
-            {selectedType === 'first' && (
-              <Input
-                id="search-debounced-input"
-                startContent={<Search className="text-default-500" />}
-                placeholder={t('filter.search_by')}
-                className="w-full sm:max-w-xs lg:max-w-sm"
-                value={String(getFirstColumn?.getFilterValue() ?? '')}
-                onValueChange={(value) => getFirstColumn?.setFilterValue(value)}
-              />
-            )}
-            <div className="flex gap-2">
-              <TableFilterButton type={type} setType={setType} />
-              {asyncFn && (
-                <TableDeleteButton
-                  isDisabled={!table.getSelectedRowModel().rows.length}
-                  handleDelete={handleDelete}
-                />
-              )}
-            </div>
+          <div className="flex gap-2 items-center">
+            <TableFilterButton />
+            <AnimatePresence initial={false}>
+              {filters()
+                .filter((component) => component.shouldRender)
+                .map((filter) => (
+                  <DefaultAnimate key={filter.key}>
+                    {filter.component}
+                  </DefaultAnimate>
+                ))}
+            </AnimatePresence>
           </div>
-          <div className="flex gap-3 self-end sm:self-auto">
-            {toolbarButtons}
-          </div>
+          <div className="flex gap-3 self-end sm:self-auto">{toolbar}</div>
         </div>
-        <TablePageSize table={table} />
+        <TablePageSize />
       </div>
     </>
   )

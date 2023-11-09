@@ -1,6 +1,6 @@
 import { frontend } from '@/routes/routes'
 import { Workspace } from '@/stores/useWorkspaceStore'
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -19,22 +19,22 @@ const validateWorkspace = () => {
   return !workspace || !validator.safeParse(workspace).success
 }
 
+export const WG_WORKSPACE_NOT_FOUND_ID = 'guard:workspace-not-found'
+
 export const WorkspaceGuard = ({ children }: WorkspaceGuardProps) => {
   const { t } = useTranslation('errors')
   const navigate = useNavigate()
-  const isMounted = useRef(false)
+  const [isMounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (isMounted.current) {
-      return
-    }
-    isMounted.current = true
-
     if (validateWorkspace()) {
-      toast.error(t('workspace.not_found'))
+      toast.error(t('workspace.not_found'), {
+        id: WG_WORKSPACE_NOT_FOUND_ID
+      })
       navigate(frontend.workspaces.index)
     }
+    setMounted(true)
   }, [t, navigate])
 
-  return <>{children}</>
+  return <>{isMounted && children}</>
 }

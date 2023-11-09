@@ -24,7 +24,7 @@ type DatePickerProps<
   placeholder?: string
   isRequired?: boolean
   dateStyle?: 'short' | 'medium' | 'long'
-  shouldCloseOnClick?: boolean
+  shouldCloseOnSelect?: boolean
   errorMessage?: string
   shouldDisableUntilToday?: boolean
 }
@@ -36,7 +36,7 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
   isRequired,
   errorMessage,
   dateStyle = 'medium',
-  shouldCloseOnClick = true,
+  shouldCloseOnSelect = false,
   shouldDisableUntilToday = false,
   ...props
 }: DatePickerProps<T, K>) => {
@@ -73,7 +73,6 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         triggerScaleOnOpen={false}
-        onClick={shouldCloseOnClick ? onClose : undefined}
       >
         <PopoverTrigger>
           <Button
@@ -101,7 +100,13 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
             {...props}
             mode="single"
             selected={field.value}
-            onSelect={field.onChange}
+            onSelect={(value) => {
+              field.onChange(value)
+
+              if (shouldCloseOnSelect) {
+                onClose()
+              }
+            }}
             disabled={
               shouldDisableUntilToday
                 ? (date) => date > new Date() || date < new Date('1900-01-01')

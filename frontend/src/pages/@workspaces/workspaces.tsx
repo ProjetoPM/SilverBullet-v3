@@ -1,12 +1,14 @@
 import { useFetch } from '@/hooks/useFetch'
-import { usePageUtils } from '@/hooks/usePageTranslation'
+import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend, frontend } from '@/routes/routes'
 import { WorkspaceForm } from './workspaces.form'
 import { WorkspaceDataWithId } from './workspaces.schema'
 
 export const WorkspacePage = () => {
-  const { id, t, title, breadcrumb } = usePageUtils('workspaces')
+  const { id, t, title, breadcrumb } = usePageUtils('workspaces', {
+    dynamic: true
+  })
 
   const { get } = useFetch<WorkspaceDataWithId>({
     baseUrl: backend.workspaces.baseUrl,
@@ -20,7 +22,7 @@ export const WorkspacePage = () => {
 
   return (
     <PageLayout
-      title={title({ dynamic: true })}
+      title={title()}
       isLoading={get.isLoading}
       breadcrumb={breadcrumb({
         segments: [{ label: t('page.title'), link: frontend.workspaces.index }]

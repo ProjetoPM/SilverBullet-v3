@@ -1,39 +1,38 @@
 import { Button, Pagination } from '@nextui-org/react'
-import { Table } from '@tanstack/react-table'
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { DefaultAnimate } from '../animation/DefaultAnimate'
+import { useDataTable } from './context/DataTableProvider'
 
-type TableBottomContentProps<TData> = {
-  table: Table<TData>
-}
-
-export const TableBottomContent = <TData,>({
-  table
-}: TableBottomContentProps<TData>) => {
-  const { t } = useTranslation('table')
+export const TableBottomContent = () => {
+  const { t, table, filter } = useDataTable()
 
   return (
     <div className="py-2 px-2 flex justify-center xs:justify-between items-center">
       <span className="hidden xs:flex text-small text-default-400">
-        {table.getFilteredSelectedRowModel().rows.length} {t('of')}{' '}
-        {table.getFilteredRowModel().rows.length} {t('rows_selected')}.
+        {t('table.rows_selected', {
+          rows: table.getFilteredSelectedRowModel().rows.length,
+          max_rows: table.getFilteredRowModel().rows.length
+        })}
       </span>
-      <Pagination
-        isCompact
-        showControls
-        loop
-        showShadow
-        color="primary"
-        variant="flat"
-        page={table.getState().pagination.pageIndex + 1}
-        total={table.getPageCount()}
-        onChange={(page) => table.setPageIndex(page - 1)}
-      />
+      <DefaultAnimate>
+        {filter.pagination && (
+          <Pagination
+            isCompact
+            showControls
+            color="primary"
+            variant="flat"
+            page={table.getState().pagination.pageIndex + 1}
+            total={table.getPageCount()}
+            isDisabled={!table.getCanPreviousPage() && !table.getCanNextPage()}
+            onChange={(page) => table.setPageIndex(page - 1)}
+          />
+        )}
+      </DefaultAnimate>
       <div className="hidden sm:flex justify-end gap-1">
         <Button
           size="sm"

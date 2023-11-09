@@ -4,6 +4,7 @@ import { SignUp } from '@/pages/auth/sign-up/sign-up.schema'
 import { frontend } from '@/routes/routes'
 import { api } from '@/services/api'
 import { Workspace } from '@/stores/useWorkspaceStore'
+import { AG_EXPIRED_TOKEN_ID } from '@/utils/guard'
 import toast from 'react-hot-toast'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -34,7 +35,7 @@ export const useAuth = () => {
         localStorage.setItem('token', response.token)
         localStorage.setItem('user', email)
         Workspace.updateWorkspaceName()
-        toast.remove('token_expired')
+        toast.remove(AG_EXPIRED_TOKEN_ID)
         navigate(frontend.workspaces.index)
       }
     }

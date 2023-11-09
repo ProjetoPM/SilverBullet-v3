@@ -1,3 +1,4 @@
+import { configs } from '@/configs'
 import {
   Table,
   TableBody,
@@ -18,26 +19,32 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-
-import { configs } from '@/configs'
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TableBottomContent } from './TableBottomContent'
 import { TableTopContent } from './TableTopContent'
+import {
+  DataTableContext,
+  DataTableProvider
+} from './context/DataTableProvider'
 
-type DataTableProps<TData, TValue> = {
+type DataTableProps<TData, TValue> = Pick<
+  DataTableContext<TData>,
+  'asyncFn'
+> & {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 } & {
-  toolbarButtons?: React.ReactNode
-  asyncFn?: (ids: any) => Promise<void>
+  toolbar?: React.ReactNode
 }
 
 export const DataTable = <TData, TValue>({
   columns,
   data,
-  toolbarButtons,
+  toolbar,
   asyncFn
 }: DataTableProps<TData, TValue>) => {
+  const { t } = useTranslation('table')
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -81,21 +88,13 @@ export const DataTable = <TData, TValue>({
   })
 
   return (
-    <>
+    <DataTableProvider value={{ table, asyncFn }}>
       <Table
         aria-label="list table"
         isHeaderSticky
-        topContent={
-          <TableTopContent
-            table={table}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            toolbarButtons={toolbarButtons}
-            asyncFn={asyncFn}
-          />
-        }
+        topContent={<TableTopContent toolbar={toolbar} />}
         topContentPlacement="outside"
-        bottomContent={<TableBottomContent table={table} />}
+        bottomContent={<TableBottomContent />}
         bottomContentPlacement="outside"
         className="min-h-unit-24"
         classNames={{
@@ -120,7 +119,7 @@ export const DataTable = <TData, TValue>({
               ))
             )}
         </TableHeader>
-        <TableBody emptyContent={'No content.'}>
+        <TableBody emptyContent={t('table.no_content')}>
           {table.getRowModel().rows?.map((row) => (
             <TableRow
               key={row.id}
@@ -136,6 +135,6 @@ export const DataTable = <TData, TValue>({
           ))}
         </TableBody>
       </Table>
-    </>
+    </DataTableProvider>
   )
 }

@@ -7,10 +7,12 @@ import Typography from '@tiptap/extension-typography'
 import { Underline } from '@tiptap/extension-underline'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { forwardRef, useEffect, useId, useState } from 'react'
+import i18next from 'i18next'
+import { forwardRef, useCallback, useEffect, useId, useState } from 'react'
 import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
 import { starterKitConfigs } from './config'
+import './config/default.css'
 import { editorStyles, placeholderStyles } from './config/style'
 import { BubbleMenu } from './menus/BubbleMenu'
 import { FixedMenu } from './menus/FixedMenu'
@@ -69,6 +71,12 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             },
             history: {
               depth: 10
+            },
+            paragraph: {
+              HTMLAttributes: {
+                class: 'hyphens-auto',
+                lang: i18next.language
+              }
             }
           }),
           Typography,
@@ -85,17 +93,14 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             }
           }),
           Link.configure({
-            protocols: ['http', 'https', 'mailto'],
+            protocols: ['http', 'https'],
             validate: (url) => {
-              return (
-                url.startsWith('http://') ||
-                url.startsWith('https://') ||
-                url.startsWith('mailto:')
-              )
+              return url.startsWith('http://') || url.startsWith('https://')
             },
             autolink: false,
+            openOnClick: false,
             HTMLAttributes: {
-              class: 'text-blue-500 hover:underline hover:cursor-pointer'
+              class: 'text-blue-500 hover:underline'
             }
           }),
           Underline
@@ -137,9 +142,10 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
     /**
      * Change between the bubble menu and fixed menu.
      */
-    const handleFixed = () => {
+    const handleFixed = useCallback(() => {
       setFixed((previous) => !previous)
-    }
+      editor?.commands.focus()
+    }, [editor])
 
     return (
       <div className={cn('h-full flex flex-col w-full', props.className)}>
@@ -173,7 +179,6 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             className="[&>*]:data-[is-fixed=true]:rounded-t-none break-words"
             data-is-fixed={fixed}
             editor={editor}
-            allowFullScreen
           />
         </div>
         {errorMessage && (

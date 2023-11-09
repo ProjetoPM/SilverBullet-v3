@@ -6,6 +6,7 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { Loading } from './components/Loading'
@@ -20,11 +21,12 @@ export const App = () => {
   return (
     <React.StrictMode>
       <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading />}>
+          <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
-          </Suspense>
-        </QueryClientProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </Suspense>
       </HelmetProvider>
       <ToastContainer position="bottom-right" autoClose={2250} theme={theme} />
       <ToasterContainer />

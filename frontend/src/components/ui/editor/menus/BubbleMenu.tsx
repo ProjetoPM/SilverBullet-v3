@@ -19,7 +19,7 @@ export const BubbleMenu = ({
   return (
     <_BubbleMenu
       className={cn(
-        'flex items-center justify-center bg-accent rounded-lg divide-x divide-default-200 overflow-x-auto bg-default-200 dark:bg-default-50',
+        'flex items-center justify-center bg-accent rounded-lg divide-x divide-foreground-200 overflow-x-auto bg-default-200 dark:bg-default-100',
         className,
         isFixed ? 'hidden' : ''
       )}

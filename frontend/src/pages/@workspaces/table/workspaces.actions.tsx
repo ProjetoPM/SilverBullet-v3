@@ -61,7 +61,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
               <Link
                 href={frontend.projects.index}
                 color="foreground"
-                onClick={handleOpen}
+                onPress={handleOpen}
                 className="flex gap-2"
               >
                 <FolderOpen className="w-5 h-5" />
@@ -78,7 +78,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
                 {t('btn.edit')}
               </Link>
             </DropdownItem>
-            <DropdownItem onClick={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -87,7 +87,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
           </DropdownSection>
           <DropdownItem
             textValue="Copy ID"
-            onClick={() => navigator.clipboard.writeText(row.id)}
+            onPress={() => navigator.clipboard.writeText(row.id)}
           >
             <span className="flex gap-2">
               <Copy className="w-5 h-5" />
@@ -97,12 +97,12 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownMenu>
       </Dropdown>
       <AlertModal
-        title={t('are_you_certain.title')}
+        title={t('default:are_you_certain.title')}
         onAction={handleDelete}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
-        {t('are_you_certain_delete.description')}
+        {t('default:are_you_certain.description')}
       </AlertModal>
     </>
   )

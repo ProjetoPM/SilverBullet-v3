@@ -1,6 +1,6 @@
 import { DataTable } from '@/components/ui/table/DataTable'
 import { useFetch } from '@/hooks/useFetch'
-import { usePageUtils } from '@/hooks/usePageTranslation'
+import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
 import { ProjectToolbar } from './projects.toolbar'
@@ -26,7 +26,7 @@ export const ProjectListPage = () => {
       <DataTable
         columns={columns}
         data={list.data ?? []}
-        toolbarButtons={<ProjectToolbar />}
+        toolbar={<ProjectToolbar />}
         asyncFn={removeMany.mutateAsync}
       />
     </PageLayout>

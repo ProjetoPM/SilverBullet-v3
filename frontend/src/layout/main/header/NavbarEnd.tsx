@@ -2,6 +2,7 @@ import { LocaleSwitcher } from '@/components/features/LocaleSwitcher'
 import { ThemeSwitcher } from '@/components/features/ThemeSwitcher'
 import { DashboardMenu } from '@/components/ui/dashboard/DashboardMenu'
 import { sidebarItems } from '@/constants/sidebar-items'
+import { useScreen } from '@/hooks/useScreen'
 import {
   Button,
   Kbd,
@@ -12,27 +13,15 @@ import {
   useDisclosure
 } from '@nextui-org/react'
 import { MenuIcon } from 'lucide-react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 import parser from 'ua-parser-js'
 import { UserDropdown } from './UserDropdown'
 
 export const NavbarEnd = () => {
   const { isOpen, onOpenChange } = useDisclosure()
-  const [screenX, setScreenX] = useState(window.innerWidth)
+  const { screenX } = useScreen()
   const { t } = useTranslation('sidebar')
-
-  useEffect(() => {
-    const down = () => {
-      setScreenX(window.innerWidth)
-    }
-
-    window.addEventListener('resize', down)
-
-    return () => {
-      window.removeEventListener('resize', down)
-    }
-  }, [screenX])
 
   const handleOs = () => {
     const os = parser(navigator.userAgent).os.name
@@ -65,9 +54,11 @@ export const NavbarEnd = () => {
           >
             <div className="hidden xs:flex gap-2 items-center">
               <span>Menu</span>
-              <Kbd className="bg-default-100 dark:bg-default-200">
-                {handleOs()}
-              </Kbd>
+              {!!handleOs() && (
+                <Kbd className="bg-default-100 dark:bg-default-200">
+                  {handleOs()}
+                </Kbd>
+              )}
             </div>
             <div className="inline-flex xs:hidden">
               <MenuIcon size={20} />

@@ -8,6 +8,7 @@ export const adaptMiddleware = (middleware: Middleware) => {
       jwt: request.headers.authorization,
       currentWorkspaceId: request.headers['current-workspace-id'],
       currentProjectId: request.headers['current-project-id'],
+      currentUserId: request.userId,
       ...request.headers,
     }
 

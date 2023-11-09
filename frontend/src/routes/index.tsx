@@ -1,6 +1,8 @@
+import { NextUIProvider } from '@/nextui.provider'
 import { createBrowserRouter } from 'react-router-dom'
 import { AuthRoutes } from './pages/auth.routes'
 import { ProjectRoutes } from './pages/project.routes'
+import { WeeklyReportRoutes } from './pages/weekly-report.routes'
 import { WorkspaceRoutes } from './pages/workspace.routes'
 
 /**
@@ -8,7 +10,9 @@ import { WorkspaceRoutes } from './pages/workspace.routes'
  * as rotas da aplicação.
  */
 export const router = createBrowserRouter([
-  AuthRoutes,
-  WorkspaceRoutes,
-  ProjectRoutes
+  {
+    path: '/',
+    element: <NextUIProvider />,
+    children: [AuthRoutes, WorkspaceRoutes, ProjectRoutes, WeeklyReportRoutes]
+  }
 ])

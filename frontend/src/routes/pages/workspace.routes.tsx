@@ -6,7 +6,6 @@ import { frontend } from '@routes'
 import { RouteObject } from 'react-router-dom'
 
 export const WorkspaceRoutes: RouteObject = {
-  path: '/',
   children: [
     {
       path: '/',

@@ -54,7 +54,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="dropdown reporter">
           <DropdownSection title={t('table.actions')}>
-            <DropdownItem onClick={handleOpen} textValue="open">
+            <DropdownItem onPress={handleOpen} textValue="open">
               <span className="flex gap-2">
                 <FolderOpen className="w-5 h-5" />
                 {t('btn.open')}
@@ -70,7 +70,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
                 {t('btn.edit')}
               </Link>
             </DropdownItem>
-            <DropdownItem onClick={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -79,7 +79,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
           </DropdownSection>
           <DropdownItem
             textValue="Copy ID"
-            onClick={() => navigator.clipboard.writeText(row.id)}
+            onPress={() => navigator.clipboard.writeText(row.id)}
           >
             <span className="flex gap-2">
               <Copy className="w-5 h-5" />
