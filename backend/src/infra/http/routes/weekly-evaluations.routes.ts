@@ -5,6 +5,7 @@ import { makeEnsureAuthenticated } from '../factories/controllers/middlewares/ma
 import { makeGetCurrentWorkspaceAndProject } from '../factories/controllers/middlewares/makeGetCurrentWorkspaceAndProject'
 import { makeCreateWeeklyEvaluationController } from '../factories/controllers/weekly-evaluation/makeCreateWeeklyEvaluationController'
 import { makeListWeeklyEvaluationController } from '../factories/controllers/weekly-evaluation/makeListWeeklyEvaluation'
+import { makeListAvailableWeeklyEvaluationController } from '../factories/controllers/weekly-evaluation/makeListAvailableWeeklyEvaluation'
 
 export const weeklyEvaluations = Router()
 
@@ -19,4 +20,8 @@ weeklyEvaluations.post(
 weeklyEvaluations.get(
   '/',
   adaptRoute(makeListWeeklyEvaluationController())
+)
+weeklyEvaluations.get(
+  '/available',
+  adaptRoute(makeListAvailableWeeklyEvaluationController())
 )

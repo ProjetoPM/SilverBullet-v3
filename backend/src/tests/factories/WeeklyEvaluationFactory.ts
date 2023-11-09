@@ -1,5 +1,5 @@
 import { ProjectCharter } from '@/application/processes/integration/initiating/project-charter/domain/project-charter'
-import { EvaluationStatuses } from '@/application/weekly-evaluation/domain/status.enum'
+import { EvaluationStatuses } from '@/application/weekly-evaluation/domain/evaluation-statuses.enum'
 import { Types } from '@/application/weekly-evaluation/domain/types.enum'
 import { WeeklyEvaluation } from '@/application/weekly-evaluation/domain/weekly-evaluation'
 

@@ -11,7 +11,7 @@ import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { StatusCodes } from 'http-status-codes'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
-import { EvaluationStatuses } from '../../domain/status.enum'
+import { EvaluationStatuses } from '../../domain/evaluation-statuses.enum'
 import { Types } from '../../domain/types.enum'
 
 let usersRepository: IUsersRepository

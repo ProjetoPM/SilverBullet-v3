@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { Types } from './types.enum'
-import { EvaluationStatuses } from './status.enum'
+import { EvaluationStatuses } from './evaluation-statuses.enum'
 
 export const WeeklyEvaluationSchema = z.object({
   name: z.string().min(3).max(64),

@@ -20,7 +20,7 @@ import { InMemoryWeeklyEvaluationsRepository } from '../../repositories/in-memor
 import { InviteStatuses } from '@/application/workspaces/domain/invite-statuses.enum'
 import { WorkspaceRoles } from '@/application/workspaces/domain/workspace-roles.schema'
 import { Types } from '../../domain/types.enum'
-import { EvaluationStatuses } from '../../domain/status.enum'
+import { EvaluationStatuses } from '../../domain/evaluation-statuses.enum'
 import { StartDateGreaterThanEndDateError } from './errors/StartDateGreaterThanEndDateError'
 import { WorkspaceDoesNotExistError } from './errors/WorkspaceDoesNotExistError'
 import { UserDoesNotBelongToWorkspaceError } from './errors/UserDoesNotBelongToWorkspaceError'
@@ -80,7 +80,6 @@ describe('Create a evaluation', async () => {
     }
 
     const response = await createWeeklyEvaluation.execute(data)
-    console.log(response.value)
 
     expect(response.isLeft()).toBeTruthy()
     expect(response.value).toEqual(new StartDateGreaterThanEndDateError())

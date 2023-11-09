@@ -1,7 +1,7 @@
 import { WeeklyEvaluation as PersistenceWeeklyEvaluation } from '@prisma/client'
 import { WeeklyEvaluation } from '../domain/weekly-evaluation'
 import { t } from 'i18next'
-import { EvaluationStatuses } from '../domain/status.enum'
+import { EvaluationStatuses } from '../domain/evaluation-statuses.enum'
 import { Types } from '../domain/types.enum'
 
 export class WeeklyEvaluationMapper {
