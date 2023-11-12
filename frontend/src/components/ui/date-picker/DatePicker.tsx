@@ -1,9 +1,9 @@
-import { cn } from '@/lib/utils'
 import {
   Button,
   Popover,
   PopoverContent,
   PopoverTrigger,
+  cn,
   useDisclosure
 } from '@nextui-org/react'
 import enUS from 'date-fns/locale/en-US'
@@ -12,7 +12,6 @@ import i18next from 'i18next'
 import { CalendarIcon } from 'lucide-react'
 import { useId } from 'react'
 import { ControllerRenderProps, FieldPath, FieldValues } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { Calendar, CalendarProps } from './Calendar'
 
 type DatePickerProps<
@@ -21,27 +20,37 @@ type DatePickerProps<
 > = CalendarProps & {
   field: ControllerRenderProps<T, K>
   label?: string
+  icon?: React.ReactNode
   placeholder?: string
   isRequired?: boolean
   dateStyle?: 'short' | 'medium' | 'long'
-  shouldCloseOnSelect?: boolean
+  description?: string
   errorMessage?: string
-  shouldDisableUntilToday?: boolean
+  shouldCloseOnSelect?: boolean
+  shouldDisableAfterToday?: boolean
+  buttonProps?: React.ComponentProps<typeof Button>
+  classNames?: {
+    label?: string
+    button?: string
+  }
 }
 
 export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
   field,
   placeholder,
   label,
+  classNames,
   isRequired,
+  description,
   errorMessage,
+  buttonProps,
   dateStyle = 'medium',
   shouldCloseOnSelect = false,
-  shouldDisableUntilToday = false,
+  shouldDisableAfterToday = false,
+  icon = <CalendarIcon className="h-4 w-4 opacity-50" />,
   ...props
 }: DatePickerProps<T, K>) => {
   const id = useId()
-  const { t } = useTranslation()
   const { isOpen, onClose, onOpenChange } = useDisclosure()
 
   const formatDate = (
@@ -63,7 +72,10 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
       {!!label && (
         <label
           htmlFor={id}
-          className="block text-small font-medium text-foreground pb-1.5 will-change-auto origin-top-left transition-all !duration-200 !ease-out motion-reduce:transition-none data-[required=true]:after:content-['*'] data-[required=true]:after:ml-0.5 after:text-danger"
+          className={cn(
+            "block text-small font-medium text-foreground pb-[0.25rem] will-change-auto origin-top-left transition-all !duration-200 !ease-out motion-reduce:transition-none data-[required=true]:after:content-['*'] data-[required=true]:after:ml-0.5 after:text-danger",
+            classNames?.label
+          )}
           data-required={isRequired}
         >
           {label}
@@ -79,19 +91,20 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
             id={id}
             className={cn(
               'w-full justify-between px-3 text-left font-normal bg-default-100 hover:bg-default-200',
-              !field.value && 'text-muted-foreground'
+              classNames?.button
             )}
+            {...buttonProps}
           >
-            {field.value ? (
-              <span className="line-clamp-1">
-                {formatDate(field.value, { dateStyle })}
-              </span>
-            ) : (
-              <span className="outline-none text-foreground-500">
-                {placeholder ?? t('pick_a_date.label')}
-              </span>
-            )}
-            <CalendarIcon className="h-4 w-4 opacity-50" />
+            <span
+              className={cn('outline-none', {
+                'line-clamp-1': field.value,
+                'outline-none text-foreground-500': !field.value
+              })}
+            >
+              {field.value && formatDate(field.value, { dateStyle })}
+              {(!field.value && placeholder) ?? String('Pick a date')}
+            </span>
+            {icon}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0">
@@ -108,15 +121,22 @@ export const DatePicker = <T extends FieldValues, K extends FieldPath<T>>({
               }
             }}
             disabled={
-              shouldDisableUntilToday
+              shouldDisableAfterToday
                 ? (date) => date > new Date() || date < new Date('1900-01-01')
                 : undefined
             }
           />
         </PopoverContent>
       </Popover>
-      {!!errorMessage && (
-        <p className="pt-1 px-1 text-tiny text-danger">{errorMessage}</p>
+      {(errorMessage || description) && (
+        <p
+          className={cn('pt-1 px-1 text-tiny select-none', {
+            'text-danger': errorMessage,
+            'text-foreground-500': !errorMessage
+          })}
+        >
+          {errorMessage ?? description}
+        </p>
       )}
     </div>
   )
