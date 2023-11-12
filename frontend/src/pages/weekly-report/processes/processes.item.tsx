@@ -13,14 +13,18 @@ type ProcessItemProps = {
 }
 
 export const ProcessItem = ({ index }: ProcessItemProps) => {
-  const { t, form } = useProcesses()
+  const { t, form, array, sorting } = useProcesses()
+  const [selectedKey] = sorting[0]
 
   return (
     <GridLayout cols="1">
       <div className="flex flex-col gap-3">
         <div className="flex justify-end">
           <Chip size="sm" color="success" className="select-none">
-            {t('process.process_number', { value: index + 1 })}
+            {t('process.process_number', {
+              value:
+                selectedKey === 'ASC' ? index + 1 : array.fields.length - index
+            })}
           </Chip>
         </div>
         <ProcessSelects index={index} />

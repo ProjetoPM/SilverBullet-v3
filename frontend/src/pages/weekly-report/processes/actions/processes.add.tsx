@@ -3,10 +3,20 @@ import { PlusCircle } from 'lucide-react'
 import { useProcesses } from '../context/WeeklyReportProvider'
 
 export const AddProcesses = () => {
-  const { t, array } = useProcesses()
+  const { t, sorting, array } = useProcesses()
+  const [selectedKeys] = sorting[0]
 
   const handleAddProcess = () => {
-    array.append({
+    if (selectedKeys === 'ASC') {
+      array.append({
+        group: '',
+        name: '',
+        description: '',
+        filesFolder: ''
+      })
+      return
+    }
+    array.prepend({
       group: '',
       name: '',
       description: '',

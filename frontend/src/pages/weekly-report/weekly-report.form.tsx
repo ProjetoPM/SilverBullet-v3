@@ -82,6 +82,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
                 placeholder={t('tool_evaluation.placeholder')}
                 errorMessage={form.formState.errors.toolEvaluation?.message}
                 limit={1000}
+                isFixed
                 as="textarea-4"
                 {...field}
               />

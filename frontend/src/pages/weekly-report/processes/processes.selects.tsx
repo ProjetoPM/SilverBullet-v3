@@ -1,6 +1,7 @@
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 import { Controller } from 'react-hook-form'
 import { useProcesses } from './context/WeeklyReportProvider'
+import { useEffect, useState } from 'react'
 
 type ProcessSelectsProps = {
   index: number
@@ -23,6 +24,13 @@ const items = [
 
 export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
   const { t, form } = useProcesses()
+  const [isDisabled, setDisabled] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDisabled(false)
+    }, 10)
+  }, [])
 
   return (
     <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
@@ -30,7 +38,7 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
         <Controller
           control={form.control}
           name={`processes.${index}.group`}
-          render={({ field: { value, onChange, ref, ...rest } }) => (
+          render={({ field: { value, onChange, ...rest } }) => (
             <Autocomplete
               items={items}
               label={t('process.group.label')}
@@ -41,8 +49,8 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
               }
               selectedKey={String(value)}
               onSelectionChange={(value) => onChange(String(value ?? ''))}
-              ref={ref}
               {...rest}
+              isDisabled={isDisabled}
               isRequired
             >
               {(item) => (
@@ -56,7 +64,7 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
         <Controller
           control={form.control}
           name={`processes.${index}.name`}
-          render={({ field: { value, onChange, ref, ...rest } }) => (
+          render={({ field: { value, onChange, ...rest } }) => (
             <Autocomplete
               items={items}
               label={t('process.name.label')}
@@ -67,7 +75,6 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
               }
               selectedKey={String(value)}
               onSelectionChange={(value) => onChange(String(value ?? ''))}
-              ref={ref}
               {...rest}
               isDisabled={!form.watch(`processes.${index}.group`)}
               isRequired

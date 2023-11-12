@@ -1,7 +1,6 @@
 import { TFunction } from 'i18next'
 import {
   Dispatch,
-  Key,
   SetStateAction,
   createContext,
   useContext,
@@ -15,7 +14,7 @@ type ProcessesContextProps = {
   form: UseFormReturn<WeeklyReportData>
   array: UseFieldArrayReturn<WeeklyReportData>
   t: TFunction<'table', undefined>
-  sorting: [Key[], Dispatch<SetStateAction<Key[]>>]
+  sorting: [string[], Dispatch<SetStateAction<string[]>>]
 }
 
 type ProcessesProviderProps = {
@@ -30,7 +29,7 @@ export const ProcessesProvider = ({
   children
 }: ProcessesProviderProps) => {
   const { t } = useTranslation('weekly-report')
-  const sorting = useState<Key[]>(['ASC'])
+  const sorting = useState(['DESC'])
 
   return (
     <ProcessesContext.Provider value={{ ...value, t, sorting }}>

@@ -6,26 +6,24 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { ArrowDown01, ArrowDownUp, ArrowUp10 } from 'lucide-react'
-import { useState } from 'react'
 import { useProcesses } from '../context/WeeklyReportProvider'
 
 const items = [
   {
-    key: 'ASC',
-    label: 'processes.sort.asc',
-    icon: <ArrowDown01 className="w-4 h-4" />
-  },
-  {
     key: 'DESC',
     label: 'processes.sort.desc',
     icon: <ArrowUp10 className="w-4 h-4" />
+  },
+  {
+    key: 'ASC',
+    label: 'processes.sort.asc',
+    icon: <ArrowDown01 className="w-4 h-4" />
   }
 ]
 
 export const SortProcesses = () => {
   const { t, sorting } = useProcesses()
-  // const [selectedKeys, setSelectedKeys] = sorting
-  const [selectedKeys, setSelectedKeys] = useState(new Set(['text']))
+  const [selectedKeys, setSelectedKeys] = sorting
 
   return (
     <>
@@ -47,7 +45,9 @@ export const SortProcesses = () => {
           disallowEmptySelection
           selectionMode="single"
           selectedKeys={selectedKeys}
-          onSelectionChange={(key) => console.log(key)}
+          onSelectionChange={(keys) =>
+            setSelectedKeys(keys.valueOf() as string[])
+          }
         >
           {(item) => (
             <DropdownItem key={item.key} startContent={item.icon}>
