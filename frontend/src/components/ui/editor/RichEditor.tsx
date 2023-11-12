@@ -74,7 +74,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             },
             paragraph: {
               HTMLAttributes: {
-                class: 'hyphens-auto',
+                class: 'break-normal hyphens-auto',
                 lang: i18next.language
               }
             }
@@ -176,7 +176,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
             </>
           )}
           <EditorContent
-            className="[&>*]:data-[is-fixed=true]:rounded-t-none break-words"
+            className="[&>*]:data-[is-fixed=true]:rounded-t-none"
             data-is-fixed={fixed}
             editor={editor}
           />

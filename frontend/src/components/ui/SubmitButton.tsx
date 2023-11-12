@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@nextui-org/react'
+import { Button, ButtonProps, cn } from '@nextui-org/react'
 import { Edit, RotateCcw, Save } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
@@ -14,12 +14,13 @@ export const SubmitButton = ({
   labelResetButton,
   fnResetButton,
   isEdit = false,
+  className,
   ...props
 }: SubmitButtonProps) => {
   const { t } = useTranslation('default')
 
   return (
-    <div className="flex gap-2.5 mt-2.5">
+    <div className={cn('flex gap-2.5 mt-2.5', className)}>
       <Button color="primary" type="submit" {...props}>
         {!children && isEdit ? <Edit className="w-5 h-5" /> : <Save />}
         {!children && isEdit ? t('default:btn.edit') : t('default:btn.save')}

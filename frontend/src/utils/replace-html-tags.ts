@@ -13,9 +13,10 @@ export const clearHTMLTags = (text: string, replaceBy?: string) => {
  * Check if the text has a minimum length. It will be used
  * in zod schema validation.
  *
+ * @example .refine((v) => min(v))
  * @example .refine((v) => min(v, 10))
  */
-export const min = (text: string, value: number) => {
+export const min = (text: string, value: number = 1) => {
   return clearHTMLTags(text).length >= value
 }
 
