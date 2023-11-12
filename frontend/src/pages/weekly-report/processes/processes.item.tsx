@@ -1,8 +1,10 @@
 import { GridLayout } from '@/components/ui/Grid'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
+import { Text } from '@/components/ui/label/Text'
 import { Chip } from '@nextui-org/react'
-import { Trash, Upload, View } from 'lucide-react'
 import { Controller } from 'react-hook-form'
+import { RemoveProcess } from './actions/processes.remove'
+import { UploadProcess } from './actions/processes.upload'
 import { useProcesses } from './context/WeeklyReportProvider'
 import { ProcessSelects } from './processes.selects'
 
@@ -22,7 +24,7 @@ export const ProcessItem = ({ index }: ProcessItemProps) => {
           </Chip>
         </div>
         <ProcessSelects index={index} />
-        <div className="grid grid-cols-[1fr_auto] gap-3">
+        <div className="grid grid-cols-1 xs:grid-cols-[1fr_auto] gap-4">
           <fieldset>
             <Controller
               control={form.control}
@@ -36,16 +38,18 @@ export const ProcessItem = ({ index }: ProcessItemProps) => {
                       ?.message
                   }
                   limit={1000}
-                  as="textarea-4"
+                  as="textarea-5"
                   {...field}
                 />
               )}
             />
           </fieldset>
-          <div className="flex gap-2" role="actions">
-            <Upload />
-            <Trash />
-            <View />
+          <div className="flex flex-col" role="actions">
+            <Text text="Actions" isRequired />
+            <div className="flex gap-2">
+              <UploadProcess index={index} />
+              <RemoveProcess index={index} />
+            </div>
           </div>
         </div>
       </div>

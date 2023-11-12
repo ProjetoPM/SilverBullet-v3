@@ -1,5 +1,5 @@
 import { Workspace } from '@/stores/useWorkspaceStore'
-import { max, message } from '@/utils/replace-html-tags'
+import { max, message, min, required } from '@/utils/replace-html-tags'
 import { z } from 'zod'
 
 export const WeeklyReportSchema = z.object({
@@ -8,19 +8,24 @@ export const WeeklyReportSchema = z.object({
     .uuid()
     .default(Workspace.getWorkspace()?.id ?? 'error')
     .readonly(),
-  weeklyEvaluationId: z.string().uuid(),
+  weeklyEvaluationId: z.string().refine(min, required),
   toolEvaluation: z
     .string()
     .refine((v) => max(v, 1000), message('max', 1000))
-    .optional(),
-  processes: z.array(
-    z.object({
-      group: z.string().uuid(),
-      name: z.string().uuid(),
-      description: z.string().refine((v) => max(v, 1000), message('max', 1000)),
-      filesFolder: z.string().optional()
-    })
-  )
+    .nullish(),
+  processes: z
+    .array(
+      z.object({
+        group: z.string().refine(min, required),
+        name: z.string().refine(min, required),
+        description: z
+          .string()
+          .refine((v) => max(v, 1000), message('max', 1000))
+          .nullish(),
+        filesFolder: z.string().nullish()
+      })
+    )
+    .default([])
 })
 
 export type WeeklyReportData = z.infer<typeof WeeklyReportSchema>

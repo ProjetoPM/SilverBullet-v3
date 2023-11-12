@@ -20,8 +20,8 @@ import {
   MoreHorizontal,
   Trash
 } from 'lucide-react'
-import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { WorkspaceColumns } from './workspaces.columns'
 
 type WorkspaceActionsProps = {
@@ -31,7 +31,8 @@ type WorkspaceActionsProps = {
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const [openWorkspace] = useWorkspaceStore((store) => [store.openWorkspace])
+  const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
+  const navigate = useNavigate()
 
   const { removeMany } = useFetch<WorkspaceColumns>({
     baseUrl: backend.workspaces.baseUrl,
@@ -42,9 +43,9 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
     await removeMany.mutateAsync(row)
   }
 
-  const handleOpen = async () => {
+  const handleOpen = () => {
     openWorkspace(row)
-    toast.success(t('workspaces:actions.workspace_opened'))
+    navigate(frontend.projects.index)
   }
 
   return (
@@ -57,16 +58,11 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="dropdown reporter">
           <DropdownSection title={t('table.actions')}>
-            <DropdownItem textValue="open">
-              <Link
-                href={frontend.projects.index}
-                color="foreground"
-                onPress={handleOpen}
-                className="flex gap-2"
-              >
+            <DropdownItem textValue="open" onPress={handleOpen}>
+              <span className="flex gap-2">
                 <FolderOpen className="w-5 h-5" />
                 {t('btn.open')}
-              </Link>
+              </span>
             </DropdownItem>
             <DropdownItem textValue="edit">
               <Link

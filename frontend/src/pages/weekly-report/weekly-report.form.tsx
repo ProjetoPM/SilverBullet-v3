@@ -4,11 +4,14 @@ import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Workspace } from '@/stores/useWorkspaceStore'
 import { clearHTMLTags } from '@/utils/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Autocomplete, AutocompleteItem, Input } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
+import { Copy } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { WeeklyReportProcesses } from './processes/processes'
+import { WeeklyEvaluationSelect } from './processes/processes.select'
 import {
   WeeklyReportData,
   WeeklyReportDataWithId,
@@ -18,21 +21,6 @@ import {
 type WeeklyReportFormProps = {
   data?: WeeklyReportDataWithId
 }
-
-const items = [
-  {
-    id: '109b84fa-afcb-4815-9600-450caad03aef',
-    label: 'Avaliação Semanal 1'
-  },
-  {
-    id: '6ad9b93c-6541-4be5-a090-24ed5fcdb9dc',
-    label: 'Avaliação Semanal 2'
-  },
-  {
-    id: '4c435da4-310b-4462-a747-c1a6b3b4690a',
-    label: 'Avaliação Semanal 3'
-  }
-]
 
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
@@ -56,31 +44,28 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
       noValidate
     >
       <GridLayout cols="2">
-        <fieldset>
-          <Autocomplete
-            items={items}
-            label={t('weekly_evaluation.label')}
-            labelPlacement="outside"
-            placeholder={t('weekly_evaluation.placeholder')}
-            errorMessage={form.formState.errors.weeklyEvaluationId?.message}
-            defaultSelectedKey={form.getValues(`weeklyEvaluationId`)}
-            onSelectionChange={(key) =>
-              form.setValue(`weeklyEvaluationId`, String(key))
-            }
-            onClose={() => form.clearErrors(`weeklyEvaluationId`)}
-            isRequired
-          >
-            {(item) => (
-              <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
-            )}
-          </Autocomplete>
-        </fieldset>
+        <WeeklyEvaluationSelect form={form} />
         <fieldset>
           <Input
             label={t('linked_project.label')}
             labelPlacement="outside"
             placeholder={t('linked_project.placeholder')}
             value={clearHTMLTags(Workspace.getWorkspace()?.name || '')}
+            endContent={
+              <Copy
+                className="w-4 h-4 hover:text-primary cursor-pointer"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    form.getValues('projectId') ||
+                      Workspace.getWorkspace()?.id ||
+                      t('linked_project.placeholder')
+                  )
+                  toast.success('Copied to clipboard', {
+                    id: 'copy-to-clipboard'
+                  })
+                }}
+              />
+            }
             isRequired
             isReadOnly
           />
@@ -113,6 +98,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
         // isLoading={create.isLoading || update.isLoading}
       />
       <pre>{output}</pre>
+      <pre>{clearHTMLTags(form.getValues('toolEvaluation') ?? '')}</pre>
     </form>
   )
 }

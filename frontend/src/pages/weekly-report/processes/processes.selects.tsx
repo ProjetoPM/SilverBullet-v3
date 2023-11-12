@@ -1,4 +1,5 @@
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
+import { Controller } from 'react-hook-form'
 import { useProcesses } from './context/WeeklyReportProvider'
 
 type ProcessSelectsProps = {
@@ -24,47 +25,59 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
   const { t, form } = useProcesses()
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
       <fieldset>
-        <Autocomplete
-          items={items}
-          label={t('process.group.label')}
-          labelPlacement="outside"
-          placeholder={t('process.group.placeholder')}
-          errorMessage={
-            form.formState.errors.processes?.[index]?.group?.message
-          }
-          defaultSelectedKey={form.getValues(`processes.${index}.group`)}
-          onSelectionChange={(key) => {
-            form.setValue(`processes.${index}.group`, String(key))
-          }}
-          onClose={() => form.clearErrors(`processes.${index}.group`)}
-          isRequired
-        >
-          {(item) => (
-            <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
+        <Controller
+          control={form.control}
+          name={`processes.${index}.group`}
+          render={({ field: { value, onChange, ref, ...rest } }) => (
+            <Autocomplete
+              items={items}
+              label={t('process.group.label')}
+              labelPlacement="outside"
+              placeholder={t('process.group.placeholder')}
+              errorMessage={
+                form.formState.errors.processes?.[index]?.group?.message
+              }
+              selectedKey={String(value)}
+              onSelectionChange={(value) => onChange(String(value ?? ''))}
+              ref={ref}
+              {...rest}
+              isRequired
+            >
+              {(item) => (
+                <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
+              )}
+            </Autocomplete>
           )}
-        </Autocomplete>
+        />
       </fieldset>
       <fieldset>
-        <Autocomplete
-          items={items}
-          label={t('process.name.label')}
-          labelPlacement="outside"
-          placeholder={t('process.name.placeholder')}
-          errorMessage={form.formState.errors.processes?.[index]?.name?.message}
-          defaultSelectedKey={form.getValues(`processes.${index}.name`)}
-          onSelectionChange={(key) => {
-            form.setValue(`processes.${index}.name`, String(key))
-          }}
-          onClose={() => form.clearErrors(`processes.${index}.name`)}
-          isDisabled={!form.getValues(`processes.${index}.group`)}
-          isRequired
-        >
-          {(item) => (
-            <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
+        <Controller
+          control={form.control}
+          name={`processes.${index}.name`}
+          render={({ field: { value, onChange, ref, ...rest } }) => (
+            <Autocomplete
+              items={items}
+              label={t('process.name.label')}
+              labelPlacement="outside"
+              placeholder={t('process.name.placeholder')}
+              errorMessage={
+                form.formState.errors.processes?.[index]?.name?.message
+              }
+              selectedKey={String(value)}
+              onSelectionChange={(value) => onChange(String(value ?? ''))}
+              ref={ref}
+              {...rest}
+              isDisabled={!form.watch(`processes.${index}.group`)}
+              isRequired
+            >
+              {(item) => (
+                <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>
+              )}
+            </Autocomplete>
           )}
-        </Autocomplete>
+        />
       </fieldset>
     </div>
   )
