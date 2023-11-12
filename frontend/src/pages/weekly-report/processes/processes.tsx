@@ -17,7 +17,7 @@ export const WeeklyReportProcesses = ({ form }: WeeklyReportProcessesProps) => {
 
   return (
     <ProcessesProvider value={{ form, array }}>
-      <section className="my-1.5 h-20 w-full bg-default-100/90 flex items-center gap-2 justify-between px-4 border border-success-400 dark:border-foreground-200 rounded-lg">
+      <section className="my-1.5 h-20 w-full bg-default-100/90 flex items-center gap-2 justify-between px-4 border border-foreground-300 dark:border-foreground-200 rounded-lg">
         <AddProcesses />
         <SortProcesses />
       </section>

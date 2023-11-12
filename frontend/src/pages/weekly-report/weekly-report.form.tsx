@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@nextui-org/react'
 import { Copy } from 'lucide-react'
 import { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
@@ -41,68 +41,70 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   }
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-3"
-      noValidate
-    >
-      <GridLayout cols="2">
-        <WeeklyEvaluationSelect form={form} />
-        <fieldset>
-          <Input
-            label={t('linked_project.label')}
-            labelPlacement="outside"
-            placeholder={t('linked_project.placeholder')}
-            value={clearHTMLTags(Workspace.getWorkspace()?.name || '')}
-            endContent={
-              <Copy
-                className="w-4 h-4 hover:text-primary cursor-pointer"
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    form.getValues('projectId') ||
-                      Workspace.getWorkspace()?.id ||
-                      t('linked_project.placeholder')
-                  )
-                  toast.success('Copied to clipboard', {
-                    id: 'copy-to-clipboard'
-                  })
-                }}
-              />
-            }
-            isRequired
-            isReadOnly
-          />
-        </fieldset>
-      </GridLayout>
-      <GridLayout cols="1">
-        <fieldset>
-          <Controller
-            control={form.control}
-            name="toolEvaluation"
-            render={({ field }) => (
-              <RichEditor
-                label={t('tool_evaluation.label')}
-                placeholder={t('tool_evaluation.placeholder')}
-                errorMessage={form.formState.errors.toolEvaluation?.message}
-                limit={1000}
-                isFixed
-                as="textarea-4"
-                {...field}
-              />
-            )}
-          />
-        </fieldset>
-      </GridLayout>
-      <GridLayout cols="1">
-        <WeeklyReportProcesses form={form} />
-      </GridLayout>
-      <SubmitButton
-        isEdit={!!data}
-        fnResetButton={form.reset}
-        // isLoading={create.isLoading || update.isLoading}
-      />
-      <pre>{output}</pre>
-      <pre>{clearHTMLTags(form.getValues('toolEvaluation') ?? '')}</pre>
-    </form>
+    <FormProvider {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-3"
+        noValidate
+      >
+        <GridLayout cols="2">
+          <WeeklyEvaluationSelect form={form} />
+          <fieldset>
+            <Input
+              label={t('linked_project.label')}
+              labelPlacement="outside"
+              placeholder={t('linked_project.placeholder')}
+              value={clearHTMLTags(Workspace.getWorkspace()?.name || '')}
+              endContent={
+                <Copy
+                  className="w-4 h-4 hover:text-primary cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      form.getValues('projectId') ||
+                        Workspace.getWorkspace()?.id ||
+                        t('linked_project.placeholder')
+                    )
+                    toast.success('Copied to clipboard', {
+                      id: 'copy-to-clipboard'
+                    })
+                  }}
+                />
+              }
+              isRequired
+              isReadOnly
+            />
+          </fieldset>
+        </GridLayout>
+        <GridLayout cols="1">
+          <fieldset>
+            <Controller
+              control={form.control}
+              name="toolEvaluation"
+              render={({ field }) => (
+                <RichEditor
+                  label={t('tool_evaluation.label')}
+                  placeholder={t('tool_evaluation.placeholder')}
+                  errorMessage={form.formState.errors.toolEvaluation?.message}
+                  limit={1000}
+                  isFixed
+                  as="textarea-4"
+                  {...field}
+                />
+              )}
+            />
+          </fieldset>
+        </GridLayout>
+        <GridLayout cols="1">
+          <WeeklyReportProcesses form={form} />
+        </GridLayout>
+        <SubmitButton
+          isEdit={!!data}
+          fnResetButton={form.reset}
+          // isLoading={create.isLoading || update.isLoading}
+        />
+        <pre>{output}</pre>
+        <pre>{clearHTMLTags(form.getValues('toolEvaluation') ?? '')}</pre>
+      </form>
+    </FormProvider>
   )
 }
