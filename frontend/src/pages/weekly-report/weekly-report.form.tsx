@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
 import { WeeklyReportProcesses } from './processes/processes'
 import { WeeklyEvaluationSelect } from './processes/processes.select'
 import {
@@ -25,6 +26,7 @@ type WeeklyReportFormProps = {
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const [output, setOutput] = useState('')
+  const { images } = useWeeklyReport()
 
   const form = useForm<WeeklyReportData>({
     mode: 'all',
@@ -35,6 +37,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const onSubmit = async (form: WeeklyReportData) => {
     setOutput(JSON.stringify(form, null, 2))
     console.table(form)
+    console.log(images)
   }
 
   return (

@@ -1,26 +1,32 @@
 import { Button } from '@nextui-org/react'
 import { PlusCircle } from 'lucide-react'
-import { useProcesses } from '../context/WeeklyReportProvider'
+import toast from 'react-hot-toast'
+import { useProcesses } from '../context/ProcessProvider'
 
 export const AddProcesses = () => {
   const { t, sorting, array } = useProcesses()
-  const [selectedKeys] = sorting[0]
+  const [selectedKey] = sorting[0]
 
   const handleAddProcess = () => {
-    if (selectedKeys === 'ASC') {
+    if (array.fields.length === 10) {
+      toast.error(t('process.limit'), { id: 'process-limit' })
+      return
+    }
+
+    if (selectedKey === 'ASC') {
       array.append({
         group: '',
         name: '',
-        description: '',
-        filesFolder: ''
+        description: undefined,
+        filesFolder: undefined
       })
       return
     }
     array.prepend({
       group: '',
       name: '',
-      description: '',
-      filesFolder: ''
+      description: undefined,
+      filesFolder: undefined
     })
   }
 

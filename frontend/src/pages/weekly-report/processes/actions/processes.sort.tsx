@@ -6,7 +6,7 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { ArrowDown01, ArrowDownUp, ArrowUp10 } from 'lucide-react'
-import { useProcesses } from '../context/WeeklyReportProvider'
+import { useProcesses } from '../context/ProcessProvider'
 
 const items = [
   {
@@ -45,9 +45,7 @@ export const SortProcesses = () => {
           disallowEmptySelection
           selectionMode="single"
           selectedKeys={selectedKeys}
-          onSelectionChange={(keys) =>
-            setSelectedKeys(keys.valueOf() as string[])
-          }
+          onSelectionChange={(key) => setSelectedKeys(new Set(key as string))}
         >
           {(item) => (
             <DropdownItem key={item.key} startContent={item.icon}>

@@ -2,19 +2,20 @@ import { GridLayout } from '@/components/ui/Grid'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { Chip } from '@nextui-org/react'
-import { Controller } from 'react-hook-form'
+import { Controller, FieldArrayWithId } from 'react-hook-form'
+import { WeeklyReportDataWithId } from '../weekly-report.schema'
+import { FilesProcess } from './actions/processes.files'
 import { RemoveProcess } from './actions/processes.remove'
-import { UploadProcess } from './actions/processes.upload'
-import { useProcesses } from './context/WeeklyReportProvider'
+import { useProcesses } from './context/ProcessProvider'
 import { ProcessSelects } from './processes.selects'
 
 type ProcessItemProps = {
+  field: FieldArrayWithId<WeeklyReportDataWithId>
   index: number
 }
 
-export const ProcessItem = ({ index }: ProcessItemProps) => {
-  const { t, form, array, sorting } = useProcesses()
-  const [selectedKey] = sorting[0]
+export const ProcessItem = ({ field, index }: ProcessItemProps) => {
+  const { t, form } = useProcesses()
 
   return (
     <GridLayout cols="1">
@@ -22,8 +23,7 @@ export const ProcessItem = ({ index }: ProcessItemProps) => {
         <div className="flex justify-end">
           <Chip size="sm" color="success" className="select-none">
             {t('process.process_number', {
-              value:
-                selectedKey === 'ASC' ? index + 1 : array.fields.length - index
+              value: field.filesFolder?.split('-')[0] || field.id.split('-')[0]
             })}
           </Chip>
         </div>
@@ -51,9 +51,21 @@ export const ProcessItem = ({ index }: ProcessItemProps) => {
           <div className="flex flex-col" role="actions">
             <Text text="Actions" isRequired />
             <div className="flex gap-2">
-              <UploadProcess index={index} />
+              <FilesProcess field={field} index={index} />
               <RemoveProcess index={index} />
             </div>
+          </div>
+        </div>
+        <div>
+          <Text text="Files to upload" />
+          <div className="flex flex-wrap gap-2 overflow-hidden hover:overflow-y-auto max-h-24">
+            <Chip
+              onClose={() => console.log('close')}
+              color="success"
+              variant="flat"
+            >
+              Arquivo X
+            </Chip>
           </div>
         </div>
       </div>

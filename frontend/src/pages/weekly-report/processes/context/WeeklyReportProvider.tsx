@@ -1,49 +1,67 @@
-import { TFunction } from 'i18next'
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useContext,
-  useState
-} from 'react'
-import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { WeeklyReportData } from '../../weekly-report.schema'
+import { createContext, useContext, useState } from 'react'
 
-type ProcessesContextProps = {
-  form: UseFormReturn<WeeklyReportData>
-  array: UseFieldArrayReturn<WeeklyReportData>
-  t: TFunction<'table', undefined>
-  sorting: [string[], Dispatch<SetStateAction<string[]>>]
+type Item = {
+  filesFolder: string
+  files: File[]
 }
 
-type ProcessesProviderProps = {
-  value: Omit<ProcessesContextProps, 't' | 'sorting'>
+type WeeklyReportContextProps = {
+  images: Item[]
+  addImages: (filesFolder: string, images: FileList) => void
+  removeImage: (index: number) => void
+}
+
+type WeeklyReportProviderProps = {
   children: React.ReactNode
 }
 
-const ProcessesContext = createContext<ProcessesContextProps | null>(null)
+const WeeklyReportContext = createContext<WeeklyReportContextProps | null>(null)
 
-export const ProcessesProvider = ({
-  value,
+export const WeeklyReportProvider = ({
   children
-}: ProcessesProviderProps) => {
-  const { t } = useTranslation('weekly-report')
-  const sorting = useState(['DESC'])
+}: WeeklyReportProviderProps) => {
+  const [images, setImages] = useState<Item[]>([])
+
+  const addImages = (filesFolder: string, _images: FileList) => {
+    const files = Array.from(_images)
+
+    const isDuplicate = (file: File) =>
+      images.some(
+        (image) =>
+          image.filesFolder === filesFolder &&
+          Array.from(image.files).some(
+            (existingFile) => existingFile.name === file.name
+          )
+      )
+
+    const uniqueFiles = files.filter((file) => !isDuplicate(file))
+
+    setImages((prev) => [
+      ...prev,
+      {
+        filesFolder,
+        files: uniqueFiles
+      }
+    ])
+  }
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index))
+  }
 
   return (
-    <ProcessesContext.Provider value={{ ...value, t, sorting }}>
+    <WeeklyReportContext.Provider value={{ images, addImages, removeImage }}>
       {children}
-    </ProcessesContext.Provider>
+    </WeeklyReportContext.Provider>
   )
 }
 
-export const useProcesses = () => {
-  const context = useContext(ProcessesContext)
+export const useWeeklyReport = () => {
+  const context = useContext(WeeklyReportContext)
 
   if (!context) {
     throw new Error(
-      'useProcessesContext must be used within a ProcessesProvider'
+      'useWeeklyReportContext must be used within a WeeklyReportProvider'
     )
   }
 
