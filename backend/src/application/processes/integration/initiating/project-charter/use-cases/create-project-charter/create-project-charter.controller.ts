@@ -45,8 +45,6 @@ export class CreateProjectCharterController implements Controller {
     endDate,
     ...request
   }: CreateProjectCharterControllerRequest): Promise<HttpResponse> {
-    console.log(request)
-
     const validated = this.validator.validate({
       ...request,
       startDate,

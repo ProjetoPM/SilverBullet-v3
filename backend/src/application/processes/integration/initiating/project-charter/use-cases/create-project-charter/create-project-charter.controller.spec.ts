@@ -78,8 +78,6 @@ describe('Create project charter (end-to-end)', async () => {
       .set({ 'current-project-id': project.id })
       .send(data)
 
-    console.log(response.body)
-
     expect(response.status).toBe(StatusCodes.CREATED)
 
     await prismaClient.projectCharter.deleteMany({
@@ -111,8 +109,6 @@ describe('Create project charter (end-to-end)', async () => {
       .auth(jwt.token, { type: 'bearer' })
       .set({ 'current-project-id': project.id })
       .send(data)
-
-    console.log(response.body)
 
     expect(response.status).toBe(StatusCodes.CREATED)
   })

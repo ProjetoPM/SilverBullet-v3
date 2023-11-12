@@ -14,28 +14,6 @@ describe('Authenticate User', () => {
     authenticateUser = new AuthenticateUser(usersRepository)
   })
 
-  // test('should be able to authenticate', async () => {
-  //   const user = UserFactory.create({
-  //     email: 'testkk@test.com',
-  //     password: 'test1234567',
-  //   })
-
-  //   usersRepository.create(user)
-
-  //   const response = await authenticateUser.execute({
-  //     email: 'testkk@test.com',
-  //     password: 'test1234567',
-  //   })
-
-  //   console.log(response.value)
-
-  //   expect(response.value).toEqual(
-  //     expect.objectContaining(
-  //       { status: expect.any(String), message: expect.any(String), token: expect.any(String) }),
-  //   )
-  //   expect(response.isRight()).toBeTruthy()
-  // })
-
   test('should not be able to authenticate with invalid e-mail', async () => {
     const response = await authenticateUser.execute({
       email: 'invalid@example.com',

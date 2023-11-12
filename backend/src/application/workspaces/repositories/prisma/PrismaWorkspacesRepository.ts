@@ -15,9 +15,11 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   ): Promise<void> {
     const data = await WorkspaceMapper.toPersistence(workspace)
 
+    const { metrics, ...workspacePersistence } = data
+
     await prismaClient.workspace.create({
       data: {
-        ...data,
+        ...workspacePersistence,
         UserWorkspace: {
           create: {
             user: { connect: { id: user.id } },
@@ -27,15 +29,31 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
         },
       },
     })
+
+    if (!metrics) return
+
+    for (const metric of metrics) {
+      await prismaClient.metric.create({
+        data: {
+          id: metric.id,
+          name: metric.name,
+          value: metric.value,
+          workspace_id: workspace.id,
+        },
+      })
+    }
   }
 
   async update(workspace: Workspace): Promise<void> {
     const data = await WorkspaceMapper.toPersistence(workspace)
 
+    const { metrics,...workspacePersistence } = data
     await prismaClient.workspace
       .update({
         where: { id: workspace.id },
-        data,
+        data: {
+          ...workspacePersistence
+        },
       })
       .catch(() => {
         throw new Error('Error on update workspace')
