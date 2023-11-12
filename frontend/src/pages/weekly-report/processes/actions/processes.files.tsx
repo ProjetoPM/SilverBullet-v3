@@ -16,7 +16,7 @@ export const FilesProcess = ({ field, index }: UploadProcess) => {
   const { images, addImages } = useWeeklyReport()
 
   const filesFolder = useMemo(() => {
-    return field.filesFolder || field.id
+    return field.filesFolder ?? field.id
   }, [field])
 
   useEffect(() => {
@@ -25,7 +25,6 @@ export const FilesProcess = ({ field, index }: UploadProcess) => {
 
   const handleUpload = () => {
     document.getElementById(`processes.${index}.hidden`)?.click()
-    console.log(filesFolder)
   }
 
   const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {

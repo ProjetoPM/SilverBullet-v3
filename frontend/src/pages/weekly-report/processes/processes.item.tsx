@@ -21,9 +21,14 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
     <GridLayout cols="1">
       <div className="flex flex-col gap-3">
         <div className="flex justify-end">
-          <Chip size="sm" color="success" className="select-none">
+          <Chip
+            size="sm"
+            color={field.filesFolder ? 'primary' : 'success'}
+            className="select-none"
+          >
             {t('process.process_number', {
-              value: field.filesFolder?.split('-')[0] || field.id.split('-')[0]
+              value:
+                field.filesFolder?.split('-')?.[0] || field.id.split('-')[0]
             })}
           </Chip>
         </div>
@@ -34,17 +39,19 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
               control={form.control}
               name={`processes.${index}.description`}
               render={({ field }) => (
-                <RichEditor
-                  label={t('description.label')}
-                  placeholder={t('description.placeholder')}
-                  errorMessage={
-                    form.formState.errors.processes?.[index]?.description
-                      ?.message
-                  }
-                  limit={1000}
-                  as="textarea-5"
-                  {...field}
-                />
+                <>
+                  <RichEditor
+                    label={t('description.label')}
+                    placeholder={t('description.placeholder')}
+                    errorMessage={
+                      form.formState.errors.processes?.[index]?.description
+                        ?.message
+                    }
+                    limit={1000}
+                    as="textarea-5"
+                    {...field}
+                  />
+                </>
               )}
             />
           </fieldset>

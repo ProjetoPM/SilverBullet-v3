@@ -32,7 +32,7 @@ export const WeeklyEvaluationSelect = ({
       <Controller
         control={form.control}
         name="weeklyEvaluationId"
-        render={({ field: { value, onChange, ref, ...rest } }) => (
+        render={({ field: { value, onChange, ...rest } }) => (
           <Autocomplete
             items={items}
             label={t('weekly_evaluation.label')}
@@ -41,7 +41,6 @@ export const WeeklyEvaluationSelect = ({
             errorMessage={form.formState.errors.weeklyEvaluationId?.message}
             selectedKey={String(value)}
             onSelectionChange={(value) => onChange(String(value ?? ''))}
-            ref={ref}
             {...rest}
             isRequired
           >

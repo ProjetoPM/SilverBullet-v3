@@ -29,7 +29,7 @@ export const ProcessesProvider = ({
   children
 }: ProcessesProviderProps) => {
   const { t } = useTranslation('weekly-report')
-  const sorting = useState(new Set(['ASC']))
+  const sorting = useState(new Set(['DESC']))
 
   return (
     <ProcessesContext.Provider value={{ ...value, t, sorting }}>

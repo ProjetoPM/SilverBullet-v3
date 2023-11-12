@@ -95,7 +95,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           </fieldset>
         </GridLayout>
         <GridLayout cols="1">
-          <WeeklyReportProcesses form={form} />
+          <WeeklyReportProcesses />
         </GridLayout>
         <SubmitButton
           isEdit={!!data}

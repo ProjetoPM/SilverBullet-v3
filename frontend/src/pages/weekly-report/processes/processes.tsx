@@ -1,15 +1,13 @@
-import { UseFormReturn, useFieldArray } from 'react-hook-form'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 import { WeeklyReportData } from '../weekly-report.schema'
 import { AddProcesses } from './actions/processes.add'
-import { ProcessesItems } from './processes.items'
 import { SortProcesses } from './actions/processes.sort'
 import { ProcessesProvider } from './context/ProcessProvider'
+import { ProcessesItems } from './processes.items'
 
-type WeeklyReportProcessesProps = {
-  form: UseFormReturn<WeeklyReportData>
-}
+export const WeeklyReportProcesses = () => {
+  const form = useFormContext<WeeklyReportData>()
 
-export const WeeklyReportProcesses = ({ form }: WeeklyReportProcessesProps) => {
   const array = useFieldArray<WeeklyReportData>({
     control: form.control,
     name: 'processes'
