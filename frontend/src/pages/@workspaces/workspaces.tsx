@@ -3,14 +3,14 @@ import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend, frontend } from '@/routes/routes'
 import { WorkspaceForm } from './workspaces.form'
-import { WorkspaceDataWithId } from './workspaces.schema'
+import { WorkspaceData } from './workspaces.schema'
 
 export const WorkspacePage = () => {
   const { id, t, title, breadcrumb } = usePageUtils('workspaces', {
     dynamic: true
   })
 
-  const { get } = useFetch<WorkspaceDataWithId>({
+  const { get } = useFetch<WorkspaceData>({
     baseUrl: backend.workspaces.baseUrl,
     keys: ['workspaces'],
     fetch: {

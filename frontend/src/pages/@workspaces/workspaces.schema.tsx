@@ -2,6 +2,7 @@ import { max, message, min, required } from '@/utils/replace-html-tags'
 import { z } from 'zod'
 
 export const WorkspaceSchema = z.object({
+  id: z.string().uuid().nullish(),
   name: z
     .string()
     .refine((v) => min(v, 1), required)
@@ -13,4 +14,3 @@ export const WorkspaceSchema = z.object({
 })
 
 export type WorkspaceData = z.infer<typeof WorkspaceSchema>
-export type WorkspaceDataWithId = WorkspaceData & { id: string }

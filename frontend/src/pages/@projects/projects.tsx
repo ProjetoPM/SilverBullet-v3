@@ -3,12 +3,14 @@ import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend, frontend } from '@/routes/routes'
 import { ProjectForm } from './projects.form'
-import { ProjectDataWithId } from './projects.schema'
+import { ProjectData } from './projects.schema'
 
 export const ProjectPage = () => {
-  const { id, t, title, breadcrumb } = usePageUtils('projects')
+  const { id, t, title, breadcrumb } = usePageUtils('projects', {
+    dynamic: true
+  })
 
-  const { get } = useFetch<ProjectDataWithId>({
+  const { get } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
     keys: ['projects'],
     fetch: {
@@ -20,7 +22,7 @@ export const ProjectPage = () => {
 
   return (
     <PageLayout
-      title={title({ dynamic: true })}
+      title={title()}
       isLoading={get.isLoading}
       breadcrumb={breadcrumb({
         segments: [{ label: t('page.title'), link: frontend.projects.index }]

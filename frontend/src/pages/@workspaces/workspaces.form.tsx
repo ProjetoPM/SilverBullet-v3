@@ -4,17 +4,12 @@ import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useTranslation } from 'react-i18next'
-import {
-  WorkspaceData,
-  WorkspaceDataWithId,
-  WorkspaceSchema
-} from './workspaces.schema'
+import { WorkspaceData, WorkspaceSchema } from './workspaces.schema'
 
 type WorkspaceFormProps = {
-  data?: WorkspaceDataWithId
+  data?: WorkspaceData
 }
 
 export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
@@ -33,7 +28,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   })
 
   const onSubmit = async (form: WorkspaceData) => {
-    if (data) {
+    if (data?.id) {
       await update.mutateAsync({ ...form, id: data.id })
       return
     }

@@ -4,17 +4,12 @@ import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useTranslation } from 'react-i18next'
-import {
-  ProjectData,
-  ProjectDataWithId,
-  ProjectSchema
-} from './projects.schema'
+import { ProjectData, ProjectSchema } from './projects.schema'
 
 type ProjectFormProps = {
-  data?: ProjectDataWithId
+  data?: ProjectData
 }
 
 export const ProjectForm = ({ data }: ProjectFormProps) => {
@@ -33,7 +28,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
   })
 
   const onSubmit = async (form: ProjectData) => {
-    if (data) {
+    if (data?.id) {
       await update.mutateAsync({ ...form, id: data.id })
       return
     }
