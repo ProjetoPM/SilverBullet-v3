@@ -34,7 +34,7 @@ export const WeeklyEvaluationSelect = ({
         name="weeklyEvaluationId"
         render={({ field: { value, onChange, ...rest } }) => (
           <Autocomplete
-            items={items}
+            defaultItems={items}
             label={t('weekly_evaluation.label')}
             labelPlacement="outside"
             placeholder={t('weekly_evaluation.placeholder')}

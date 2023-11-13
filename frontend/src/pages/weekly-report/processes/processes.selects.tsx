@@ -40,7 +40,7 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
           name={`processes.${index}.group`}
           render={({ field: { value, onChange, ...rest } }) => (
             <Autocomplete
-              items={items}
+              defaultItems={items}
               label={t('process.group.label')}
               labelPlacement="outside"
               placeholder={t('process.group.placeholder')}
@@ -66,7 +66,7 @@ export const ProcessSelects = ({ index }: ProcessSelectsProps) => {
           name={`processes.${index}.name`}
           render={({ field: { value, onChange, ...rest } }) => (
             <Autocomplete
-              items={items}
+              defaultItems={items}
               label={t('process.name.label')}
               labelPlacement="outside"
               placeholder={t('process.name.placeholder')}
