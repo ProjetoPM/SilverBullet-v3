@@ -3,6 +3,7 @@ import { max, message, min, required } from '@/utils/replace-html-tags'
 import { z } from 'zod'
 
 export const WeeklyReportSchema = z.object({
+  id: z.string().uuid().nullish(),
   projectId: z
     .string()
     .uuid()
@@ -29,4 +30,3 @@ export const WeeklyReportSchema = z.object({
 })
 
 export type WeeklyReportData = z.infer<typeof WeeklyReportSchema>
-export type WeeklyReportDataWithId = WeeklyReportData & { id: string }

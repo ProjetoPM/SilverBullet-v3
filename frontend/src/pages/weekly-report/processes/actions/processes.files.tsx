@@ -2,12 +2,12 @@ import { Button } from '@nextui-org/react'
 import { UploadIcon } from 'lucide-react'
 import { ChangeEvent, useCallback, useMemo } from 'react'
 import { FieldArrayWithId } from 'react-hook-form'
-import { WeeklyReportDataWithId } from '../../weekly-report.schema'
+import { WeeklyReportData } from '../../weekly-report.schema'
 import { useProcesses } from '../context/ProcessProvider'
 import { useWeeklyReport } from '../context/WeeklyReportProvider'
 
 type UploadProcess = {
-  field: FieldArrayWithId<WeeklyReportDataWithId>
+  field: FieldArrayWithId<WeeklyReportData>
   index: number
 }
 
@@ -26,15 +26,13 @@ export const FilesProcess = ({ field, index }: UploadProcess) => {
   const onChangeFile = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const files = e.target.files
-      console.log(filesFolder)
-      form.setValue(`processes.${index}.filesFolder`, filesFolder)
-      console.log('chamu essa caralha????')
 
       if (!files) {
         return
       }
 
       addImages(filesFolder, files)
+      form.setValue(`processes.${index}.filesFolder`, filesFolder)
     },
     [addImages, filesFolder, form, index]
   )
@@ -46,7 +44,7 @@ export const FilesProcess = ({ field, index }: UploadProcess) => {
         type="file"
         multiple
         accept="image/*, application/pdf"
-        className="invisible absolute"
+        className="hidden"
         onChange={onChangeFile}
       />
       <Button

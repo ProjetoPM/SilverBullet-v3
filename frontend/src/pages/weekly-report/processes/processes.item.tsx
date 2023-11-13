@@ -2,20 +2,25 @@ import { GridLayout } from '@/components/ui/Grid'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { Chip } from '@nextui-org/react'
+import { useMemo } from 'react'
 import { Controller, FieldArrayWithId } from 'react-hook-form'
-import { WeeklyReportDataWithId } from '../weekly-report.schema'
+import { WeeklyReportData } from '../weekly-report.schema'
 import { FilesProcess } from './actions/processes.files'
 import { RemoveProcess } from './actions/processes.remove'
 import { useProcesses } from './context/ProcessProvider'
 import { ProcessSelects } from './processes.selects'
 
 type ProcessItemProps = {
-  field: FieldArrayWithId<WeeklyReportDataWithId>
+  field: FieldArrayWithId<WeeklyReportData>
   index: number
 }
 
 export const ProcessItem = ({ field, index }: ProcessItemProps) => {
   const { t, form } = useProcesses()
+
+  const isOldProcess = useMemo(() => {
+    return field.id === field.filesFolder || field.filesFolder === null
+  }, [field])
 
   return (
     <GridLayout cols="1">
@@ -23,7 +28,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
         <div className="flex justify-end">
           <Chip
             size="sm"
-            color={field.filesFolder ? 'primary' : 'success'}
+            color={isOldProcess ? 'success' : 'primary'}
             className="select-none"
           >
             {t('process.process_number', {
@@ -68,7 +73,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
           <div className="flex flex-wrap gap-2 overflow-hidden hover:overflow-y-auto max-h-24">
             <Chip
               onClose={() => console.log('close')}
-              color="success"
+              color={isOldProcess ? 'success' : 'primary'}
               variant="flat"
             >
               Arquivo X

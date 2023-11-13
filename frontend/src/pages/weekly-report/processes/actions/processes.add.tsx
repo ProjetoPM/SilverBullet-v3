@@ -17,16 +17,16 @@ export const AddProcesses = () => {
       array.append({
         group: '',
         name: '',
-        description: '',
-        filesFolder: ''
+        description: null,
+        filesFolder: null
       })
       return
     }
     array.prepend({
       group: '',
       name: '',
-      description: '',
-      filesFolder: ''
+      description: null,
+      filesFolder: null
     })
   }
 

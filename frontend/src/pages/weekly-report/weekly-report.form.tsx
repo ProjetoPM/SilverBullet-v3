@@ -13,14 +13,10 @@ import { useTranslation } from 'react-i18next'
 import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
 import { WeeklyReportProcesses } from './processes/processes'
 import { WeeklyEvaluationSelect } from './processes/processes.select'
-import {
-  WeeklyReportData,
-  WeeklyReportDataWithId,
-  WeeklyReportSchema
-} from './weekly-report.schema'
+import { WeeklyReportData, WeeklyReportSchema } from './weekly-report.schema'
 
 type WeeklyReportFormProps = {
-  data?: WeeklyReportDataWithId
+  data?: WeeklyReportData
 }
 
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
@@ -103,7 +99,6 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           // isLoading={create.isLoading || update.isLoading}
         />
         <pre>{output}</pre>
-        <pre>{clearHTMLTags(form.getValues('toolEvaluation') ?? '')}</pre>
       </form>
     </FormProvider>
   )
