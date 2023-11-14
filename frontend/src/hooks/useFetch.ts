@@ -29,7 +29,7 @@ type UseFetchProps = {
 }
 
 type MutateProps = {
-  id: string
+  _id: string
   asyncFn?: () => Promise<void>
   internalAsyncFn?: () => Promise<void>
 }
@@ -147,7 +147,7 @@ export const useFetch = <T>({
    */
   const update = useMutation(
     async (data: T & MutateProps) => {
-      const url = `${baseUrl}/${data.id}/edit`
+      const url = `${baseUrl}/${data._id}/edit`
       await data.asyncFn?.()
       return await promise(api.put(url, data))
     },
@@ -171,7 +171,7 @@ export const useFetch = <T>({
    */
   const remove = useMutation(
     async (data: RemoveProps<T>) => {
-      const url = `${baseUrl}/${data.id}`
+      const url = `${baseUrl}/${data._id}`
       await data.asyncFn?.()
       return await promise(api.delete(url))
     },
@@ -201,7 +201,7 @@ export const useFetch = <T>({
       ) &
         Pick<MutateProps, 'asyncFn' | 'internalAsyncFn'>
     ) => {
-      const _data = Array.isArray(data) ? data : [data.id]
+      const _data = Array.isArray(data) ? data : [data._id]
       await data.asyncFn?.()
       return await promise(api.delete(baseUrl, { params: { ids: _data } }))
     },

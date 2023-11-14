@@ -8,6 +8,7 @@ import { z } from 'zod'
 
 type WorkspaceGuardProps = {
   children: React.ReactNode
+  redirectTo?: string
 }
 
 const validator = z.object({
@@ -21,7 +22,10 @@ const validateWorkspace = () => {
 
 export const WG_WORKSPACE_NOT_FOUND_ID = 'guard:workspace-not-found'
 
-export const WorkspaceGuard = ({ children }: WorkspaceGuardProps) => {
+export const WorkspaceGuard = ({
+  redirectTo,
+  children
+}: WorkspaceGuardProps) => {
   const { t } = useTranslation('errors')
   const navigate = useNavigate()
   const [isMounted, setMounted] = useState(false)
@@ -31,10 +35,10 @@ export const WorkspaceGuard = ({ children }: WorkspaceGuardProps) => {
       toast.error(t('workspace.not_found'), {
         id: WG_WORKSPACE_NOT_FOUND_ID
       })
-      navigate(frontend.workspaces.index)
+      navigate(redirectTo ?? frontend.workspaces.index)
     }
     setMounted(true)
-  }, [t, navigate])
+  }, [redirectTo, t, navigate])
 
   return <>{isMounted && children}</>
 }

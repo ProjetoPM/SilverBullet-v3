@@ -57,7 +57,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
           </Button>
         </DropdownTrigger>
         <DropdownMenu aria-label="dropdown reporter">
-          <DropdownSection title={t('table.actions')}>
+          <DropdownSection title={t('default:table.actions')}>
             <DropdownItem textValue="open" onPress={handleOpen}>
               <span className="flex gap-2">
                 <FolderOpen className="w-5 h-5" />

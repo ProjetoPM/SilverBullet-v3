@@ -89,7 +89,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
           }),
           Highlight.configure({
             HTMLAttributes: {
-              class: 'bg-yellow-300'
+              class: 'bg-yellow-300 rounded-md px-1'
             }
           }),
           Link.configure({
