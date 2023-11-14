@@ -28,8 +28,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
             className="select-none"
           >
             {t('process.process_number', {
-              value:
-                field.filesFolder?.split('-')?.[0] || field.id.split('-')[0]
+              value: field._id?.split('-')?.[0] || field.id.split('-')?.[0]
             })}
           </Chip>
         </div>

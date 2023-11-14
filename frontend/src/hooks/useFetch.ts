@@ -122,7 +122,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const create = useMutation(
-    async (data: T & Omit<MutateProps, 'id'>) => {
+    async (data: T & Omit<MutateProps, '_id'>) => {
       const url = `${baseUrl}/new`
       await data.asyncFn?.()
       return await promise(api.post(url, data))

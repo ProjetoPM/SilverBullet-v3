@@ -28,8 +28,8 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   })
 
   const onSubmit = async (form: WorkspaceData) => {
-    if (data?.id) {
-      await update.mutateAsync({ ...form, id: data.id })
+    if (data?._id) {
+      await update.mutateAsync({ ...form, _id: data._id })
       return
     }
     await create.mutateAsync(form)

@@ -28,8 +28,8 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
   })
 
   const onSubmit = async (form: ProjectData) => {
-    if (data?.id) {
-      await update.mutateAsync({ ...form, id: data.id })
+    if (data?._id) {
+      await update.mutateAsync({ ...form, _id: data._id })
       return
     }
     await create.mutateAsync(form)
