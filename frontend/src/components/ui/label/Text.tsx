@@ -13,6 +13,7 @@ type TextProps = Omit<ComponentProps<'span'>, 'ref'> & {
   }
   size?: 'xs' | 'sm' | 'md' | 'lg'
   as?: 'h1' | 'h2' | 'h3' | 'span' | 'div'
+  noPadding?: boolean
 }
 
 export const Text = ({
@@ -23,6 +24,7 @@ export const Text = ({
   className,
   size = 'md',
   as = 'span',
+  noPadding = false,
   ...props
 }: TextProps) => {
   const Component = as ?? 'span'
@@ -35,7 +37,8 @@ export const Text = ({
           'text-xs': size === 'xs',
           'text-sm': size === 'sm',
           'text-base': size === 'md',
-          'text-lg': size === 'lg'
+          'text-lg': size === 'lg',
+          'p-0': noPadding
         },
         className
       )}
