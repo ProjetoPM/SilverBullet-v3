@@ -7,7 +7,7 @@ import { t } from 'i18next'
 import { WorkspaceActions } from './workspaces.actions'
 
 export type WorkspaceColumns = {
-  id: string
+  _id: string
   name: string
   description?: string
   plan: string

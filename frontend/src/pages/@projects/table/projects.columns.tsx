@@ -5,7 +5,7 @@ import { t } from 'i18next'
 import { ProjectActions } from './projects.actions'
 
 export type ProjectColumns = {
-  id: string
+  _id: string
   name: string
   description?: string
 }

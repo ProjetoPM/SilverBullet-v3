@@ -22,8 +22,8 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
    */
   const handleDelete = useCallback(async () => {
     const rows = table.getSelectedRowModel().rows
-    const originalRows = rows.map((row) => row.original as { id: string })
-    const ids = originalRows.map((row) => row.id)
+    const originalRows = rows.map((row) => row.original as { _id: string })
+    const ids = originalRows.map((row) => row._id)
 
     await asyncFn?.(ids)
     table.toggleAllPageRowsSelected(false)
