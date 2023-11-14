@@ -1,4 +1,4 @@
-import { GridLayout } from '@/components/ui/Grid'
+import { GridLayout } from '@/components/ui/GridLayout'
 import { SubmitButton } from '@/components/ui/SubmitButton'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'

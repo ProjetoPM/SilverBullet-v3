@@ -1,4 +1,4 @@
-import { GridLayout } from '@/components/ui/Grid'
+import { GridLayout } from '@/components/ui/GridLayout'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { Chip } from '@nextui-org/react'
