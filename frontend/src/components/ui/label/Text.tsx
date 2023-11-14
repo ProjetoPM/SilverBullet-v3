@@ -1,7 +1,7 @@
-import { cn } from '@nextui-org/react'
 import { ComponentProps } from 'react'
 import { FormatDate } from './FormatDate'
 import { FormatPrice } from './FormatPrice'
+import { cn } from '@/lib/utils'
 
 type TextProps = Omit<ComponentProps<'span'>, 'ref'> & {
   text: string

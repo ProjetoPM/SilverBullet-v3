@@ -17,6 +17,7 @@ import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 import parser from 'ua-parser-js'
 import { UserDropdown } from './UserDropdown'
+import { Notifications } from '../notifications/Notifications'
 
 export const NavbarEnd = () => {
   const { isOpen, onOpenChange } = useDisclosure()
@@ -39,6 +40,9 @@ export const NavbarEnd = () => {
   return (
     <>
       <NavbarContent justify="end" className="gap-2">
+        <NavbarItem>
+          <Notifications />
+        </NavbarItem>
         <NavbarItem>
           <LocaleSwitcher />
         </NavbarItem>
