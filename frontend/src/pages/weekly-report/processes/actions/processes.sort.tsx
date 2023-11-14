@@ -5,21 +5,9 @@ import {
   DropdownMenu,
   DropdownTrigger
 } from '@nextui-org/react'
-import { ArrowDown01, ArrowDownUp, ArrowUp10 } from 'lucide-react'
-import { useProcesses } from '../context/ProcessProvider'
-
-const items = [
-  {
-    key: 'DESC',
-    label: 'processes.sort.desc',
-    icon: <ArrowUp10 className="w-4 h-4" />
-  },
-  {
-    key: 'ASC',
-    label: 'processes.sort.asc',
-    icon: <ArrowDown01 className="w-4 h-4" />
-  }
-]
+import { ArrowDownUp } from 'lucide-react'
+import { SortItem, useProcesses } from '../context/ProcessProvider'
+import { SORT_ITEMS } from './constant/sort.items'
 
 export const SortProcesses = () => {
   const { t, sorting } = useProcesses()
@@ -39,13 +27,13 @@ export const SortProcesses = () => {
           </Button>
         </DropdownTrigger>
         <DropdownMenu
-          items={items}
-          aria-label="Single selection example"
+          items={SORT_ITEMS}
+          aria-label="Sort selection"
           variant="flat"
           disallowEmptySelection
           selectionMode="single"
           selectedKeys={selectedKeys}
-          onSelectionChange={(key) => setSelectedKeys(new Set(key as string))}
+          onSelectionChange={(key) => setSelectedKeys(key as Set<SortItem>)}
         >
           {(item) => (
             <DropdownItem key={item.key} startContent={item.icon}>

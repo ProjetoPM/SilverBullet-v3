@@ -10,11 +10,13 @@ import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { WeeklyReportData } from '../../weekly-report.schema'
 
+export type SortItem = 'ASC' | 'DESC'
+
 type ProcessesContextProps = {
   form: UseFormReturn<WeeklyReportData>
   array: UseFieldArrayReturn<WeeklyReportData>
   t: TFunction<'table', undefined>
-  sorting: [Set<string>, Dispatch<SetStateAction<Set<string>>>]
+  sorting: [Set<string>, Dispatch<SetStateAction<Set<SortItem>>>]
 }
 
 type ProcessesProviderProps = {
@@ -29,7 +31,7 @@ export const ProcessesProvider = ({
   children
 }: ProcessesProviderProps) => {
   const { t } = useTranslation('weekly-report')
-  const sorting = useState(new Set(['DESC']))
+  const sorting = useState(new Set<SortItem>(['DESC']))
 
   return (
     <ProcessesContext.Provider value={{ ...value, t, sorting }}>

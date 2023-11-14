@@ -2,13 +2,13 @@ import { GridLayout } from '@/components/ui/Grid'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { Chip } from '@nextui-org/react'
-import { useMemo } from 'react'
 import { Controller, FieldArrayWithId } from 'react-hook-form'
 import { WeeklyReportData } from '../weekly-report.schema'
 import { FilesProcess } from './actions/processes.files'
 import { RemoveProcess } from './actions/processes.remove'
 import { useProcesses } from './context/ProcessProvider'
 import { ProcessSelects } from './processes.selects'
+import toast from 'react-hot-toast'
 
 type ProcessItemProps = {
   field: FieldArrayWithId<WeeklyReportData>
@@ -18,17 +18,13 @@ type ProcessItemProps = {
 export const ProcessItem = ({ field, index }: ProcessItemProps) => {
   const { t, form } = useProcesses()
 
-  const isOldProcess = useMemo(() => {
-    return field.id === field.filesFolder || field.filesFolder === null
-  }, [field])
-
   return (
     <GridLayout cols="1">
       <div className="flex flex-col gap-3">
         <div className="flex justify-end">
           <Chip
             size="sm"
-            color={isOldProcess ? 'success' : 'primary'}
+            color={field._id ? 'primary' : 'success'}
             className="select-none"
           >
             {t('process.process_number', {
@@ -61,7 +57,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
             />
           </fieldset>
           <div className="flex flex-col" role="actions">
-            <Text text="Actions" isRequired />
+            <Text text="Actions" size="sm" isRequired />
             <div className="flex gap-2">
               <FilesProcess field={field} index={index} />
               <RemoveProcess index={index} />
@@ -72,8 +68,8 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
           <Text text="Files to upload" />
           <div className="flex flex-wrap gap-2 overflow-hidden hover:overflow-y-auto max-h-24">
             <Chip
-              onClose={() => console.log('close')}
-              color={isOldProcess ? 'success' : 'primary'}
+              onClose={() => toast.success('Coming soon! 🚀', { id: 'chip' })}
+              color={field._id ? 'primary' : 'success'}
               variant="flat"
             >
               Arquivo X

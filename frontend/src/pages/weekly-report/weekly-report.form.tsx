@@ -1,14 +1,13 @@
 import { GridLayout } from '@/components/ui/Grid'
 import { SubmitButton } from '@/components/ui/SubmitButton'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
+import { Text } from '@/components/ui/label/Text'
 import { Workspace } from '@/stores/useWorkspaceStore'
 import { clearHTMLTags } from '@/utils/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@nextui-org/react'
-import { Copy } from 'lucide-react'
+import { Snippet } from '@nextui-org/react'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
 import { WeeklyReportProcesses } from './processes/processes'
@@ -46,29 +45,30 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
         <GridLayout cols="2">
           <WeeklyEvaluationSelect form={form} />
           <fieldset>
-            <Input
-              label={t('linked_project.label')}
-              labelPlacement="outside"
-              placeholder={t('linked_project.placeholder')}
-              value={clearHTMLTags(Workspace.getWorkspace()?.name || '')}
-              endContent={
-                <Copy
-                  className="w-4 h-4 hover:text-primary cursor-pointer"
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      form.getValues('projectId') ||
-                        Workspace.getWorkspace()?.id ||
-                        t('linked_project.placeholder')
-                    )
-                    toast.success('Copied to clipboard', {
-                      id: 'copy-to-clipboard'
-                    })
-                  }}
-                />
-              }
+            <Text
+              text={t('linked_project.label')}
+              size="sm"
+              className="pb-1"
               isRequired
-              isReadOnly
             />
+            <Snippet
+              classNames={{ base: 'h-unit-10 w-full hover:bg-default-200' }}
+              onCopy={() =>
+                navigator.clipboard.writeText(
+                  form.getValues('projectId') ||
+                    Workspace.getWorkspace()?.id ||
+                    t('linked_project.placeholder')
+                )
+              }
+              tooltipProps={{
+                content: t('linked_project.clipboard'),
+                delay: 100,
+                color: 'primary'
+              }}
+              hideSymbol
+            >
+              {clearHTMLTags(Workspace.getWorkspace()?.name || '')}
+            </Snippet>
           </fieldset>
         </GridLayout>
         <GridLayout cols="1">

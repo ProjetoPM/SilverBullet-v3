@@ -21,7 +21,7 @@ export const RemoveProcess = ({ index }: RemoveProcessProps) => {
         type="button"
         color="danger"
         variant="solid"
-        onClick={onOpen}
+        onPress={onOpen}
         className="opacity-90"
         isIconOnly
       >

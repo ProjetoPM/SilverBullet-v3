@@ -3,7 +3,7 @@ import { max, message, min, required } from '@/utils/replace-html-tags'
 import { z } from 'zod'
 
 export const WeeklyReportSchema = z.object({
-  id: z.string().uuid().nullish(),
+  _id: z.string().uuid().nullish(),
   projectId: z
     .string()
     .uuid()
@@ -17,6 +17,7 @@ export const WeeklyReportSchema = z.object({
   processes: z
     .array(
       z.object({
+        _id: z.string().uuid().nullish(),
         group: z.string().refine(min, required),
         name: z.string().refine(min, required),
         description: z
