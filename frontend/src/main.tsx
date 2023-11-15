@@ -19,7 +19,7 @@ export const App = () => {
     <React.StrictMode>
       <HelmetProvider>
         <Suspense fallback={<Loading />}>
-          <ThemeProvider storageKey="nextui-theme" defaultTheme="dark">
+          <ThemeProvider defaultTheme="dark">
             <QueryClientProvider client={queryClient}>
               <RouterProvider router={router} />
               <ReactQueryDevtools initialIsOpen={false} />
