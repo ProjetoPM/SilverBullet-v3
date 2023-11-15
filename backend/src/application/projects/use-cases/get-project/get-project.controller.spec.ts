@@ -21,7 +21,7 @@ let workspaceRepository: IWorkspacesRepository
 let usersRepository: IUsersRepository
 
 describe('Get a project (end-to-end)', () => {
-  const user = UserFactory.create()
+  const {jwt, user} = UserFactory.createAndAuthenticate()
   const workspace = WorkspaceFactory.create()
   const project = ProjectFactory.create({ workspaceId: workspace.id })
 
@@ -49,10 +49,10 @@ describe('Get a project (end-to-end)', () => {
   })
 
   test('should be able to get a project', async () => {
-    const { jwt } = UserFactory.createAndAuthenticate()
 
     const response = await request(app)
       .get(`/api/projects/${project.id}`)
+      .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
       .send()
 
@@ -61,10 +61,10 @@ describe('Get a project (end-to-end)', () => {
   })
 
   test('should not be able to get a non existing project', async () => {
-    const { jwt } = UserFactory.createAndAuthenticate()
 
     const response = await request(app)
       .get(`/api/projects/invalid-id`)
+      .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
       .send()
 
@@ -74,6 +74,7 @@ describe('Get a project (end-to-end)', () => {
   test('should not be able to get a project with no authentication', async () => {
     const response = await request(app)
       .get(`/api/projects/${project.id}`)
+      .set({ 'current-workspace-id': workspace.id })
       .send()
 
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED)

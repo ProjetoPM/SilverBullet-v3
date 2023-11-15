@@ -27,9 +27,8 @@ describe('Delete project (end-to-end)', async () => {
   })
 
   test('should be able to delete an existing project', async () => {
-    const { jwt } = UserFactory.createAndAuthenticate()
+    const { jwt, user } = UserFactory.createAndAuthenticate()
 
-    const user = UserFactory.create()
     const workspace = WorkspaceFactory.create()
     const project = ProjectFactory.create({ workspaceId: workspace.id })
 
@@ -54,9 +53,8 @@ describe('Delete project (end-to-end)', async () => {
   })
 
   test('should be able to delete more than one project', async () => {
-    const { jwt } = UserFactory.createAndAuthenticate()
+    const { jwt, user } = UserFactory.createAndAuthenticate()
 
-    const user = UserFactory.create()
     await usersRepository.create(user)
 
     const workspace = WorkspaceFactory.create()
@@ -86,6 +84,7 @@ describe('Delete project (end-to-end)', async () => {
 
     const response = await request(app)
       .del(`/api/projects/?ids=${project1.id}&ids=${project2.id}`)
+      .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.OK)
