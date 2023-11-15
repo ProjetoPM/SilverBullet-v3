@@ -1,6 +1,12 @@
-import { createContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 
-type Theme = 'dark' | 'light' | 'system'
+type Theme = 'system' | 'dark' | 'light'
 
 type ThemeProviderProps = {
   children: React.ReactNode
@@ -8,42 +14,47 @@ type ThemeProviderProps = {
   storageKey?: string
 }
 
-type ThemeProviderState = {
+type ThemeProviderContextProps = {
   theme: Theme
   setTheme: (theme: Theme) => void
+  toggleTheme: () => void
 }
 
-const initialState: ThemeProviderState = {
+const ThemeProviderContext = createContext<ThemeProviderContextProps>({
   theme: 'system',
-  setTheme: () => null
-}
+  setTheme: () => null,
+  toggleTheme: () => null
+})
 
-export const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
-
-export function ThemeProvider({
+export const ThemeProvider = ({
   children,
   defaultTheme = 'system',
   storageKey = 'theme',
   ...props
-}: ThemeProviderProps) {
+}: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   )
 
+  const toggleTheme = useCallback(() => {
+    setTheme((theme) => (theme === 'dark' ? 'light' : 'dark'))
+  }, [])
+
   useEffect(() => {
-    const root = window.document.documentElement
-    root.classList.remove('light', 'dark')
+    const rootNode = window.document.documentElement
+    rootNode.classList.remove('dark', 'light')
 
     if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+        .matches
         ? 'dark'
         : 'light'
 
-      root.classList.add(systemTheme)
+      rootNode.classList.add(systemTheme)
       return
     }
 
-    root.classList.add(theme)
+    rootNode.classList.add(theme)
   }, [theme])
 
   const value = {
@@ -51,7 +62,8 @@ export function ThemeProvider({
     setTheme: (theme: Theme) => {
       localStorage.setItem(storageKey, theme)
       setTheme(theme)
-    }
+    },
+    toggleTheme
   }
 
   return (
@@ -59,4 +71,14 @@ export function ThemeProvider({
       {children}
     </ThemeProviderContext.Provider>
   )
+}
+
+export const useTheme = () => {
+  const context = useContext(ThemeProviderContext)
+
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider')
+  }
+
+  return context
 }

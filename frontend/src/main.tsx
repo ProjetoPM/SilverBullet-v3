@@ -8,27 +8,25 @@ import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { RouterProvider } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
 import { Loading } from './components/Loading'
 import { ToasterContainer } from './components/toast/Toaster'
+import { ThemeProvider } from './contexts/theme-provider'
 import { queryClient } from './lib/react-query'
 import { router } from './routes'
-import { useThemeStore } from './stores/useThemeStore'
 
 export const App = () => {
-  const theme = useThemeStore((state) => state.theme)
-
   return (
     <React.StrictMode>
       <HelmetProvider>
         <Suspense fallback={<Loading />}>
-          <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
+          <ThemeProvider storageKey="nextui-theme" defaultTheme="dark">
+            <QueryClientProvider client={queryClient}>
+              <RouterProvider router={router} />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </ThemeProvider>
         </Suspense>
       </HelmetProvider>
-      <ToastContainer position="bottom-right" autoClose={2250} theme={theme} />
       <ToasterContainer />
     </React.StrictMode>
   )
