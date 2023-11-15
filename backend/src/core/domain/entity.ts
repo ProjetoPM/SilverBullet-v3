@@ -27,7 +27,7 @@ export class Entity<T> {
 
   public toResponseBody() {
     return {
-      id: this._id,
+      _id: this._id,
       ...this.props,
     }
   }
