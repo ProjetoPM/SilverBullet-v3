@@ -4,12 +4,12 @@ import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
 type Project = {
-  id: string
+  _id: string
   name: string
 }
 
 type Workspace = {
-  id: string
+  _id: string
   name: string
 }
 

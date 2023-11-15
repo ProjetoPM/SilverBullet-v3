@@ -66,7 +66,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
             </DropdownItem>
             <DropdownItem textValue="edit">
               <Link
-                href={replaceParams(frontend.workspaces.edit, [row.id])}
+                href={replaceParams(frontend.workspaces.edit, [row._id])}
                 color="foreground"
                 className="flex gap-2"
               >
@@ -83,7 +83,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
           </DropdownSection>
           <DropdownItem
             textValue="Copy ID"
-            onPress={() => navigator.clipboard.writeText(row.id)}
+            onPress={() => navigator.clipboard.writeText(row._id)}
           >
             <span className="flex gap-2">
               <Copy className="w-5 h-5" />

@@ -62,7 +62,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
             </DropdownItem>
             <DropdownItem textValue="edit">
               <Link
-                href={replaceParams(frontend.projects.edit, [row.id])}
+                href={replaceParams(frontend.projects.edit, [row._id])}
                 color="foreground"
                 className="flex gap-2"
               >
@@ -79,7 +79,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
           </DropdownSection>
           <DropdownItem
             textValue="Copy ID"
-            onPress={() => navigator.clipboard.writeText(row.id)}
+            onPress={() => navigator.clipboard.writeText(row._id)}
           >
             <span className="flex gap-2">
               <Copy className="w-5 h-5" />
