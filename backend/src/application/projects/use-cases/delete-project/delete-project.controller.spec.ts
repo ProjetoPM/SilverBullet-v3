@@ -27,9 +27,8 @@ describe('Delete project (end-to-end)', async () => {
   })
 
   test('should be able to delete an existing project', async () => {
-    const { jwt } = UserFactory.createAndAuthenticate()
+    const { jwt, user } = UserFactory.createAndAuthenticate()
 
-    const user = UserFactory.create()
     const workspace = WorkspaceFactory.create()
     const project = ProjectFactory.create({ workspaceId: workspace.id })
 
@@ -47,15 +46,15 @@ describe('Delete project (end-to-end)', async () => {
 
     const response = await request(app)
       .del(`/api/projects/?ids=${project.id}`)
+      .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.OK)
   })
 
   test('should be able to delete more than one project', async () => {
-    const { jwt } = UserFactory.createAndAuthenticate()
+    const { jwt, user } = UserFactory.createAndAuthenticate()
 
-    const user = UserFactory.create()
     await usersRepository.create(user)
 
     const workspace = WorkspaceFactory.create()
@@ -85,16 +84,27 @@ describe('Delete project (end-to-end)', async () => {
 
     const response = await request(app)
       .del(`/api/projects/?ids=${project1.id}&ids=${project2.id}`)
+      .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.OK)
   })
 
   test("should not be able to delete a project that doesn't exist", async () => {
-    const { jwt } = UserFactory.createAndAuthenticate()
+    const { jwt, user } = UserFactory.createAndAuthenticate()
+    await usersRepository.create(user)
+
+    const workspace = WorkspaceFactory.create()
+    await workspaceRepository.create(
+      workspace,
+      user,
+      InviteStatuses.ACTIVE,
+      WorkspaceRoles.ADMIN,
+    )
 
     const response = await request(app)
       .del(`/api/projects/?ids=invalid-id`)
+      .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.BAD_REQUEST)

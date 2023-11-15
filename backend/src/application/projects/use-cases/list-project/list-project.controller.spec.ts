@@ -70,6 +70,7 @@ describe('List projects (end-to-end)', () => {
   test('should be able to list projects', async () => {
     const response = await request(app)
       .get(`/api/projects`)
+      .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.OK)
@@ -77,9 +78,12 @@ describe('List projects (end-to-end)', () => {
   })
 
   test('should not be able to list projects without authorization', async () => {
-    const response = await request(app).get(
+    const response = await request(app)
+    .get(
       `/api/projects/${workspace.id}/workspaces`,
     )
+    .set({ 'current-workspace-id': workspace.id })
+
 
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED)
   })
