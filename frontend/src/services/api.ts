@@ -1,4 +1,4 @@
-import { Workspace } from '@/stores/useWorkspaceStore'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 
@@ -7,7 +7,7 @@ const setup = () => {
     baseURL: import.meta.env.VITE_BASE_URL_API as string,
     headers: {
       'Content-Type': 'application/json',
-      'Current-Workspace-ID': Workspace.getWorkspace()?.id,
+      'Current-Workspace-ID': WorkspaceStore.getWorkspace()?._id,
       'Current-Project-ID': 'not-implemented'
     }
   })
@@ -30,7 +30,8 @@ const setup = () => {
    * linguagem no header da requisição.
    */
   api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token')
+    const token =
+      sessionStorage.getItem('token') || localStorage.getItem('token')
     const lang = localStorage.getItem('lang') ?? 'en-US'
 
     if (token) {

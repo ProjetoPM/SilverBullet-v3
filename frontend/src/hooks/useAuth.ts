@@ -3,7 +3,7 @@ import { SignIn } from '@/pages/auth/sign-in/sign-in.schema'
 import { SignUp } from '@/pages/auth/sign-up/sign-up.schema'
 import { frontend } from '@/routes/routes'
 import { api } from '@/services/api'
-import { Workspace } from '@/stores/useWorkspaceStore'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { AG_EXPIRED_TOKEN_ID } from '@/utils/guard'
 import toast from 'react-hot-toast'
 import { useMutation } from 'react-query'
@@ -31,11 +31,24 @@ export const useAuth = () => {
       return await promise(api.post(url, data))
     },
     {
-      onSuccess: (response: HttpSignInResponse, { email }) => {
-        localStorage.setItem('token', response.token)
-        localStorage.setItem('user', email)
-        Workspace.updateWorkspaceName()
+      onSuccess: (response: HttpSignInResponse, { email, rememberMe }) => {
+        /** Deciding where to store the token */
+        const storage = rememberMe ? localStorage : sessionStorage
+
+        if (storage === sessionStorage) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+        }
+        storage.setItem('token', response.token)
+        storage.setItem('user', email)
+
+        /** Update Sidebar */
+        WorkspaceStore.updateWorkspaceName()
+
+        /** Clean expired token toast message */
         toast.remove(AG_EXPIRED_TOKEN_ID)
+
+        /** Navigate to workspace */
         navigate(frontend.workspaces.index)
       }
     }
@@ -44,7 +57,8 @@ export const useAuth = () => {
   const signOut = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
-    Workspace.closeWorkspace()
+    sessionStorage.clear()
+    WorkspaceStore.closeWorkspace()
     navigate(frontend.auth.sign_in.index, { replace: true })
   }
 

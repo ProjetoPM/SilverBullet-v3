@@ -1,3 +1,4 @@
+import { Text } from '@/components/ui/label/Text'
 import { useAuth } from '@/hooks/useAuth'
 import { frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,7 +14,7 @@ import {
   Link
 } from '@nextui-org/react'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ToggleButton } from '../components/ToggleButton'
 import { SignIn, SignInSchema } from './sign-in.schema'
@@ -57,6 +58,7 @@ export const SignInForm = () => {
                 labelPlacement="outside"
                 errorMessage={form.formState.errors.email?.message}
                 autoComplete="email"
+                classNames={{ input: 'autofill:box-shadow-none' }}
                 isRequired
               />
             </div>
@@ -64,7 +66,7 @@ export const SignInForm = () => {
               <Input
                 {...form.register('password')}
                 label={t('password.label')}
-                placeholder={t('password.placeholder')}
+                placeholder={'••••••••'}
                 endContent={
                   <ToggleButton
                     id="toggle-password"
@@ -79,9 +81,20 @@ export const SignInForm = () => {
                 isRequired
               />
             </div>
-            <Checkbox name="rememberMe" color="primary" className="text-xs">
-              <span className="text-sm">{t('keep_me_signed.label')}</span>
-            </Checkbox>
+            <Controller
+              control={form.control}
+              name="rememberMe"
+              render={({ field: { value, onChange, ...rest } }) => (
+                <Checkbox
+                  color="primary"
+                  checked={value}
+                  onChange={(e) => onChange(e.target.checked)}
+                  {...rest}
+                >
+                  <Text size="sm">{t('keep_me_signed.label')}</Text>
+                </Checkbox>
+              )}
+            />
           </div>
         </CardBody>
         <CardFooter>

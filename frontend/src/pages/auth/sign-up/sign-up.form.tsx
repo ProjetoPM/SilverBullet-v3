@@ -1,3 +1,4 @@
+import { Text } from '@/components/ui/label/Text'
 import { useAuth } from '@/hooks/useAuth'
 import { frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,8 +14,7 @@ import {
   Link
 } from '@nextui-org/react'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
+import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { PasswordChecker } from '../components/PasswordChecker'
 import { ToggleButton } from '../components/ToggleButton'
@@ -40,11 +40,12 @@ export const SignUpForm = () => {
   }
 
   const onSubmit = async (data: SignUp) => {
-    if (data.password !== data.confirmPassword) {
-      toast.error(t('sign_up.passwords_dont_match'))
-      return
-    }
-    await signUp.mutateAsync(data)
+    console.table(data)
+    // if (data.password !== data.confirmPassword) {
+    //   toast.error(t('sign_up.passwords_dont_match'))
+    //   return
+    // }
+    // await signUp.mutateAsync(data)
   }
 
   return (
@@ -125,12 +126,26 @@ export const SignUpForm = () => {
                 isRequired
               />
             </div>
-            <Checkbox name="terms" color="primary" isRequired>
-              <span className="text-sm">
-                {' '}
-                {t('terms_and_conditions.label')}
-              </span>
-            </Checkbox>
+            <Controller
+              control={form.control}
+              name="termsAndConditions"
+              render={({ field: { value, onChange, ...rest } }) => (
+                <Checkbox
+                  color="primary"
+                  checked={value}
+                  onChange={(e) => onChange(e.target.checked)}
+                  {...rest}
+                  isRequired
+                >
+                  <Text size="sm" isRequired>
+                    {t('terms_and_conditions.label')}
+                  </Text>
+                  <Text size="xs" as="p" isInvalid>
+                    {form.formState.errors.termsAndConditions?.message}
+                  </Text>
+                </Checkbox>
+              )}
+            />
           </div>
         </CardBody>
         <CardFooter>
@@ -150,7 +165,7 @@ export const SignUpForm = () => {
           showAnchorIcon
           className="mx-auto text-sm flex my-2"
         >
-          {t('have_an_account.label')}
+          {t('already_have_an_account.label')}
         </Link>
       </Card>
     </form>
