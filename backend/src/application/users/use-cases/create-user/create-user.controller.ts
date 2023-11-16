@@ -25,6 +25,8 @@ export class CreateUserController implements Controller {
   ) {}
 
   async handle(request: CreateUserControllerRequest): Promise<HttpResponse> {
+    console.log(request);
+    
     const validated = this.validator.validate(request)
 
     if (validated.isLeft()) {

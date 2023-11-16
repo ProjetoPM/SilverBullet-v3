@@ -7,21 +7,21 @@ import { makeCreateWeeklyEvaluationController } from '../factories/controllers/w
 import { makeListWeeklyEvaluationController } from '../factories/controllers/weekly-evaluation/makeListWeeklyEvaluation'
 import { makeListAvailableWeeklyEvaluationController } from '../factories/controllers/weekly-evaluation/makeListAvailableWeeklyEvaluation'
 
-export const weeklyEvaluations = Router()
+export const weeklyEvaluation = Router()
 
-weeklyEvaluations.use(adaptMiddleware(makeEnsureAuthenticated()))
-weeklyEvaluations.use(adaptMiddleware(makeGetCurrentWorkspaceAndProject()))
+weeklyEvaluation.use(adaptMiddleware(makeEnsureAuthenticated()))
+weeklyEvaluation.use(adaptMiddleware(makeGetCurrentWorkspaceAndProject()))
 
-weeklyEvaluations.post(
+weeklyEvaluation.post(
   '/new',
   adaptRoute(makeCreateWeeklyEvaluationController())
 )
 
-weeklyEvaluations.get(
+weeklyEvaluation.get(
   '/',
   adaptRoute(makeListWeeklyEvaluationController())
 )
-weeklyEvaluations.get(
+weeklyEvaluation.get(
   '/available',
   adaptRoute(makeListAvailableWeeklyEvaluationController())
 )
