@@ -12,7 +12,7 @@ export const ProjectPage = () => {
 
   const { get } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
-    keys: ['projects'],
+    keys: [`projects/${id}`],
     fetch: {
       get: {
         append: id

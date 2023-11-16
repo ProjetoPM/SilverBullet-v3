@@ -51,7 +51,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
                 label={t('form.name.label')}
                 placeholder={t('form.name.placeholder')}
                 errorMessage={form.formState.errors.name?.message}
-                limit={100}
+                limit={64}
                 {...field}
               />
             )}

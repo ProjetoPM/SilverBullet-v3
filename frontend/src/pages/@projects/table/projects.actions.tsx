@@ -60,15 +60,15 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
                 {t('btn.open')}
               </span>
             </DropdownItem>
-            <DropdownItem textValue="edit">
-              <Link
-                href={replaceParams(frontend.projects.edit, [row._id])}
-                color="foreground"
-                className="flex gap-2"
-              >
+            <DropdownItem
+              textValue="edit"
+              as={Link}
+              href={replaceParams(frontend.projects.edit, [row._id])}
+            >
+              <span className="flex gap-2">
                 <FileSignature className="w-5 h-5" />
                 {t('btn.edit')}
-              </Link>
+              </span>
             </DropdownItem>
             <DropdownItem onPress={onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">

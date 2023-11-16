@@ -7,10 +7,15 @@ export const WeeklyReportToolbar = () => {
   const { t } = useTranslation('weekly-report')
 
   return (
-    <Link href={frontend.weekly_report.new}>
-      <Button color="primary" endContent={<PlusIcon />}>
+    <div className="flex gap-2">
+      <Button
+        color="primary"
+        endContent={<PlusIcon />}
+        as={Link}
+        href={frontend.weekly_report.new}
+      >
         {t('page.new')}
       </Button>
-    </Link>
+    </div>
   )
 }

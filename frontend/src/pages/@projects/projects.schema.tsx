@@ -5,8 +5,8 @@ export const ProjectSchema = z.object({
   _id: z.string().uuid().nullish(),
   name: z
     .string()
-    .refine((v) => min(v, 1), required)
-    .refine((v) => max(v, 100), message('max', 100)),
+    .refine(min, required)
+    .refine((v) => max(v, 64), message('max', 64)),
   description: z
     .string()
     .refine((v) => max(v, 1000), message('max', 1000))

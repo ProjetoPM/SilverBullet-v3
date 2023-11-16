@@ -10,7 +10,6 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-  Link,
   useDisclosure
 } from '@nextui-org/react'
 import {
@@ -21,7 +20,6 @@ import {
   Trash
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { WorkspaceColumns } from './workspaces.columns'
 
 type WorkspaceActionsProps = {
@@ -32,7 +30,6 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
-  const navigate = useNavigate()
 
   const { removeMany } = useFetch<WorkspaceColumns>({
     baseUrl: backend.workspaces.baseUrl,
@@ -45,7 +42,6 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
 
   const handleOpen = () => {
     openWorkspace(row)
-    navigate(frontend.projects.index)
   }
 
   return (
@@ -58,21 +54,24 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="dropdown reporter">
           <DropdownSection title={t('default:table.actions')}>
-            <DropdownItem textValue="open" onPress={handleOpen}>
+            <DropdownItem
+              textValue="open"
+              href={frontend.projects.index}
+              onPress={handleOpen}
+            >
               <span className="flex gap-2">
                 <FolderOpen className="w-5 h-5" />
                 {t('btn.open')}
               </span>
             </DropdownItem>
-            <DropdownItem textValue="edit">
-              <Link
-                href={replaceParams(frontend.workspaces.edit, [row._id])}
-                color="foreground"
-                className="flex gap-2"
-              >
+            <DropdownItem
+              textValue="edit"
+              href={replaceParams(frontend.workspaces.edit, [row._id])}
+            >
+              <div className="flex gap-2">
                 <FileSignature className="w-5 h-5" />
                 {t('btn.edit')}
-              </Link>
+              </div>
             </DropdownItem>
             <DropdownItem onPress={onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
