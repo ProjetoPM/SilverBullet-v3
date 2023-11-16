@@ -1,5 +1,4 @@
 import { api } from '@/services/api'
-import { replaceParams } from '@/utils/replace-params'
 import toast from 'react-hot-toast'
 import {
   UseQueryOptions,
@@ -10,6 +9,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
 import { useToken } from './useToken'
+import { replaceParams } from '@/utils/helpers/replace-params'
 
 type CommonProps = { params?: (string | undefined)[] }
 type AppendOrParamsProps = { append?: string; params?: (string | undefined)[] }

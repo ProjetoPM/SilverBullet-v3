@@ -2,8 +2,8 @@ import { GridLayout } from '@/components/ui/GridLayout'
 import { SubmitButton } from '@/components/ui/SubmitButton'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
-import { Workspace } from '@/stores/useWorkspaceStore'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
+import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Snippet } from '@nextui-org/react'
 import { useState } from 'react'
@@ -45,18 +45,15 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
         <GridLayout cols="2">
           <WeeklyEvaluationSelect form={form} />
           <fieldset>
-            <Text
-              text={t('linked_project.label')}
-              size="sm"
-              className="pb-1"
-              isRequired
-            />
+            <Text size="sm" className="pb-1" isRequired>
+              {t('linked_project.label')}
+            </Text>
             <Snippet
               classNames={{ base: 'h-unit-10 w-full hover:bg-default-200' }}
               onCopy={() =>
                 navigator.clipboard.writeText(
                   form.getValues('projectId') ||
-                    Workspace.getWorkspace()?.id ||
+                    WorkspaceStore.getWorkspace()?._id ||
                     t('linked_project.placeholder')
                 )
               }
@@ -67,7 +64,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               }}
               hideSymbol
             >
-              {clearHTMLTags(Workspace.getWorkspace()?.name || '')}
+              {clearHTMLTags(WorkspaceStore.getWorkspace()?.name || '')}
             </Snippet>
           </fieldset>
         </GridLayout>

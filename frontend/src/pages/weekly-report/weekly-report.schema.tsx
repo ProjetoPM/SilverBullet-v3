@@ -1,5 +1,5 @@
-import { Workspace } from '@/stores/useWorkspaceStore'
-import { max, message, min, required } from '@/utils/replace-html-tags'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
+import { max, message, min, required } from '@/utils/helpers/replace-html-tags'
 import { z } from 'zod'
 
 export const WeeklyReportSchema = z.object({
@@ -7,7 +7,7 @@ export const WeeklyReportSchema = z.object({
   projectId: z
     .string()
     .uuid()
-    .default(Workspace.getWorkspace()?.id ?? 'error')
+    .default(WorkspaceStore.getWorkspace()?.id ?? 'error')
     .readonly(),
   weeklyEvaluationId: z.string().refine(min, required),
   toolEvaluation: z

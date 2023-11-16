@@ -1,5 +1,5 @@
 import { frontend } from '@/routes/routes'
-import { Workspace } from '@/stores/useWorkspaceStore'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
@@ -12,11 +12,11 @@ type WorkspaceGuardProps = {
 }
 
 const validator = z.object({
-  id: z.string().uuid()
+  _id: z.string().uuid()
 })
 
 const validateWorkspace = () => {
-  const workspace = Workspace.getWorkspace()
+  const workspace = WorkspaceStore.getWorkspace()
   return !workspace || !validator.safeParse(workspace).success
 }
 
