@@ -2,7 +2,7 @@ import { AlertModal } from '@/components/ui/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
-import { replaceParams } from '@/utils/replace-params'
+import { replaceParams } from '@/utils/helpers/replace-params'
 import {
   Button,
   Dropdown,

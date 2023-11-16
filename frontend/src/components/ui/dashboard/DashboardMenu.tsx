@@ -1,6 +1,6 @@
 import { dashboardItems } from '@/constants/dashboard-menu-items'
-import { Workspace } from '@/stores/useWorkspaceStore'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
+import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { Chip, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react'
 import { Fragment, startTransition, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -69,7 +69,7 @@ export const DashboardMenu = ({
                       content: 'px-1 select-none'
                     }}
                   >
-                    {clearHTMLTags(Workspace.getWorkspace()?.name ?? '')}
+                    {clearHTMLTags(WorkspaceStore.getWorkspace()?.name ?? '')}
                   </Chip>
                 </div>
               </ModalHeader>

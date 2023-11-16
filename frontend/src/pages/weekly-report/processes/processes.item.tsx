@@ -56,7 +56,9 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
             />
           </fieldset>
           <div className="flex flex-col" role="actions">
-            <Text text="Actions" size="sm" isRequired />
+            <Text size="sm" isRequired>
+              Actions
+            </Text>
             <div className="flex gap-2">
               <FilesProcess field={field} index={index} />
               <RemoveProcess index={index} />
@@ -64,7 +66,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
           </div>
         </div>
         <div>
-          <Text text="Files to upload" />
+          <Text>Files to upload</Text>
           <div className="flex flex-wrap gap-2 overflow-hidden hover:overflow-y-auto max-h-24">
             <Chip
               onClose={() => toast.success('Coming soon! 🚀', { id: 'chip' })}

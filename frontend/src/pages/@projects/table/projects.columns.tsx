@@ -1,5 +1,5 @@
 import { tableSelect } from '@/utils/helpers/select'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
+import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
 import { ProjectActions } from './projects.actions'

@@ -1,6 +1,6 @@
 import { DataTableColumnHeader } from '@/components/ui/table/helpers/DataTableHeader'
 import { tableSelect } from '@/utils/helpers/select'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
+import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { Chip } from '@nextui-org/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'

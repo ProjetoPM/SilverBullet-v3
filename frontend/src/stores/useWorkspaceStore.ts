@@ -76,7 +76,7 @@ const updateWorkspaceName = () => {
 /**
  * Usando sem reatividade.
  */
-export const Workspace = {
+export const WorkspaceStore = {
   getWorkspace: () => useWorkspaceStore.getState().workspace,
   openWorkspace: (workspace: Workspace) => openWorkspace(workspace),
   closeWorkspace: () => closeWorkspace(),
