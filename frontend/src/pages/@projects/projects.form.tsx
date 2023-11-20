@@ -1,10 +1,10 @@
 import { GridLayout } from '@/components/ui/GridLayout'
 import { SubmitButton } from '@/components/ui/SubmitButton'
+import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useTranslation } from 'react-i18next'
 import { ProjectData, ProjectSchema } from './projects.schema'
 

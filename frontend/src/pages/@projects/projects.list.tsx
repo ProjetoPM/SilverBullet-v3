@@ -5,13 +5,14 @@ import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
 import { ProjectToolbar } from './projects.toolbar'
 import { ProjectColumns, columns } from './table/projects.columns'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 
 export const ProjectListPage = () => {
   const { title, breadcrumb } = usePageUtils('projects')
 
   const { list, removeMany } = useFetch<ProjectColumns[]>({
     baseUrl: backend.projects.baseUrl,
-    keys: ['projects'],
+    keys: ['projects', WorkspaceStore.getWorkspaceId()],
     fetch: {
       list: {}
     }

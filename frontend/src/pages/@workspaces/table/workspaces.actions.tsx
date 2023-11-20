@@ -40,7 +40,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
     await removeMany.mutateAsync(row)
   }
 
-  const handleOpen = () => {
+  const handleOpen = async () => {
     openWorkspace(row)
   }
 
@@ -56,8 +56,8 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
           <DropdownSection title={t('default:table.actions')}>
             <DropdownItem
               textValue="open"
-              href={frontend.projects.index}
               onPress={handleOpen}
+              href={frontend.projects.index}
             >
               <span className="flex gap-2">
                 <FolderOpen className="w-5 h-5" />

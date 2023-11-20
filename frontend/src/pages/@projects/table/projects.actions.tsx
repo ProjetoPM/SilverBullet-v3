@@ -9,7 +9,6 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-  Link,
   useDisclosure
 } from '@nextui-org/react'
 import {
@@ -62,7 +61,6 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
             </DropdownItem>
             <DropdownItem
               textValue="edit"
-              as={Link}
               href={replaceParams(frontend.projects.edit, [row._id])}
             >
               <span className="flex gap-2">
