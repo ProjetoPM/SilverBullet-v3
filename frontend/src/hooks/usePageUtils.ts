@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 
 type UsePageUtilsProps = {
   dynamic?: boolean
-  home?: BreadcrumbItem | false
+  home?: BreadcrumbItem
 }
 
 type PageProps = {

@@ -1,6 +1,6 @@
 import { sidebarItems } from '@/constants/sidebar-items'
 import { cn } from '@/lib/utils'
-import { Link, Listbox, ListboxItem, ListboxSection } from '@nextui-org/react'
+import { Listbox, ListboxItem, ListboxSection } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 
@@ -21,7 +21,10 @@ export const Sidebar = () => {
                     textValue={t(item.label)}
                     description={
                       <span
-                        className="flex before:content-['└'] before:pr-1 line-clamp-1"
+                        className={cn(
+                          "flex before:content-['└'] before:pr-1 line-clamp-1",
+                          { 'text-white/40': item.isHidden }
+                        )}
                         id={item.id}
                       >
                         {t(item.description ?? '')}
@@ -33,20 +36,21 @@ export const Sidebar = () => {
                       item.isHidden && 'cursor-not-allowed'
                     )}
                     classNames={{
-                      base: cn(
-                        location.pathname.includes(item.href) &&
-                          'bg-default-100'
-                      )
+                      base: cn({
+                        'bg-default-100': location.pathname.includes(item.href),
+                        'text-white/40 data-[hover=true]:text-white/40':
+                          item.isHidden
+                      }),
+                      title: cn({
+                        'text-primary font-bold': location.pathname.includes(
+                          item.href
+                        )
+                      })
                     }}
+                    href={item.href}
+                    isReadOnly={item.isHidden}
                   >
-                    <Link
-                      href={item.href}
-                      color="foreground"
-                      className="w-full h-full"
-                      isDisabled={item.isHidden}
-                    >
-                      {t(item.label)}
-                    </Link>
+                    {t(item.label)}
                   </ListboxItem>
                 )
               })}
