@@ -12,8 +12,8 @@ export const WorkspacePage = () => {
 
   const { get } = useFetch<WorkspaceData>({
     baseUrl: backend.workspaces.baseUrl,
-    keys: [`workspace/${id}`],
     fetch: {
+      keys: ['workspaces', id],
       get: {
         append: id
       }

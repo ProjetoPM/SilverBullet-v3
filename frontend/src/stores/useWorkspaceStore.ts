@@ -65,12 +65,10 @@ const closeWorkspace = () => {
  * Atualizar o nome do workspace no 'sidebar' da aplicação.
  */
 const updateWorkspaceName = () => {
-  const workspace = useWorkspaceStore.getState().workspace?.name ?? ''
-  const sidebarWorkspaces = document.getElementById('workspaces')
-
-  if (sidebarWorkspaces) {
-    sidebarWorkspaces.innerHTML = workspace
-  }
+  return (
+    useWorkspaceStore.getState().workspace?.name ??
+    'navigation.workspaces.description'
+  )
 }
 
 /**

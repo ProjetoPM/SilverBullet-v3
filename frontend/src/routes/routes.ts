@@ -15,7 +15,13 @@ export const frontend = {
     index: '/workspaces',
     new: '/workspaces/new',
     edit: '/workspaces/:id/edit',
-    delete: '/workspaces/:id/delete'
+    delete: '/workspaces/:id/delete',
+    users: {
+      index: '/workspaces/:workspaceId/users',
+      new: '/workspaces/:workspaceId/users/new',
+      edit: '/workspaces/:workspaceId/users/:id/edit',
+      delete: '/workspaces/:workspaceId/users/:id/delete'
+    }
   },
   projects: {
     index: '/projects',

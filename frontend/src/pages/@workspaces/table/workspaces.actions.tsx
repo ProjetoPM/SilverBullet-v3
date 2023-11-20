@@ -17,9 +17,11 @@ import {
   FileSignature,
   FolderOpen,
   MoreHorizontal,
-  Trash
+  Trash,
+  Users
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { WorkspaceColumns } from './workspaces.columns'
 
 type WorkspaceActionsProps = {
@@ -30,10 +32,11 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
+  const navigate = useNavigate()
 
   const { removeMany } = useFetch<WorkspaceColumns>({
     baseUrl: backend.workspaces.baseUrl,
-    keys: ['workspaces']
+    invalidateQueries: ['workspaces']
   })
 
   const handleDelete = async () => {
@@ -42,6 +45,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
 
   const handleOpen = async () => {
     openWorkspace(row)
+    navigate(frontend.projects.index)
   }
 
   return (
@@ -54,11 +58,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="dropdown reporter">
           <DropdownSection title={t('default:table.actions')}>
-            <DropdownItem
-              textValue="open"
-              onPress={handleOpen}
-              href={frontend.projects.index}
-            >
+            <DropdownItem textValue="open" onPress={handleOpen}>
               <span className="flex gap-2">
                 <FolderOpen className="w-5 h-5" />
                 {t('btn.open')}
@@ -77,6 +77,16 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
+              </span>
+            </DropdownItem>
+            <DropdownItem
+              textValue="users"
+              href={replaceParams(frontend.workspaces.edit, [row._id])}
+              showDivider
+            >
+              <span className="flex gap-2">
+                <Users className="w-5 h-5" />
+                {t('btn.copy_id')}
               </span>
             </DropdownItem>
           </DropdownSection>

@@ -24,7 +24,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   const { create, update } = useFetch<WorkspaceData>({
     baseUrl: backend.workspaces.baseUrl,
     redirectTo: frontend.workspaces.index,
-    keys: ['workspaces']
+    invalidateQueries: ['workspaces']
   })
 
   const onSubmit = async (form: WorkspaceData) => {

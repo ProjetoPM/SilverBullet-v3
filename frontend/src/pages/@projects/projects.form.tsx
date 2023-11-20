@@ -24,7 +24,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
   const { create, update } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
     redirectTo: frontend.projects.index,
-    keys: ['projects']
+    invalidateQueries: ['projects']
   })
 
   const onSubmit = async (form: ProjectData) => {
@@ -48,8 +48,8 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
             name="name"
             render={({ field }) => (
               <RichEditor
-                label={t('form.name.label')}
-                placeholder={t('form.name.placeholder')}
+                label={t('name.label')}
+                placeholder={t('name.placeholder')}
                 errorMessage={form.formState.errors.name?.message}
                 limit={64}
                 {...field}
@@ -63,8 +63,8 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
             name="description"
             render={({ field }) => (
               <RichEditor
-                label={t('form.description.label')}
-                placeholder={t('form.description.placeholder')}
+                label={t('description.label')}
+                placeholder={t('description.placeholder')}
                 errorMessage={form.formState.errors.description?.message}
                 as="textarea-3"
                 limit={1000}

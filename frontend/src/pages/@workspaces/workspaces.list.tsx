@@ -11,8 +11,8 @@ export const WorkspaceListPage = () => {
 
   const { list, removeMany } = useFetch<WorkspaceColumns[]>({
     baseUrl: backend.workspaces.baseUrl,
-    keys: ['workspaces'],
     fetch: {
+      keys: ['workspaces'],
       list: {}
     }
   })

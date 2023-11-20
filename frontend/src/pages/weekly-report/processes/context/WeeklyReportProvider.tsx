@@ -52,6 +52,7 @@ export const WeeklyReportProvider = ({
   return (
     <WeeklyReportContext.Provider value={{ images, addImages, removeImage }}>
       {children}
+      <pre>{JSON.stringify(images)}</pre>
     </WeeklyReportContext.Provider>
   )
 }

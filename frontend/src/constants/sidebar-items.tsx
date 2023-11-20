@@ -1,6 +1,5 @@
 import { frontend } from '@/routes/routes'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
-import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { FolderOpen, Folders } from 'lucide-react'
 
 type SidebarItem = {
@@ -8,15 +7,12 @@ type SidebarItem = {
   label?: string
   children: {
     id: string
-    label: string
-    description?: string
     icon: React.ReactNode
+    label: string
     href: string
     isHidden?: boolean
   }[]
 }
-
-const workspaceName = WorkspaceStore.getWorkspace()?.name
 
 export const sidebarItems: SidebarItem[] = [
   {
@@ -27,18 +23,14 @@ export const sidebarItems: SidebarItem[] = [
         id: 'workspaces',
         icon: <Folders />,
         label: 'navigation.workspaces.label',
-        description: workspaceName
-          ? clearHTMLTags(workspaceName)
-          : 'navigation.workspaces.description',
         href: frontend.workspaces.index
       },
       {
         id: 'projects',
         icon: <FolderOpen />,
         label: 'navigation.projects.label',
-        description: 'Not implemented yet',
-        href: '#',
-        isHidden: true
+        href: frontend.projects.index,
+        isHidden: Boolean(!WorkspaceStore.getWorkspace()?._id)
       }
     ]
   }

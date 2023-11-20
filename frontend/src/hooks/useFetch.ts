@@ -11,17 +11,24 @@ import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
 import { useToken } from './useToken'
 
-type CommonProps = { params?: (string | undefined)[] }
-type AppendOrParamsProps = { append?: string; params?: (string | undefined)[] }
+type CommonProps = {
+  params?: (string | undefined)[]
+}
+type AppendOrParamsProps = {
+  append?: string
+  params?: (string | undefined)[]
+}
 
 type FetchProps = {
-  get?: CommonProps & { append?: string }
+  keys: string | string[]
+  get?: CommonProps & {
+    append?: string
+  }
   list?: CommonProps
 }
 
 type UseFetchProps = {
   baseUrl: string
-  keys: string | string[]
   fetch?: FetchProps
   redirectTo?: string
   options?: UseQueryOptions
@@ -48,7 +55,6 @@ type RemoveProps<T> = T & MutateProps
  */
 export const useFetch = <T>({
   baseUrl,
-  keys,
   fetch,
   redirectTo,
   options,
@@ -65,7 +71,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>(
-    [...keys, 'get'],
+    [...(fetch?.keys ?? ''), 'get'],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -89,7 +95,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>(
-    [...keys, 'list'],
+    [...(fetch?.keys ?? ''), 'list'],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -121,12 +127,16 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          redirect(redirectTo, { replace: true })
+          redirect(redirectTo)
         }
+      },
+      onSettled: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: invalidateQueries ?? fetch?.keys
+        })
       }
     }
   )
@@ -145,12 +155,16 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          redirect(redirectTo, { replace: true })
+          redirect(redirectTo)
         }
+      },
+      onSettled: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: invalidateQueries ?? fetch?.keys
+        })
       }
     }
   )
@@ -169,12 +183,16 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          redirect(redirectTo, { replace: true })
+          redirect(redirectTo)
         }
+      },
+      onSettled: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: invalidateQueries ?? fetch?.keys
+        })
       }
     }
   )
@@ -199,12 +217,16 @@ export const useFetch = <T>({
     },
     {
       onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
         await internalAsyncFn?.()
 
         if (redirectTo) {
-          redirect(redirectTo, { replace: true })
+          redirect(redirectTo)
         }
+      },
+      onSettled: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: invalidateQueries ?? fetch?.keys
+        })
       }
     }
   )

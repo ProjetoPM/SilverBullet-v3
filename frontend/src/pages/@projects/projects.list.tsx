@@ -5,15 +5,14 @@ import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
 import { ProjectToolbar } from './projects.toolbar'
 import { ProjectColumns, columns } from './table/projects.columns'
-import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 
 export const ProjectListPage = () => {
   const { title, breadcrumb } = usePageUtils('projects')
 
   const { list, removeMany } = useFetch<ProjectColumns[]>({
     baseUrl: backend.projects.baseUrl,
-    keys: ['projects', WorkspaceStore.getWorkspaceId()],
     fetch: {
+      keys: ['projects'],
       list: {}
     }
   })
@@ -22,7 +21,7 @@ export const ProjectListPage = () => {
     <PageLayout
       title={title()}
       isLoading={list.isLoading}
-      breadcrumb={breadcrumb()}
+      breadcrumb={breadcrumb({ appendTitle: true })}
     >
       <DataTable
         columns={columns}

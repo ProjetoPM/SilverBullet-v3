@@ -12,8 +12,8 @@ export const ProjectPage = () => {
 
   const { get } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
-    keys: [`projects/${id}`],
     fetch: {
+      keys: ['projects', id],
       get: {
         append: id
       }
