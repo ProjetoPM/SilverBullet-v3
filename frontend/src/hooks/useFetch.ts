@@ -1,4 +1,5 @@
 import { api } from '@/services/api'
+import { replaceParams } from '@/utils/helpers/replace-params'
 import toast from 'react-hot-toast'
 import {
   UseQueryOptions,
@@ -9,7 +10,6 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
 import { useToken } from './useToken'
-import { replaceParams } from '@/utils/helpers/replace-params'
 
 type CommonProps = { params?: (string | undefined)[] }
 type AppendOrParamsProps = { append?: string; params?: (string | undefined)[] }
@@ -65,16 +65,12 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>(
-    keys,
+    [...keys, 'get'],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
        */
-      let _baseUrl = ''
-
-      if (fetch?.get) {
-        _baseUrl = _useAppendOrParams(baseUrl, fetch.get)
-      }
+      const _baseUrl = _useAppendOrParams(baseUrl, fetch?.get)
 
       return await api
         .get(_baseUrl)
@@ -93,16 +89,12 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>(
-    keys,
+    [...keys, 'list'],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
        */
-      let _baseUrl = ''
-
-      if (fetch?.list) {
-        _baseUrl = _useAppendOrParams(baseUrl, fetch.list)
-      }
+      const _baseUrl = _useAppendOrParams(baseUrl, fetch?.list)
 
       return await api
         .get(_baseUrl)
@@ -229,7 +221,7 @@ export const useFetch = <T>({
  */
 const _useAppendOrParams = (
   baseUrl: string,
-  { append, params }: AppendOrParamsProps
+  { append, params }: AppendOrParamsProps = {}
 ) => {
   if (params) {
     baseUrl = replaceParams(baseUrl, params)
