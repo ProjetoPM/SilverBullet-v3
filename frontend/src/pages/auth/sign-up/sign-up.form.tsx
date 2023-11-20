@@ -50,7 +50,7 @@ export const SignUpForm = () => {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-      <Card className="pb-3 bg-default-50">
+      <Card className="pb-3 dark:bg-default-100/60">
         <CardHeader className="ml-2 flex gap-4">
           <div className="flex flex-col gap-0.{5}">
             <h1 className="text-2xl font-bold">{t('sign_up.title')}</h1>
