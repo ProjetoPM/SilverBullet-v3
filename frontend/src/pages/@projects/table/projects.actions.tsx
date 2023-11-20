@@ -28,11 +28,11 @@ type ProjectActionsProps = {
 
 export const ProjectActions = ({ row }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [dropdown, modal] = [useDisclosure(), useDisclosure()]
 
   const { removeMany } = useFetch<ProjectColumns>({
     baseUrl: backend.projects.baseUrl,
-    keys: ['projects']
+    invalidateQueries: ['projects']
   })
 
   const handleDelete = async () => {
@@ -45,7 +45,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
 
   return (
     <>
-      <Dropdown>
+      <Dropdown {...dropdown}>
         <DropdownTrigger>
           <Button variant="light" isIconOnly>
             <MoreHorizontal className="w-5 h-5" />
@@ -68,7 +68,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
                 {t('btn.edit')}
               </span>
             </DropdownItem>
-            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={modal.onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -89,8 +89,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
       <AlertModal
         title={t('are_you_certain.title')}
         onAction={handleDelete}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        {...modal}
       >
         {t('are_you_certain_delete.description')}
       </AlertModal>

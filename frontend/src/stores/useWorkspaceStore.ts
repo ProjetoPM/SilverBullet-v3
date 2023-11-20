@@ -46,8 +46,7 @@ const openWorkspace = (workspace: Workspace) => {
     workspace,
     project: null
   }))
-  updateWorkspaceName()
-  toast.success(t('workspaces:actions.workspace_opened', { ns: 'workspaces' }))
+  toast.success(t('workspaces:actions.open_workspace', { ns: 'workspaces' }))
 }
 
 /**

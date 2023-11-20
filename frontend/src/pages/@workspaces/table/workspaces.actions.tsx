@@ -30,7 +30,7 @@ type WorkspaceActionsProps = {
 
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [dropdown, modal] = [useDisclosure(), useDisclosure()]
   const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
   const navigate = useNavigate()
 
@@ -50,13 +50,16 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
 
   return (
     <>
-      <Dropdown>
+      <Dropdown {...dropdown}>
         <DropdownTrigger>
           <Button variant="light" isIconOnly>
             <MoreHorizontal className="w-5 h-5" />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="dropdown reporter">
+        <DropdownMenu
+          aria-label="dropdown reporter"
+          onMouseLeave={dropdown.onClose}
+        >
           <DropdownSection title={t('default:table.actions')}>
             <DropdownItem textValue="open" onPress={handleOpen}>
               <span className="flex gap-2">
@@ -73,7 +76,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
                 {t('btn.edit')}
               </div>
             </DropdownItem>
-            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={modal.onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -81,12 +84,12 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
             </DropdownItem>
             <DropdownItem
               textValue="users"
-              href={replaceParams(frontend.workspaces.edit, [row._id])}
+              href={replaceParams(frontend.workspaces.users.index, [row._id])}
               showDivider
             >
               <span className="flex gap-2">
                 <Users className="w-5 h-5" />
-                {t('btn.copy_id')}
+                {t('btn.invite_users')}
               </span>
             </DropdownItem>
           </DropdownSection>
@@ -104,8 +107,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
       <AlertModal
         title={t('default:are_you_certain.title')}
         onAction={handleDelete}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        {...modal}
       >
         {t('default:are_you_certain.description')}
       </AlertModal>

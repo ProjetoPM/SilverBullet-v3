@@ -1,3 +1,3 @@
-export const WorkspaceInvitesPage = () => {
+export const WorkspaceInvitesListPage = () => {
   return <div>WorkspaceInvitesPage</div>
 }
