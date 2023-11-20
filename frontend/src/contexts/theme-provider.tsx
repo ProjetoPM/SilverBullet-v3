@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState
-} from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 type Theme = 'system' | 'dark' | 'light'
 
@@ -17,13 +11,11 @@ type ThemeProviderProps = {
 type ThemeProviderContextProps = {
   theme: Theme
   setTheme: (theme: Theme) => void
-  toggleTheme: () => void
 }
 
 const ThemeProviderContext = createContext<ThemeProviderContextProps>({
   theme: 'system',
-  setTheme: () => null,
-  toggleTheme: () => null
+  setTheme: () => null
 })
 
 export const ThemeProvider = ({
@@ -35,10 +27,6 @@ export const ThemeProvider = ({
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   )
-
-  const toggleTheme = useCallback(() => {
-    setTheme((theme) => (theme === 'dark' ? 'light' : 'dark'))
-  }, [])
 
   useEffect(() => {
     const rootNode = window.document.documentElement
@@ -62,8 +50,7 @@ export const ThemeProvider = ({
     setTheme: (theme: Theme) => {
       localStorage.setItem(storageKey, theme)
       setTheme(theme)
-    },
-    toggleTheme
+    }
   }
 
   return (
