@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { PasswordChecker } from '../components/PasswordChecker'
 import { ToggleButton } from '../components/ToggleButton'
 import { SignUp, SignUpSchema } from './sign-up.schema'
+import toast from 'react-hot-toast'
 
 export const SignUpForm = () => {
   const { t } = useTranslation('auth')
@@ -40,12 +41,11 @@ export const SignUpForm = () => {
   }
 
   const onSubmit = async (data: SignUp) => {
-    console.table(data)
-    // if (data.password !== data.confirmPassword) {
-    //   toast.error(t('sign_up.passwords_dont_match'))
-    //   return
-    // }
-    // await signUp.mutateAsync(data)
+    if (data.password !== data.confirmPassword) {
+      toast.error(t('sign_up.passwords_dont_match'))
+      return
+    }
+    await signUp.mutateAsync(data)
   }
 
   return (

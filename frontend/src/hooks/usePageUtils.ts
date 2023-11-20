@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 
 type UsePageUtilsProps = {
   dynamic?: boolean
-  _default?: boolean
+  home?: BreadcrumbItem | false
 }
 
 type PageProps = {
@@ -15,7 +15,10 @@ type PageProps = {
 
 export const usePageUtils = (
   ns?: string | string[],
-  { dynamic = false, _default = true }: UsePageUtilsProps = {}
+  {
+    dynamic = false,
+    home = { label: 'Home', link: frontend.workspaces.index }
+  }: UsePageUtilsProps = {}
 ) => {
   const { id } = useParams()
   const { t } = useTranslation(ns)
@@ -29,11 +32,8 @@ export const usePageUtils = (
   }
 
   const breadcrumb = ({ segments, appendTitle = false }: PageProps = {}) => {
-    const start = _default
-      ? [{ label: 'Home', link: frontend.workspaces.index }]
-      : []
-
-    const middle = start && segments ? [...start, ...segments] : [...start]
+    const start = home ? [home] : []
+    const middle = start && segments ? [home, ...segments] : [...start]
     const end = dynamic ? [...middle, { label: title() }] : middle
     const content = appendTitle ? [...end, { label: title() }] : end
 

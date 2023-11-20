@@ -7,7 +7,7 @@ export const SignUpSchema = z.object({
     .string()
     .email()
     .transform((value) => value.toLowerCase()),
-  password: z.string().min(1).max(64),
+  password: z.string().min(3).max(64),
   confirmPassword: z.string().min(1).max(64),
   termsAndConditions: z.boolean().refine((v) => !!v, required)
 })
