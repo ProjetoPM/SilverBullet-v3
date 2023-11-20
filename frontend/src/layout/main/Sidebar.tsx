@@ -19,17 +19,7 @@ export const Sidebar = () => {
                   <ListboxItem
                     key={item.id}
                     textValue={t(item.label)}
-                    description={
-                      <span
-                        className={cn(
-                          "flex before:content-['└'] before:pr-1 line-clamp-1",
-                          { 'text-white/40': item.isHidden }
-                        )}
-                        id={item.id}
-                      >
-                        {t(item.description ?? '')}
-                      </span>
-                    }
+                    description={t(item.description ?? '')}
                     startContent={item.icon}
                     className={cn(
                       'w-full h-full',
@@ -45,7 +35,11 @@ export const Sidebar = () => {
                         'text-primary font-bold': location.pathname.includes(
                           item.href
                         )
-                      })
+                      }),
+                      description: cn(
+                        "flex before:content-['└'] before:pr-1 line-clamp-1",
+                        { 'text-white/40': item.isHidden }
+                      )
                     }}
                     href={item.href}
                     isReadOnly={item.isHidden}
