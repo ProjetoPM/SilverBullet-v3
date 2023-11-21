@@ -16,8 +16,8 @@ import { MenuIcon } from 'lucide-react'
 import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 import parser from 'ua-parser-js'
-import { UserDropdown } from './UserDropdown'
 import { Notifications } from '../notifications/Notifications'
+import { UserDropdown } from './UserDropdown'
 
 export const NavbarEnd = () => {
   const { isOpen, onOpenChange } = useDisclosure()
@@ -84,7 +84,6 @@ export const NavbarEnd = () => {
                 <Button
                   color="default"
                   variant="flat"
-                  href={item.href}
                   isDisabled={item.isHidden}
                   className="w-full flex justify-start"
                 >

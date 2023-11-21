@@ -14,6 +14,7 @@ import { useToken } from './useToken'
 type CommonProps = {
   params?: (string | undefined)[]
 }
+
 type AppendOrParamsProps = {
   append?: string
   params?: (string | undefined)[]

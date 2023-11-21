@@ -34,7 +34,7 @@ export const WorkspaceUploadButton = () => {
                   role: invite.role.toUpperCase()
                 }))
 
-                setInvites([...normalizeInvites])
+                setInvites([...invites, ...normalizeInvites])
               }
             },
             header: true
