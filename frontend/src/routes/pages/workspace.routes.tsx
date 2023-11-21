@@ -1,5 +1,5 @@
 import { ComponentLayout } from '@/layout/ComponentLayout'
-import { WorkspaceInvitesListPage } from '@/pages/@workspaces/invites/workspace.invites'
+import { WorkspacesInvitesListPage } from '@/pages/@workspaces/invites/workspaces.invites'
 import { WorkspacePage } from '@/pages/@workspaces/workspaces'
 import { WorkspaceListPage } from '@/pages/@workspaces/workspaces.list'
 import { AuthGuard } from '@/utils/guard'
@@ -30,7 +30,7 @@ export const WorkspaceRoutes: RouteObject = {
         },
         {
           path: frontend.workspaces.users.index,
-          element: <WorkspaceInvitesListPage />
+          element: <WorkspacesInvitesListPage />
         }
       ]
     }

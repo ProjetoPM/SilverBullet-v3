@@ -15,7 +15,7 @@ export type DataTableContext<TData> = {
   filter: FilterProps
   toggleFilter: (filter: keyof FilterProps) => void
   setFilter: (filter: keyof FilterProps, value: boolean) => void
-  t: TFunction<'table', undefined>
+  t: TFunction
 }
 
 type DataTableProviderProps<TData> = {

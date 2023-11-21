@@ -67,8 +67,7 @@
 
   /* Chrome, Edge, and Safari */
   *::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    @apply w-[5px] h-[5px];
   }
 
   *::-webkit-scrollbar-track {

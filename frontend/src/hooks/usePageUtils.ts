@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 type UsePageUtilsProps = {
   dynamic?: boolean
   home?: BreadcrumbItem
+  title?: string
 }
 
 type PageProps = {
@@ -16,6 +17,7 @@ type PageProps = {
 export const usePageUtils = (
   ns?: string | string[],
   {
+    title: _title,
     dynamic = false,
     home = { label: 'Home', link: frontend.workspaces.index }
   }: UsePageUtilsProps = {}
@@ -24,6 +26,10 @@ export const usePageUtils = (
   const { t } = useTranslation(ns)
 
   const title = () => {
+    if (_title) {
+      return t(_title)
+    }
+
     if (dynamic) {
       return id ? t('page.edit') : t('page.new')
     }
