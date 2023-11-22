@@ -18,7 +18,7 @@ export const WorkspaceTemplateButton = () => {
 
   return (
     <>
-      <Button variant="bordered" onPress={downloadTemplate}>
+      <Button variant="flat" onPress={downloadTemplate}>
         <Download className="w-5 h-5" />
         {t('invites.download_template')}
       </Button>

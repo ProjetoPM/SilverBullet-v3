@@ -89,7 +89,7 @@ export const WorkspaceInviteModal = ({
                   {t('page.invites')}
                 </h1>
                 <h2 className="text-lg font-thin">
-                  Send the invitation to the users
+                  {t('invites.description')}
                 </h2>
               </ModalHeader>
               <ModalBody className="flex flex-col gap-5">
@@ -104,8 +104,8 @@ export const WorkspaceInviteModal = ({
                       color="primary"
                       variant="bordered"
                       labelPlacement="outside"
-                      label={'Emails'}
-                      placeholder={t('placeholder_emails')}
+                      label={t('invites.emails.label')}
+                      placeholder={t('invites.emails.placeholder')}
                       value={emails}
                       onChange={(e) => setEmails(e.target.value)}
                       onKeyDown={handleKeyDown}
@@ -136,13 +136,17 @@ export const WorkspaceInviteModal = ({
                     }
                     classNames={{ label: 'text-foreground' }}
                   >
-                    <SelectItem key="STUDENT">User</SelectItem>
-                    <SelectItem key="ADMIN">Admin</SelectItem>
+                    <SelectItem key="STUDENT">
+                      {t('invites.roles.student')}
+                    </SelectItem>
+                    <SelectItem key="ADMIN">
+                      {t('invites.roles.admin')}
+                    </SelectItem>
                   </Select>
-                  <section>
+                  <section onDrop={() => console.log('hu')}>
                     <div className="flex items-center justify-between">
                       <Text size="sm" className="font-normal" withPadding>
-                        Users to be invited
+                        {t('invites.users_to_be_invited')}
                       </Text>
                     </div>
                     <div className="flex gap-2 border border-dashed border-default-300 rounded-lg flex-wrap p-2 max-h-72 overflow-y-auto">
@@ -151,7 +155,7 @@ export const WorkspaceInviteModal = ({
                           size="sm"
                           className="text-foreground-400 font-normal px-1"
                         >
-                          Drag and drop the file or type the emails
+                          {t('invites.no_invites')}
                         </Text>
                       )}
                       {invites.map((invite, index) => (
@@ -173,7 +177,7 @@ export const WorkspaceInviteModal = ({
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" fullWidth onPress={onClose}>
-                  Send invitations
+                  {t('invites.submit')}
                 </Button>
               </ModalFooter>
             </>

@@ -15,7 +15,7 @@ export const WorkspaceInviteToolbar = () => {
           endContent={<PlusIcon />}
           onPress={modal.onOpen}
         >
-          {t('page.new')}
+          {t('invites.new')}
         </Button>
       </div>
       <WorkspaceInviteModal {...modal} />
