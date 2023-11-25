@@ -55,7 +55,7 @@ export const Sidebar = () => {
                         { 'text-white/40': item.isHidden }
                       )
                     }}
-                    href={item.href}
+                    href={!item.isHidden ? item.href : '#'}
                     isReadOnly={item.isHidden}
                   >
                     {t(item.label)}

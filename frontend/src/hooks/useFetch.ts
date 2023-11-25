@@ -13,6 +13,7 @@ import { useToken } from './useToken'
 
 type CommonProps = {
   params?: (string | undefined)[]
+  options?: UseQueryOptions
 }
 
 type AppendOrParamsProps = {
@@ -32,7 +33,6 @@ type UseFetchProps = {
   baseUrl: string
   fetch?: FetchProps
   redirectTo?: string
-  options?: UseQueryOptions
   invalidateQueries?: string[]
 }
 
@@ -58,7 +58,6 @@ export const useFetch = <T>({
   baseUrl,
   fetch,
   redirectTo,
-  options,
   invalidateQueries
 }: UseFetchProps) => {
   const { promise } = useMutate()
@@ -72,7 +71,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>(
-    [...(fetch?.keys ?? ''), 'get'],
+    [...(fetch?.keys ?? '')],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -85,7 +84,7 @@ export const useFetch = <T>({
         .catch((err) => !isTokenExpired() && toast.error(err.message))
     },
     {
-      ...(options as UseQueryOptions<T>),
+      ...(fetch?.get?.options as UseQueryOptions<T>),
       enabled: !!fetch?.get?.append
     }
   )
@@ -96,7 +95,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>(
-    [...(fetch?.keys ?? ''), 'list'],
+    [...(fetch?.keys ?? '')],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -109,7 +108,7 @@ export const useFetch = <T>({
         .catch((err) => !isTokenExpired() && toast.error(err.message))
     },
     {
-      ...(options as UseQueryOptions<T>),
+      ...(fetch?.list?.options as UseQueryOptions<T>),
       enabled: !!fetch?.list
     }
   )
