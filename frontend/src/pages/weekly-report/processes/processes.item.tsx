@@ -66,7 +66,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
           </div>
         </div>
         <div>
-          <Text>Files to upload</Text>
+          <Text withPadding>Files to upload</Text>
           <div className="flex flex-wrap gap-2 overflow-hidden hover:overflow-y-auto max-h-24">
             <Chip
               onClose={() => toast.success('Coming soon! 🚀', { id: 'chip' })}

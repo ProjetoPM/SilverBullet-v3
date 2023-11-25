@@ -18,16 +18,12 @@ export const WorkspaceListPage = () => {
   })
 
   return (
-    <PageLayout
-      title={title()}
-      isLoading={list.isLoading}
-      breadcrumb={breadcrumb({ appendTitle: true })}
-    >
+    <PageLayout title={title()} breadcrumb={breadcrumb({ appendTitle: true })}>
       <DataTable
         columns={columns}
-        data={list.data ?? []}
         toolbar={<WorkspaceToolbar />}
         asyncFn={removeMany.mutateAsync}
+        {...list}
       />
     </PageLayout>
   )
