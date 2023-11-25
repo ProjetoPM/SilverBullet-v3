@@ -1,5 +1,6 @@
 import { configs } from '@/configs'
 import {
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -27,22 +28,27 @@ import {
   DataTableContext,
   DataTableProvider
 } from './context/DataTableProvider'
+import { DataTableError } from './errors/DataTableError'
 
 type DataTableProps<TData, TValue> = Pick<
   DataTableContext<TData>,
   'asyncFn'
 > & {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data?: TData[]
 } & {
   toolbar?: React.ReactNode
+  isLoading?: boolean
+  isError?: boolean
 }
 
 export const DataTable = <TData, TValue>({
   columns,
-  data,
+  data = [],
   toolbar,
-  asyncFn
+  asyncFn,
+  isLoading = false,
+  isError = false
 }: DataTableProps<TData, TValue>) => {
   const { t } = useTranslation('table')
   const [sorting, setSorting] = useState<SortingState>([])
@@ -86,6 +92,14 @@ export const DataTable = <TData, TValue>({
     },
     debugTable: configs.debugTable
   })
+
+  if (isError) {
+    return <DataTableError />
+  }
+
+  if (isLoading) {
+    return <CircularProgress color="primary" />
+  }
 
   return (
     <DataTableProvider value={{ table, asyncFn }}>
