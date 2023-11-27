@@ -10,6 +10,8 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
 import { useToken } from './useToken'
+import { useMemo } from 'react'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 
 type CommonProps = {
   params?: (string | undefined)[]
@@ -26,7 +28,9 @@ type FetchProps = {
   get?: CommonProps & {
     append?: string
   }
-  list?: CommonProps
+  list?: CommonProps & {
+    append?: string
+  }
 }
 
 type UseFetchProps = {
@@ -34,6 +38,8 @@ type UseFetchProps = {
   fetch?: FetchProps
   redirectTo?: string
   invalidateQueries?: string[]
+  useWorkspaceId?: boolean
+  useProjectId?: boolean
 }
 
 type MutateProps = {
@@ -58,12 +64,21 @@ export const useFetch = <T>({
   baseUrl,
   fetch,
   redirectTo,
-  invalidateQueries
+  invalidateQueries,
+  useWorkspaceId,
+  useProjectId
 }: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
   const redirect = useNavigate()
   const { isExpired: isTokenExpired } = useToken()
+
+  const [workspaceId, projectId] = useMemo(() => {
+    const _workspaceId = WorkspaceStore.getWorkspaceId()
+    const _projectId = WorkspaceStore.getProjectId()
+
+    return [useWorkspaceId ? _workspaceId : '', useProjectId ? _projectId : '']
+  }, [useWorkspaceId, useProjectId])
 
   /**
    * Método para buscar um registro, seja ele qual for.
@@ -71,7 +86,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>(
-    [...(fetch?.keys ?? '')],
+    ['get', ...(fetch?.keys ?? ''), workspaceId, projectId],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -95,7 +110,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>(
-    [...(fetch?.keys ?? '')],
+    ['list', ...(fetch?.keys ?? ''), workspaceId, projectId],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
