@@ -6,9 +6,7 @@ const setup = () => {
   const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL_API as string,
     headers: {
-      'Content-Type': 'application/json',
-      'Current-Workspace-ID': WorkspaceStore.getWorkspace()?._id,
-      'Current-Project-ID': 'not-implemented'
+      'Content-Type': 'application/json'
     }
   })
 
@@ -19,7 +17,7 @@ const setup = () => {
     (response) => response,
     (error: AxiosError) => {
       if (error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-        console.log('Internal Server Error')
+        console.error(error.response.data)
       }
       return Promise.reject(error)
     }
@@ -38,6 +36,8 @@ const setup = () => {
       config.headers.Authorization = `Bearer ${token}`
     }
     config.headers['Accept-Language'] = lang
+    config.headers['Current-Workspace-ID'] = WorkspaceStore.getWorkspaceId()
+    config.headers['Current-Project-ID'] = WorkspaceStore.getProjectId()
     return config
   })
 

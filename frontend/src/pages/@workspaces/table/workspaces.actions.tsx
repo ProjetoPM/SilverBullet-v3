@@ -30,7 +30,7 @@ type WorkspaceActionsProps = {
 
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
-  const [dropdown, modal] = [useDisclosure(), useDisclosure()]
+  const modal = useDisclosure()
   const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
   const navigate = useNavigate()
 
@@ -45,21 +45,18 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
 
   const handleOpen = async () => {
     openWorkspace(row)
-    navigate(frontend.projects.index)
+    navigate(replaceParams(frontend.projects.index, [row._id]))
   }
 
   return (
     <>
-      <Dropdown {...dropdown}>
+      <Dropdown>
         <DropdownTrigger>
           <Button variant="light" isIconOnly>
             <MoreHorizontal className="w-5 h-5" />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu
-          aria-label="dropdown reporter"
-          onMouseLeave={dropdown.onClose}
-        >
+        <DropdownMenu aria-label="dropdown reporter">
           <DropdownSection title={t('default:table.actions')}>
             <DropdownItem textValue="open" onPress={handleOpen}>
               <span className="flex gap-2">

@@ -76,6 +76,7 @@ const updateWorkspaceName = () => {
 export const WorkspaceStore = {
   getWorkspace: () => useWorkspaceStore.getState().workspace,
   getWorkspaceId: () => useWorkspaceStore.getState().workspace?._id ?? '',
+  getProjectId: () => useWorkspaceStore.getState().project?._id ?? '',
   openWorkspace: (workspace: Workspace) => openWorkspace(workspace),
   closeWorkspace: () => closeWorkspace(),
   updateWorkspaceName: () => updateWorkspaceName()
