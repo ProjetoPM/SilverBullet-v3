@@ -73,11 +73,16 @@ export const useFetch = <T>({
   const redirect = useNavigate()
   const { isExpired: isTokenExpired } = useToken()
 
-  const [workspaceId, projectId] = useMemo(() => {
+  const ids = useMemo(() => {
     const _workspaceId = WorkspaceStore.getWorkspaceId()
     const _projectId = WorkspaceStore.getProjectId()
 
-    return [useWorkspaceId ? _workspaceId : '', useProjectId ? _projectId : '']
+    const result = [
+      useWorkspaceId ? _workspaceId : undefined,
+      useProjectId ? _projectId : undefined
+    ]
+
+    return result.filter((item) => !!item)
   }, [useWorkspaceId, useProjectId])
 
   /**
@@ -86,7 +91,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>(
-    ['get', ...(fetch?.keys ?? ''), workspaceId, projectId],
+    [...(fetch?.keys ?? ''), ...ids],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -110,7 +115,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>(
-    ['list', ...(fetch?.keys ?? ''), workspaceId, projectId],
+    [...(fetch?.keys ?? ''), ...ids],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
