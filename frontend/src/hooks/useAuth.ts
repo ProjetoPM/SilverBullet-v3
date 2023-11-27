@@ -42,9 +42,6 @@ export const useAuth = () => {
         storage.setItem('token', response.token)
         storage.setItem('user', email)
 
-        /** Update Sidebar */
-        WorkspaceStore.updateWorkspaceName()
-
         /** Clean expired token toast message */
         toast.remove(AG_EXPIRED_TOKEN_ID)
 

@@ -17,7 +17,8 @@ type WorkspaceStoreProps = {
   workspace: Workspace | null
   project: Project | null
   openWorkspace: (workspace: Workspace) => void
-  closeWorkspace: () => void
+  closeWorkspace: (workspace?: Workspace) => void
+  updateWorkspace: (workspace: Workspace) => void
 }
 
 export const useWorkspaceStore = create<WorkspaceStoreProps>()(
@@ -27,7 +28,8 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
         workspace: null,
         project: null,
         openWorkspace: (workspace) => openWorkspace(workspace),
-        closeWorkspace: () => closeWorkspace()
+        closeWorkspace: (workspace?: Workspace) => closeWorkspace(workspace),
+        updateWorkspace: (workspace) => updateWorkspace(workspace)
       }),
       {
         name: 'workspace',
@@ -50,9 +52,36 @@ const openWorkspace = (workspace: Workspace) => {
 }
 
 /**
+ * Atualizar um workspace.
+ */
+const updateWorkspace = (workspace: Workspace) => {
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    workspace
+  }))
+}
+
+/**
  * Fechando um workspace.
  */
-const closeWorkspace = () => {
+const closeWorkspace = (workspace?: Workspace) => {
+  /**
+   * Fechar o workspace somente se o '_id' do workspace passado por
+   * parâmetro for igual ao do workspace atual.
+   */
+  if (workspace?._id) {
+    const currentWorkspaceId = getWorkspaceId()
+
+    if (currentWorkspaceId === workspace._id) {
+      closeWorkspace()
+    }
+    return
+  }
+
+  /**
+   * Fechando qualquer que seja o workspace se não enviado
+   * o parâmetro 'workspace'.
+   */
   useWorkspaceStore.setState((state) => ({
     ...state,
     workspace: null,
@@ -61,13 +90,17 @@ const closeWorkspace = () => {
 }
 
 /**
- * Atualizar o nome do workspace no 'sidebar' da aplicação.
+ * Pegando o 'id' do workspace.
  */
-const updateWorkspaceName = () => {
-  return (
-    useWorkspaceStore.getState().workspace?.name ??
-    'navigation.workspaces.description'
-  )
+const getWorkspaceId = () => {
+  return useWorkspaceStore.getState().workspace?._id ?? ''
+}
+
+/**
+ * Pegando o 'id' do projeto.
+ */
+const getProjectId = () => {
+  return useWorkspaceStore.getState().project?._id ?? ''
 }
 
 /**
@@ -75,9 +108,9 @@ const updateWorkspaceName = () => {
  */
 export const WorkspaceStore = {
   getWorkspace: () => useWorkspaceStore.getState().workspace,
-  getWorkspaceId: () => useWorkspaceStore.getState().workspace?._id ?? '',
-  getProjectId: () => useWorkspaceStore.getState().project?._id ?? '',
+  getWorkspaceId: () => getWorkspaceId(),
+  getProjectId: () => getProjectId(),
   openWorkspace: (workspace: Workspace) => openWorkspace(workspace),
-  closeWorkspace: () => closeWorkspace(),
-  updateWorkspaceName: () => updateWorkspaceName()
+  closeWorkspace: (workspace?: Workspace) => closeWorkspace(workspace),
+  updateWorkspace: (workspace: Workspace) => updateWorkspace(workspace)
 }

@@ -1,6 +1,6 @@
 import { sidebarItems } from '@/constants/sidebar-items'
 import { cn } from '@/lib/utils'
-import { WorkspaceStore } from '@/stores/useWorkspaceStore'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { Listbox, ListboxItem, ListboxSection } from '@nextui-org/react'
 import { useMemo } from 'react'
@@ -11,12 +11,18 @@ export const Sidebar = () => {
   const { t } = useTranslation('sidebar')
   const location = useLocation()
 
-  const sidebarDescription = useMemo(() => {
-    return {
-      workspaces: t(WorkspaceStore.updateWorkspaceName()),
-      projects: t('projects.description')
-    }
-  }, [t])
+  const [workspace, project] = useWorkspaceStore((state) => [
+    state.workspace,
+    state.project
+  ])
+
+  const sidebarDescription = useMemo(
+    () => ({
+      workspaces: workspace?.name ?? t('navigation.workspaces.description'),
+      projects: project?.name ?? t('navigation.projects.description')
+    }),
+    [workspace?.name, project?.name, t]
+  )
 
   return (
     <div className="w-full border-r-1 px-3 py-2.5 border-default-200 dark:border-default-100">

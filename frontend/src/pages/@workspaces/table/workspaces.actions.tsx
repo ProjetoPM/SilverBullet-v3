@@ -31,16 +31,27 @@ type WorkspaceActionsProps = {
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
   const modal = useDisclosure()
-  const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
   const navigate = useNavigate()
+
+  const [openWorkspace, closeWorkspace] = useWorkspaceStore((state) => [
+    state.openWorkspace,
+    state.closeWorkspace
+  ])
 
   const { removeMany } = useFetch<WorkspaceColumns>({
     baseUrl: backend.workspaces.baseUrl,
     invalidateQueries: ['workspaces']
   })
 
+  const handleCloseWorkspace = async () => {
+    closeWorkspace(row)
+  }
+
   const handleDelete = async () => {
-    await removeMany.mutateAsync(row)
+    await removeMany.mutateAsync({
+      ...row,
+      internalAsyncFn: handleCloseWorkspace
+    })
   }
 
   const handleOpen = async () => {
