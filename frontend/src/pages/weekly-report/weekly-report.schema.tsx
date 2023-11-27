@@ -7,7 +7,7 @@ export const WeeklyReportSchema = z.object({
   projectId: z
     .string()
     .uuid()
-    .default(WorkspaceStore.getWorkspace()?.id ?? 'error')
+    .default(WorkspaceStore.getWorkspace()?._id ?? 'error')
     .readonly(),
   weeklyEvaluationId: z.string().refine(min, required),
   toolEvaluation: z
