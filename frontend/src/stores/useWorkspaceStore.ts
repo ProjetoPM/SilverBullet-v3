@@ -111,6 +111,6 @@ export const WorkspaceStore = {
   getWorkspaceId: () => getWorkspaceId(),
   getProjectId: () => getProjectId(),
   openWorkspace: (workspace: Workspace) => openWorkspace(workspace),
-  closeWorkspace: (workspace?: Workspace) => closeWorkspace(workspace),
+  closeWorkspace: async (workspace?: Workspace) => closeWorkspace(workspace),
   updateWorkspace: (workspace: Workspace) => updateWorkspace(workspace)
 }

@@ -5,6 +5,7 @@ import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
 import { WorkspaceColumns, columns } from './table/workspaces.columns'
 import { WorkspaceToolbar } from './workspaces.toolbar'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 
 export const WorkspaceListPage = () => {
   const { title, breadcrumb } = usePageUtils('workspaces')
@@ -23,6 +24,7 @@ export const WorkspaceListPage = () => {
         columns={columns}
         toolbar={<WorkspaceToolbar />}
         asyncFn={removeMany.mutateAsync}
+        asyncStepsFn={WorkspaceStore.closeWorkspace}
         {...list}
       />
     </PageLayout>

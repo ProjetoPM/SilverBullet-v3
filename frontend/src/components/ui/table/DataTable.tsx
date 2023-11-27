@@ -32,7 +32,7 @@ import { DataTableError } from './errors/DataTableError'
 
 type DataTableProps<TData, TValue> = Pick<
   DataTableContext<TData>,
-  'asyncFn'
+  'asyncFn' | 'asyncStepsFn'
 > & {
   columns: ColumnDef<TData, TValue>[]
   data?: TData[]
@@ -47,6 +47,7 @@ export const DataTable = <TData, TValue>({
   data = [],
   toolbar,
   asyncFn,
+  asyncStepsFn,
   isLoading = false,
   isError = false
 }: DataTableProps<TData, TValue>) => {
@@ -102,7 +103,7 @@ export const DataTable = <TData, TValue>({
   }
 
   return (
-    <DataTableProvider value={{ table, asyncFn }}>
+    <DataTableProvider value={{ table, asyncFn, asyncStepsFn }}>
       <Table
         aria-label="list table"
         isHeaderSticky
