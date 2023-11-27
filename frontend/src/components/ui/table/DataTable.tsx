@@ -98,7 +98,7 @@ export const DataTable = <TData, TValue>({
   }
 
   if (isLoading) {
-    return <CircularProgress color="primary" />
+    return <CircularProgress color="primary" aria-label="loading..." />
   }
 
   return (

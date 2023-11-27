@@ -16,6 +16,7 @@ export const DataTableError = () => {
         size="lg"
         color="danger"
         className="flex flex-col items-center gap-2"
+        as="p"
       >
         <span className="text-black dark:text-foreground-300 text-center select-none">
           <Trans
