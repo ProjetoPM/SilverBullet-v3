@@ -1,10 +1,4 @@
-import { Button, Pagination } from '@nextui-org/react'
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight
-} from 'lucide-react'
+import { Pagination } from '@nextui-org/react'
 import { DefaultAnimate } from '../animation/DefaultAnimate'
 import { useDataTable } from './context/DataTableProvider'
 
@@ -12,8 +6,8 @@ export const TableBottomContent = () => {
   const { t, table, filter } = useDataTable()
 
   return (
-    <div className="py-2 px-2 flex justify-center xs:justify-between items-center">
-      <span className="hidden xs:flex text-small text-default-400">
+    <div className="py-2 px-2 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-4 justify-center items-center">
+      <span className="flex justify-center xs:justify-start items-center text-small text-default-400">
         {t('table.rows_selected', {
           rows: table.getFilteredSelectedRowModel().rows.length,
           max_rows: table.getFilteredRowModel().rows.length
@@ -30,47 +24,10 @@ export const TableBottomContent = () => {
             total={table.getPageCount()}
             isDisabled={!table.getCanPreviousPage() && !table.getCanNextPage()}
             onChange={(page) => table.setPageIndex(page - 1)}
+            className="flex justify-center items-center"
           />
         )}
       </DefaultAnimate>
-      <div className="hidden sm:flex justify-end gap-1">
-        <Button
-          size="sm"
-          variant="flat"
-          onPress={() => table.setPageIndex(0)}
-          isDisabled={!table.getCanPreviousPage()}
-          isIconOnly
-        >
-          <ChevronsLeft />
-        </Button>
-        <Button
-          size="sm"
-          variant="flat"
-          onPress={() => table.previousPage()}
-          isDisabled={!table.getCanPreviousPage()}
-          isIconOnly
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          size="sm"
-          variant="flat"
-          onPress={() => table.nextPage()}
-          isDisabled={!table.getCanNextPage()}
-          isIconOnly
-        >
-          <ChevronRight />
-        </Button>
-        <Button
-          size="sm"
-          variant="flat"
-          onPress={() => table.setPageIndex(table.getPageCount() - 1)}
-          isDisabled={!table.getCanNextPage()}
-          isIconOnly
-        >
-          <ChevronsRight />
-        </Button>
-      </div>
     </div>
   )
 }
