@@ -43,14 +43,10 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
     invalidateQueries: ['workspaces']
   })
 
-  const handleCloseWorkspace = async () => {
-    onCloseWorkspace(row)
-  }
-
   const handleDelete = async () => {
     await removeMany.mutateAsync({
       ...row,
-      internalAsyncFn: handleCloseWorkspace
+      internalFn: () => onCloseWorkspace(row)
     })
   }
 

@@ -30,8 +30,12 @@ type ProjectActionsProps = {
 export const ProjectActions = ({ row }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
   const modal = useDisclosure()
-  const onOpenProject = useWorkspaceStore((state) => state.onOpenProject)
   const onOpenDashboard = useDashboardStore((state) => state.onOpen)
+
+  const [onOpenProject, onCloseProject] = useWorkspaceStore((state) => [
+    state.onOpenProject,
+    state.onCloseProject
+  ])
 
   const { removeMany } = useFetch<ProjectColumns>({
     baseUrl: backend.projects.baseUrl,
@@ -39,7 +43,10 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
   })
 
   const handleDelete = async () => {
-    await removeMany.mutateAsync(row)
+    await removeMany.mutateAsync({
+      ...row,
+      internalFn: () => onCloseProject(row)
+    })
   }
 
   const handleOpen = () => {

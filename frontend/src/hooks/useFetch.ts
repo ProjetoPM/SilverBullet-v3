@@ -1,5 +1,7 @@
 import { api } from '@/services/api'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/helpers/replace-params'
+import { useMemo } from 'react'
 import toast from 'react-hot-toast'
 import {
   UseQueryOptions,
@@ -10,8 +12,6 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
 import { useToken } from './useToken'
-import { useMemo } from 'react'
-import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 
 type CommonProps = {
   params?: (string | undefined)[]
@@ -46,6 +46,8 @@ type MutateProps = {
   _id: string
   asyncFn?: () => Promise<void>
   internalAsyncFn?: () => Promise<void>
+  fn?: () => void
+  internalFn?: () => void
 }
 
 type RemoveProps<T> = T & MutateProps
@@ -142,11 +144,13 @@ export const useFetch = <T>({
   const create = useMutation(
     async (data: T & Omit<MutateProps, '_id'>) => {
       const url = `${baseUrl}/new`
+      data.fn?.()
       await data.asyncFn?.()
       return await promise(api.post(url, data))
     },
     {
-      onSuccess: async (_, { internalAsyncFn }) => {
+      onSuccess: async (_, { internalFn, internalAsyncFn }) => {
+        internalFn?.()
         await internalAsyncFn?.()
 
         if (redirectTo) {
@@ -170,11 +174,13 @@ export const useFetch = <T>({
   const update = useMutation(
     async (data: T & MutateProps) => {
       const url = `${baseUrl}/${data._id}/edit`
+      data.fn?.()
       await data.asyncFn?.()
       return await promise(api.put(url, data))
     },
     {
-      onSuccess: async (_, { internalAsyncFn }) => {
+      onSuccess: async (_, { internalFn, internalAsyncFn }) => {
+        internalFn?.()
         await internalAsyncFn?.()
 
         if (redirectTo) {
@@ -198,11 +204,13 @@ export const useFetch = <T>({
   const remove = useMutation(
     async (data: RemoveProps<T>) => {
       const url = `${baseUrl}/${data._id}`
+      data.fn?.()
       await data.asyncFn?.()
       return await promise(api.delete(url))
     },
     {
-      onSuccess: async (_, { internalAsyncFn }) => {
+      onSuccess: async (_, { internalFn, internalAsyncFn }) => {
+        internalFn?.()
         await internalAsyncFn?.()
 
         if (redirectTo) {
@@ -226,17 +234,25 @@ export const useFetch = <T>({
   const removeMany = useMutation(
     async (
       data: (
-        | Omit<RemoveProps<T>, 'asyncFn' | 'internalAsyncFn'>
-        | Omit<RemoveProps<T>, 'asyncFn' | 'internalAsyncFn'>[]
+        | Omit<
+            RemoveProps<T>,
+            'asyncFn' | 'internalAsyncFn' | 'fn' | 'internalFn'
+          >
+        | Omit<
+            RemoveProps<T>,
+            'asyncFn' | 'internalAsyncFn' | 'fn' | 'internalFn'
+          >[]
       ) &
-        Pick<MutateProps, 'asyncFn' | 'internalAsyncFn'>
+        Pick<MutateProps, 'asyncFn' | 'internalAsyncFn' | 'fn' | 'internalFn'>
     ) => {
       const _data = Array.isArray(data) ? data : [data._id]
+      data.fn?.()
       await data.asyncFn?.()
       return await promise(api.delete(baseUrl, { params: { ids: _data } }))
     },
     {
-      onSuccess: async (_, { internalAsyncFn }) => {
+      onSuccess: async (_, { internalFn, internalAsyncFn }) => {
+        internalFn?.()
         await internalAsyncFn?.()
 
         if (redirectTo) {
