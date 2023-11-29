@@ -3,9 +3,9 @@ import { useFetch } from '@/hooks/useFetch'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { WorkspaceColumns, columns } from './table/workspaces.columns'
 import { WorkspaceToolbar } from './workspaces.toolbar'
-import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 
 export const WorkspaceListPage = () => {
   const { title, breadcrumb } = usePageUtils('workspaces')
@@ -21,6 +21,7 @@ export const WorkspaceListPage = () => {
   return (
     <PageLayout title={title()} breadcrumb={breadcrumb({ appendTitle: true })}>
       <DataTable
+        ns={['workspaces']}
         columns={columns}
         toolbar={<WorkspaceToolbar />}
         asyncFn={removeMany.mutateAsync}

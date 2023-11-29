@@ -41,7 +41,7 @@ type DataTableProps<TData, TValue> = Pick<
   toolbar?: React.ReactNode
   isLoading?: boolean
   isError?: boolean
-  ns?: string
+  ns?: string[]
 }
 
 export const DataTable = <TData, TValue>({

@@ -13,18 +13,18 @@ export default {
     container: {
       center: true,
       padding: {
-        DEFAULT: '1rem',
+        DEFAULT: '1rem'
       }
     },
     screens: {
-      'base': '100%',
-      'xss': { min: '420px' },
-      'xs': { min: '520px' },
+      base: '100%',
+      xss: { min: '420px' },
+      xs: { min: '520px' },
       ...defaultTheme.screens
     },
     extend: {}
   },
-  darkMode: "class",
+  darkMode: 'class',
   plugins: [
     typography,
     nextui({
@@ -33,20 +33,20 @@ export default {
         dark: {
           colors: {
             default: {
-              "50": "#141414",
-              "100": "#18181b",
-              "200": "#27272a",
-            },
+              50: '#141414',
+              100: '#18181b',
+              200: '#27272a'
+            }
           }
-        },
+        }
       },
       layout: {
         radius: {
           small: '6px',
           medium: '8px',
           large: '12px'
-        },
-      },
+        }
+      }
     })
-  ],
+  ]
 }

@@ -21,6 +21,7 @@ export const ProjectListPage = () => {
   return (
     <PageLayout title={title()} breadcrumb={breadcrumb({ appendTitle: true })}>
       <DataTable
+        ns={['projects']}
         columns={columns}
         toolbar={<ProjectToolbar />}
         asyncFn={removeMany.mutateAsync}

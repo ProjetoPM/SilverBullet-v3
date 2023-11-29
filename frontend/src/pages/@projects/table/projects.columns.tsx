@@ -11,6 +11,7 @@ export type ProjectColumns = {
 }
 
 const helper = createColumnHelper<ProjectColumns>()
+const ns = 'projects'
 
 export const columns = [
   /**
@@ -22,7 +23,7 @@ export const columns = [
    */
   helper.accessor((row) => row.name, {
     id: 'name',
-    header: () => t('workspaces:form.name.label'),
+    header: () => t('name.label', { ns }),
     cell: ({ row }) => clearHTMLTags(row.getValue('name')),
     enableSorting: true,
     enableHiding: true
@@ -32,7 +33,7 @@ export const columns = [
    */
   helper.accessor((row) => row.description, {
     id: 'description',
-    header: () => t('workspaces:form.description.label'),
+    header: () => t('description.label', { ns }),
     cell: ({ row }) => clearHTMLTags(row.getValue('description')),
     enableSorting: true,
     enableHiding: true

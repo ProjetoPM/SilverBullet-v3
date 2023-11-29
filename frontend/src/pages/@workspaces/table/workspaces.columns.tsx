@@ -15,6 +15,7 @@ export type WorkspaceColumns = {
 }
 
 const helper = createColumnHelper<WorkspaceColumns>()
+const ns = 'workspaces'
 
 export const columns = [
   /**
@@ -27,10 +28,7 @@ export const columns = [
   helper.accessor((row) => row.name, {
     id: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        header={t('workspaces:form.name.label')}
-      />
+      <DataTableColumnHeader column={column} header={t('name.label', { ns })} />
     ),
     cell: ({ row }) => clearHTMLTags(row.getValue('name')),
     enableSorting: true,
@@ -44,7 +42,7 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={t('workspaces:form.description.label')}
+        header={t('description.label', { ns })}
       />
     ),
     cell: ({ row }) => clearHTMLTags(row.getValue('description')),
@@ -59,7 +57,7 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={t('workspaces:form.plan_status.label')}
+        header={t('plan_status.label', { ns })}
       />
     ),
     cell: ({ row }) => {
@@ -72,7 +70,7 @@ export const columns = [
 
       return (
         <Chip color={colors[status]}>
-          {t(`workspaces:form.plan_status.options.${status?.toLowerCase()}`)}
+          {t(`plan_status.options.${status?.toLowerCase()}`, { ns })}
         </Chip>
       )
     },

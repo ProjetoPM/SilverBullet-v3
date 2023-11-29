@@ -30,7 +30,7 @@ type WorkspaceActionsProps = {
 
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
-  const modal = useDisclosure()
+  const { isOpen, onOpenChange, onOpen } = useDisclosure()
   const navigate = useNavigate()
 
   const [openWorkspace, closeWorkspace] = useWorkspaceStore((state) => [
@@ -84,7 +84,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
                 {t('btn.edit')}
               </div>
             </DropdownItem>
-            <DropdownItem onPress={modal.onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -115,7 +115,8 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
       <AlertModal
         title={t('default:are_you_certain.title')}
         onAction={handleDelete}
-        {...modal}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
       >
         {t('default:are_you_certain.description')}
       </AlertModal>
