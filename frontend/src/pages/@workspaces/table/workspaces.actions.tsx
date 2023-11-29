@@ -30,12 +30,12 @@ type WorkspaceActionsProps = {
 
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
-  const { isOpen, onOpenChange, onOpen } = useDisclosure()
+  const modal = useDisclosure()
   const navigate = useNavigate()
 
-  const [openWorkspace, closeWorkspace] = useWorkspaceStore((state) => [
-    state.openWorkspace,
-    state.closeWorkspace
+  const [onOpenWorkspace, onCloseWorkspace] = useWorkspaceStore((state) => [
+    state.onOpenWorkspace,
+    state.onCloseWorkspace
   ])
 
   const { removeMany } = useFetch<WorkspaceColumns>({
@@ -44,7 +44,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   })
 
   const handleCloseWorkspace = async () => {
-    closeWorkspace(row)
+    onCloseWorkspace(row)
   }
 
   const handleDelete = async () => {
@@ -55,7 +55,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   }
 
   const handleOpen = async () => {
-    openWorkspace(row)
+    onOpenWorkspace(row)
     navigate(replaceParams(frontend.projects.index, [row._id]))
   }
 
@@ -84,7 +84,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
                 {t('btn.edit')}
               </div>
             </DropdownItem>
-            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={modal.onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -115,8 +115,8 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
       <AlertModal
         title={t('default:are_you_certain.title')}
         onAction={handleDelete}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={modal.isOpen}
+        onOpenChange={modal.onOpenChange}
       >
         {t('default:are_you_certain.description')}
       </AlertModal>

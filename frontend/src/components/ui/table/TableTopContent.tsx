@@ -14,7 +14,7 @@ type TableTopContentProps = {
 }
 
 export function TableTopContent({ toolbar }: TableTopContentProps) {
-  const { t, filter, table, asyncFn, asyncStepsFn } = useDataTable()
+  const { t, filter, table, asyncFn, internalLogicFn } = useDataTable()
 
   /**
    * Deleta os itens selecionados. Esse método só irá funcionar
@@ -25,13 +25,13 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
     const originalRows = rows.map((row) => row.original as { _id: string })
     const ids = originalRows.map((row) => row._id)
 
-    if (asyncStepsFn) {
-      ids.forEach((id) => asyncStepsFn(id))
+    if (internalLogicFn) {
+      ids.forEach((id) => internalLogicFn(id))
     }
 
     await asyncFn?.(ids)
     table.toggleAllPageRowsSelected(false)
-  }, [asyncFn, asyncStepsFn, table])
+  }, [asyncFn, internalLogicFn, table])
 
   const filters = useCallback(() => {
     return [

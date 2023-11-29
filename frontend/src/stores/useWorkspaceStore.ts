@@ -16,9 +16,11 @@ type Workspace = {
 type WorkspaceStoreProps = {
   workspace: Workspace | null
   project: Project | null
-  openWorkspace: (workspace: Workspace) => void
-  closeWorkspace: (workspace?: Workspace) => void
-  updateWorkspace: (workspace: Workspace) => void
+  onOpenWorkspace: (workspace: Workspace) => void
+  onCloseWorkspace: (workspace?: Workspace) => void
+  onUpdateWorkspace: (workspace: Workspace) => void
+  onOpenProject: (project: Project) => void
+  onCloseProject: (project?: Project) => void
 }
 
 export const useWorkspaceStore = create<WorkspaceStoreProps>()(
@@ -27,9 +29,12 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
       () => ({
         workspace: null,
         project: null,
-        openWorkspace: (workspace) => openWorkspace(workspace),
-        closeWorkspace: (workspace?: Workspace) => closeWorkspace(workspace),
-        updateWorkspace: (workspace) => updateWorkspace(workspace)
+        onOpenWorkspace: (workspace) => onOpenWorkspace(workspace),
+        onCloseWorkspace: (workspace?: Workspace) =>
+          onCloseWorkspace(workspace),
+        onUpdateWorkspace: (workspace) => onUpdateWorkspace(workspace),
+        onOpenProject: (project) => onOpenProject(project),
+        onCloseProject: (project?: Project) => onCloseProject(project)
       }),
       {
         name: 'workspace',
@@ -42,19 +47,30 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
 /**
  * Abre um workspace.
  */
-const openWorkspace = (workspace: Workspace) => {
+const onOpenWorkspace = (workspace: Workspace) => {
   useWorkspaceStore.setState((state) => ({
     ...state,
     workspace,
     project: null
   }))
-  toast.success(t('workspaces:actions.open_workspace', { ns: 'workspaces' }))
+  toast.success(t('actions.open_workspace', { ns: 'workspaces' }))
+}
+
+/**
+ * Abre um projeto.
+ */
+export const onOpenProject = (project: Project) => {
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    project
+  }))
+  toast.success(t('actions.open_project', { ns: 'workspaces' }))
 }
 
 /**
  * Atualizar um workspace.
  */
-const updateWorkspace = (workspace: Workspace) => {
+const onUpdateWorkspace = (workspace: Workspace) => {
   useWorkspaceStore.setState((state) => ({
     ...state,
     workspace
@@ -64,7 +80,7 @@ const updateWorkspace = (workspace: Workspace) => {
 /**
  * Fechando um workspace.
  */
-const closeWorkspace = (workspace?: Workspace) => {
+const onCloseWorkspace = (workspace?: Workspace) => {
   /**
    * Fechar o workspace somente se o '_id' do workspace passado por
    * parâmetro for igual ao do workspace atual.
@@ -73,7 +89,7 @@ const closeWorkspace = (workspace?: Workspace) => {
     const currentWorkspaceId = getWorkspaceId()
 
     if (currentWorkspaceId === workspace._id) {
-      closeWorkspace()
+      onCloseWorkspace()
     }
     return
   }
@@ -85,6 +101,33 @@ const closeWorkspace = (workspace?: Workspace) => {
   useWorkspaceStore.setState((state) => ({
     ...state,
     workspace: null,
+    project: null
+  }))
+}
+
+/**
+ * Fechando um projeto.
+ */
+const onCloseProject = (project?: Project) => {
+  /**
+   * Fechar o projeto somente se o '_id' do projeto passado por
+   * parâmetro for igual ao do projeto atual.
+   */
+  if (project?._id) {
+    const currentProjectId = getProjectId()
+
+    if (currentProjectId === project._id) {
+      onCloseProject()
+    }
+    return
+  }
+
+  /**
+   * Fechando qualquer que seja o projeto se não enviado
+   * o parâmetro 'project'.
+   */
+  useWorkspaceStore.setState((state) => ({
+    ...state,
     project: null
   }))
 }
@@ -110,7 +153,6 @@ export const WorkspaceStore = {
   getWorkspace: () => useWorkspaceStore.getState().workspace,
   getWorkspaceId: () => getWorkspaceId(),
   getProjectId: () => getProjectId(),
-  openWorkspace: (workspace: Workspace) => openWorkspace(workspace),
-  closeWorkspace: async (workspace?: Workspace) => closeWorkspace(workspace),
-  updateWorkspace: (workspace: Workspace) => updateWorkspace(workspace)
+  onCloseWorkspace: (workspace?: Workspace) => onCloseWorkspace(workspace),
+  onCloseProject: (project?: Project) => onCloseProject(project)
 }

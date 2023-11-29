@@ -12,7 +12,7 @@ type FilterProps = {
 export type DataTableContext<TData> = {
   table: Table<TData>
   asyncFn?: (ids: any) => Promise<void>
-  asyncStepsFn?: (data: any) => Promise<void>
+  internalLogicFn?: (data: any) => void
   filter: FilterProps
   toggleFilter: (filter: keyof FilterProps) => void
   setFilter: (filter: keyof FilterProps, value: boolean) => void

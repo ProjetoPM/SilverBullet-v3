@@ -3,11 +3,13 @@ import { useFetch } from '@/hooks/useFetch'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { ProjectToolbar } from './projects.toolbar'
 import { ProjectColumns, columns } from './table/projects.columns'
 
 export const ProjectListPage = () => {
   const { title, breadcrumb } = usePageUtils('projects')
+  const onCloseProject = useWorkspaceStore((state) => state.onCloseProject)
 
   const { list, removeMany } = useFetch<ProjectColumns[]>({
     baseUrl: backend.projects.baseUrl,
@@ -25,6 +27,7 @@ export const ProjectListPage = () => {
         columns={columns}
         toolbar={<ProjectToolbar />}
         asyncFn={removeMany.mutateAsync}
+        internalLogicFn={onCloseProject}
         {...list}
       />
     </PageLayout>

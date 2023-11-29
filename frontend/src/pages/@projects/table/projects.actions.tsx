@@ -2,6 +2,7 @@ import { AlertModal } from '@/components/ui/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { useDashboardStore } from '@/stores/useDashboardStore'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/helpers/replace-params'
 import {
   Button,
@@ -29,6 +30,7 @@ type ProjectActionsProps = {
 export const ProjectActions = ({ row }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
   const modal = useDisclosure()
+  const onOpenProject = useWorkspaceStore((state) => state.onOpenProject)
   const onOpenDashboard = useDashboardStore((state) => state.onOpen)
 
   const { removeMany } = useFetch<ProjectColumns>({
@@ -41,6 +43,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
   }
 
   const handleOpen = () => {
+    onOpenProject(row)
     onOpenDashboard()
   }
 

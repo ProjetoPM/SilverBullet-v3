@@ -3,12 +3,13 @@ import { useFetch } from '@/hooks/useFetch'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
-import { WorkspaceStore } from '@/stores/useWorkspaceStore'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { WorkspaceColumns, columns } from './table/workspaces.columns'
 import { WorkspaceToolbar } from './workspaces.toolbar'
 
 export const WorkspaceListPage = () => {
   const { title, breadcrumb } = usePageUtils('workspaces')
+  const onCloseWorkspace = useWorkspaceStore((state) => state.onCloseWorkspace)
 
   const { list, removeMany } = useFetch<WorkspaceColumns[]>({
     baseUrl: backend.workspaces.baseUrl,
@@ -25,7 +26,7 @@ export const WorkspaceListPage = () => {
         columns={columns}
         toolbar={<WorkspaceToolbar />}
         asyncFn={removeMany.mutateAsync}
-        asyncStepsFn={WorkspaceStore.closeWorkspace}
+        internalLogicFn={onCloseWorkspace}
         {...list}
       />
     </PageLayout>

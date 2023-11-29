@@ -31,7 +31,7 @@ type WorkspaceInviteActionsProps = {
 export const WorkspaceActions = ({ row }: WorkspaceInviteActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
   const [dropdown, modal] = [useDisclosure(), useDisclosure()]
-  const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
+  const onOpenWorkspace = useWorkspaceStore((state) => state.onOpenWorkspace)
   const navigate = useNavigate()
 
   const { removeMany } = useFetch<WorkspaceInviteColumns>({
@@ -44,7 +44,7 @@ export const WorkspaceActions = ({ row }: WorkspaceInviteActionsProps) => {
   }
 
   const handleOpen = async () => {
-    openWorkspace(row)
+    onOpenWorkspace(row)
     navigate(frontend.projects.index)
   }
 
