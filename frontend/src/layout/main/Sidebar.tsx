@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { Listbox, ListboxItem, ListboxSection } from '@nextui-org/react'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 
@@ -22,6 +22,13 @@ export const Sidebar = () => {
       projects: project?.name ?? t('navigation.projects.description')
     }),
     [workspace?.name, project?.name, t]
+  )
+
+  const isProjectHidden = useCallback(
+    (id: string) => {
+      return id === 'projects' && !workspace
+    },
+    [workspace]
   )
 
   return (
@@ -43,13 +50,13 @@ export const Sidebar = () => {
                     startContent={item.icon}
                     className={cn(
                       'w-full h-full',
-                      item.isHidden && 'cursor-not-allowed'
+                      isProjectHidden(item.id) && 'cursor-not-allowed'
                     )}
                     classNames={{
-                      base: cn({
+                      base: cn('select-none', {
                         'bg-default-100': location.pathname.includes(item.href),
                         'text-white/40 data-[hover=true]:text-white/40':
-                          item.isHidden
+                          isProjectHidden(item.id)
                       }),
                       title: cn({
                         'text-primary font-bold': location.pathname.includes(
@@ -58,11 +65,11 @@ export const Sidebar = () => {
                       }),
                       description: cn(
                         "flex before:content-['└'] before:pr-1 line-clamp-1",
-                        { 'text-white/40': item.isHidden }
+                        { 'text-white/40': isProjectHidden(item.id) }
                       )
                     }}
-                    href={!item.isHidden ? item.href : '#'}
-                    isReadOnly={item.isHidden}
+                    href={!isProjectHidden(item.id) ? item.href : undefined}
+                    isReadOnly={isProjectHidden(item.id)}
                   >
                     {t(item.label)}
                   </ListboxItem>

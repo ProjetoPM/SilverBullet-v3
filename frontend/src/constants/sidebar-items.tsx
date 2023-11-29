@@ -1,5 +1,4 @@
 import { frontend } from '@/routes/routes'
-import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { FolderOpen, Folders } from 'lucide-react'
 
 type SidebarItem = {
@@ -10,7 +9,6 @@ type SidebarItem = {
     icon: React.ReactNode
     label: string
     href: string
-    isHidden?: boolean
   }[]
 }
 
@@ -29,8 +27,7 @@ export const sidebarItems: SidebarItem[] = [
         id: 'projects',
         icon: <FolderOpen />,
         label: 'navigation.projects.label',
-        href: frontend.projects.index,
-        isHidden: Boolean(!WorkspaceStore.getWorkspace()?._id)
+        href: frontend.projects.index
       }
     ]
   }
