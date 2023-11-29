@@ -36,27 +36,33 @@ type DataTableProps<TData, TValue> = Pick<
 > & {
   columns: ColumnDef<TData, TValue>[]
   data?: TData[]
+  hiddenColumns?: Extract<keyof TData, string>[]
 } & {
   toolbar?: React.ReactNode
   isLoading?: boolean
   isError?: boolean
+  ns?: string
 }
 
 export const DataTable = <TData, TValue>({
   columns,
   data = [],
   toolbar,
+  ns,
   asyncFn,
   asyncStepsFn,
   isLoading = false,
-  isError = false
+  isError = false,
+  hiddenColumns
 }: DataTableProps<TData, TValue>) => {
   const { t } = useTranslation('table')
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    ...hiddenColumns?.reduce((acc, column) => ({ ...acc, [column]: false }), {})
+  })
   const [{ pageIndex, pageSize }, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10
@@ -103,7 +109,7 @@ export const DataTable = <TData, TValue>({
   }
 
   return (
-    <DataTableProvider value={{ table, asyncFn, asyncStepsFn }}>
+    <DataTableProvider value={{ ns, table, asyncFn, asyncStepsFn }}>
       <Table
         aria-label="list table"
         isHeaderSticky

@@ -9,7 +9,7 @@ import { Columns } from 'lucide-react'
 import { useDataTable } from '../context/DataTableProvider'
 
 export const DataTableViewOptions = () => {
-  const { t, table } = useDataTable()
+  const { t, ns, table } = useDataTable()
 
   const selectedColumns = () =>
     table.getAllColumns().filter((column) => column.getIsVisible())
@@ -35,7 +35,9 @@ export const DataTableViewOptions = () => {
           .getAllColumns()
           .filter((column) => column.getCanHide())
           .map((column) => (
-            <DropdownItem key={column.id}>{t(column.id)}</DropdownItem>
+            <DropdownItem key={column.id}>
+              {t(`${column.id}.label`, { ns })}
+            </DropdownItem>
           ))}
       </DropdownMenu>
     </Dropdown>
