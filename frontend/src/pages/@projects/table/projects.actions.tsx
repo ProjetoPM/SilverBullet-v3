@@ -1,6 +1,7 @@
 import { AlertModal } from '@/components/ui/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
+import { useDashboardStore } from '@/stores/useDashboardStore'
 import { replaceParams } from '@/utils/helpers/replace-params'
 import {
   Button,
@@ -18,7 +19,6 @@ import {
   MoreHorizontal,
   Trash
 } from 'lucide-react'
-import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { ProjectColumns } from './projects.columns'
 
@@ -28,7 +28,8 @@ type ProjectActionsProps = {
 
 export const ProjectActions = ({ row }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { isOpen, onOpenChange, onOpen } = useDisclosure()
+  const modal = useDisclosure()
+  const onOpenDashboard = useDashboardStore((state) => state.onOpen)
 
   const { removeMany } = useFetch<ProjectColumns>({
     baseUrl: backend.projects.baseUrl,
@@ -40,7 +41,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
   }
 
   const handleOpen = () => {
-    toast.error('Not implemented yet')
+    onOpenDashboard()
   }
 
   return (
@@ -68,7 +69,7 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
                 {t('btn.edit')}
               </span>
             </DropdownItem>
-            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={modal.onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -89,8 +90,8 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
       <AlertModal
         title={t('are_you_certain.title')}
         onAction={handleDelete}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={modal.isOpen}
+        onOpenChange={modal.onOpenChange}
       >
         {t('are_you_certain_delete.description')}
       </AlertModal>
