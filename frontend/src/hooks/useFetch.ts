@@ -99,15 +99,13 @@ export const useFetch = <T>({
        * Determinar se a rota deve ser alterada.
        */
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.get)
-
-      return await api
-        .get(_baseUrl)
-        .then((res) => res.data?.dto)
-        .catch((err) => !isTokenExpired() && toast.error(err.message))
+      return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
     {
       ...(fetch?.get?.options as UseQueryOptions<T>),
-      enabled: !!fetch?.get?.append
+      enabled: !!fetch?.get?.append,
+      onError: (err: any) =>
+        !isTokenExpired() && toast.error(err?.message, { id: 'error' })
     }
   )
 
@@ -123,15 +121,13 @@ export const useFetch = <T>({
        * Determinar se a rota deve ser alterada.
        */
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.list)
-
-      return await api
-        .get(_baseUrl)
-        .then((res) => res.data?.dto)
-        .catch((err) => !isTokenExpired() && toast.error(err.message))
+      return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
     {
       ...(fetch?.list?.options as UseQueryOptions<T>),
-      enabled: !!fetch?.list
+      enabled: !!fetch?.list,
+      onError: (err: any) =>
+        !isTokenExpired() && toast.error(err?.message, { id: 'error' })
     }
   )
 
