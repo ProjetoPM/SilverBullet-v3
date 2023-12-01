@@ -107,10 +107,11 @@ export const WorkspaceInviteModal = ({
                       label={t('invites.emails.label')}
                       placeholder={t('invites.emails.placeholder')}
                       value={emails}
-                      onChange={(e) => setEmails(e.target.value)}
+                      onValueChange={(value) => setEmails(value)}
                       onKeyDown={handleKeyDown}
                       autoComplete="off"
                       classNames={{ label: 'text-foreground' }}
+                      isClearable
                     />
                     <Tooltip content={'Reset'}>
                       <Button

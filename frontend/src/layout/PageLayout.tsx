@@ -1,5 +1,6 @@
 import { Loading } from '@/components/Loading'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { description } from './meta'
 
@@ -9,6 +10,7 @@ export type PageLayoutProps = {
   breadcrumb?: Array<{ label: string; link?: string }>
   imageSrc?: string
   isLoading?: boolean
+  endContent?: React.ReactNode
 }
 
 export const PageLayout = ({
@@ -16,6 +18,7 @@ export const PageLayout = ({
   breadcrumb,
   imageSrc,
   children,
+  endContent,
   isLoading = false
 }: PageLayoutProps) => {
   if (isLoading) {
@@ -29,12 +32,15 @@ export const PageLayout = ({
         <meta name="description" content={description} />
       </Helmet>
       {breadcrumb && (
-        <Breadcrumb
-          title={title}
-          items={breadcrumb}
-          imageSrc={imageSrc ?? false}
-          className="mb-5"
-        />
+        <div className="flex flex-col xss:flex-row items-center gap-1 xss:gap-2 justify-between mb-5 xss:mb-0">
+          <Breadcrumb
+            title={title}
+            items={breadcrumb}
+            imageSrc={imageSrc ?? false}
+            className="mb-5"
+          />
+          <div className="self-end xss:self-auto">{endContent}</div>
+        </div>
       )}
       <main>{children}</main>
     </>

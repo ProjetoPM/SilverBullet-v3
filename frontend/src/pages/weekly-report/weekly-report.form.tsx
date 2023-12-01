@@ -6,7 +6,6 @@ import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Snippet } from '@nextui-org/react'
-import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
@@ -20,7 +19,6 @@ type WeeklyReportFormProps = {
 
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
-  const [output, setOutput] = useState('')
   const { images } = useWeeklyReport()
 
   const form = useForm<WeeklyReportData>({
@@ -30,7 +28,6 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyReportData) => {
-    setOutput(JSON.stringify(form, null, 2))
     console.table(form)
     console.log(images)
   }
@@ -49,11 +46,14 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               {t('linked_project.label')}
             </Text>
             <Snippet
-              classNames={{ base: 'h-unit-10 w-full hover:bg-default-200' }}
+              classNames={{
+                base: 'h-unit-10 w-full hover:bg-default-200',
+                pre: 'font-sans'
+              }}
               onCopy={() =>
                 navigator.clipboard.writeText(
                   form.getValues('projectId') ||
-                    WorkspaceStore.getWorkspace()?._id ||
+                    WorkspaceStore.getWorkspaceId() ||
                     t('linked_project.placeholder')
                 )
               }
@@ -95,7 +95,6 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           fnResetButton={form.reset}
           // isLoading={create.isLoading || update.isLoading}
         />
-        <pre>{output}</pre>
       </form>
     </FormProvider>
   )

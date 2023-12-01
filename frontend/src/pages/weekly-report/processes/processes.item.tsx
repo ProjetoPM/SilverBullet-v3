@@ -56,7 +56,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
             />
           </fieldset>
           <div className="flex flex-col" role="actions">
-            <Text size="sm" isRequired>
+            <Text size="sm" withPadding isRequired>
               Actions
             </Text>
             <div className="flex gap-2">

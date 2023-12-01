@@ -1,8 +1,9 @@
+import { GradeRating } from '@/components/ui/GradeRating'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { frontend } from '@/routes/routes'
-import { WeeklyReportForm } from './weekly-report.form'
 import { WeeklyReportProvider } from './processes/context/WeeklyReportProvider'
+import { WeeklyReportForm } from './weekly-report.form'
 
 const data = {
   _id: '109b84fa-afcb-4815-9600-450caad03aef',
@@ -33,6 +34,7 @@ export const WeeklyReportPage = () => {
           { label: t('page.title'), link: frontend.weekly_report.index }
         ]
       })}
+      endContent={<GradeRating prepend="Score: " value={4.32} readOnly />}
     >
       <WeeklyReportProvider>
         <WeeklyReportForm data={data} />

@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils'
-import { Codesandbox, LucideProps } from 'lucide-react'
+import { LucideProps } from 'lucide-react'
 import { ComponentProps } from 'react'
+import { GiSupersonicBullet } from 'react-icons/gi'
 
 type LogoProps = ComponentProps<'label'> & LucideProps
 
@@ -8,7 +9,7 @@ export const Logo = ({ className, ...props }: LogoProps) => {
   return (
     <div className="flex items-center gap-3">
       <div className="hidden lg:flex">
-        <Codesandbox size={28} />
+        <GiSupersonicBullet size={28} />
       </div>
       <span
         className={cn(

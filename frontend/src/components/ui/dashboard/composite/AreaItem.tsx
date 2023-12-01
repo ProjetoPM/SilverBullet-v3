@@ -22,10 +22,13 @@ export const AreaItem = ({ item, onClick }: AreaItemProps) => {
   }
 
   return (
-    <Link className="cursor-pointer rounded-md" onPress={handleClick}>
+    <Link
+      className="cursor-pointer rounded-md transition-transform-background motion-reduce:transition-none hover:scale-105"
+      onPress={handleClick}
+    >
       <Card
         className={cn(
-          'z-50 hover:scale-105 border-l-[6px] h-full w-full group',
+          'z-50 border-l-[6px] h-full w-full cursor-pointer rounded-md group',
           item.border
         )}
         radius="sm"
