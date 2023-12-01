@@ -22,7 +22,7 @@ export const NavbarStart = ({ isMenuOpen }: NavbarStartProps) => {
         <Link
           href={frontend.workspaces.index}
           color="foreground"
-          className="flex gap-2"
+          className="flex gap-2 rounded-md py-2"
         >
           <Logo className="hidden xs:flex" />
         </Link>

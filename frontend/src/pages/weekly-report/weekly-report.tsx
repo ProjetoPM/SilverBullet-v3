@@ -34,7 +34,9 @@ export const WeeklyReportPage = () => {
           { label: t('page.title'), link: frontend.weekly_report.index }
         ]
       })}
-      endContent={<GradeRating prepend="Score: " value={4.32} readOnly />}
+      endContent={
+        <GradeRating prepend="Score: " value={4.32} scoreTimes={2} readOnly />
+      }
     >
       <WeeklyReportProvider>
         <WeeklyReportForm data={data} />
