@@ -2,17 +2,21 @@ import { cn } from '@/lib/utils'
 import { ComponentProps } from 'react'
 import { FormatDate } from './FormatDate'
 import { FormatPrice } from './FormatPrice'
+import i18next from 'i18next'
 
 type TextProps = Omit<ComponentProps<'span'>, 'ref'> & {
   isRequired?: boolean
   format?: {
-    as: 'price' | 'date'
-    text: string
+    as: 'price' | 'date' | 'number'
+    text: string | number
     options?: {
       date?: Intl.DateTimeFormatOptions
       price?: Intl.NumberFormatOptions
+      number?: Intl.NumberFormatOptions
     }
   }
+  prepend?: string
+  append?: string
   size?: 'xs' | 'sm' | 'md' | 'lg'
   as?: 'h1' | 'h2' | 'h3' | 'span' | 'div' | 'p'
   color?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning'
@@ -29,6 +33,8 @@ export const Text = ({
   withPadding = false,
   isInvalid = false,
   color,
+  append,
+  prepend,
   ...props
 }: TextProps) => {
   const Component = as ?? 'span'
@@ -63,7 +69,17 @@ export const Text = ({
         <FormatPrice toFormat={format.text} {...format.options?.price} />
       )}
       {format?.as === 'date' && (
-        <FormatDate date={format.text} {...format.options?.date} />
+        <FormatDate date={String(format.text)} {...format.options?.date} />
+      )}
+      {format?.as === 'number' && (
+        <span>
+          {prepend}{' '}
+          {new Intl.NumberFormat(i18next.language, {
+            ...format.options?.number,
+            style: 'decimal'
+          }).format(Number(format.text))}{' '}
+          {append}
+        </span>
       )}
       {!format && props.children}
     </Component>
