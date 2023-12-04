@@ -1,3 +1,4 @@
+import { InputPassword } from '@/components/ui/input/InputPassword'
 import { Text } from '@/components/ui/label/Text'
 import { useAuth } from '@/hooks/useAuth'
 import { frontend } from '@/routes/routes'
@@ -13,32 +14,20 @@ import {
   Input,
   Link
 } from '@nextui-org/react'
-import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { PasswordChecker } from '../components/PasswordChecker'
-import { ToggleButton } from '../components/ToggleButton'
 import { SignUp, SignUpSchema } from './sign-up.schema'
-import toast from 'react-hot-toast'
 
 export const SignUpForm = () => {
   const { t } = useTranslation('auth')
   const { signUp } = useAuth()
-  const [isPasswordVisible, setPasswordVisible] = useState(false)
-  const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
 
   const form = useForm<SignUp>({
     mode: 'all',
     resolver: zodResolver(SignUpSchema)
   })
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible((previous) => !previous)
-  }
-
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisible((previous) => !previous)
-  }
 
   const onSubmit = async (data: SignUp) => {
     if (data.password !== data.confirmPassword) {
@@ -85,21 +74,11 @@ export const SignUpForm = () => {
               />
             </div>
             <div className="relative flex flex-col gap-2">
-              <Input
+              <InputPassword
                 {...form.register('password')}
                 label={t('password.label')}
-                placeholder={'••••••••'}
-                endContent={
-                  <ToggleButton
-                    id="toggle-password"
-                    isVisible={isPasswordVisible}
-                    onClick={togglePasswordVisibility}
-                  />
-                }
-                type={isPasswordVisible ? 'text' : 'password'}
                 labelPlacement="outside"
                 errorMessage={form.formState.errors.password?.message}
-                autoComplete="current-password"
                 isRequired
               />
               <PasswordChecker
@@ -108,21 +87,11 @@ export const SignUpForm = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Input
+              <InputPassword
                 {...form.register('confirmPassword')}
                 label={t('password_check.label')}
-                placeholder={'••••••••'}
-                endContent={
-                  <ToggleButton
-                    id="toggle-confirm-password"
-                    isVisible={isConfirmPasswordVisible}
-                    onClick={toggleConfirmPasswordVisibility}
-                  />
-                }
-                type={isConfirmPasswordVisible ? 'text' : 'password'}
                 labelPlacement="outside"
                 errorMessage={form.formState.errors.confirmPassword?.message}
-                autoComplete="current-password"
                 isRequired
               />
             </div>

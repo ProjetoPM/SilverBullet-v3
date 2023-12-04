@@ -1,3 +1,4 @@
+import { InputPassword } from '@/components/ui/input/InputPassword'
 import { Text } from '@/components/ui/label/Text'
 import { useAuth } from '@/hooks/useAuth'
 import { frontend } from '@/routes/routes'
@@ -13,25 +14,18 @@ import {
   Input,
   Link
 } from '@nextui-org/react'
-import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ToggleButton } from '../components/ToggleButton'
 import { SignIn, SignInSchema } from './sign-in.schema'
 
 export const SignInForm = () => {
   const { t } = useTranslation('auth')
   const { signIn } = useAuth()
-  const [isVisible, setVisible] = useState(false)
 
   const form = useForm<SignIn>({
     mode: 'all',
     resolver: zodResolver(SignInSchema)
   })
-
-  const toggleVisibility = () => {
-    setVisible((previous) => !previous)
-  }
 
   const onSubmit = async (data: SignIn) => {
     await signIn.mutateAsync(data)
@@ -63,21 +57,11 @@ export const SignInForm = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Input
+              <InputPassword
                 {...form.register('password')}
                 label={t('password.label')}
-                placeholder={'••••••••'}
-                endContent={
-                  <ToggleButton
-                    id="toggle-password"
-                    isVisible={isVisible}
-                    onClick={toggleVisibility}
-                  />
-                }
-                type={isVisible ? 'text' : 'password'}
                 labelPlacement="outside"
                 errorMessage={form.formState.errors.password?.message}
-                autoComplete="current-password"
                 isRequired
               />
             </div>
