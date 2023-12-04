@@ -122,8 +122,8 @@ export const SignUpForm = () => {
             type="submit"
             color="primary"
             variant="solid"
-            className="w-full mx-2"
             isLoading={signUp.isLoading}
+            fullWidth
           >
             {t('sign_up.btn')}
           </Button>

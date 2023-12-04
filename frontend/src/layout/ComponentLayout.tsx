@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { AuthWrapper } from './auth/AuthWrapper'
 import { ProfileSidebar } from './main/ProfileSidebar'
 import { SidebarContainer } from './main/SidebarContainer'
@@ -10,6 +10,8 @@ type ComponentLayoutProps = {
 }
 
 export const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
+  const location = useLocation()
+
   return (
     <>
       {layout === 'auth' && (
@@ -31,8 +33,8 @@ export const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
             <div className="grid grid-cols-1 lg:grid-cols-[245px,1fr] min-h-[calc(100vh-4.25rem)]">
               <div className="hidden lg:flex">
                 <SidebarContainer>
+                  {location.pathname.includes('settings') && <ProfileSidebar />}
                   <MainSidebar />
-                  <ProfileSidebar />
                 </SidebarContainer>
               </div>
               <div className="px-5 pb-10">

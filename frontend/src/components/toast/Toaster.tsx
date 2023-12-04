@@ -26,7 +26,7 @@ export const ToasterContainer = ({ ...props }: ToasterProps) => {
             <ToastIcon toast={t} />
             <p>{resolveValue(t.message, t)}</p>
             <button
-              className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:rounded-sm"
+              className="ml-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:rounded-full"
               onClick={() => toast.dismiss(t.id)}
             >
               <X className="w-4 h-4" />

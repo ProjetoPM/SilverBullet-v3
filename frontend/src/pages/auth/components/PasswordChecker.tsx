@@ -19,7 +19,7 @@ const PasswordChecker = ({
   return (
     <div className={cn('flex items-center gap-3', className)} {...props}>
       <span className={cn('h-2 w-10 rounded-full', color.color)} />
-      <label className="text-sm">{t(color.label)}</label>
+      <label className="text-xs">{t(color.label)}</label>
     </div>
   )
 }

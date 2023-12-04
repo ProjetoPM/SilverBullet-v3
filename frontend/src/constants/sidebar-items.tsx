@@ -44,7 +44,7 @@ export const profileSidebarItems: SidebarItem[] = [
         icon: <UserCog />,
         label: 'account.label',
         description: 'account.description',
-        href: frontend.profile.account
+        href: frontend.settings.account
       }
     ]
   }

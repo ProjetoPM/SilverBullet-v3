@@ -16,6 +16,7 @@ import {
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { ForgotPassword } from '../components/ForgotPassword'
 import { SignIn, SignInSchema } from './sign-in.schema'
 
 export const SignInForm = () => {
@@ -35,9 +36,12 @@ export const SignInForm = () => {
     <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
       <Card className="pb-3 bg-default-100/60">
         <CardHeader className="ml-2 flex gap-4">
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-0.5 w-full pr-3">
             <h1 className="text-2xl font-bold">{t('sign_in.title')}</h1>
-            <p className="text-sm">{t('sign_in.description')}</p>
+            <div className="flex flex-wrap items-center justify-between gap-1">
+              <p className="text-sm">{t('sign_in.description')}</p>
+              <ForgotPassword />
+            </div>
           </div>
         </CardHeader>
         <Divider />
@@ -52,7 +56,6 @@ export const SignInForm = () => {
                 labelPlacement="outside"
                 errorMessage={form.formState.errors.email?.message}
                 autoComplete="email"
-                classNames={{ input: 'autofill:box-shadow-none' }}
                 isRequired
               />
             </div>
@@ -86,8 +89,8 @@ export const SignInForm = () => {
             type="submit"
             variant="solid"
             color="primary"
-            className="w-full mx-2"
             isLoading={signIn.isLoading}
+            fullWidth
           >
             {t('sign_in.btn')}
           </Button>
@@ -95,7 +98,6 @@ export const SignInForm = () => {
         <Link
           color="primary"
           href={frontend.auth.sign_up.index}
-          as={Link}
           showAnchorIcon
           className="mx-auto text-sm flex my-2"
         >

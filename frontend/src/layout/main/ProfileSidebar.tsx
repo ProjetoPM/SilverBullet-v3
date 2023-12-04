@@ -1,9 +1,11 @@
 import { profileSidebarItems } from '@/constants/sidebar-items'
 import { Listbox, ListboxItem, ListboxSection, cn } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 
 export const ProfileSidebar = () => {
   const { t } = useTranslation('settings')
+  const location = useLocation()
 
   return (
     <Listbox variant="flat" aria-label="Listbox menu" className="relative">
