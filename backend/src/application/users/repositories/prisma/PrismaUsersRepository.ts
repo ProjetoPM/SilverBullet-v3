@@ -28,6 +28,16 @@ export class PrismaUsersRepository implements IUsersRepository {
     return !!userExists
   }
 
+  async existsByUsername(username: string): Promise<boolean> {
+    const userExists = await prismaClient.user.findUnique({
+      where: {
+        username,
+      },
+    })
+
+    return !!userExists
+  }
+
   async findById(id: string): Promise<User | null> {
     const user = await prismaClient.user.findUnique({
       where: {
@@ -46,5 +56,20 @@ export class PrismaUsersRepository implements IUsersRepository {
     await prismaClient.user.create({
       data,
     })
+  }
+
+  async update(user: User): Promise<void> {
+    const data = await UserMapper.toPersistence(user)
+
+    await prismaClient.user
+      .update({
+        where: { id: user.id },
+        data: {
+          ...data,
+        },
+      })
+      .catch(() => {
+        throw new Error('Error on update user')
+      })
   }
 }

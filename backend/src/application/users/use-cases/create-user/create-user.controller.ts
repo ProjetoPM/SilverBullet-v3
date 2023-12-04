@@ -13,6 +13,7 @@ import { UserAlreadyExistsError } from './errors/UserAlreadyExistsError'
 type CreateUserControllerRequest = {
   email: string
   name: string
+  username?: string
   password: string
   confirmPassword: string
   phone?: string
@@ -25,8 +26,6 @@ export class CreateUserController implements Controller {
   ) {}
 
   async handle(request: CreateUserControllerRequest): Promise<HttpResponse> {
-    console.log(request);
-    
     const validated = this.validator.validate(request)
 
     if (validated.isLeft()) {

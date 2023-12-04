@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/logic/either'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { IEmailService } from '@/infra/providers/models/IEmailService'
+import { JWT } from '../../../../core/domain/jwt'
 
 type ForgotPasswordRequest = {
   email: string
@@ -14,16 +15,14 @@ export class ForgotPassword {
 
   async execute({email}: ForgotPasswordRequest): Promise<ForgotPassWordResponse> {
 
-    const verifyUserExists = await this.usersRepository.exists(
-      email,
-    )
+    const user = await this.usersRepository.findByEmail(email)
 
-    await this.emailService.sendEmail(email, 'Recover Password', 'Here is your link to recover your password')
-
-    if (!verifyUserExists) {
+    if (!user) {
       return left(new UserDoesNotExistError())
     }
+    const { token } = JWT.signUser(user)
 
+    await this.emailService.sendEmail(email, 'Recover Password', `Here is your link to recover your password: http://localhost:3333/recover-password/${token}`)
 
     return right(null)
   }

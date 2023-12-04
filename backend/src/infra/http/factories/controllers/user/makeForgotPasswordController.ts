@@ -1,11 +1,9 @@
-import { CreateUser } from '@/application/users/use-cases/create-user/create-user'
 import { PrismaUsersRepository } from '@/application/users/repositories/prisma/PrismaUsersRepository'
-import { CreateUserController } from '@/application/users/use-cases/create-user/create-user.controller'
 import { ValidatorCompositor } from '@/infra/validation/ValidatorCompositor'
 import { Controller } from '@/core/infra/controller'
 import { ForgotPassword } from '@/application/users/use-cases/forgot-password/forgot-password'
 import { NodeMailerService } from '@/infra/providers/implementations/nodemailer.service'
-import { ForgotPasswordControler } from '@/application/users/use-cases/forgot-password/forgot-password.controller'
+import { ForgotPasswordController } from '@/application/users/use-cases/forgot-password/forgot-password.controller'
 
 export function makeForgotPasswordController(): Controller {
   const prismaUsersRepository = new PrismaUsersRepository()
@@ -14,5 +12,5 @@ export function makeForgotPasswordController(): Controller {
 
   const validator = new ValidatorCompositor([])
 
-  return new ForgotPasswordControler(validator, forgotPassword)
+  return new ForgotPasswordController(validator, forgotPassword)
 }

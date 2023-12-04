@@ -4,10 +4,12 @@ import { Validator } from '@/core/infra/validator'
 import { t } from 'i18next'
 import { ForgotPassword } from './forgot-password'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+
 type ForgotPasswordControllerRequest = {
   email: string
 }
-export class ForgotPasswordControler implements Controller {
+
+export class ForgotPasswordController implements Controller {
   constructor(
     private readonly validator: Validator<ForgotPasswordControllerRequest>,
     private forgotPassword: ForgotPassword,
@@ -23,16 +25,15 @@ export class ForgotPasswordControler implements Controller {
     const result = await this.forgotPassword.execute(request)
 
     if (result.isLeft()) {
-        const error = result.value
-  
-        switch (error.constructor) {
-          case UserDoesNotExistError:
-            return clientError(error)
-          default:
-            return clientError(error)
-        }
-      }
+      const error = result.value
 
+      switch (error.constructor) {
+        case UserDoesNotExistError:
+          return clientError(error)
+        default:
+          return clientError(error)
+      }
+    }
 
     return ok({ message: t('user.forgot_password') })
   }
