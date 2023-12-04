@@ -34,6 +34,9 @@ export const frontend = {
     new: '/weekly-report/new',
     edit: '/weekly-report/:id/edit',
     delete: '/weekly-report/:id/delete'
+  },
+  profile: {
+    account: '/my-account'
   }
 }
 

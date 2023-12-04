@@ -1,7 +1,7 @@
 import { LocaleSwitcher } from '@/components/features/LocaleSwitcher'
 import { ThemeSwitcher } from '@/components/features/ThemeSwitcher'
 import { DashboardMenu } from '@/components/ui/dashboard/DashboardMenu'
-import { sidebarItems } from '@/constants/sidebar-items'
+import { mainSidebarItems } from '@/constants/sidebar-items'
 import { useScreen } from '@/hooks/useScreen'
 import { useDashboardStore } from '@/stores/useDashboardStore'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
@@ -79,7 +79,7 @@ export const NavbarEnd = () => {
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-        {sidebarItems.map((division) => (
+        {mainSidebarItems.map((division) => (
           <Fragment key={division.id}>
             <span className="pl-2 text-sm text-foreground-500">
               {t(division.label ?? '')}
