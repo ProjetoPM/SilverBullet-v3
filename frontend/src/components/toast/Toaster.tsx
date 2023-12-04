@@ -1,5 +1,11 @@
 import { Transition } from '@headlessui/react'
-import { ToastIcon, Toaster, ToasterProps, resolveValue } from 'react-hot-toast'
+import { X } from 'lucide-react'
+import toast, {
+  ToastIcon,
+  Toaster,
+  ToasterProps,
+  resolveValue
+} from 'react-hot-toast'
 
 export const ToasterContainer = ({ ...props }: ToasterProps) => {
   return (
@@ -19,6 +25,12 @@ export const ToasterContainer = ({ ...props }: ToasterProps) => {
           >
             <ToastIcon toast={t} />
             <p>{resolveValue(t.message, t)}</p>
+            <button
+              className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:rounded-sm"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              <X className="w-4 h-4" />
+            </button>
           </Transition>
         </>
       )}
