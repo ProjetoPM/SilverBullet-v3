@@ -1,6 +1,7 @@
-import { Card, CardBody, CardHeader, Link, cn } from '@nextui-org/react'
+import { Card, CardBody, CardHeader, cn } from '@nextui-org/react'
 import i18next from 'i18next'
 import { useTranslation } from 'react-i18next'
+import { ButtonItem } from './ButtonItem'
 
 export type AreaItemProps = {
   item: {
@@ -16,16 +17,13 @@ export type AreaItemProps = {
 export const AreaItem = ({ item, onClick }: AreaItemProps) => {
   const { t } = useTranslation('areas')
 
-  const handleClick = () => {
+  const handlePress = () => {
     onClick()
     document.getElementById('dashboard-search')?.focus()
   }
 
   return (
-    <Link
-      className="cursor-pointer rounded-md transition-transform-background motion-reduce:transition-none hover:scale-105"
-      onPress={handleClick}
-    >
+    <ButtonItem onPress={handlePress}>
       <Card
         className={cn(
           'z-50 border-l-[6px] h-full w-full cursor-pointer rounded-md group',
@@ -46,6 +44,6 @@ export const AreaItem = ({ item, onClick }: AreaItemProps) => {
           </p>
         </CardBody>
       </Card>
-    </Link>
+    </ButtonItem>
   )
 }

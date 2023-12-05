@@ -40,7 +40,7 @@ export const useAuth = () => {
           localStorage.removeItem('user')
         }
         storage.setItem('token', response.token)
-        storage.setItem('user', email)
+        localStorage.setItem('user', email)
 
         /** Clean expired token toast message */
         toast.remove(AG_EXPIRED_TOKEN_ID)

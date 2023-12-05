@@ -118,6 +118,7 @@ export const WorkspaceInviteModal = ({
                         variant="bordered"
                         onPress={() => setInvites([])}
                         className="border-medium border-default-200 hover:border-default-400"
+                        isDisabled={invites.length === 0}
                         isIconOnly
                       >
                         <ListRestart className="w-5 h-5" />

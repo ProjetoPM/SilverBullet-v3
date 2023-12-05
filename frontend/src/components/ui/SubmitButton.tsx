@@ -22,7 +22,11 @@ export const SubmitButton = ({
   return (
     <div className={cn('flex gap-2.5 mt-2.5', className)}>
       <Button color="primary" type="submit" {...props}>
-        {!children && isEdit ? <Edit className="w-5 h-5" /> : <Save />}
+        {!children && isEdit ? (
+          <Edit className="w-5 h-5" />
+        ) : (
+          <Save className="w-5 h-5" />
+        )}
         {!children && isEdit ? t('default:btn.edit') : t('default:btn.save')}
         {children}
       </Button>
@@ -30,7 +34,7 @@ export const SubmitButton = ({
         <Button
           type="button"
           className="bg-default-100 hover:bg-default-200"
-          onClick={() => fnResetButton()}
+          onPress={() => fnResetButton()}
         >
           <RotateCcw className="w-5 h-5" />
           {labelResetButton || t('default:btn.reset')}

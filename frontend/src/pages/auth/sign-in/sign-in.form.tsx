@@ -12,7 +12,8 @@ import {
   Checkbox,
   Divider,
   Input,
-  Link
+  Link,
+  useDisclosure
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -22,6 +23,7 @@ import { SignIn, SignInSchema } from './sign-in.schema'
 export const SignInForm = () => {
   const { t } = useTranslation('auth')
   const { signIn } = useAuth()
+  const forgotPassword = useDisclosure()
 
   const form = useForm<SignIn>({
     mode: 'all',
@@ -29,7 +31,9 @@ export const SignInForm = () => {
   })
 
   const onSubmit = async (data: SignIn) => {
-    await signIn.mutateAsync(data)
+    if (!forgotPassword.isOpen) {
+      await signIn.mutateAsync(data)
+    }
   }
 
   return (
@@ -40,7 +44,7 @@ export const SignInForm = () => {
             <h1 className="text-2xl font-bold">{t('sign_in.title')}</h1>
             <div className="flex flex-wrap items-center justify-between gap-1">
               <p className="text-sm">{t('sign_in.description')}</p>
-              <ForgotPassword />
+              <ForgotPassword {...forgotPassword} />
             </div>
           </div>
         </CardHeader>

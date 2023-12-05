@@ -28,8 +28,8 @@ export const PhaseItem = ({ item }: PhaseItemProps) => {
 
   return (
     <Link
-      href={item.to}
-      className="cursor-pointer rounded-md transition-transform-background motion-reduce:transition-none hover:scale-105"
+      href={item.to ?? '#'}
+      className="w-full h-full select-none cursor-pointer rounded-md transition-transform-background motion-reduce:transition-none hover:scale-105"
     >
       <Card
         className={cn('border-l-[6px] h-full w-full', item.border)}
