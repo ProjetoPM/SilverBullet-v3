@@ -151,6 +151,7 @@ const getProjectId = () => {
  */
 export const WorkspaceStore = {
   getWorkspace: () => useWorkspaceStore.getState().workspace,
+  getProject: () => useWorkspaceStore.getState().project,
   getWorkspaceId: () => getWorkspaceId(),
   getProjectId: () => getProjectId(),
   onCloseWorkspace: (workspace?: Workspace) => onCloseWorkspace(workspace),
