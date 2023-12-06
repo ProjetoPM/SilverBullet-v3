@@ -59,7 +59,7 @@ export const useAuth = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     sessionStorage.clear()
-    WorkspaceStore.onCloseWorkspace()
+    WorkspaceStore.resetStore()
     navigate(frontend.auth.sign_in.index, { replace: true })
   }
 

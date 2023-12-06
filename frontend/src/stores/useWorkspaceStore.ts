@@ -100,11 +100,7 @@ const onCloseWorkspace = (workspace?: Workspace) => {
    * Fechando qualquer que seja o workspace se não enviado
    * o parâmetro 'workspace'.
    */
-  useWorkspaceStore.setState((state) => ({
-    ...state,
-    workspace: null,
-    project: null
-  }))
+  resetStore()
 }
 
 /**
