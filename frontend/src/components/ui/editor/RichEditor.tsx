@@ -1,33 +1,37 @@
 import { cn } from '@/lib/utils'
 import CharacterCount from '@tiptap/extension-character-count'
-import { Highlight } from '@tiptap/extension-highlight'
-import { Link } from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
-import Typography from '@tiptap/extension-typography'
-import { Underline } from '@tiptap/extension-underline'
-import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import i18next from 'i18next'
+import { EditorContent, useEditor } from '@tiptap/react'
 import { forwardRef, useCallback, useEffect, useId, useState } from 'react'
 import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
-import { starterKitConfigs } from './config'
 import './config/default.css'
+import { extensions } from './config/extensions'
 import { editorStyles, placeholderStyles } from './config/style'
 import { BubbleMenu } from './menus/BubbleMenu'
 import { FixedMenu } from './menus/FixedMenu'
 
-type EditorProps = Omit<EditorContentProps, 'editor' | 'ref' | 'value'> & {
-  limit?: number
-  isFixed?: boolean
-  as?: 'textarea-3' | 'textarea-4' | 'textarea-5'
-  label?: string
-  errorMessage?: string
+type EditorSizes = 'textarea-3' | 'textarea-4' | 'textarea-5'
+
+type InputProps<T> = {
   value?: string | number | null
-  onChange?: (content: string) => void
+  onChange?: (...event: T[]) => void
 }
 
-const getSizeTextarea = ({ as }: Pick<EditorProps, 'as'>) => {
+type EditorProps<T> = InputProps<T> & {
+  placeholder?: string
+  className?: string
+  isReadOnly?: boolean
+  label?: string
+  errorMessage?: string
+  isFixed?: boolean
+  options?: {
+    limit?: number
+    size?: EditorSizes
+  }
+}
+
+const getSizeTextarea = (as?: EditorSizes) => {
   switch (as) {
     case 'textarea-3':
       return 'min-h-[5rem]'
@@ -38,78 +42,45 @@ const getSizeTextarea = ({ as }: Pick<EditorProps, 'as'>) => {
   }
 }
 
-export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
+export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
   (
     {
-      content,
-      readOnly,
-      value = '',
-      isFixed = false,
+      value,
+      onChange,
       label,
       errorMessage,
-      limit = 1000,
-      ...props
+      isReadOnly = false,
+      placeholder,
+      className,
+      isFixed = false,
+      options: { limit = 1000, size } = {}
     },
     ref
   ) => {
-    const [fixed, setFixed] = useState(isFixed)
     const id = useId()
+    const [fixed, setFixed] = useState(isFixed)
 
     const editor = useEditor(
       {
+        content: String(value),
+        onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
+        editable: !isReadOnly,
         editorProps: {
           attributes: {
-            class: cn(editorStyles, getSizeTextarea({ as: props.as }) ?? ''),
+            class: cn(editorStyles, getSizeTextarea(size)),
             spellcheck: 'false'
           }
         },
         extensions: [
-          StarterKit.configure({
-            ...starterKitConfigs,
-            heading: {
-              levels: [1, 2]
-            },
-            history: {
-              depth: 10
-            },
-            paragraph: {
-              HTMLAttributes: {
-                class: 'break-normal hyphens-auto',
-                lang: i18next.language
-              }
-            }
-          }),
-          Typography,
+          ...extensions,
           Placeholder.configure({
-            placeholder: props.placeholder,
+            placeholder: placeholder,
             emptyEditorClass: placeholderStyles
           }),
           CharacterCount.configure({
             limit
-          }),
-          Highlight.configure({
-            HTMLAttributes: {
-              class: 'bg-yellow-300 rounded-md px-1'
-            }
-          }),
-          Link.configure({
-            protocols: ['http', 'https'],
-            validate: (url) => {
-              return url.startsWith('http://') || url.startsWith('https://')
-            },
-            autolink: false,
-            openOnClick: false,
-            HTMLAttributes: {
-              class: 'text-blue-500 hover:underline'
-            }
-          }),
-          Underline
-        ],
-        content: content,
-        onUpdate: ({ editor }) => {
-          props.onChange?.(editor.getHTML())
-        },
-        editable: !readOnly
+          })
+        ]
       },
       []
     )
@@ -121,10 +92,10 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
       if (editor) {
         editor.extensionManager.extensions.filter(
           (extension) => extension.name === 'placeholder'
-        )[0].options['placeholder'] = props.placeholder
+        )[0].options['placeholder'] = placeholder
         editor.view.dispatch(editor.state.tr)
       }
-    }, [editor, props.placeholder])
+    }, [editor, placeholder])
 
     /**
      * Prevents the 'bubble menu' from closing when it is
@@ -148,16 +119,15 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps>(
     }, [editor])
 
     return (
-      <div className={cn('h-full flex flex-col w-full', props.className)}>
+      <div className={cn('h-full flex flex-col w-full', className)}>
         {label && <RichEditorLabel htmlFor={id} label={label} />}
         <div className="relative">
           {editor && (
             <>
               <RichEditorChars editor={editor} limit={limit} />
               <input
-                {...props}
                 id={id}
-                className="absolute w-0 h-0 opacity-0"
+                className="hidden"
                 onFocus={() => editor.commands.focus()}
                 tabIndex={-1}
                 ref={ref}
