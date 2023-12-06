@@ -21,6 +21,7 @@ type WorkspaceStoreProps = {
   onUpdateWorkspace: (workspace: Workspace) => void
   onOpenProject: (project: Project) => void
   onCloseProject: (project?: Project) => void
+  resetStore: () => void
 }
 
 export const useWorkspaceStore = create<WorkspaceStoreProps>()(
@@ -34,7 +35,8 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
           onCloseWorkspace(workspace),
         onUpdateWorkspace: (workspace) => onUpdateWorkspace(workspace),
         onOpenProject: (project) => onOpenProject(project),
-        onCloseProject: (project?: Project) => onCloseProject(project)
+        onCloseProject: (project?: Project) => onCloseProject(project),
+        resetStore: () => resetStore()
       }),
       {
         name: 'workspace',
@@ -133,6 +135,17 @@ const onCloseProject = (project?: Project) => {
 }
 
 /**
+ * Resetando o store.
+ */
+const resetStore = () => {
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    workspace: null,
+    project: null
+  }))
+}
+
+/**
  * Pegando o 'id' do workspace.
  */
 const getWorkspaceId = () => {
@@ -155,5 +168,6 @@ export const WorkspaceStore = {
   getWorkspaceId: () => getWorkspaceId(),
   getProjectId: () => getProjectId(),
   onCloseWorkspace: (workspace?: Workspace) => onCloseWorkspace(workspace),
-  onCloseProject: (project?: Project) => onCloseProject(project)
+  onCloseProject: (project?: Project) => onCloseProject(project),
+  resetStore: () => resetStore()
 }

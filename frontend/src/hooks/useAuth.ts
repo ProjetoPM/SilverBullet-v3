@@ -16,8 +16,8 @@ type HttpSignInResponse = HttpResponse & {
 
 export const getUser = () => {
   return {
-    token: localStorage.getItem('token'),
-    user: localStorage.getItem('user')
+    token: sessionStorage.getItem('token') ?? localStorage.getItem('token'),
+    user: sessionStorage.getItem('user') ?? localStorage.getItem('user')
   }
 }
 
@@ -34,6 +34,10 @@ export const useAuth = () => {
       onSuccess: (response: HttpSignInResponse, { email, rememberMe }) => {
         /** Deciding where to store the token */
         const storage = rememberMe ? localStorage : sessionStorage
+
+        if (localStorage.getItem('user') !== email) {
+          WorkspaceStore.resetStore()
+        }
 
         if (storage === sessionStorage) {
           localStorage.removeItem('token')
