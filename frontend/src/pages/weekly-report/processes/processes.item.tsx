@@ -3,12 +3,12 @@ import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { Chip } from '@nextui-org/react'
 import { Controller, FieldArrayWithId } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { WeeklyReportData } from '../weekly-report.schema'
 import { FilesProcess } from './actions/processes.files'
 import { RemoveProcess } from './actions/processes.remove'
 import { useProcesses } from './context/ProcessProvider'
 import { ProcessSelects } from './processes.selects'
-import toast from 'react-hot-toast'
 
 type ProcessItemProps = {
   field: FieldArrayWithId<WeeklyReportData>
@@ -41,15 +41,14 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
               render={({ field }) => (
                 <>
                   <RichEditor
+                    {...field}
                     label={t('description.label')}
                     placeholder={t('description.placeholder')}
                     errorMessage={
                       form.formState.errors.processes?.[index]?.description
                         ?.message
                     }
-                    limit={1000}
-                    as="textarea-5"
-                    {...field}
+                    options={{ limit: 1000, size: 'textarea-5' }}
                   />
                 </>
               )}

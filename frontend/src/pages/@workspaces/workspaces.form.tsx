@@ -48,11 +48,11 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
             name="name"
             render={({ field }) => (
               <RichEditor
+                {...field}
                 label={t('name.label')}
                 placeholder={t('name.placeholder')}
                 errorMessage={form.formState.errors.name?.message}
-                limit={100}
-                {...field}
+                options={{ limit: 100 }}
               />
             )}
           />
@@ -63,12 +63,11 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
             name="description"
             render={({ field }) => (
               <RichEditor
+                {...field}
                 label={t('description.label')}
                 placeholder={t('description.placeholder')}
                 errorMessage={form.formState.errors.description?.message}
-                as="textarea-3"
-                limit={1000}
-                {...field}
+                options={{ limit: 1000, size: 'textarea-3' }}
               />
             )}
           />

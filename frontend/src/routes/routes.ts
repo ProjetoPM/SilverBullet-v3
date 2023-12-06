@@ -29,6 +29,18 @@ export const frontend = {
     edit: '/projects/:id/edit',
     delete: '/projects/:id/delete'
   },
+  weekly_evaluation: {
+    index: '/weekly-evaluation',
+    new: '/weekly-evaluation/new',
+    edit: '/weekly-evaluation/:id/edit',
+    delete: '/weekly-evaluation/:id/delete',
+    metrics: {
+      index: '/weekly-evaluation/:weeklyEvaluationId/metrics',
+      new: '/weekly-evaluation/:weeklyEvaluationId/metrics/new',
+      edit: '/weekly-evaluation/:weeklyEvaluationId/metrics/:id/edit',
+      delete: '/weekly-evaluation/:weeklyEvaluationId/metrics/:id/delete'
+    }
+  },
   weekly_report: {
     index: '/weekly-report',
     new: '/weekly-report/new',

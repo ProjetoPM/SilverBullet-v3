@@ -1,9 +1,9 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { AuthWrapper } from './auth/AuthWrapper'
+import { MainSidebar } from './main/MainSidebar'
 import { ProfileSidebar } from './main/ProfileSidebar'
 import { SidebarContainer } from './main/SidebarContainer'
 import { Header } from './main/header/Header'
-import { MainSidebar } from './main/MainSidebar'
 
 type ComponentLayoutProps = {
   layout?: 'blank' | 'simple' | 'auth'

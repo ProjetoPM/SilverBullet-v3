@@ -49,10 +49,10 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
             render={({ field }) => (
               <RichEditor
                 label={t('name.label')}
+                {...field}
                 placeholder={t('name.placeholder')}
                 errorMessage={form.formState.errors.name?.message}
-                limit={64}
-                {...field}
+                options={{ limit: 64 }}
               />
             )}
           />
@@ -63,12 +63,11 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
             name="description"
             render={({ field }) => (
               <RichEditor
+                {...field}
                 label={t('description.label')}
                 placeholder={t('description.placeholder')}
                 errorMessage={form.formState.errors.description?.message}
-                as="textarea-3"
-                limit={1000}
-                {...field}
+                options={{ limit: 1000, size: 'textarea-3' }}
               />
             )}
           />

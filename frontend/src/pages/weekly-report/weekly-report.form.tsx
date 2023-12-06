@@ -1,11 +1,13 @@
 import { GridLayout } from '@/components/ui/GridLayout'
 import { SubmitButton } from '@/components/ui/SubmitButton'
+import { DatePicker } from '@/components/ui/date-picker/DatePicker'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Snippet } from '@nextui-org/react'
+import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
@@ -20,6 +22,7 @@ type WeeklyReportFormProps = {
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const { images } = useWeeklyReport()
+  const [output, setOutput] = useState('')
 
   const form = useForm<WeeklyReportData>({
     mode: 'all',
@@ -28,8 +31,8 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyReportData) => {
-    console.table(form)
     console.log(images)
+    setOutput(JSON.stringify(form, null, 2))
   }
 
   return (
@@ -41,6 +44,21 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
       >
         <GridLayout cols="2">
           <WeeklyEvaluationSelect form={form} />
+          <fieldset>
+            <Controller
+              control={form.control}
+              name="dates"
+              render={({ field }) => (
+                <DatePicker
+                  field={field}
+                  label={t('dates.label')}
+                  placeholder={t('dates.placeholder')}
+                  errorMessage={form.formState.errors.dates?.message}
+                  {...field}
+                />
+              )}
+            />
+          </fieldset>
           <fieldset>
             <Text size="sm" className="pb-1" isRequired>
               {t('linked_project.label')}
@@ -75,13 +93,14 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               name="toolEvaluation"
               render={({ field }) => (
                 <RichEditor
+                  {...field}
                   label={t('tool_evaluation.label')}
                   placeholder={t('tool_evaluation.placeholder')}
                   errorMessage={form.formState.errors.toolEvaluation?.message}
-                  limit={1000}
+                  options={{
+                    size: 'textarea-4'
+                  }}
                   isFixed
-                  as="textarea-4"
-                  {...field}
                 />
               )}
             />
@@ -96,6 +115,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           // isLoading={create.isLoading || update.isLoading}
         />
       </form>
+      <pre>{output}</pre>
     </FormProvider>
   )
 }
