@@ -127,11 +127,10 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
               <RichEditorChars editor={editor} limit={limit} />
               <input
                 id={id}
-                className="hidden"
+                className="absolute h-0 w-0 opacity-0"
                 onFocus={() => editor.commands.focus()}
-                tabIndex={-1}
                 ref={ref}
-                autoComplete="off"
+                tabIndex={-1}
               />
               <FixedMenu
                 isFixed={fixed}

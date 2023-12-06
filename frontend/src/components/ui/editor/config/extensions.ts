@@ -27,7 +27,7 @@ export const extensions = [
   Typography,
   Highlight.configure({
     HTMLAttributes: {
-      class: 'bg-yellow-300 rounded-md px-1'
+      class: 'bg-yellow-300 rounded-md px-0.5'
     }
   }),
   Link.configure({
