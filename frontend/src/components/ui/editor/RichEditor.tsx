@@ -74,7 +74,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
         extensions: [
           ...extensions,
           Placeholder.configure({
-            placeholder: placeholder,
+            placeholder,
             emptyEditorClass: placeholderStyles
           }),
           CharacterCount.configure({
