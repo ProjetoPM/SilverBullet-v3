@@ -31,18 +31,18 @@ export const Calendar = ({
             'text-foreground-600 rounded-lg w-full font-normal text-[0.8rem]',
           row: 'flex w-full mt-1.5',
           cell: 'text-center text-sm p-0 relative focus-within:relative focus-within:z-20 hover:rounded-lg',
-          day: 'hover:bg-primary hover:rounded-lg hover:text-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100',
+          day: 'hover:bg-primary hover:rounded-lg hover:text-foreground hover:!text-white h-9 w-9 p-0 font-normal aria-selected:opacity-100',
           day_selected:
-            'bg-primary !text-foreground hover:bg-primary hover:text-foreground focus:bg-primary focus:text-foreground',
+            'bg-primary !text-foreground hover:!bg-primary hover:text-foreground focus:bg-primary focus:text-foreground',
           day_today:
             'bg-primary-200 text-foreground rounded-lg aria-selected:rounded-none outline-none',
-          day_outside: 'text-foreground-500 opacity-50',
+          day_outside: 'text-foreground-500 !opacity-50',
           day_disabled: 'text-foreground-500 opacity-50',
           day_range_start:
-            'aria-selected:bg-primary aria-selected:rounded-l-lg hover:rounded-none',
+            'aria-selected:bg-primary aria-selected:rounded-l-lg hover:rounded-none !text-white',
           day_range_middle: 'aria-selected:bg-default hover:rounded-none',
           day_range_end:
-            'aria-selected:bg-primary aria-selected:rounded-r-lg hover:rounded-none',
+            'aria-selected:bg-primary aria-selected:rounded-r-lg hover:rounded-none !text-white',
           day_hidden: 'invisible',
           button: '',
           ...classNames
