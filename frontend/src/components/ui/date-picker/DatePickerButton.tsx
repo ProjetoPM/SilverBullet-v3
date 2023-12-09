@@ -1,5 +1,4 @@
-import { cn } from '@/lib/utils'
-import { Button, ButtonProps, PopoverTrigger } from '@nextui-org/react'
+import { Button, ButtonProps, PopoverTrigger, cn } from '@nextui-org/react'
 import i18next from 'i18next'
 import { CalendarIcon } from 'lucide-react'
 import { Matcher, isDateRange } from 'react-day-picker'

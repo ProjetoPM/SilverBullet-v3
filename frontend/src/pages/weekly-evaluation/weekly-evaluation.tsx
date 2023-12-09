@@ -4,7 +4,7 @@ import { frontend } from '@/routes/routes'
 import { WeeklyEvaluationForm } from './weekly-evaluation.form'
 
 export const WeeklyEvaluationPage = () => {
-  const { t, title, breadcrumb } = usePageUtils('weekly-evaluation', {
+  const { t, title, breadcrumb } = usePageUtils('weekly-report', {
     dynamic: true
   })
 

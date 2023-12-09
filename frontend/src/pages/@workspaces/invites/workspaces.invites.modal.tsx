@@ -137,6 +137,7 @@ export const WorkspaceInviteModal = ({
                       setRole(key as Set<WorkspaceRoles>)
                     }
                     classNames={{ label: 'text-foreground' }}
+                    disallowEmptySelection
                   >
                     <SelectItem key="STUDENT">
                       {t('invites.roles.student')}

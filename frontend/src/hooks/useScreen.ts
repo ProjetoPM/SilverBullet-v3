@@ -12,6 +12,26 @@ export const useScreen = ({ delay = 100 }: UseScreenProps = {}) => {
     setScreenX(window.innerWidth)
   }, [])
 
+  const isScreen = useCallback(
+    (size: 'xs' | 'sm' | 'md' | 'lg' | 'xl') => {
+      switch (size) {
+        case 'xs':
+          return screenX < 576
+        case 'sm':
+          return screenX >= 576
+        case 'md':
+          return screenX >= 768
+        case 'lg':
+          return screenX >= 1024
+        case 'xl':
+          return screenX >= 1288
+        default:
+          return false
+      }
+    },
+    [screenX]
+  )
+
   const debouncedResize = debounce(getCurrentWidth, delay)
 
   useEffect(() => {
@@ -19,5 +39,5 @@ export const useScreen = ({ delay = 100 }: UseScreenProps = {}) => {
     return () => window.removeEventListener('resize', debouncedResize)
   }, [debouncedResize])
 
-  return { screenX }
+  return { screenX, isScreen }
 }

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@nextui-org/react'
 import { ComponentProps } from 'react'
 
 export type DatePickerMessageProps = ComponentProps<'p'> & {

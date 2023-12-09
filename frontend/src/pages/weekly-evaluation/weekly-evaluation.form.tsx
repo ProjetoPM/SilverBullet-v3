@@ -1,21 +1,20 @@
 import { GridLayout } from '@/components/ui/GridLayout'
 import { SubmitButton } from '@/components/ui/SubmitButton'
+import { DatePicker } from '@/components/ui/date-picker/DatePicker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import {
   WeeklyReportData,
   WeeklyReportSchema
 } from './weekly-evaluation.schema'
-import { DatePicker } from '@/components/ui/date-picker/DatePicker'
 
 type WeeklyEvaluationFormProps = {
   data?: WeeklyReportData
 }
 
 export const WeeklyEvaluationForm = ({ data }: WeeklyEvaluationFormProps) => {
-  const { t } = useTranslation('weekly-evaluation')
+  // const { t } = useTranslation('weekly-evaluation')
   const [output, setOutput] = useState('')
 
   const form = useForm<WeeklyReportData>({
@@ -38,24 +37,26 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyEvaluationFormProps) => {
         <GridLayout cols="2">
           <Controller
             control={form.control}
-            name="startDate"
+            name="range"
             render={({ field }) => (
               <DatePicker
-                field={field}
-                label={t('start_date.label')}
-                placeholder={t('start_date.placeholder')}
-                errorMessage={form.formState.errors.startDate?.message}
-                {...field}
+                label="Test"
+                mode="range"
+                selected={field.value}
+                onSelect={field.onChange}
+                numberOfMonths={2}
+                errorMessage={form.formState.errors.single?.message}
+                description="Description"
               />
             )}
           />
         </GridLayout>
-        <SubmitButton
-          isEdit={!!data}
-          fnResetButton={form.reset}
-          // isLoading={create.isLoading || update.isLoading}
-        />
+        <SubmitButton isEdit={!!data} fnResetButton={form.reset} />
       </form>
+      <pre className="mt-5">
+        {JSON.stringify(form.watch('single'), null, 2)}
+        {JSON.stringify(form.watch('range'), null, 2)}
+      </pre>
       <pre>{output}</pre>
     </FormProvider>
   )

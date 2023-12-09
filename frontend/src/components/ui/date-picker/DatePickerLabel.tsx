@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@nextui-org/react'
 import { ComponentProps } from 'react'
 
 export type DatePickerLabelProps = ComponentProps<'label'> & {
@@ -19,7 +19,7 @@ export const DatePickerLabel = ({
 
   return (
     <label
-      htmlFor={`${id}-datepicker-label`}
+      htmlFor={`${id}-datepicker-button`}
       className={cn(
         "block text-small font-medium text-foreground pb-[0.25rem] will-change-auto origin-top-left transition-all !duration-200 !ease-out motion-reduce:transition-none data-[required=true]:after:content-['*'] data-[required=true]:after:ml-0.5 after:text-danger",
         className
