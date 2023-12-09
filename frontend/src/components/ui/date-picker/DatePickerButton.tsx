@@ -66,7 +66,7 @@ export const DatePickerButton = ({
           ) : (
             formatDate(selected as Date, { dateStyle })
           )}
-          {(!selected && placeholder) ?? String('Pick a date')}
+          {(!selected && placeholder) ?? t('pick_a_date')}
         </span>
         {icon}
       </Button>
