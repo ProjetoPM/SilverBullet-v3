@@ -7,7 +7,7 @@ import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { ProjectToolbar } from './projects.toolbar'
 import { ProjectColumns, columns } from './table/projects.columns'
 
-export const ProjectListPage = () => {
+const ProjectListPage = () => {
   const { title, breadcrumb } = usePageUtils('projects')
   const onCloseProject = useWorkspaceStore((state) => state.onCloseProject)
 
@@ -33,3 +33,5 @@ export const ProjectListPage = () => {
     </PageLayout>
   )
 }
+
+export default ProjectListPage

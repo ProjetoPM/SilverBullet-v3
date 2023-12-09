@@ -5,7 +5,7 @@ import { backend, frontend } from '@/routes/routes'
 import { ProjectForm } from './projects.form'
 import { ProjectData } from './projects.schema'
 
-export const ProjectPage = () => {
+const ProjectPage = () => {
   const { id, t, title, breadcrumb } = usePageUtils('projects', {
     dynamic: true
   })
@@ -32,3 +32,5 @@ export const ProjectPage = () => {
     </PageLayout>
   )
 }
+
+export default ProjectPage

@@ -5,7 +5,7 @@ import { backend, frontend } from '@/routes/routes'
 import { WorkspaceForm } from './workspaces.form'
 import { WorkspaceData } from './workspaces.schema'
 
-export const WorkspacePage = () => {
+const WorkspacePage = () => {
   const { id, t, title, breadcrumb } = usePageUtils('workspaces', {
     dynamic: true
   })
@@ -32,3 +32,5 @@ export const WorkspacePage = () => {
     </PageLayout>
   )
 }
+
+export default WorkspacePage

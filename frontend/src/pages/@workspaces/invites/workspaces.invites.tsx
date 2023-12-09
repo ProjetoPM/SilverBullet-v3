@@ -6,7 +6,7 @@ import { WorkspaceInviteProvider } from './context/WorkspaceInviteContext'
 import { columns } from './table/workspaces.invites.columns'
 import { WorkspaceInviteToolbar } from './workspaces.toolbar'
 
-export const WorkspacesInvitesListPage = () => {
+const WorkspacesInvitesListPage = () => {
   const { t, title, breadcrumb } = usePageUtils('workspaces', {
     title: 'page.invites'
   })
@@ -29,3 +29,5 @@ export const WorkspacesInvitesListPage = () => {
     </PageLayout>
   )
 }
+
+export default WorkspacesInvitesListPage

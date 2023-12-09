@@ -1,6 +1,5 @@
 import { GridLayout } from '@/components/ui/GridLayout'
 import { SubmitButton } from '@/components/ui/SubmitButton'
-import { DatePicker } from '@/components/ui/date-picker/DatePicker'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
@@ -44,21 +43,6 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
       >
         <GridLayout cols="2">
           <WeeklyEvaluationSelect form={form} />
-          <fieldset>
-            <Controller
-              control={form.control}
-              name="dates"
-              render={({ field }) => (
-                <DatePicker
-                  field={field}
-                  label={t('dates.label')}
-                  placeholder={t('dates.placeholder')}
-                  errorMessage={form.formState.errors.dates?.message}
-                  {...field}
-                />
-              )}
-            />
-          </fieldset>
           <fieldset>
             <Text size="sm" className="pb-1" isRequired>
               {t('linked_project.label')}

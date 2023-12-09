@@ -1,9 +1,11 @@
 import { ComponentLayout } from '@/layout/ComponentLayout'
-import { ProjectPage } from '@/pages/@projects/projects'
-import { ProjectListPage } from '@/pages/@projects/projects.list'
 import { AuthGuard, WorkspaceGuard } from '@/utils/guard'
 import { frontend } from '@routes'
+import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
+
+const ProjectPage = lazy(() => import('@/pages/@projects/projects'))
+const ProjectListPage = lazy(() => import('@/pages/@projects/projects.list'))
 
 export const ProjectRoutes: RouteObject = {
   path: '/',

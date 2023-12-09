@@ -1,10 +1,16 @@
 import { ComponentLayout } from '@/layout/ComponentLayout'
-import { WorkspacesInvitesListPage } from '@/pages/@workspaces/invites/workspaces.invites'
-import { WorkspacePage } from '@/pages/@workspaces/workspaces'
-import { WorkspaceListPage } from '@/pages/@workspaces/workspaces.list'
 import { AuthGuard } from '@/utils/guard'
 import { frontend } from '@routes'
+import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
+
+const WorkspacePage = lazy(() => import('@/pages/@workspaces/workspaces'))
+const WorkspaceListPage = lazy(
+  () => import('@/pages/@workspaces/workspaces.list')
+)
+const WorkspacesInvitesListPage = lazy(
+  () => import('@/pages/@workspaces/invites/workspaces.invites')
+)
 
 export const WorkspaceRoutes: RouteObject = {
   children: [

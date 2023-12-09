@@ -1,8 +1,12 @@
 import { ComponentLayout } from '@/layout/ComponentLayout'
-import { WeeklyReportPage } from '@/pages/weekly-report/weekly-report'
 import { AuthGuard, WorkspaceGuard } from '@/utils/guard'
 import { frontend } from '@routes'
+import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
+
+const WeeklyReportPage = lazy(
+  () => import('@/pages/weekly-report/weekly-report')
+)
 
 export const WeeklyReportRoutes: RouteObject = {
   path: '/',

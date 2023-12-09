@@ -6,5 +6,9 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   server: {
     port: 5500
+  },
+  root: './',
+  build: {
+    outDir: 'dist'
   }
 })

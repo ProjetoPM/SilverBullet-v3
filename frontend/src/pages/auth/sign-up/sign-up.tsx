@@ -2,7 +2,7 @@ import { PageLayout } from '@/layout/PageLayout'
 import { useTranslation } from 'react-i18next'
 import { SignUpForm } from './sign-up.form'
 
-export const SignUpPage = () => {
+const SignUpPage = () => {
   const { t } = useTranslation('auth')
 
   return (
@@ -11,3 +11,5 @@ export const SignUpPage = () => {
     </PageLayout>
   )
 }
+
+export default SignUpPage

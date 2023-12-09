@@ -21,7 +21,7 @@ const data = {
   ]
 }
 
-export const WeeklyReportPage = () => {
+const WeeklyReportPage = () => {
   const { t, title, breadcrumb } = usePageUtils('weekly-report', {
     dynamic: true
   })
@@ -44,3 +44,5 @@ export const WeeklyReportPage = () => {
     </PageLayout>
   )
 }
+
+export default WeeklyReportPage

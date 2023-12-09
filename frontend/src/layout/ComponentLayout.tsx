@@ -1,9 +1,27 @@
+import { lazy } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import { AuthWrapper } from './auth/AuthWrapper'
-import { MainSidebar } from './main/MainSidebar'
-import { ProfileSidebar } from './main/ProfileSidebar'
 import { SidebarContainer } from './main/SidebarContainer'
-import { Header } from './main/header/Header'
+
+const MainSidebar = lazy(() =>
+  import('./main/MainSidebar').then((m) => ({
+    default: m.MainSidebar
+  }))
+)
+const AuthWrapper = lazy(() =>
+  import('./auth/AuthWrapper').then((m) => ({
+    default: m.AuthWrapper
+  }))
+)
+const ProfileSidebar = lazy(() =>
+  import('./main/ProfileSidebar').then((m) => ({
+    default: m.ProfileSidebar
+  }))
+)
+const Header = lazy(() =>
+  import('./main/header/Header').then((m) => ({
+    default: m.Header
+  }))
+)
 
 type ComponentLayoutProps = {
   layout?: 'blank' | 'simple' | 'auth'
