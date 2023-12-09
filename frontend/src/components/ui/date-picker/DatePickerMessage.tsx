@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
+import { ComponentProps } from 'react'
 
-export type DatePickerMessageProps = {
-  id?: string
+export type DatePickerMessageProps = ComponentProps<'p'> & {
   description?: string
   errorMessage?: string
 }
@@ -9,7 +9,9 @@ export type DatePickerMessageProps = {
 export const DatePickerMessage = ({
   id,
   errorMessage,
-  description
+  description,
+  className,
+  ...props
 }: DatePickerMessageProps) => {
   if (!errorMessage && !description) {
     return null
@@ -18,10 +20,15 @@ export const DatePickerMessage = ({
   return (
     <p
       id={`${id}-datepicker-message`}
-      className={cn('pt-1 px-1 text-tiny select-none', {
-        'text-danger': errorMessage,
-        'text-foreground-500': !errorMessage
-      })}
+      className={cn(
+        'pt-1 px-1 text-xs select-none',
+        {
+          'text-danger': errorMessage,
+          'text-foreground-500': !errorMessage
+        },
+        className
+      )}
+      {...props}
     >
       {errorMessage ?? description}
     </p>

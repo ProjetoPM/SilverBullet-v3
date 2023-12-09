@@ -1,8 +1,7 @@
 import { cn } from '@/lib/utils'
 import { ComponentProps } from 'react'
 
-export type DatePickerLabelProps = Omit<ComponentProps<'label'>, 'id'> & {
-  id: string
+export type DatePickerLabelProps = ComponentProps<'label'> & {
   label?: string
   isRequired?: boolean
 }
@@ -11,7 +10,8 @@ export const DatePickerLabel = ({
   id,
   label,
   isRequired,
-  className
+  className,
+  ...props
 }: DatePickerLabelProps) => {
   if (!label) {
     return null
@@ -25,6 +25,7 @@ export const DatePickerLabel = ({
         className
       )}
       data-required={isRequired}
+      {...props}
     >
       {label}
     </label>

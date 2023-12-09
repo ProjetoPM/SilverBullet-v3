@@ -13,14 +13,21 @@ type DatePickerProps = CalendarProps & {
   isRequired?: boolean
   shouldCloseOnSelect?: boolean
   shouldDisableAfterToday?: boolean
+  errorMessage?: string
+  description?: string
   buttonProps?: Omit<DatePickerButtonProps, 'id'>
-  messageProps?: Omit<DatePickerMessageProps, 'id'>
   labelProps?: Omit<DatePickerLabelProps, 'id' | 'label' | 'isRequired'>
+  messageProps?: Omit<
+    DatePickerMessageProps,
+    'id' | 'errorMessage' | 'description'
+  >
 }
 
 export const DatePicker = ({
   label,
   isRequired,
+  errorMessage,
+  description,
   buttonProps,
   messageProps,
   labelProps,
@@ -63,7 +70,12 @@ export const DatePicker = ({
           />
         </PopoverContent>
       </Popover>
-      <DatePickerMessage id={id} {...messageProps} />
+      <DatePickerMessage
+        id={id}
+        errorMessage={errorMessage}
+        description={description}
+        {...messageProps}
+      />
     </div>
   )
 }
