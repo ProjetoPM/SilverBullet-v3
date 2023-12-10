@@ -39,3 +39,5 @@ export const BubbleMenu = ({
     </_BubbleMenu>
   )
 }
+
+export default BubbleMenu

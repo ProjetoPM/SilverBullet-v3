@@ -24,3 +24,5 @@ export const FixedMenu = ({ editor, isFixed, setFixed }: FixedMenuProps) => {
     </div>
   )
 }
+
+export default FixedMenu

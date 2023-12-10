@@ -4,8 +4,10 @@ import { frontend } from '@routes'
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
 
-const WeeklyEvaluationPage = lazy(
-  () => import('@/pages/weekly-evaluation/weekly-evaluation')
+const WeeklyEvaluationPage = lazy(() =>
+  import('@/pages/weekly-evaluation/weekly-evaluation').then((m) => ({
+    default: m.WeeklyEvaluationPage
+  }))
 )
 
 export const WeeklyEvaluationRoutes: RouteObject = {

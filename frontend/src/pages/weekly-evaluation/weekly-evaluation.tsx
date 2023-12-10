@@ -3,7 +3,7 @@ import { PageLayout } from '@/layout/PageLayout'
 import { frontend } from '@/routes/routes'
 import { WeeklyEvaluationForm } from './weekly-evaluation.form'
 
-const WeeklyEvaluationPage = () => {
+export const WeeklyEvaluationPage = () => {
   const { t, title, breadcrumb } = usePageUtils('weekly-report', {
     dynamic: true
   })
@@ -21,5 +21,3 @@ const WeeklyEvaluationPage = () => {
     </PageLayout>
   )
 }
-
-export default WeeklyEvaluationPage

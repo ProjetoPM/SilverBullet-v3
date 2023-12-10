@@ -7,7 +7,7 @@ import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { WorkspaceColumns, columns } from './table/workspaces.columns'
 import { WorkspaceToolbar } from './workspaces.toolbar'
 
-const WorkspaceListPage = () => {
+export const WorkspaceListPage = () => {
   const { title, breadcrumb } = usePageUtils('workspaces')
   const onCloseWorkspace = useWorkspaceStore((state) => state.onCloseWorkspace)
 
@@ -32,5 +32,3 @@ const WorkspaceListPage = () => {
     </PageLayout>
   )
 }
-
-export default WorkspaceListPage

@@ -4,8 +4,14 @@ import { frontend } from '@routes'
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
 
-const ProjectPage = lazy(() => import('@/pages/@projects/projects'))
-const ProjectListPage = lazy(() => import('@/pages/@projects/projects.list'))
+const ProjectPage = lazy(() =>
+  import('@/pages/@projects/projects').then((m) => ({ default: m.ProjectPage }))
+)
+const ProjectListPage = lazy(() =>
+  import('@/pages/@projects/projects.list').then((m) => ({
+    default: m.ProjectListPage
+  }))
+)
 
 export const ProjectRoutes: RouteObject = {
   path: '/',

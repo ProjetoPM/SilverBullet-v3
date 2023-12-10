@@ -9,7 +9,10 @@ import { zod } from './zod'
 export type Lang = 'en-US' | 'pt-BR'
 export const langs: Array<Lang> = ['en-US', 'pt-BR']
 
-const LOAD_PATH = import.meta.env.VITE_LOAD_PATH_I18N
+const LOAD_PATH =
+  import.meta.env.VITE_PRODUCTION === 'false'
+    ? '/src/locales/{{lng}}/{{ns}}.json'
+    : '/dist/public/locales/{{lng}}/{{ns}}.json'
 
 if (!LOAD_PATH) {
   throw new Error('LOAD_PATH_I18N not found. Check .env file.')

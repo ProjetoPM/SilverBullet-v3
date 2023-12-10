@@ -2,14 +2,22 @@ import { cn } from '@/lib/utils'
 import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, useEditor } from '@tiptap/react'
-import { forwardRef, useCallback, useEffect, useId, useState } from 'react'
+import {
+  forwardRef,
+  lazy,
+  useCallback,
+  useEffect,
+  useId,
+  useState
+} from 'react'
 import { RichEditorChars } from './RichEditorChars'
 import { RichEditorLabel } from './RichEditorLabel'
 import './config/default.css'
 import { extensions } from './config/extensions'
 import { editorStyles, placeholderStyles } from './config/style'
-import { BubbleMenu } from './menus/BubbleMenu'
-import { FixedMenu } from './menus/FixedMenu'
+
+const BubbleMenu = lazy(() => import('./menus/BubbleMenu'))
+const FixedMenu = lazy(() => import('./menus/FixedMenu'))
 
 type EditorSizes = 'textarea-3' | 'textarea-4' | 'textarea-5'
 
