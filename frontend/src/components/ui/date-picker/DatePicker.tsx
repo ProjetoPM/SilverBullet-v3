@@ -8,20 +8,21 @@ import { DatePickerButton, DatePickerButtonProps } from './DatePickerButton'
 import { DatePickerLabel, DatePickerLabelProps } from './DatePickerLabel'
 import { DatePickerMessage, DatePickerMessageProps } from './DatePickerMessage'
 
-type DatePickerProps = CalendarProps & {
-  label?: string
-  isRequired?: boolean
-  shouldCloseOnSelect?: boolean
-  shouldDisableAfterToday?: boolean
-  errorMessage?: string
-  description?: string
-  buttonProps?: Omit<DatePickerButtonProps, 'id'>
-  labelProps?: Omit<DatePickerLabelProps, 'id' | 'label' | 'isRequired'>
-  messageProps?: Omit<
-    DatePickerMessageProps,
-    'id' | 'errorMessage' | 'description'
-  >
-}
+type DatePickerBaseProps = Pick<
+  DatePickerLabelProps & DatePickerMessageProps,
+  'label' | 'isRequired' | 'errorMessage' | 'description'
+>
+
+type DatePickerProps = CalendarProps &
+  DatePickerBaseProps & {
+    label?: string
+    isRequired?: boolean
+    shouldCloseOnSelect?: boolean
+    shouldDisableAfterToday?: boolean
+    buttonProps?: Omit<DatePickerButtonProps, 'id'>
+    labelProps?: Omit<DatePickerLabelProps, 'id'>
+    messageProps?: Omit<DatePickerMessageProps, 'id'>
+  }
 
 export const DatePicker = ({
   label,
