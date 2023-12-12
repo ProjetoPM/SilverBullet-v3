@@ -100,7 +100,7 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
       if (editor) {
         editor.extensionManager.extensions.filter(
           (extension) => extension.name === 'placeholder'
-        )[0].options['placeholder'] = placeholder
+        )[0].options.placeholder = placeholder
         editor.view.dispatch(editor.state.tr)
       }
     }, [editor, placeholder])

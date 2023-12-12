@@ -54,17 +54,12 @@ export const Text = ({
           'text-sm': size === 'sm',
           'text-base': size === 'md',
           'text-lg': size === 'lg',
-          'pb-1.5': withPadding
-        },
-        {
+          'pb-1.5': withPadding,
           'text-primary': color === 'primary',
           'text-secondary': color === 'secondary',
-          'text-danger': color === 'danger',
+          'text-danger': color === 'danger' || isInvalid,
           'text-success': color === 'success',
           'text-warning': color === 'warning'
-        },
-        {
-          'text-danger': isInvalid
         },
         className
       )}
@@ -88,6 +83,7 @@ export const Text = ({
           ...format.options?.number,
           style: 'decimal'
         }).format(Number(format.text))}
+
       {!format && props.children}
 
       {append && <span className="ml-0.5">{append}</span>}

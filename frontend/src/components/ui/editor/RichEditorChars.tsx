@@ -17,7 +17,7 @@ export const RichEditorChars = ({
 
   return (
     <span className="absolute text-[11.25px] text-default-400 -top-6 right-0 selection:select-none">
-      {limit && chars + '/' + limit}
+      {limit && `${chars}/${limit}`}
       <span className="hidden xss:inline-flex">
         &nbsp;{limit && `${t('characters')} |`}&nbsp;
       </span>

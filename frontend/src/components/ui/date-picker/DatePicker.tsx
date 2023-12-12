@@ -44,7 +44,7 @@ export const DatePicker = ({
   }
 
   return (
-    <div>
+    <div role="group">
       <DatePickerLabel
         id={id}
         label={label}

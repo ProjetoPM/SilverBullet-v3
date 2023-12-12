@@ -54,9 +54,9 @@ export const WorkspaceInviteModal = ({
         const uniqueEmails = split.filter(
           (email) => !invites.some((invite) => invite.email === email)
         )
-        uniqueEmails.forEach((email) => {
+        for (const email of uniqueEmails) {
           invites.push({ email, role: role.values().next().value })
-        })
+        }
         setEmails('')
       }
     },

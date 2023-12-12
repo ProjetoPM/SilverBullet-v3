@@ -16,7 +16,7 @@ export const clearHTMLTags = (text: string, replaceBy?: string) => {
  * @example .refine((v) => min(v))
  * @example .refine((v) => min(v, 10))
  */
-export const min = (text: string, value: number = 1) => {
+export const min = (text: string, value = 1) => {
   return clearHTMLTags(text).length >= value
 }
 
