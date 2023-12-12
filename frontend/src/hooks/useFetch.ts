@@ -104,8 +104,9 @@ export const useFetch = <T>({
     {
       ...(fetch?.get?.options as UseQueryOptions<T>),
       enabled: !!fetch?.get?.append,
-      onError: (err: any) =>
-        !isTokenExpired() && toast.error(err?.message, { id: 'error' })
+      onError: (err: unknown) =>
+        !isTokenExpired() &&
+        toast.error((err as Error)?.message, { id: 'error' })
     }
   )
 
@@ -126,8 +127,9 @@ export const useFetch = <T>({
     {
       ...(fetch?.list?.options as UseQueryOptions<T>),
       enabled: !!fetch?.list,
-      onError: (err: any) =>
-        !isTokenExpired() && toast.error(err?.message, { id: 'error' })
+      onError: (err: unknown) =>
+        !isTokenExpired() &&
+        toast.error((err as Error)?.message, { id: 'error' })
     }
   )
 
@@ -277,13 +279,15 @@ const _useAppendOrParams = (
   baseUrl: string,
   { append, params }: AppendOrParamsProps = {}
 ) => {
+  let _baseUrl = baseUrl
+
   if (params) {
-    baseUrl = replaceParams(baseUrl, params)
+    _baseUrl = replaceParams(baseUrl, params)
   }
 
   if (append) {
-    baseUrl += `/${append}`
+    _baseUrl += `/${append}`
   }
 
-  return baseUrl
+  return _baseUrl
 }

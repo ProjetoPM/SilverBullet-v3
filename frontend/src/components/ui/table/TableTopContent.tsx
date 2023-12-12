@@ -26,7 +26,9 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
     const ids = originalRows.map((row) => row._id)
 
     if (internalLogicFn) {
-      ids.forEach((id) => internalLogicFn(id))
+      for (const id of ids) {
+        internalLogicFn(id)
+      }
     }
 
     await asyncFn?.(ids)

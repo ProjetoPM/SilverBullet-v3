@@ -11,14 +11,14 @@ export type AreaItemProps = {
     background?: string
     border?: string
   }
-  onClick: () => void
+  onPress: () => void
 }
 
-export const AreaItem = ({ item, onClick }: AreaItemProps) => {
+export const AreaItem = ({ item, onPress }: AreaItemProps) => {
   const { t } = useTranslation('areas')
 
   const handlePress = () => {
-    onClick()
+    onPress()
     document.getElementById('dashboard-search')?.focus()
   }
 

@@ -84,7 +84,7 @@ export const DashboardMenu = ({
                     dashboardItems.map((area) => (
                       <Fragment key={area.id}>
                         <AreaItem
-                          onClick={() =>
+                          onPress={() =>
                             startTransition(() => setSearch(area.name()))
                           }
                           item={{

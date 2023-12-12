@@ -34,9 +34,12 @@ export const LocaleSwitcher = () => {
   const { i18n } = useTranslation()
 
   const resetZodErrors = () => {
-    document
-      .querySelectorAll('[id^="react-aria"].text-tiny.text-danger')
-      .forEach((element) => (element.innerHTML = ''))
+    const elements = document.querySelectorAll(
+      '[id^="react-aria"].text-tiny.text-danger'
+    )
+    for (const element of elements) {
+      element.innerHTML = ''
+    }
   }
 
   const setLanguage = (lang: Lang) => {

@@ -27,7 +27,6 @@ export const Search = ({ search, setSearch }: DashboardInputProps) => {
         clearButton: 'right-10'
       }}
       autoComplete="off"
-      debounce={150}
       isClearable
       autoFocus
     />

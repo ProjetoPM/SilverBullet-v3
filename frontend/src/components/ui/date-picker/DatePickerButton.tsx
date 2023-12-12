@@ -21,16 +21,9 @@ export const DatePickerButton = ({
 }: DatePickerButtonProps) => {
   const { t } = useTranslation('date-picker')
 
-  const formatDate = (
-    date?: Date | string,
-    options?: Intl.DateTimeFormatOptions
-  ) => {
+  const formatDate = (date?: Date, options?: Intl.DateTimeFormatOptions) => {
     if (!date) {
       return null
-    }
-
-    if (typeof date === 'string') {
-      date = new Date(date)
     }
 
     return new Intl.DateTimeFormat(i18next.language, {

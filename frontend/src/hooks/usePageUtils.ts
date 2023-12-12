@@ -1,17 +1,17 @@
-import { BreadcrumbItem } from '@/components/ui/Breadcrumb'
+import { BreadcrumbItemProps } from '@/components/ui/Breadcrumb'
 import { frontend } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 type UsePageUtilsProps = {
   dynamic?: boolean
-  home?: BreadcrumbItem
+  home?: BreadcrumbItemProps
   title?: string
 }
 
 type PageProps = {
   appendTitle?: boolean
-  segments?: BreadcrumbItem[]
+  segments?: BreadcrumbItemProps[]
 }
 
 export const usePageUtils = (

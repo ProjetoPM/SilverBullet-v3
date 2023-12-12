@@ -11,14 +11,14 @@ import {
 } from '@nextui-org/react'
 import { ComponentProps } from 'react'
 
-export type BreadcrumbItem = {
+export type BreadcrumbItemProps = {
   label: string
   link?: string
 }
 
 type BreadcrumbProps = ComponentProps<'section'> & {
   title: string
-  items: Array<BreadcrumbItem>
+  items: Array<BreadcrumbItemProps>
   imageSrc?: string | boolean
 }
 
@@ -61,8 +61,8 @@ export const Breadcrumb = ({
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Routes">
-                  {items.map((item, index) => (
-                    <DropdownItem key={index} href={item.href}>
+                  {items.map((item) => (
+                    <DropdownItem key={item.id} href={item.href}>
                       {item.children}
                     </DropdownItem>
                   ))}
@@ -74,7 +74,7 @@ export const Breadcrumb = ({
         >
           {items.map((item, index) => (
             <BreadcrumbItem
-              key={index}
+              key={`${item.label}-${index}`}
               href={item.link}
               classNames={{
                 item: 'uppercase font-medium tracking-wider'

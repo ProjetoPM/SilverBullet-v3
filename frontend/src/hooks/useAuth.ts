@@ -27,7 +27,7 @@ export const useAuth = () => {
 
   const signIn = useMutation(
     async (data: SignIn) => {
-      const url = `/auth/sign-in`
+      const url = '/auth/sign-in'
       return await promise(api.post(url, data))
     },
     {
@@ -65,7 +65,7 @@ export const useAuth = () => {
 
   const signUp = useMutation(
     async (data: SignUp) => {
-      const url = `/auth/sign-up`
+      const url = '/auth/sign-up'
       return await promise(api.post(url, data))
     },
     {
