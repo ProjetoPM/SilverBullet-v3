@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format": "exec prettier . --write",
+    "format": "biome format ./src",
     "tests": "vitest",
     "translate": "i18nexus pull -p ./src/locales -k ukfs6l_hscV-fNJX02_I0Q"
   },
@@ -67,6 +67,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.4.1",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query-devtools": "^5.12.2",
     "@types/lodash": "^4.14.202",
