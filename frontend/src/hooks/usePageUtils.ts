@@ -17,17 +17,18 @@ type PageProps = {
 export const usePageUtils = (
   ns?: string | string[],
   {
-    title: _title,
     dynamic = false,
     home = { label: 'Home', link: frontend.workspaces.index }
   }: UsePageUtilsProps = {}
 ) => {
   const { id } = useParams()
   const { t } = useTranslation(ns)
+  let _title = ''
 
-  const title = () => {
-    if (_title) {
-      return t(_title)
+  const title = (title?: string) => {
+    if (title) {
+      _title = title
+      return t(title)
     }
 
     if (dynamic) {
@@ -40,8 +41,8 @@ export const usePageUtils = (
   const breadcrumb = ({ segments, appendTitle = false }: PageProps = {}) => {
     const start = home ? [home] : []
     const middle = start && segments ? [home, ...segments] : [...start]
-    const end = dynamic ? [...middle, { label: title() }] : middle
-    const content = appendTitle ? [...end, { label: title() }] : end
+    const end = dynamic ? [...middle, { label: title(_title) }] : middle
+    const content = appendTitle ? [...end, { label: title(_title) }] : end
 
     return content
   }

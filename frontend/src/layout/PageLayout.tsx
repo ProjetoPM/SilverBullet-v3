@@ -1,5 +1,6 @@
 import { Loading } from '@/components/Loading'
-import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { Breadcrumb, BreadcrumbProps } from '@/components/ui/Breadcrumb'
+import { cn } from '@nextui-org/react'
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { description } from './meta'
@@ -8,19 +9,21 @@ export type PageLayoutProps = {
   title: string
   children?: React.ReactNode
   breadcrumb?: Array<{ label: string; link?: string }>
-  imageSrc?: string
   isLoading?: boolean
   endContent?: React.ReactNode
+  breadcrumbProps?: Omit<BreadcrumbProps, 'title' | 'items'>
 }
 
 export const PageLayout = ({
   title,
   breadcrumb,
-  imageSrc,
   children,
   endContent,
-  isLoading = false
+  isLoading = false,
+  breadcrumbProps
 }: PageLayoutProps) => {
+  const { className, ...restBreadcrumbProps } = breadcrumbProps || {}
+
   if (isLoading) {
     return <Loading />
   }
@@ -36,8 +39,8 @@ export const PageLayout = ({
           <Breadcrumb
             title={title}
             items={breadcrumb}
-            imageSrc={imageSrc ?? false}
-            className="mb-5"
+            className={cn('mb-5', className)}
+            {...restBreadcrumbProps}
           />
           <div className="self-end xss:self-auto">{endContent}</div>
         </div>

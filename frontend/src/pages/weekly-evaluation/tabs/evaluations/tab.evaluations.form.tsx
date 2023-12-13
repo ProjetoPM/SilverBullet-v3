@@ -7,7 +7,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 import {
   WeeklyReportData,
   WeeklyReportSchema
-} from './weekly-evaluation.schema'
+} from './tab.evaluations.schema'
 
 type WeeklyEvaluationFormProps = {
   data?: WeeklyReportData

@@ -1,4 +1,4 @@
-import { Input, InputProps, cn } from '@nextui-org/react'
+import { Input, InputProps } from '@nextui-org/react'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -22,7 +22,9 @@ export const DebouncedInput = ({
   }, [initialValue])
 
   useEffect(() => {
-    setLoading(true)
+    if (value !== initialValue) {
+      setLoading(true)
+    }
 
     const timeout = setTimeout(() => {
       onChange(value)
@@ -30,7 +32,7 @@ export const DebouncedInput = ({
     }, debounce)
 
     return () => clearTimeout(timeout)
-  }, [value, debounce, onChange])
+  }, [value, debounce, onChange, initialValue])
 
   return (
     <Input
@@ -39,12 +41,12 @@ export const DebouncedInput = ({
       onClear={() => setValue('')}
       endContent={
         isLoading && (
-          <Loader2 className="w-4 h-4 animate-spin text-foreground bg-default-100 z-10" />
+          <Loader2 className="w-4 h-4 animate-spin text-foreground" />
         )
       }
       classNames={{
-        inputWrapper: cn('flex-grow w-full h-fit'),
-        input: 'w-full min-w-96 lg:w-72'
+        inputWrapper: 'flex-grow w-full h-fit',
+        input: 'w-full min-w-72 lg:w-80'
       }}
       {...props}
     />

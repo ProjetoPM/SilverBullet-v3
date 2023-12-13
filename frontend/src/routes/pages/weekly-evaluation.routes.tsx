@@ -1,13 +1,16 @@
 import { ComponentLayout } from '@/layout/ComponentLayout'
+import { WeeklyEvaluationListPage } from '@/pages/weekly-evaluation/weekly-evaluation.list'
 import { AuthGuard, WorkspaceGuard } from '@/utils/guard'
 import { frontend } from '@routes'
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
 
 const WeeklyEvaluationPage = lazy(() =>
-  import('@/pages/weekly-evaluation/weekly-evaluation').then((m) => ({
-    default: m.WeeklyEvaluationPage
-  }))
+  import('@/pages/weekly-evaluation/tabs/evaluations/tab.evaluations').then(
+    (m) => ({
+      default: m.WeeklyEvaluationPage
+    })
+  )
 )
 
 export const WeeklyEvaluationRoutes: RouteObject = {
@@ -25,7 +28,7 @@ export const WeeklyEvaluationRoutes: RouteObject = {
       children: [
         {
           path: frontend.weekly_evaluation.index,
-          element: <div>No implemented yet.</div>
+          element: <WeeklyEvaluationListPage />
         },
         {
           path: frontend.weekly_evaluation.new,

@@ -34,6 +34,11 @@ export const frontend = {
     new: '/weekly-evaluation/new',
     edit: '/weekly-evaluation/:id/edit',
     delete: '/weekly-evaluation/:id/delete',
+    tabs: {
+      evaluations: '/weekly-evaluation?tab=evaluations',
+      metrics: '/weekly-evaluation?tab=metrics',
+      submissions: '/weekly-evaluation?tab=submissions'
+    },
     metrics: {
       index: '/weekly-evaluation/:weeklyEvaluationId/metrics',
       new: '/weekly-evaluation/:weeklyEvaluationId/metrics/new',

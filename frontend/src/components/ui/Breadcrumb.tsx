@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import {
   BreadcrumbItem,
   Breadcrumbs,
@@ -6,8 +7,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Image,
-  cn
+  Image
 } from '@nextui-org/react'
 import { ComponentProps } from 'react'
 
@@ -16,10 +16,11 @@ export type BreadcrumbItemProps = {
   link?: string
 }
 
-type BreadcrumbProps = ComponentProps<'section'> & {
+export type BreadcrumbProps = ComponentProps<'section'> & {
   title: string
   items: Array<BreadcrumbItemProps>
   imageSrc?: string | boolean
+  className?: string
 }
 
 export const Breadcrumb = ({

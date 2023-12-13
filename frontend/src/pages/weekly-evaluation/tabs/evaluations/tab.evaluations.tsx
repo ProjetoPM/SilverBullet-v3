@@ -1,7 +1,7 @@
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { frontend } from '@/routes/routes'
-import { WeeklyEvaluationForm } from './weekly-evaluation.form'
+import { WeeklyEvaluationForm } from './tab.evaluations.form'
 
 export const WeeklyEvaluationPage = () => {
   const { t, title, breadcrumb } = usePageUtils('weekly-report', {
