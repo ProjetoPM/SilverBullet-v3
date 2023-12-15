@@ -39,10 +39,6 @@ export const DatePicker = ({
   const id = useId()
   const { isOpen, onClose, onOpenChange } = useDisclosure()
 
-  if (props.mode === 'multiple') {
-    throw new Error('DatePicker does not support multiple mode yet')
-  }
-
   return (
     <div role="group">
       <DatePickerLabel

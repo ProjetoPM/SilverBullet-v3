@@ -1,6 +1,7 @@
 import { Button, ButtonProps, PopoverTrigger, cn } from '@nextui-org/react'
 import i18next from 'i18next'
 import { CalendarIcon } from 'lucide-react'
+import { useCallback, useMemo } from 'react'
 import { Matcher, isDateRange } from 'react-day-picker'
 import { useTranslation } from 'react-i18next'
 
@@ -21,16 +22,41 @@ export const DatePickerButton = ({
 }: DatePickerButtonProps) => {
   const { t } = useTranslation('date-picker')
 
-  const formatDate = (date?: Date, options?: Intl.DateTimeFormatOptions) => {
-    if (!date) {
-      return null
+  const formatDate = useCallback(
+    (date?: Date, options?: Intl.DateTimeFormatOptions) => {
+      if (!date) {
+        return null
+      }
+
+      return new Intl.DateTimeFormat(i18next.language, {
+        dateStyle: 'medium',
+        ...options
+      }).format(date)
+    },
+    []
+  )
+
+  const properlyLabel = useMemo(() => {
+    if (!selected) {
+      return t('pick_a_date')
     }
 
-    return new Intl.DateTimeFormat(i18next.language, {
-      dateStyle: 'medium',
-      ...options
-    }).format(date)
-  }
+    if (isDateRange(selected)) {
+      return `${formatDate(selected.from, { dateStyle })} - ${
+        selected.to ? formatDate(selected.to, { dateStyle }) : t('end_date')
+      }`
+    }
+
+    if (Array.isArray(selected)) {
+      if (selected.length === 1) {
+        return formatDate(selected[0] as Date)
+      }
+
+      return `${selected.length} ${t('dates_selected')}`
+    }
+
+    return formatDate(selected as Date)
+  }, [selected, dateStyle, t, formatDate])
 
   return (
     <PopoverTrigger>
@@ -48,16 +74,7 @@ export const DatePickerButton = ({
             'outline-none text-foreground-500': !selected
           })}
         >
-          {isDateRange(selected) ? (
-            <>
-              {formatDate(selected.from, { dateStyle })}
-              {' - '}
-              {selected.to && formatDate(selected.to, { dateStyle })}
-              {!selected.to && t('end_date')}
-            </>
-          ) : (
-            formatDate(selected as Date, { dateStyle })
-          )}
+          {properlyLabel}
           {(!selected && placeholder) ?? t('pick_a_date')}
         </span>
         {icon}
