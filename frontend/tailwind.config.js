@@ -1,6 +1,5 @@
 import { nextui } from '@nextui-org/react'
 import typography from '@tailwindcss/typography'
-import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -17,10 +16,13 @@ export default {
       }
     },
     screens: {
-      base: '100%',
-      xss: { min: '420px' },
-      xs: { min: '520px' },
-      ...defaultTheme.screens
+      xss: '420px',
+      xs: '520px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1436px',
     },
     extend: {}
   },

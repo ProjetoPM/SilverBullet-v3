@@ -4,10 +4,7 @@ import { DatePicker } from '@/components/ui/date-picker/DatePicker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import {
-  WeeklyReportData,
-  WeeklyReportSchema
-} from './tab.evaluations.schema'
+import { WeeklyReportData, WeeklyReportSchema } from './tab.evaluations.schema'
 
 type WeeklyEvaluationFormProps = {
   data?: WeeklyReportData
@@ -37,14 +34,13 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyEvaluationFormProps) => {
         <GridLayout cols="2">
           <Controller
             control={form.control}
-            name="range"
+            name="multiple"
             render={({ field }) => (
               <DatePicker
                 label="Test"
-                mode="range"
+                mode="multiple"
                 selected={field.value}
                 onSelect={field.onChange}
-                numberOfMonths={2}
                 errorMessage={form.formState.errors.single?.message}
                 description="Description"
               />
