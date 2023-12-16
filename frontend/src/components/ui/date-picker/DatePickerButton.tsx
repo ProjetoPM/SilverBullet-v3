@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 export type DatePickerButtonProps = ButtonProps & {
   selected?: Matcher | Matcher[]
   dateStyle?: 'short' | 'medium' | 'long'
+  placeholder?: string
   icon?: React.ReactNode
 }
 
@@ -38,7 +39,7 @@ export const DatePickerButton = ({
 
   const properlyLabel = useMemo(() => {
     if (!selected) {
-      return t('pick_a_date')
+      return placeholder ?? t('pick_a_date')
     }
 
     if (isDateRange(selected)) {
@@ -56,7 +57,7 @@ export const DatePickerButton = ({
     }
 
     return formatDate(selected as Date)
-  }, [selected, dateStyle, t, formatDate])
+  }, [selected, dateStyle, placeholder, t, formatDate])
 
   return (
     <PopoverTrigger>
@@ -74,8 +75,7 @@ export const DatePickerButton = ({
             'outline-none text-foreground-500': !selected
           })}
         >
-          {properlyLabel}
-          {(!selected && placeholder) ?? t('pick_a_date')}
+          {properlyLabel ?? t('pick_a_date')}
         </span>
         {icon}
       </Button>
