@@ -51,6 +51,10 @@ export class PrismaUsersRepository implements IUsersRepository {
   }
 
   async create(user: User): Promise<void> {
+
+    !user.props.emailVerified ? user.props.emailVerified = false : user.props.emailVerified
+
+
     const data = await UserMapper.toPersistence(user)
 
     await prismaClient.user.create({

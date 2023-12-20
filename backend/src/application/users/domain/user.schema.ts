@@ -6,7 +6,7 @@ export const UserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1).max(64),
   phone: z.string().max(255).optional(),
-  emailVerified: z.boolean()
+  emailVerified: z.boolean().nullish()
 })
 
 export type UserProps = z.infer<typeof UserSchema>

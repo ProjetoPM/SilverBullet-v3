@@ -4,6 +4,7 @@ import { JWT } from '@/core/domain/jwt'
 type UserOverrides = {
   email?: string
   password?: string
+  emailVerified?: boolean
 }
 
 export class UserFactory {
@@ -14,6 +15,7 @@ export class UserFactory {
       name: 'test',
       email: overrides?.email || email,
       password: overrides?.password || '12345678',
+      emailVerified: overrides?.emailVerified || true 
     })
 
     return user.value as User

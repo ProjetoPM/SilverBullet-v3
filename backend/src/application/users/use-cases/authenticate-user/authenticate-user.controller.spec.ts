@@ -14,6 +14,7 @@ describe('Authenticate User (end-to-end)', () => {
         name: 'test',
         email: 'test@test-test.com',
         password: await hash('test1234567', 8),
+        email_verified: true
       },
     })
   })
