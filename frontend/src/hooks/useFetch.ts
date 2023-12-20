@@ -100,11 +100,11 @@ export const useFetch = <T>({
       return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
     {
-      ...(fetch?.get?.options as UseQueryOptions<T>),
       enabled: !!fetch?.get?.append,
       onError: (err: unknown) =>
         !isTokenExpired() &&
-        toast.error((err as Error)?.message, { id: 'error' })
+        toast.error((err as Error)?.message, { id: 'error' }),
+      ...(fetch?.get?.options as UseQueryOptions<T>)
     }
   )
 
@@ -123,11 +123,11 @@ export const useFetch = <T>({
       return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
     {
-      ...(fetch?.list?.options as UseQueryOptions<T>),
       enabled: !!fetch?.list,
       onError: (err: unknown) =>
         !isTokenExpired() &&
-        toast.error((err as Error)?.message, { id: 'error' })
+        toast.error((err as Error)?.message, { id: 'error' }),
+      ...(fetch?.list?.options as UseQueryOptions<T>)
     }
   )
 

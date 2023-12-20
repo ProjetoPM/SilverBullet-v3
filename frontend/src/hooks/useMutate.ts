@@ -1,4 +1,5 @@
 import { api } from '@/services/api'
+import { useCallback } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
@@ -19,30 +20,36 @@ type AxiosProps = {
 export const useMutate = () => {
   const { t } = useTranslation()
 
-  const mutate = <T>({ url, data, method }: MutateProps<T>) => {
-    const _method = method ?? 'get'
+  const mutate = useCallback(
+    <T>({ url, data, method }: MutateProps<T>) => {
+      const _method = method ?? 'get'
 
-    const _api = data
-      ? api[_method](url, data).then((res) => res.data)
-      : api[_method](url).then((res) => res.data)
+      const _api = data
+        ? api[_method](url, data).then((res) => res.data)
+        : api[_method](url).then((res) => res.data)
 
-    return toast.promise(_api, {
-      success: (data) => data.message,
-      loading: t('promise.loading'),
-      error: (err) => err.response?.data.message ?? err.message
-    })
-  }
-
-  const promise = <T extends AxiosProps>(api: Promise<T>) => {
-    return toast.promise(
-      api.then((res) => res.data),
-      {
-        success: (data) => data?.message ?? t('no_message'),
+      return toast.promise(_api, {
+        success: (data) => data.message,
         loading: t('promise.loading'),
-        error: (err) => err.response?.data?.message ?? err.message
-      }
-    )
-  }
+        error: (err) => err.response?.data.message ?? err.message
+      })
+    },
+    [t]
+  )
+
+  const promise = useCallback(
+    <T extends AxiosProps>(api: Promise<T>) => {
+      return toast.promise(
+        api.then((res) => res.data),
+        {
+          success: (data) => data?.message ?? t('no_message'),
+          loading: t('promise.loading'),
+          error: (err) => err.response?.data?.message ?? err.message
+        }
+      )
+    },
+    [t]
+  )
 
   return { mutate, promise }
 }
