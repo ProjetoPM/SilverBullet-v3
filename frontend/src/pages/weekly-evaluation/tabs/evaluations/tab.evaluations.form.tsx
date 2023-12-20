@@ -41,8 +41,38 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyEvaluationFormProps) => {
                 mode="multiple"
                 selected={field.value}
                 onSelect={field.onChange}
+                errorMessage={form.formState.errors.multiple?.message}
+                description="Description"
+              />
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="single"
+            render={({ field }) => (
+              <DatePicker
+                label="Test"
+                mode="single"
+                selected={field.value}
+                onSelect={field.onChange}
                 errorMessage={form.formState.errors.single?.message}
                 description="Description"
+              />
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="range"
+            render={({ field }) => (
+              <DatePicker
+                label="Test"
+                mode="range"
+                selected={field.value}
+                onSelect={field.onChange}
+                errorMessage={form.formState.errors.range?.message}
+                description="Description"
+                numberOfMonths={3}
+                {...field}
               />
             )}
           />

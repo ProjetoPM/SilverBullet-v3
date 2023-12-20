@@ -10,6 +10,12 @@ type MutateProps<T> = {
   method?: MutationMethods
 }
 
+type AxiosProps = {
+  data: {
+    message: string
+  }
+}
+
 export const useMutate = () => {
   const { t } = useTranslation()
 
@@ -27,7 +33,7 @@ export const useMutate = () => {
     })
   }
 
-  const promise = (api: Promise<any>) => {
+  const promise = <T extends AxiosProps>(api: Promise<T>) => {
     return toast.promise(
       api.then((res) => res.data),
       {

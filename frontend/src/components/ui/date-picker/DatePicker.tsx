@@ -2,7 +2,7 @@ import { Popover, PopoverContent, useDisclosure } from '@nextui-org/react'
 import enUS from 'date-fns/locale/en-US'
 import ptBR from 'date-fns/locale/pt-BR'
 import i18next from 'i18next'
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { Calendar, CalendarProps } from './Calendar'
 import { DatePickerButton, DatePickerButtonProps } from './DatePickerButton'
 import { DatePickerLabel, DatePickerLabelProps } from './DatePickerLabel'
@@ -38,6 +38,7 @@ export const DatePicker = ({
   ...props
 }: DatePickerProps) => {
   const id = useId()
+  const [timer, setTimer] = useState('')
   const { isOpen, onClose, onOpenChange } = useDisclosure()
 
   return (
@@ -63,6 +64,8 @@ export const DatePicker = ({
           <Calendar
             locale={i18next.language === 'en-US' ? enUS : ptBR}
             onDayClick={shouldCloseOnSelect ? onClose : undefined}
+            timer={timer}
+            setTimer={setTimer}
             disabled={
               shouldDisableAfterToday
                 ? (date) => date > new Date() || date < new Date('1900-01-01')

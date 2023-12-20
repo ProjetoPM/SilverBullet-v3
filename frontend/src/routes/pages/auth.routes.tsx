@@ -17,28 +17,23 @@ const SignUpPage = lazy(() =>
 
 export const AuthRoutes: RouteObject = {
   path: '/',
+  element: (
+    <GuestGuard>
+      <ComponentLayout layout="auth" />
+    </GuestGuard>
+  ),
   children: [
     {
       path: '/',
-      element: (
-        <GuestGuard>
-          <ComponentLayout layout="auth" />
-        </GuestGuard>
-      ),
-      children: [
-        {
-          path: '/',
-          element: <SignInPage />
-        },
-        {
-          path: frontend.auth.sign_in.index,
-          element: <SignInPage />
-        },
-        {
-          path: frontend.auth.sign_up.index,
-          element: <SignUpPage />
-        }
-      ]
+      element: <SignInPage />
+    },
+    {
+      path: frontend.auth.sign_in.index,
+      element: <SignInPage />
+    },
+    {
+      path: frontend.auth.sign_up.index,
+      element: <SignUpPage />
     }
   ]
 }
