@@ -40,6 +40,6 @@ export class ChangePasswordController implements Controller {
       }
     }
 
-    return ok({ message: t('user.forgot_password') })
+    return ok({ message: t('user.password_changed') })
   }
 }
