@@ -140,8 +140,8 @@ export const useFetch = <T>({
   const create = useMutation(
     async (data: T & Omit<MutateProps, '_id'>) => {
       const url = `${baseUrl}/new`
-      await data.fn?.()
-      return await promise(api.post(url, data))
+      const result = Promise.all([data.fn?.(), promise(api.post(url, data))])
+      return result.then((res) => res[1])
     },
     {
       onSuccess: async (_, { internalFn }) => {
@@ -168,8 +168,8 @@ export const useFetch = <T>({
   const update = useMutation(
     async (data: T & MutateProps) => {
       const url = `${baseUrl}/${data._id}/edit`
-      await data.fn?.()
-      return await promise(api.put(url, data))
+      const result = Promise.all([data.fn?.(), promise(api.put(url, data))])
+      return result.then((res) => res[1])
     },
     {
       onSuccess: async (_, { internalFn }) => {
@@ -196,8 +196,8 @@ export const useFetch = <T>({
   const remove = useMutation(
     async (data: RemoveProps<T>) => {
       const url = `${baseUrl}/${data._id}`
-      await data.fn?.()
-      return await promise(api.delete(url))
+      const result = Promise.all([data.fn?.(), promise(api.delete(url))])
+      return result.then((res) => res[1])
     },
     {
       onSuccess: async (_, { internalFn }) => {
@@ -230,8 +230,11 @@ export const useFetch = <T>({
         Pick<MutateProps, 'fn' | 'internalFn'>
     ) => {
       const _data = Array.isArray(data) ? data : [data._id]
-      await data.fn?.()
-      return await promise(api.delete(baseUrl, { params: { ids: _data } }))
+      const result = Promise.all([
+        data.fn?.(),
+        promise(api.delete(baseUrl, { params: { ids: _data } }))
+      ])
+      return result.then((res) => res[1])
     },
     {
       onSuccess: async (_, { internalFn }) => {
