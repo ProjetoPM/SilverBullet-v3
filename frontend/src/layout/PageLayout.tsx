@@ -1,16 +1,20 @@
 import { Loading } from '@/components/Loading'
-import { Breadcrumb, BreadcrumbProps } from '@/components/ui/Breadcrumb'
+import {
+  Breadcrumb,
+  BreadcrumbItemProps,
+  BreadcrumbProps
+} from '@/components/ui/Breadcrumb'
 import { cn } from '@nextui-org/react'
-import React from 'react'
+import { ReactNode } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { description } from './meta'
 
 export type PageLayoutProps = {
   title: string
-  children?: React.ReactNode
-  breadcrumb?: Array<{ label: string; link?: string }>
+  children?: ReactNode
   isLoading?: boolean
-  endContent?: React.ReactNode
+  endContent?: ReactNode
+  breadcrumb?: BreadcrumbItemProps[]
   breadcrumbProps?: Omit<BreadcrumbProps, 'title' | 'items'>
 }
 
@@ -20,9 +24,9 @@ export const PageLayout = ({
   children,
   endContent,
   isLoading = false,
-  breadcrumbProps
+  breadcrumbProps = {}
 }: PageLayoutProps) => {
-  const { className, ...restBreadcrumbProps } = breadcrumbProps || {}
+  const { className, ...restBreadcrumbProps } = breadcrumbProps
 
   if (isLoading) {
     return <Loading />

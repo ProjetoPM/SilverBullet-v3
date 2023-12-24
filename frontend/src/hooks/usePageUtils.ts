@@ -47,5 +47,5 @@ export const usePageUtils = (
     return content
   }
 
-  return { id: id ?? '', t, title, breadcrumb }
+  return { id, t, title, breadcrumb }
 }
