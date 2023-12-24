@@ -31,3 +31,5 @@ export const RichEditorChars = ({
     </span>
   )
 }
+
+export default RichEditorChars

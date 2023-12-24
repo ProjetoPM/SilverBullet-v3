@@ -2,20 +2,13 @@ import { cn } from '@/lib/utils'
 import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, useEditor } from '@tiptap/react'
-import {
-  forwardRef,
-  lazy,
-  useCallback,
-  useEffect,
-  useId,
-  useState
-} from 'react'
-import { RichEditorChars } from './RichEditorChars'
+import { forwardRef, lazy, useCallback, useEffect, useId, useRef } from 'react'
 import { RichEditorLabel } from './RichEditorLabel'
 import './config/default.css'
 import { extensions } from './config/extensions'
 import { editorStyles, placeholderStyles } from './config/style'
 
+const RichEditorChars = lazy(() => import('./RichEditorChars'))
 const BubbleMenu = lazy(() => import('./menus/BubbleMenu'))
 const FixedMenu = lazy(() => import('./menus/FixedMenu'))
 
@@ -71,7 +64,7 @@ export const RichEditor = forwardRef<
     ref
   ) => {
     const id = useId()
-    const [fixed, setFixed] = useState(isFixed)
+    const isFixedRef = useRef(isFixed)
 
     const editor = useEditor(
       {
@@ -129,7 +122,7 @@ export const RichEditor = forwardRef<
      * Change between the bubble menu and fixed menu.
      */
     const handleFixed = useCallback(() => {
-      setFixed((previous) => !previous)
+      isFixedRef.current = !isFixedRef.current
       editor?.commands.focus()
     }, [editor])
 
@@ -139,7 +132,7 @@ export const RichEditor = forwardRef<
         <div className="relative">
           {editor && (
             <>
-              <RichEditorChars editor={editor} limit={limit} />
+              {limit && <RichEditorChars editor={editor} limit={limit} />}
               <input
                 id={id}
                 className="absolute h-0 w-0 opacity-0"
@@ -150,12 +143,12 @@ export const RichEditor = forwardRef<
               {!asNormalInput && (
                 <>
                   <FixedMenu
-                    isFixed={fixed}
+                    isFixed={isFixedRef.current}
                     setFixed={handleFixed}
                     editor={editor}
                   />
                   <BubbleMenu
-                    isFixed={fixed}
+                    isFixed={isFixedRef.current}
                     setFixed={handleFixed}
                     editor={editor}
                   />
@@ -165,7 +158,7 @@ export const RichEditor = forwardRef<
           )}
           <EditorContent
             className="[&>*]:data-[is-fixed=true]:rounded-t-none"
-            data-is-fixed={fixed}
+            data-is-fixed={isFixedRef.current}
             editor={editor}
           />
         </div>
