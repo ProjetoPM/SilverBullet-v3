@@ -31,10 +31,7 @@ export const extensions = [
     }
   }),
   Link.configure({
-    protocols: ['http', 'https'],
-    validate: (url) => {
-      return url.startsWith('http://') || url.startsWith('https://')
-    },
+    linkOnPaste: true,
     autolink: false,
     openOnClick: false,
     HTMLAttributes: {

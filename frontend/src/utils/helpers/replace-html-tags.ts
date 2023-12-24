@@ -5,7 +5,7 @@
  * @param replaceBy the string to replace the tags
  * @returns the text without HTML tags
  */
-export const clearHTMLTags = (text: string, replaceBy?: string) => {
+export const ct = (text: string, replaceBy?: string) => {
   return text?.replace(/(<([^>]+)>)/gi, replaceBy || '')
 }
 
@@ -17,7 +17,7 @@ export const clearHTMLTags = (text: string, replaceBy?: string) => {
  * @example .refine((v) => min(v, 10))
  */
 export const min = (text: string, value = 1) => {
-  return clearHTMLTags(text).length >= value
+  return ct(text).length >= value
 }
 
 /**
@@ -27,7 +27,7 @@ export const min = (text: string, value = 1) => {
  * @example .refine((v) => max(v, 10))
  */
 export const max = (text: string, value: number) => {
-  return clearHTMLTags(text).length <= value
+  return ct(text).length <= value
 }
 
 /**

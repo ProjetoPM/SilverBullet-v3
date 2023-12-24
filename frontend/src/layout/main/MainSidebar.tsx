@@ -1,7 +1,7 @@
 import { mainSidebarItems } from '@/constants/sidebar-items'
 import { cn } from '@/lib/utils'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
-import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { Listbox, ListboxItem, ListboxSection } from '@nextui-org/react'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,7 +41,7 @@ export const MainSidebar = () => {
                 <ListboxItem
                   key={item.id}
                   textValue={t(item.label)}
-                  description={clearHTMLTags(
+                  description={ct(
                     sidebarDescription[
                       item.id as keyof typeof sidebarDescription
                     ]

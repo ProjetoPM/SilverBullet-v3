@@ -48,7 +48,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
                       form.formState.errors.processes?.[index]?.description
                         ?.message
                     }
-                    options={{ limit: 1000, size: 'textarea-5' }}
+                    options={{ limit: 1000, minRows: 5 }}
                   />
                 </>
               )}

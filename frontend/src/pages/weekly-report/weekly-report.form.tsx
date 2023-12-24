@@ -3,7 +3,7 @@ import { SubmitButton } from '@/components/ui/SubmitButton'
 import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { Text } from '@/components/ui/label/Text'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
-import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Snippet } from '@nextui-org/react'
 import { useState } from 'react'
@@ -66,7 +66,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               }}
               hideSymbol
             >
-              {clearHTMLTags(WorkspaceStore.getWorkspace()?.name || '')}
+              {ct(WorkspaceStore.getWorkspace()?.name || '')}
             </Snippet>
           </fieldset>
         </GridLayout>
@@ -81,9 +81,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
                   label={t('tool_evaluation.label')}
                   placeholder={t('tool_evaluation.placeholder')}
                   errorMessage={form.formState.errors.toolEvaluation?.message}
-                  options={{
-                    size: 'textarea-4'
-                  }}
+                  options={{ minRows: 4 }}
                   isFixed
                 />
               )}

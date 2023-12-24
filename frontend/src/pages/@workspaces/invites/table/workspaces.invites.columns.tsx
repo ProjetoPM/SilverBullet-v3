@@ -1,5 +1,5 @@
 import { DataTableColumnHeader } from '@/components/ui/table/helpers/DataTableHeader'
-import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { tableSelect } from '@/utils/helpers/select'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
@@ -28,7 +28,7 @@ export const columns = [
         header={t('workspaces:form.name.label')}
       />
     ),
-    cell: ({ row }) => clearHTMLTags(row.getValue('name')),
+    cell: ({ row }) => ct(row.getValue('name')),
     enableSorting: true,
     enableHiding: true
   }),

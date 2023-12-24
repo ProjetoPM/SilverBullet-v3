@@ -19,38 +19,42 @@ import { editorStyles, placeholderStyles } from './config/style'
 const BubbleMenu = lazy(() => import('./menus/BubbleMenu'))
 const FixedMenu = lazy(() => import('./menus/FixedMenu'))
 
-type EditorSizes = 'textarea-3' | 'textarea-4' | 'textarea-5'
+type EditorSizes = 3 | 4 | 5
 
 type InputProps<T> = {
   value?: string | number | null
   onChange?: (...event: T[]) => void
 }
 
-type EditorProps<T> = InputProps<T> & {
+export type RichEditorProps<T> = InputProps<T> & {
   placeholder?: string
   className?: string
   isReadOnly?: boolean
   label?: string
   errorMessage?: string
   isFixed?: boolean
+  asNormalInput?: boolean
   options?: {
     limit?: number
-    size?: EditorSizes
+    minRows?: EditorSizes
   }
 }
 
 const getSizeTextarea = (as?: EditorSizes) => {
   switch (as) {
-    case 'textarea-3':
+    case 3:
       return 'min-h-[5rem]'
-    case 'textarea-4':
+    case 4:
       return 'min-h-[6.25rem]'
-    case 'textarea-5':
+    case 5:
       return 'min-h-[7.5rem]'
   }
 }
 
-export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
+export const RichEditor = forwardRef<
+  HTMLInputElement,
+  RichEditorProps<unknown>
+>(
   (
     {
       value,
@@ -61,7 +65,8 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
       placeholder,
       className,
       isFixed = false,
-      options: { limit = 1000, size } = {}
+      asNormalInput = false,
+      options: { limit = 1000, minRows } = {}
     },
     ref
   ) => {
@@ -71,11 +76,13 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
     const editor = useEditor(
       {
         content: String(value),
-        onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
+        onUpdate: ({ editor }) => {
+          onChange?.(editor.getHTML())
+        },
         editable: !isReadOnly,
         editorProps: {
           attributes: {
-            class: cn(editorStyles, getSizeTextarea(size)),
+            class: cn(editorStyles, getSizeTextarea(minRows)),
             spellcheck: 'false'
           }
         },
@@ -140,16 +147,20 @@ export const RichEditor = forwardRef<HTMLInputElement, EditorProps<unknown>>(
                 ref={ref}
                 tabIndex={-1}
               />
-              <FixedMenu
-                isFixed={fixed}
-                setFixed={handleFixed}
-                editor={editor}
-              />
-              <BubbleMenu
-                isFixed={fixed}
-                setFixed={handleFixed}
-                editor={editor}
-              />
+              {!asNormalInput && (
+                <>
+                  <FixedMenu
+                    isFixed={fixed}
+                    setFixed={handleFixed}
+                    editor={editor}
+                  />
+                  <BubbleMenu
+                    isFixed={fixed}
+                    setFixed={handleFixed}
+                    editor={editor}
+                  />
+                </>
+              )}
             </>
           )}
           <EditorContent

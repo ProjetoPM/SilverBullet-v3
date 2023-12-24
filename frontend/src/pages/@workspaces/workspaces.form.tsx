@@ -53,6 +53,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
                 placeholder={t('name.placeholder')}
                 errorMessage={form.formState.errors.name?.message}
                 options={{ limit: 100 }}
+                asNormalInput
               />
             )}
           />
@@ -67,7 +68,8 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
                 label={t('description.label')}
                 placeholder={t('description.placeholder')}
                 errorMessage={form.formState.errors.description?.message}
-                options={{ limit: 1000, size: 'textarea-3' }}
+                options={{ limit: 1000, minRows: 3 }}
+                asNormalInput
               />
             )}
           />

@@ -1,6 +1,6 @@
 import { DataTableColumnHeader } from '@/components/ui/table/helpers/DataTableHeader'
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { tableSelect } from '@/utils/helpers/select'
-import { clearHTMLTags } from '@/utils/helpers/replace-html-tags'
 import { Chip } from '@nextui-org/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
@@ -30,7 +30,7 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} header={t('name.label', { ns })} />
     ),
-    cell: ({ row }) => clearHTMLTags(row.getValue('name')),
+    cell: ({ row }) => ct(row.getValue('name')),
     enableSorting: true,
     enableHiding: true
   }),
@@ -45,7 +45,7 @@ export const columns = [
         header={t('description.label', { ns })}
       />
     ),
-    cell: ({ row }) => clearHTMLTags(row.getValue('description')),
+    cell: ({ row }) => ct(row.getValue('description')),
     enableSorting: true,
     enableHiding: true
   }),
