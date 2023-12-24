@@ -15,30 +15,25 @@ const WeeklyEvaluationPage = lazy(() =>
 
 export const WeeklyEvaluationRoutes: RouteObject = {
   path: '/',
+  element: (
+    <AuthGuard>
+      <WorkspaceGuard>
+        <ComponentLayout layout="simple" />
+      </WorkspaceGuard>
+    </AuthGuard>
+  ),
   children: [
     {
-      path: '/',
-      element: (
-        <AuthGuard>
-          <WorkspaceGuard>
-            <ComponentLayout layout="simple" />
-          </WorkspaceGuard>
-        </AuthGuard>
-      ),
-      children: [
-        {
-          path: frontend.weekly_evaluation.index,
-          element: <WeeklyEvaluationListPage />
-        },
-        {
-          path: frontend.weekly_evaluation.new,
-          element: <WeeklyEvaluationPage />
-        },
-        {
-          path: frontend.weekly_evaluation.edit,
-          element: <WeeklyEvaluationPage />
-        }
-      ]
+      path: frontend.weekly_evaluation.index,
+      element: <WeeklyEvaluationListPage />
+    },
+    {
+      path: frontend.weekly_evaluation.new,
+      element: <WeeklyEvaluationPage />
+    },
+    {
+      path: frontend.weekly_evaluation.edit,
+      element: <WeeklyEvaluationPage />
     }
   ]
 }

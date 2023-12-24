@@ -25,32 +25,28 @@ const WorkspacesInvitesListPage = lazy(() =>
 )
 
 export const WorkspaceRoutes: RouteObject = {
+  path: '/',
+  element: (
+    <AuthGuard>
+      <ComponentLayout layout="simple" />
+    </AuthGuard>
+  ),
   children: [
     {
-      path: '/',
-      element: (
-        <AuthGuard>
-          <ComponentLayout layout="simple" />
-        </AuthGuard>
-      ),
-      children: [
-        {
-          path: frontend.workspaces.index,
-          element: <WorkspaceListPage />
-        },
-        {
-          path: frontend.workspaces.new,
-          element: <WorkspacePage />
-        },
-        {
-          path: frontend.workspaces.edit,
-          element: <WorkspacePage />
-        },
-        {
-          path: frontend.workspaces.users.index,
-          element: <WorkspacesInvitesListPage />
-        }
-      ]
+      path: frontend.workspaces.index,
+      element: <WorkspaceListPage />
+    },
+    {
+      path: frontend.workspaces.new,
+      element: <WorkspacePage />
+    },
+    {
+      path: frontend.workspaces.edit,
+      element: <WorkspacePage />
+    },
+    {
+      path: frontend.workspaces.users.index,
+      element: <WorkspacesInvitesListPage />
     }
   ]
 }

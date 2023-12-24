@@ -15,30 +15,25 @@ const ProjectListPage = lazy(() =>
 
 export const ProjectRoutes: RouteObject = {
   path: '/',
+  element: (
+    <AuthGuard>
+      <WorkspaceGuard>
+        <ComponentLayout layout="simple" />
+      </WorkspaceGuard>
+    </AuthGuard>
+  ),
   children: [
     {
-      path: '/',
-      element: (
-        <AuthGuard>
-          <WorkspaceGuard>
-            <ComponentLayout layout="simple" />
-          </WorkspaceGuard>
-        </AuthGuard>
-      ),
-      children: [
-        {
-          path: frontend.projects.index,
-          element: <ProjectListPage />
-        },
-        {
-          path: frontend.projects.new,
-          element: <ProjectPage />
-        },
-        {
-          path: frontend.projects.edit,
-          element: <ProjectPage />
-        }
-      ]
+      path: frontend.projects.index,
+      element: <ProjectListPage />
+    },
+    {
+      path: frontend.projects.new,
+      element: <ProjectPage />
+    },
+    {
+      path: frontend.projects.edit,
+      element: <ProjectPage />
     }
   ]
 }

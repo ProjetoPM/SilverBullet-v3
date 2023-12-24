@@ -12,30 +12,25 @@ const WeeklyReportPage = lazy(() =>
 
 export const WeeklyReportRoutes: RouteObject = {
   path: '/',
+  element: (
+    <AuthGuard>
+      <WorkspaceGuard>
+        <ComponentLayout layout="simple" />
+      </WorkspaceGuard>
+    </AuthGuard>
+  ),
   children: [
     {
-      path: '/',
-      element: (
-        <AuthGuard>
-          <WorkspaceGuard>
-            <ComponentLayout layout="simple" />
-          </WorkspaceGuard>
-        </AuthGuard>
-      ),
-      children: [
-        {
-          path: frontend.weekly_report.index,
-          element: <div>No implemented yet.</div>
-        },
-        {
-          path: frontend.weekly_report.new,
-          element: <WeeklyReportPage />
-        },
-        {
-          path: frontend.weekly_report.edit,
-          element: <WeeklyReportPage />
-        }
-      ]
+      path: frontend.weekly_report.index,
+      element: <div>No implemented yet.</div>
+    },
+    {
+      path: frontend.weekly_report.new,
+      element: <WeeklyReportPage />
+    },
+    {
+      path: frontend.weekly_report.edit,
+      element: <WeeklyReportPage />
     }
   ]
 }
