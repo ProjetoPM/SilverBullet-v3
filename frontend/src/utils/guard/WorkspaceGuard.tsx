@@ -15,7 +15,7 @@ const validator = z.object({
   _id: z.string().uuid()
 })
 
-const validateWorkspace = () => {
+const isWorkspaceInvalid = () => {
   const workspace = WorkspaceStore.getWorkspace()
   return !workspace || !validator.safeParse(workspace).success
 }
@@ -31,7 +31,7 @@ export const WorkspaceGuard = ({
   const [isMounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (validateWorkspace()) {
+    if (isWorkspaceInvalid()) {
       toast.error(t('workspace.not_found'), {
         id: WG_WORKSPACE_NOT_FOUND_ID
       })

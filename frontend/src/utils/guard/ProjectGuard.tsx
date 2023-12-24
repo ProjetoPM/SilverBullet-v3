@@ -15,7 +15,7 @@ const validator = z.object({
   _id: z.string().uuid()
 })
 
-const validateProject = () => {
+const isProjectInvalid = () => {
   const project = WorkspaceStore.getProject()
   return !project || !validator.safeParse(project).success
 }
@@ -28,7 +28,7 @@ export const ProjectGuard = ({ redirectTo, children }: ProjectGuardProps) => {
   const [isMounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (validateProject()) {
+    if (isProjectInvalid()) {
       toast.error(t('project.not_found'), {
         id: WG_PROJECT_NOT_FOUND_ID
       })
