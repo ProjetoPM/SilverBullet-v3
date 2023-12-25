@@ -34,7 +34,7 @@ import { useSearchParams } from 'react-router-dom'
 
 type DataTableProps<TData, TValue> = Pick<
   DataTableContext<TData>,
-  'asyncFn' | 'internalLogicFn'
+  'asyncFn' | 'internalLogicFn' | 'ns'
 > & {
   columns: ColumnDef<TData, TValue>[]
   data?: TData[]
@@ -43,7 +43,6 @@ type DataTableProps<TData, TValue> = Pick<
   toolbar?: React.ReactNode
   isLoading?: boolean
   isError?: boolean
-  ns?: string[]
 }
 
 export const DataTable = <TData, TValue>({

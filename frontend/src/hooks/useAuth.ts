@@ -5,7 +5,7 @@ import { frontend } from '@/routes/routes'
 import { api } from '@/services/api'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { AG_EXPIRED_TOKEN_ID } from '@/utils/guard'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
@@ -26,9 +26,9 @@ export const useAuth = () => {
   const { promise } = useMutate()
 
   const signIn = useMutation(
-    async (data: SignIn) => {
+    async (data: SignIn): Promise<HttpSignInResponse> => {
       const url = '/auth/sign-in'
-      return await promise(api.post(url, data))
+      return promise(api.post(url, data)) as Promise<HttpSignInResponse>
     },
     {
       onSuccess: (response: HttpSignInResponse, { email, rememberMe }) => {
@@ -47,7 +47,7 @@ export const useAuth = () => {
         localStorage.setItem('user', email)
 
         /** Clean expired token toast message */
-        toast.remove(AG_EXPIRED_TOKEN_ID)
+        toast.dismiss(AG_EXPIRED_TOKEN_ID)
 
         /** Navigate to workspace */
         navigate(frontend.workspaces.index)

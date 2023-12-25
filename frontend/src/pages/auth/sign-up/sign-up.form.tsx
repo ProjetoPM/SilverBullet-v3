@@ -15,7 +15,7 @@ import {
   Link
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import { PasswordChecker } from '../components/PasswordChecker'
 import { SignUp, SignUpSchema } from './sign-up.schema'

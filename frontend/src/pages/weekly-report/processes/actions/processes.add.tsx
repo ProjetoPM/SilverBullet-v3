@@ -1,6 +1,6 @@
 import { Button } from '@nextui-org/react'
 import { PlusCircle } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { useProcesses } from '../context/ProcessProvider'
 
 export const AddProcesses = () => {

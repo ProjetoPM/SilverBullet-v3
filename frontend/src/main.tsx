@@ -9,7 +9,7 @@ import { QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { RouterProvider } from 'react-router-dom'
 import { Loading } from './components/Loading'
-import { ToasterContainer } from './components/toast/Toaster'
+import { ToastSonner } from './components/toast/ToastSonner'
 import { ThemeProvider } from './contexts/theme-provider'
 import { queryClient } from './lib/react-query'
 import { router } from './routes'
@@ -23,9 +23,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <RouterProvider router={router} />
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
+          <ToastSonner />
         </ThemeProvider>
       </Suspense>
     </HelmetProvider>
-    <ToasterContainer />
   </React.StrictMode>
 )

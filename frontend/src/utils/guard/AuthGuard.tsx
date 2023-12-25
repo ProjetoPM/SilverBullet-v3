@@ -1,7 +1,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useToken } from '@/hooks/useToken'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 
 type AuthGuardProps = {

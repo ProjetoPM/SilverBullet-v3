@@ -1,5 +1,6 @@
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { t } from 'i18next'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
@@ -55,7 +56,10 @@ const onOpenWorkspace = (workspace: Workspace) => {
     workspace,
     project: null
   }))
-  toast.success(t('actions.open_workspace', { ns: 'workspaces' }))
+  toast.success(t('actions.open_workspace', { ns: 'workspaces' }), {
+    description: `${ct(workspace.name)}`,
+    classNames: { description: '!text-black dark:!text-white' }
+  })
 }
 
 /**
@@ -66,7 +70,10 @@ export const onOpenProject = (project: Project) => {
     ...state,
     project
   }))
-  toast.success(t('actions.open_project', { ns: 'workspaces' }))
+  toast.success(t('actions.open_project', { ns: 'workspaces' }), {
+    description: `${ct(project.name)}`,
+    classNames: { description: '!text-black dark:!text-white' }
+  })
 }
 
 /**

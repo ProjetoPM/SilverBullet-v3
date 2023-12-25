@@ -2,7 +2,7 @@ import { api } from '@/services/api'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/helpers/replace-params'
 import { useMemo } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import {
   UseQueryOptions,
   useMutation,
