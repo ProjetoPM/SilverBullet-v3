@@ -49,7 +49,7 @@ export const Notifications = () => {
         isInvisible={notifications.count === 0}
         size={notifications.count > 9 ? 'sm' : 'md'}
         color="danger"
-        className="z-50"
+        className="z-10"
       >
         <PopoverTrigger>
           <Button variant="flat" isIconOnly>
@@ -63,7 +63,7 @@ export const Notifications = () => {
         </PopoverTrigger>
       </Badge>
       <PopoverContent>
-        <div className="flex flex-col p-2 max-h-full sm:max-h-[40rem] overflow-auto">
+        <div className="flex flex-col p-2 max-h-full sm:max-h-[40rem] overflow-x-auto">
           <Listbox variant="flat" aria-label="Listbox workspaces notifications">
             <ListboxSection title={notifications.items.workspaces.label}>
               {notifications.items.workspaces.items.map((item, index) => (

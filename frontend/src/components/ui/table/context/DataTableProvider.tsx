@@ -13,6 +13,7 @@ type FilterProps = {
   search: boolean
   pagination: boolean
   visibility: boolean
+  actions: boolean
 }
 
 export type DataTableContext<TData> = {
@@ -47,7 +48,8 @@ export const DataTableProvider = <T,>({
   const [filter, _setFilter] = useState<FilterProps>({
     search: true,
     pagination: true,
-    visibility: true
+    visibility: true,
+    actions: true
   })
 
   const toggleFilter = useCallback((filter: keyof FilterProps) => {

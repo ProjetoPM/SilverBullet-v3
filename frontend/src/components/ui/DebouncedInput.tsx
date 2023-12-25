@@ -46,7 +46,7 @@ export const DebouncedInput = ({
       }
       classNames={{
         inputWrapper: 'flex-grow w-full h-fit',
-        input: 'w-full min-w-72 lg:w-80'
+        input: 'w-full min-w-64 lg:min-w-72 lg:w-80'
       }}
       {...props}
     />

@@ -69,9 +69,7 @@ export const NavbarEnd = () => {
                 </Kbd>
               )}
             </div>
-            <div className="inline-flex xs:hidden">
-              <MenuIcon size={20} />
-            </div>
+            <MenuIcon size={20} className="xs:hidden" />
           </Button>
         </NavbarItem>
         <NavbarItem>

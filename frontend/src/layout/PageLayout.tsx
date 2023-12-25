@@ -43,7 +43,7 @@ export const PageLayout = ({
           <Breadcrumb
             title={title}
             items={breadcrumb}
-            className={cn('mb-5', className)}
+            className={cn('mb-0 xss:mb-5', className)}
             {...restBreadcrumbProps}
           />
           <div className="self-end xss:self-auto">{endContent}</div>

@@ -78,8 +78,8 @@ export const SignInForm = () => {
               render={({ field: { value, onChange, ...rest } }) => (
                 <Checkbox
                   color="primary"
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
+                  value={String(value)}
+                  onValueChange={(value) => onChange(value)}
                   {...rest}
                 >
                   <Text size="sm">{t('keep_me_signed.label')}</Text>

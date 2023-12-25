@@ -72,9 +72,9 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-end">
-          <div className="flex gap-2 items-center">
+      <div className="space-y-3">
+        <div className="flex justify-between gap-2">
+          <div className="flex gap-2 items-center overflow-x-auto">
             <TableFilterButton />
             <AnimatePresence initial={false}>
               {filters()
@@ -86,7 +86,9 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
                 ))}
             </AnimatePresence>
           </div>
-          <div className="flex gap-3 self-end sm:self-auto">{toolbar}</div>
+          {filter.actions && (
+            <div className="flex self-end sm:self-auto">{toolbar}</div>
+          )}
         </div>
         <TablePageSize />
       </div>
