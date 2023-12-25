@@ -11,6 +11,7 @@ import {
 import {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -20,7 +21,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TableBottomContent } from './TableBottomContent'
 import { TableTopContent } from './TableTopContent'
@@ -29,6 +30,7 @@ import {
   DataTableProvider
 } from './context/DataTableProvider'
 import { DataTableError } from './errors/DataTableError'
+import { useSearchParams } from 'react-router-dom'
 
 type DataTableProps<TData, TValue> = Pick<
   DataTableContext<TData>,
@@ -63,18 +65,30 @@ export const DataTable = <TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     ...hiddenColumns?.reduce((acc, column) => ({ ...acc, [column]: false }), {})
   })
-  const [{ pageIndex, pageSize }, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: Number(searchParams.get('page')) - 1 || 0,
+    pageSize: Number(searchParams.get('size')) || 10
   })
 
   const pagination = useMemo(
     () => ({
-      pageIndex,
-      pageSize
+      pageIndex: pageIndex,
+      pageSize: pageSize
     }),
     [pageIndex, pageSize]
   )
+
+  useEffect(() => {
+    setSearchParams({
+      page: String(pageIndex < 0 ? 1 : pageIndex + 1),
+      size: String(pageSize)
+    })
+    setPagination({
+      pageIndex: pageIndex < 0 ? 0 : pageIndex,
+      pageSize: pageSize
+    })
+  }, [pageIndex, pageSize, setSearchParams])
 
   const table = useReactTable({
     data,
