@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import { IEmailService } from '../models/IEmailService'
+import { email } from '@/config/email'
 
 interface IMailOptions {
   from: string
@@ -9,15 +10,18 @@ interface IMailOptions {
   html?: string
 }
 
+
+
+
 export class NodeMailerService implements IEmailService {
   private init() {
     const transporter = nodemailer.createTransport({
-      host: 'smtp.hostinger.com',
-      port: 465,
+      host: email.HOSTINGER_EMAIL_HOST,
+      port: email.HOSTINGER_EMAIL_PORT,
       secure: true,
       auth: {
-        user: 'no-reply@lesse.com.br',
-        pass: 'hengek-fisrir-0cuhKo',
+        user: email.HOSTINGER_EMAIL_USER,
+        pass: email.HOSTINGER_EMAIL_PASSWORD,
       },
     })
 
@@ -33,7 +37,7 @@ export class NodeMailerService implements IEmailService {
     const transporter = this.init()
 
     let mailOptions: IMailOptions = {
-      from: 'no-reply@lesse.com.br',
+      from: email.HOSTINGER_EMAIL_USER!,
       to,
       subject,
     }
