@@ -17,7 +17,7 @@ export const NotificationAnimate = ({
           rotateZ: [0, -20, 20, -20, 20, -20, 20, 0],
           transition: { duration: 0.75, repeat: Infinity, repeatDelay: 20 }
         }
-      : {}
+      : { rotateZ: 0 }
   }, [count])
 
   return (

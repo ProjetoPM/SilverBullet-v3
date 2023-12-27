@@ -43,7 +43,7 @@ const notifications = {
 
 export const Notifications = () => {
   return (
-    <Popover placement="bottom" showArrow>
+    <Popover placement="bottom">
       <Badge
         content={notifications.count > 9 ? '9+' : notifications.count}
         isInvisible={notifications.count === 0}
@@ -62,9 +62,13 @@ export const Notifications = () => {
           </Button>
         </PopoverTrigger>
       </Badge>
-      <PopoverContent>
-        <div className="flex flex-col p-2 max-h-full sm:max-h-[40rem] overflow-x-auto">
-          <Listbox variant="flat" aria-label="Listbox workspaces notifications">
+      <PopoverContent className="flex flex-col overflow-x-auto !max-w-full p-2">
+        <>
+          <Listbox
+            variant="flat"
+            aria-label="Listbox workspaces notifications"
+            classNames={{ base: 'overflow-x-auto' }}
+          >
             <ListboxSection title={notifications.items.workspaces.label}>
               {notifications.items.workspaces.items.map((item, index) => (
                 <ListboxItem
@@ -100,7 +104,7 @@ export const Notifications = () => {
               ))}
             </ListboxSection>
           </Listbox>
-        </div>
+        </>
       </PopoverContent>
     </Popover>
   )

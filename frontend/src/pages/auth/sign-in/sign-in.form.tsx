@@ -52,24 +52,39 @@ export const SignInForm = () => {
         <CardBody>
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
-              <Input
-                {...form.register('email')}
-                type="text"
-                label={t('email.label')}
-                placeholder={t('email.placeholder')}
-                labelPlacement="outside"
-                errorMessage={form.formState.errors.email?.message}
-                autoComplete="email"
-                isRequired
+              <Controller
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="text"
+                    label={t('email.label')}
+                    placeholder={t('email.placeholder')}
+                    labelPlacement="outside"
+                    errorMessage={form.formState.errors.email?.message}
+                    autoComplete="email"
+                    onClear={() => field.onChange('')}
+                    classNames={{ clearButton: 'text-foreground-500' }}
+                    isRequired
+                    isClearable
+                  />
+                )}
               />
             </div>
             <div className="flex flex-col gap-1">
-              <InputPassword
-                {...form.register('password')}
-                label={t('password.label')}
-                labelPlacement="outside"
-                errorMessage={form.formState.errors.password?.message}
-                isRequired
+              <Controller
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <InputPassword
+                    {...field}
+                    label={t('password.label')}
+                    labelPlacement="outside"
+                    errorMessage={form.formState.errors.password?.message}
+                    isRequired
+                  />
+                )}
               />
             </div>
             <Controller

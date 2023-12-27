@@ -11,7 +11,7 @@ const setup = () => {
   })
 
   /**
-   * Interceptador de erros.
+   * Intercept errors.
    */
   api.interceptors.response.use(
     (response) => response,
@@ -24,8 +24,8 @@ const setup = () => {
   )
 
   /**
-   * Interceptar uma request para adicionar o token e a
-   * linguagem no header da requisição.
+   * Intercept a request to add the token and the language
+   * in the request header.
    */
   api.interceptors.request.use((config) => {
     const token =
