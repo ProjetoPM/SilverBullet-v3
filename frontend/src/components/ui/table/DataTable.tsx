@@ -81,11 +81,11 @@ export const DataTable = <TData, TValue>({
   useEffect(() => {
     setSearchParams({
       page: String(pageIndex < 0 ? 1 : pageIndex + 1),
-      size: String(pageSize)
+      size: String(pageSize > 50 ? 50 : pageSize)
     })
     setPagination({
       pageIndex: pageIndex < 0 ? 0 : pageIndex,
-      pageSize: pageSize
+      pageSize: pageSize > 50 ? 50 : pageSize
     })
   }, [pageIndex, pageSize, setSearchParams])
 

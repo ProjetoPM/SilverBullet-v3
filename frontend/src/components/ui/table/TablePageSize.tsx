@@ -17,7 +17,7 @@ export const TablePageSize = () => {
           value={table.getState().pagination.pageSize}
           onChange={(e) => table.setPageSize(+e.target.value)}
         >
-          {[5, 10, 15].map((value) => {
+          {[5, 10, 15, 30, 50].map((value) => {
             return (
               <option key={value} value={value}>
                 {value}
