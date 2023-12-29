@@ -31,7 +31,7 @@ export const SignUpForm = () => {
 
   const onSubmit = async (data: SignUp) => {
     if (data.password !== data.confirmPassword) {
-      toast.error(t('sign_up.passwords_dont_match'))
+      toast.error(t('password.dont_match'))
       return
     }
     await signUp.mutateAsync(data)

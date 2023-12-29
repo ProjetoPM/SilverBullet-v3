@@ -43,12 +43,7 @@ export const ForgotPassword = ({
 
   return (
     <>
-      <Text
-        size="sm"
-        color="primary"
-        className="flex items-center gap-0.5"
-        onPress={onOpen}
-      >
+      <Text size="sm" color="primary" onPress={onOpen}>
         {t('sign_in.forgot_password.label')}
       </Text>
       <Modal
