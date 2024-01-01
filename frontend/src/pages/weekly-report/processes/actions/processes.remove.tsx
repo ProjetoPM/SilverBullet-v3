@@ -1,4 +1,4 @@
-import { AlertModal } from '@/components/ui/AlertModal'
+import { AlertModal } from '@/components/UI/AlertModal'
 import { Button, useDisclosure } from '@nextui-org/react'
 import { Trash2 } from 'lucide-react'
 import { useProcesses } from '../context/ProcessProvider'

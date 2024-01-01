@@ -1,6 +1,6 @@
 import { ServerCrash, ShieldAlert, XCircle } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
-import { Text } from '../../label/Text'
+import { Text } from '../../Label/Text'
 
 export const DataTableError = () => {
   const { t } = useTranslation('table')

@@ -1,4 +1,4 @@
-import { GradeRating } from '@/components/ui/GradeRating'
+import { GradeRating } from '@/components/UI/GradeRating'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { frontend } from '@/routes/routes'

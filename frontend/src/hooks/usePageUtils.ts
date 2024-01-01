@@ -1,4 +1,4 @@
-import { BreadcrumbItemProps } from '@/components/ui/Breadcrumb'
+import { BreadcrumbItemProps } from '@/components/UI/Breadcrumb'
 import { frontend } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'

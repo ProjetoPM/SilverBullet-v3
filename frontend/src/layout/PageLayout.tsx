@@ -3,7 +3,7 @@ import {
   Breadcrumb,
   BreadcrumbItemProps,
   BreadcrumbProps
-} from '@/components/ui/Breadcrumb'
+} from '@/components/UI/Breadcrumb'
 import { cn } from '@nextui-org/react'
 import { ReactNode } from 'react'
 import { Helmet } from 'react-helmet-async'

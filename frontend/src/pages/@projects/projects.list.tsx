@@ -1,4 +1,4 @@
-import { DataTable } from '@/components/ui/table/DataTable'
+import { DataTable } from '@/components/UI/DataTable/DataTable'
 import { useFetch } from '@/hooks/useFetch'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'

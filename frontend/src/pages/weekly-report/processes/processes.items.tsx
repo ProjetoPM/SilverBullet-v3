@@ -1,4 +1,4 @@
-import { DefaultAnimate } from '@/components/ui/animation/DefaultAnimate'
+import { DefaultAnimate } from '@/components/UI/Animation/DefaultAnimate'
 import { cn } from '@nextui-org/react'
 import { useProcesses } from './context/ProcessProvider'
 import { ProcessItem } from './processes.item'

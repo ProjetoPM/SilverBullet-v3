@@ -1,4 +1,4 @@
-import { Text } from '@/components/ui/label/Text'
+import { Text } from '@/components/UI/Label/Text'
 import {
   Button,
   Chip,

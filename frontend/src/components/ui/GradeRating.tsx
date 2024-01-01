@@ -1,5 +1,5 @@
 import { Rating, RatingProps } from '@smastrom/react-rating'
-import { Text } from './label/Text'
+import { Text } from './Label/Text'
 
 type GradeRatingProps = RatingProps & {
   prepend?: string

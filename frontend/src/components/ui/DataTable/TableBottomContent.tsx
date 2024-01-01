@@ -1,5 +1,5 @@
 import { Pagination } from '@nextui-org/react'
-import { DefaultAnimate } from '../animation/DefaultAnimate'
+import { DefaultAnimate } from '../Animation/DefaultAnimate'
 import { useDataTable } from './context/DataTableProvider'
 
 export const TableBottomContent = () => {
