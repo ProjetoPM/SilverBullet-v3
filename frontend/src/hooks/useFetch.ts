@@ -2,7 +2,6 @@ import { api } from '@/services/api'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/helpers/replace-params'
 import { useMemo } from 'react'
-import { toast } from 'sonner'
 import {
   UseQueryOptions,
   useMutation,
@@ -10,27 +9,24 @@ import {
   useQueryClient
 } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { useMutate } from './useMutate'
 import { useToken } from './useToken'
 
-type CommonProps = {
-  params?: (string | undefined)[]
-  options?: UseQueryOptions
-}
+type Keys = [string, ...(string | undefined)[]]
 
-type AppendOrParamsProps = {
+type CommonProps = {
+  params?: Keys
+  options?: UseQueryOptions
   append?: string
-  params?: (string | undefined)[]
+  useWorkspaceId?: boolean
+  useProjectId?: boolean
 }
 
 type FetchProps = {
-  keys: string | string[]
-  get?: CommonProps & {
-    append?: string
-  }
-  list?: CommonProps & {
-    append?: string
-  }
+  keys: Keys
+  get?: CommonProps
+  list?: CommonProps
 }
 
 type UseFetchProps = {
@@ -38,8 +34,6 @@ type UseFetchProps = {
   fetch?: FetchProps
   redirectTo?: string
   invalidateQueries?: string[]
-  useWorkspaceId?: boolean
-  useProjectId?: boolean
 }
 
 type MutateProps = {
@@ -64,9 +58,7 @@ export const useFetch = <T>({
   baseUrl,
   fetch,
   redirectTo,
-  invalidateQueries,
-  useWorkspaceId,
-  useProjectId
+  invalidateQueries
 }: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
@@ -74,16 +66,18 @@ export const useFetch = <T>({
   const { isExpired: isTokenExpired } = useToken()
 
   const ids = useMemo(() => {
-    const _workspaceId = WorkspaceStore.getWorkspaceId()
-    const _projectId = WorkspaceStore.getProjectId()
+    const workspaceId = WorkspaceStore.getWorkspaceId()
+    const projectId = WorkspaceStore.getProjectId()
 
     const result = [
-      useWorkspaceId ? _workspaceId : undefined,
-      useProjectId ? _projectId : undefined
+      fetch?.get?.useWorkspaceId ? workspaceId : undefined,
+      fetch?.get?.useProjectId ? projectId : undefined,
+      fetch?.list?.useWorkspaceId ? workspaceId : undefined,
+      fetch?.list?.useProjectId ? projectId : undefined
     ]
 
     return result.filter((item) => !!item)
-  }, [useWorkspaceId, useProjectId])
+  }, [fetch?.get, fetch?.list])
 
   /**
    * Método para buscar um registro, seja ele qual for.
@@ -91,7 +85,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>(
-    [...(fetch?.keys ?? ''), ...ids],
+    [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -114,7 +108,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>(
-    [...(fetch?.keys ?? ''), ...ids],
+    [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
     async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -264,17 +258,17 @@ export const useFetch = <T>({
  */
 const _useAppendOrParams = (
   baseUrl: string,
-  { append, params }: AppendOrParamsProps = {}
+  { append, params }: Omit<CommonProps, 'options'> = {}
 ) => {
-  let _baseUrl = baseUrl
+  let updateUrl = baseUrl
 
   if (params) {
-    _baseUrl = replaceParams(baseUrl, params)
+    updateUrl = replaceParams(baseUrl, params)
   }
 
   if (append) {
-    _baseUrl += `/${append}`
+    updateUrl += `/${append}`
   }
 
-  return _baseUrl
+  return updateUrl
 }
