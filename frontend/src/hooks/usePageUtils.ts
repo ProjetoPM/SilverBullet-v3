@@ -57,5 +57,5 @@ export const usePageUtils = (
     return content
   }
 
-  return { id, t, title, breadcrumbs }
+  return { id, ns, t, title, breadcrumbs }
 }

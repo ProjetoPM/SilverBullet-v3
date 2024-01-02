@@ -1,12 +1,15 @@
 import { Loading } from '@/@components/Loading'
 import { Breadcrumb, BreadcrumbItemProps } from '@/@components/UI/Breadcrumb'
+import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
+import { PageLayoutProvider } from './PageLayoutProvider'
 import { description } from './meta'
-import { cn } from '@/lib/utils'
 
 export type PageLayoutProps = {
   title: string
+  ns?: string | string[]
   children?: ReactNode
   isLoading?: boolean
   endContent?: ReactNode
@@ -26,8 +29,11 @@ export const PageLayout = ({
   className,
   isLoading = false,
   isAuth = false,
-  breadcrumbProps
+  breadcrumbProps,
+  ns
 }: PageLayoutProps) => {
+  const { t } = useTranslation(ns)
+
   if (isLoading) {
     return <Loading />
   }
@@ -49,7 +55,9 @@ export const PageLayout = ({
           <div className="self-end xss:self-auto">{endContent}</div>
         </>
       )}
-      <main className={cn('w-full', className)}>{children}</main>
+      <PageLayoutProvider t={t} ns={ns}>
+        <main className={cn('w-full', className)}>{children}</main>
+      </PageLayoutProvider>
     </>
   )
 }

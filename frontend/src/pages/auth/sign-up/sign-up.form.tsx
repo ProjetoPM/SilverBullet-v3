@@ -1,6 +1,7 @@
 import { InputPassword } from '@/@components/UI/Input/InputPassword'
 import { Text } from '@/@components/UI/Label/Text'
 import { useAuth } from '@/hooks/useAuth'
+import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -16,12 +17,11 @@ import {
 } from '@nextui-org/react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { useTranslation } from 'react-i18next'
 import { PasswordChecker } from '../components/PasswordChecker'
 import { SignUp, SignUpSchema } from './sign-up.schema'
 
 export const SignUpForm = () => {
-  const { t } = useTranslation('auth')
+  const { t } = usePageLayout()
   const { signUp } = useAuth()
 
   const form = useForm<SignUp>({
@@ -39,7 +39,7 @@ export const SignUpForm = () => {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-      <Card className="p-3 dark:bg-default-100/60">
+      <Card className="dark:bg-default-100/60">
         <CardHeader className="ml-2 flex gap-4">
           <div className="flex flex-col gap-0.{5}">
             <h1 className="text-2xl font-bold">{t('sign_up.title')}</h1>
@@ -98,11 +98,10 @@ export const SignUpForm = () => {
             <Controller
               control={form.control}
               name="termsAndConditions"
-              render={({ field: { value, onChange, ...rest } }) => (
+              render={({ field: { value, ...rest } }) => (
                 <Checkbox
                   color="primary"
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
+                  defaultChecked={value}
                   {...rest}
                   isRequired
                 >
