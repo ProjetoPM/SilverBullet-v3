@@ -78,7 +78,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
       <SubmitButton
         isEdit={!!data}
         fnResetButton={form.reset}
-        isLoading={create.isLoading || update.isLoading}
+        isLoading={create.isPending || update.isPending}
       />
     </form>
   )

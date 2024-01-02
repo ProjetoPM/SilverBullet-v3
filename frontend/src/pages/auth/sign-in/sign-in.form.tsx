@@ -108,7 +108,7 @@ export const SignInForm = () => {
             type="submit"
             variant="solid"
             color="primary"
-            isLoading={signIn.isLoading}
+            isLoading={signIn.isPending}
             fullWidth
           >
             {t('sign_in.btn')}

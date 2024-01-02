@@ -76,7 +76,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
       <SubmitButton
         isEdit={!!data}
         fnResetButton={form.reset}
-        isLoading={create.isLoading || update.isLoading}
+        isLoading={create.isPending || update.isPending}
       />
     </form>
   )
