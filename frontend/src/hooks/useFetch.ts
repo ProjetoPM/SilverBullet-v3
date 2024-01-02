@@ -90,7 +90,7 @@ export const useFetch = <T>({
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.get)
       return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
-    enabled: !!fetch?.get
+    enabled: !!fetch?.get?.append
   })
 
   /**

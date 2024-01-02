@@ -49,7 +49,7 @@ export const PageLayout = ({
           <div className="self-end xss:self-auto">{endContent}</div>
         </>
       )}
-      <main className={cn('w-full h-full', className)}>{children}</main>
+      <main className={cn('w-full', className)}>{children}</main>
     </>
   )
 }

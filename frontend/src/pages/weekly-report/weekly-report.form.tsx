@@ -1,6 +1,6 @@
 import { GridLayout } from '@/@components/UI/GridLayout'
 import { SubmitButton } from '@/@components/UI/SubmitButton'
-import { RichEditor } from '@/@components/UI/RichEditor'
+import { RichEditor } from '@/@components/UI/RichEditor/RichEditor'
 import { Text } from '@/@components/UI/Label/Text'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { ct } from '@/utils/helpers/replace-html-tags'

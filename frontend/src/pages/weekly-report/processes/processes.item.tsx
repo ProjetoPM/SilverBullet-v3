@@ -1,5 +1,5 @@
 import { GridLayout } from '@/@components/UI/GridLayout'
-import { RichEditor } from '@/@components/UI/RichEditor'
+import { RichEditor } from '@/@components/UI/RichEditor/RichEditor'
 import { Text } from '@/@components/UI/Label/Text'
 import { Chip } from '@nextui-org/react'
 import { Controller, FieldArrayWithId } from 'react-hook-form'

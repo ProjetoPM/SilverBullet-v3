@@ -12,8 +12,6 @@ export const LinkBubbleButton = ({ editor }: LinkMenuProps) => {
     const previousUrl = editor.getAttributes('link').href
     const url = window.prompt('URL', previousUrl)
 
-    console.log(url)
-
     if (url === null) {
       return
     }

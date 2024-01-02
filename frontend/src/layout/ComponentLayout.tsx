@@ -47,8 +47,8 @@ export const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
       {layout === 'simple' && (
         <div className="flex flex-col">
           <Header />
-          <main className="h-full w-full max-w-screen-2xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[245px,1fr] min-h-[calc(100vh-4.25rem)]">
+          <main className="h-full w-full max-w-screen-2xl mx-auto px-1.5">
+            <div className="grid grid-cols-1 lg:grid-cols-[245px,1fr] min-h-[calc(100vh-4rem)]">
               <div className="hidden lg:flex">
                 <SidebarContainer>
                   {location.pathname.includes('settings') && <ProfileSidebar />}
