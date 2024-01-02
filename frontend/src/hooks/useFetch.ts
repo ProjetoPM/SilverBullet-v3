@@ -1,17 +1,15 @@
 import { api } from '@/services/api'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/helpers/replace-params'
-import { useMemo } from 'react'
 import {
   UseQueryOptions,
   useMutation,
   useQuery,
   useQueryClient
-} from 'react-query'
+} from '@tanstack/react-query'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
 import { useMutate } from './useMutate'
-import { useToken } from './useToken'
 
 type Keys = [string, ...(string | undefined)[]]
 
@@ -63,7 +61,6 @@ export const useFetch = <T>({
   const { promise } = useMutate()
   const queryClient = useQueryClient()
   const redirect = useNavigate()
-  const { isExpired: isTokenExpired } = useToken()
 
   const ids = useMemo(() => {
     const workspaceId = WorkspaceStore.getWorkspaceId()
@@ -84,46 +81,34 @@ export const useFetch = <T>({
    *
    * @returns Promise com o resultado da requisição.
    */
-  const get = useQuery<T>(
-    [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
-    async () => {
+  const get = useQuery<T>({
+    queryKey: [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
+    queryFn: async () => {
       /**
        * Determinar se a rota deve ser alterada.
        */
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.get)
       return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
-    {
-      enabled: !!fetch?.get?.append,
-      onError: (err: unknown) =>
-        !isTokenExpired() &&
-        toast.error((err as Error)?.message, { id: 'error' }),
-      ...(fetch?.get?.options as UseQueryOptions<T>)
-    }
-  )
+    enabled: !!fetch?.get
+  })
 
   /**
    * Método para listar todos os registros, seja ele qual for.
    *
    * @returns Promise com o resultado da requisição.
    */
-  const list = useQuery<T>(
-    [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
-    async () => {
+  const list = useQuery<T>({
+    queryKey: [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
+    queryFn: async () => {
       /**
        * Determinar se a rota deve ser alterada.
        */
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.list)
       return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
-    {
-      enabled: !!fetch?.list,
-      onError: (err: unknown) =>
-        !isTokenExpired() &&
-        toast.error((err as Error)?.message, { id: 'error' }),
-      ...(fetch?.list?.options as UseQueryOptions<T>)
-    }
-  )
+    enabled: !!fetch?.list
+  })
 
   /**
    * Método para criar um novo registro, seja ele qual for.
@@ -131,27 +116,25 @@ export const useFetch = <T>({
    * @param data Dados do registro a ser criado.
    * @returns Promise com o resultado da requisição.
    */
-  const create = useMutation(
-    async (data: T & Omit<MutateProps, '_id'>) => {
+  const create = useMutation({
+    mutationFn: async (data: T & Omit<MutateProps, '_id'>) => {
       const url = `${baseUrl}/new`
       const result = Promise.all([data.fn?.(), promise(api.post(url, data))])
       return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalFn }) => {
-        await internalFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo)
-        }
-      },
-      onSettled: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: invalidateQueries ?? fetch?.keys
-        })
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   /**
    * Método para atualizar um registro, seja ele qual for.
@@ -159,27 +142,25 @@ export const useFetch = <T>({
    * @param data Dados do registro a ser atualizado.
    * @returns Promise com o resultado da requisição.
    */
-  const update = useMutation(
-    async (data: T & MutateProps) => {
+  const update = useMutation({
+    mutationFn: async (data: T & MutateProps) => {
       const url = `${baseUrl}/${data._id}/edit`
       const result = Promise.all([data.fn?.(), promise(api.put(url, data))])
       return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalFn }) => {
-        await internalFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo)
-        }
-      },
-      onSettled: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: invalidateQueries ?? fetch?.keys
-        })
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   /**
    * Método para remover um registro, seja ele qual for.
@@ -187,27 +168,25 @@ export const useFetch = <T>({
    * @param data Dados do registro a ser removido.
    * @returns Promise com o resultado da requisição.
    */
-  const remove = useMutation(
-    async (data: RemoveProps<T>) => {
+  const remove = useMutation({
+    mutationFn: async (data: RemoveProps<T>) => {
       const url = `${baseUrl}/${data._id}`
       const result = Promise.all([data.fn?.(), promise(api.delete(url))])
       return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalFn }) => {
-        await internalFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo)
-        }
-      },
-      onSettled: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: invalidateQueries ?? fetch?.keys
-        })
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   /**
    * Método para remover um ou mais registros, sejam quais forem.
@@ -215,8 +194,8 @@ export const useFetch = <T>({
    * @param data Registros a serem removidos.
    * @returns Promise com o resultado da requisição.
    */
-  const removeMany = useMutation(
-    async (
+  const removeMany = useMutation({
+    mutationFn: async (
       data: (
         | Omit<RemoveProps<T>, 'fn' | 'internalFn'>
         | Omit<RemoveProps<T>, 'fn' | 'internalFn'>[]
@@ -230,21 +209,19 @@ export const useFetch = <T>({
       ])
       return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalFn }) => {
-        await internalFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo)
-        }
-      },
-      onSettled: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: invalidateQueries ?? fetch?.keys
-        })
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   return { create, update, remove, removeMany, get, list }
 }
