@@ -5,12 +5,12 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "npm run translate && vite build",
+		"build": "i18nexus pull && tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
 		"format": "biome format ./src",
 		"tests": "vitest",
-		"translate": "i18nexus pull -p ./src/locales -k ukfs6l_hscV-fNJX02_I0Q"
+		"translate": "i18nexus pull -p ./src/locales"
 	},
 	"dependencies": {
 		"@headlessui/react": "^1.7.17",

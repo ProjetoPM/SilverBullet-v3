@@ -5,18 +5,10 @@ import { z } from 'zod'
 import { makeZodI18nMap } from 'zod-i18n-map'
 import { languageDetector } from './language-detector'
 import { zod } from './zod'
+import { configs } from '@/configs'
 
 export type Lang = 'en' | 'pt'
 export const langs: Array<Lang> = ['en', 'pt']
-
-const LOAD_PATH =
-  import.meta.env.VITE_PRODUCTION === 'false'
-    ? '/src/locales/{{lng}}/{{ns}}.json'
-    : '/dist/public/locales/{{lng}}/{{ns}}.json'
-
-if (!LOAD_PATH) {
-  throw new Error('LOAD_PATH_I18N not found. Check .env file.')
-}
 
 const i18n = i18next
   .use(HttpBackend)
@@ -29,7 +21,7 @@ const i18n = i18next
     defaultNS: 'default',
     supportedLngs: langs,
     backend: {
-      loadPath: LOAD_PATH
+      loadPath: configs.i18n.loadPath,
     },
     resources: zod
   })
