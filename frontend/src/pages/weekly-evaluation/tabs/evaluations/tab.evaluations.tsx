@@ -4,14 +4,12 @@ import { frontend } from '@/routes/routes'
 import { WeeklyEvaluationForm } from './tab.evaluations.form'
 
 export const WeeklyEvaluationPage = () => {
-  const { t, title, breadcrumb } = usePageUtils('weekly-report', {
-    dynamic: true
-  })
+  const { t, title, breadcrumbs } = usePageUtils('weekly-report')
 
   return (
     <PageLayout
-      title={title()}
-      breadcrumb={breadcrumb({
+      title={title({ dynamic: true })}
+      breadcrumbs={breadcrumbs({
         segments: [
           { label: t('page.title'), link: frontend.weekly_evaluation.index }
         ]

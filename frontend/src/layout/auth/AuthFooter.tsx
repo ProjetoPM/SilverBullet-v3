@@ -1,21 +1,27 @@
+import { Link } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 
 export const AuthFooter = () => {
   const { t } = useTranslation('auth')
 
   return (
-    <div className="flex flex-col md:flex-row items-center md:items-start md:justify-between mx-10">
+    <footer className="flex flex-col items-center md:flex-row md:items-start md:justify-between mx-10">
       <small className="text-center text-xs">
         {t('footer.privacy_policy')}
       </small>
-      <small className="text-center text-xs">
+      <small className="text-center text-xs flex flex-wrap justify-center gap-0.5">
         <span>{t('footer.copyright')} &copy; </span>
-        <Link to="https://lesse.com.br/site/">
-          Silver Bullet, {new Date().getFullYear()}.{' '}
+        <Link
+          href="https://lesse.com.br/site/"
+          className="text-xs"
+          color="foreground"
+          underline="hover"
+          isExternal
+        >
+          Silver Bullet, {new Date().getFullYear()}.
         </Link>
         <span>{t('footer.all_rights_reserved')}.</span>
       </small>
-    </div>
+    </footer>
   )
 }

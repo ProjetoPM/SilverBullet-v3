@@ -5,12 +5,12 @@ import { columns } from '@/pages/@projects/table/projects.columns'
 import { frontend } from '@/routes/routes'
 
 export const TabMetrics = () => {
-  const { t, title, breadcrumb } = usePageUtils('weekly-evaluation')
+  const { t, title, breadcrumbs } = usePageUtils('weekly-evaluation')
 
   return (
     <PageLayout
-      title={title('tabs.metrics.label')}
-      breadcrumb={breadcrumb({
+      title={title({ override: 'tabs.metrics.label' })}
+      breadcrumbs={breadcrumbs({
         segments: [
           {
             label: t('tabs.evaluations.label'),

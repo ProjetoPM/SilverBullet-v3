@@ -6,7 +6,7 @@ export const SignInPage = () => {
   const { t } = useTranslation('auth')
 
   return (
-    <PageLayout title={t('sign_in.title')}>
+    <PageLayout title={t('sign_in.title')} isAuth>
       <SignInForm />
     </PageLayout>
   )

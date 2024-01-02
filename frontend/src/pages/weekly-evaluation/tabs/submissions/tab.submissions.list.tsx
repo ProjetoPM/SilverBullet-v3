@@ -6,7 +6,7 @@ import { frontend } from '@/routes/routes'
 import { useEffect } from 'react'
 
 export const TabSubmissions = () => {
-  const { t, title, breadcrumb } = usePageUtils('weekly-evaluation')
+  const { title, breadcrumbs } = usePageUtils('weekly-evaluation')
 
   useEffect(() => {
     console.log('submissions')
@@ -14,11 +14,11 @@ export const TabSubmissions = () => {
 
   return (
     <PageLayout
-      title={title('tabs.submissions.label')}
-      breadcrumb={breadcrumb({
+      title={title({ override: 'tabs.submissions.label' })}
+      breadcrumbs={breadcrumbs({
         segments: [
           {
-            label: t('tabs.evaluations.label'),
+            label: title(),
             link: frontend.weekly_evaluation.tabs.evaluations
           }
         ],

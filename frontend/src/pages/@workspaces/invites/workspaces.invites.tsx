@@ -7,25 +7,25 @@ import { columns } from './table/workspaces.invites.columns'
 import { WorkspaceInviteToolbar } from './workspaces.toolbar'
 
 export const WorkspacesInvitesListPage = () => {
-  const { t, title, breadcrumb } = usePageUtils('workspaces', {
-    title: 'page.invites'
-  })
+  const { title, breadcrumbs } = usePageUtils('workspaces')
 
   return (
     <PageLayout
-      title={title()}
-      breadcrumb={breadcrumb({
-        segments: [{ label: t('page.title'), link: frontend.workspaces.index }],
+      title={title({ override: 'page.invites' })}
+      breadcrumbs={breadcrumbs({
+        segments: [{ label: title(), link: frontend.workspaces.index }],
         appendTitle: true
       })}
     >
-      <WorkspaceInviteProvider>
-        <DataTable
-          columns={columns}
-          data={[]}
-          toolbar={<WorkspaceInviteToolbar />}
-        />
-      </WorkspaceInviteProvider>
+      <DataTable
+        columns={columns}
+        data={[]}
+        toolbar={
+          <WorkspaceInviteProvider>
+            <WorkspaceInviteToolbar />
+          </WorkspaceInviteProvider>
+        }
+      />
     </PageLayout>
   )
 }
