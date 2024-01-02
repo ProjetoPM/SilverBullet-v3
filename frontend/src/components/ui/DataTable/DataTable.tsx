@@ -23,14 +23,14 @@ import {
 } from '@tanstack/react-table'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import { TableBottomContent } from './TableBottomContent'
-import { TableTopContent } from './TableTopContent'
+import { TableTopContent, TableTopContentProps } from './TableTopContent'
 import {
   DataTableContext,
   DataTableProvider
 } from './context/DataTableProvider'
 import { DataTableError } from './errors/DataTableError'
-import { useSearchParams } from 'react-router-dom'
 
 type DataTableProps<TData, TValue> = Pick<
   DataTableContext<TData>,
@@ -40,7 +40,7 @@ type DataTableProps<TData, TValue> = Pick<
   data?: TData[]
   hiddenColumns?: Extract<keyof TData, string>[]
 } & {
-  toolbar?: React.ReactNode
+  toolbar?: TableTopContentProps['toolbar']
   isLoading?: boolean
   isError?: boolean
 }
@@ -126,7 +126,7 @@ export const DataTable = <TData, TValue>({
       <Table
         aria-label="list table"
         isHeaderSticky
-        topContent={<TableTopContent toolbar={toolbar} />}
+        topContent={toolbar && <TableTopContent toolbar={toolbar} />}
         topContentPlacement="outside"
         bottomContent={<TableBottomContent />}
         bottomContentPlacement="outside"

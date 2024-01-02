@@ -1,16 +1,20 @@
 import { AnimatePresence } from 'framer-motion'
 import { Search } from 'lucide-react'
-import { useCallback } from 'react'
-import { DebouncedInput } from '../DebouncedInput'
+import { isValidElement, useCallback } from 'react'
 import { DefaultAnimate } from '../Animation/DefaultAnimate'
+import { DebouncedInput } from '../DebouncedInput'
 import { TableDeleteButton } from './TableDeleteButton'
 import { TableFilterButton } from './TableFilterButton'
 import { TablePageSize } from './TablePageSize'
 import { useDataTable } from './context/DataTableProvider'
+import {
+  DataTableToolbarButtons,
+  ToolbarProps
+} from './helpers/DataTableToolbarButtons'
 import { DataTableViewOptions } from './helpers/DataTableViewOptions'
 
-type TableTopContentProps = {
-  toolbar?: React.ReactNode
+export type TableTopContentProps = {
+  toolbar: ToolbarProps | JSX.Element
 }
 
 export function TableTopContent({ toolbar }: TableTopContentProps) {
@@ -87,7 +91,13 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
             </AnimatePresence>
           </div>
           {filter.actions && (
-            <div className="flex self-end sm:self-auto">{toolbar}</div>
+            <div className="flex self-end sm:self-auto">
+              {isValidElement(toolbar) ? (
+                toolbar
+              ) : (
+                <DataTableToolbarButtons {...(toolbar as ToolbarProps)} />
+              )}
+            </div>
           )}
         </div>
         <TablePageSize />
