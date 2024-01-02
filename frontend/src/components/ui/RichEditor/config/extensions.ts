@@ -7,6 +7,9 @@ import i18next from 'i18next'
 
 export const extensions = [
   StarterKit.configure({
+    dropcursor: false,
+    hardBreak: false,
+    gapcursor: false,
     blockquote: false,
     codeBlock: false,
     horizontalRule: false,
