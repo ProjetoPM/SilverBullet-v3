@@ -30,7 +30,7 @@ const langs: Language[] = [
   }
 ]
 
-export const LocaleSwitcher = () => {
+export const LanguageSwitcher = () => {
   const { i18n } = useTranslation()
 
   const resetZodErrors = () => {
