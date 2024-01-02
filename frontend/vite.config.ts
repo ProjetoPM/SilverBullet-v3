@@ -10,7 +10,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@public': path.resolve(__dirname, './public')
+      '@public': path.resolve(__dirname, './public'),
+      '@routes': path.resolve(__dirname, './src/routes')
     }
   }
 })
