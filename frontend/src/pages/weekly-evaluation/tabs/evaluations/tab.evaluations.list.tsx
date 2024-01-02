@@ -5,7 +5,7 @@ import { columns } from '@/pages/@projects/table/projects.columns'
 import { useEffect } from 'react'
 
 export const TabEvaluations = () => {
-  const { title, breadcrumb } = usePageUtils('weekly-evaluation')
+  const { title, breadcrumbs } = usePageUtils('weekly-evaluation')
 
   useEffect(() => {
     console.log('evaluations')
@@ -13,8 +13,8 @@ export const TabEvaluations = () => {
 
   return (
     <PageLayout
-      title={title('tabs.evaluations.label')}
-      breadcrumb={breadcrumb({
+      title={title({ override: 'tabs.evaluations.label' })}
+      breadcrumbs={breadcrumbs({
         appendTitle: true
       })}
       breadcrumbProps={{

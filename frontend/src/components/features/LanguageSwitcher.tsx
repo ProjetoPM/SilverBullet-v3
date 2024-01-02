@@ -19,12 +19,12 @@ type Language = {
 
 const langs: Language[] = [
   {
-    code: 'en-US',
+    code: 'en',
     label: 'English',
     link: 'https://flagcdn.com/us.svg'
   },
   {
-    code: 'pt-BR',
+    code: 'pt',
     label: 'Português',
     link: 'https://flagcdn.com/br.svg'
   }

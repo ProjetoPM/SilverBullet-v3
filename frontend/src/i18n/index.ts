@@ -6,8 +6,8 @@ import { makeZodI18nMap } from 'zod-i18n-map'
 import { languageDetector } from './language-detector'
 import { zod } from './zod'
 
-export type Lang = 'en-US' | 'pt-BR'
-export const langs: Array<Lang> = ['en-US', 'pt-BR']
+export type Lang = 'en' | 'pt'
+export const langs: Array<Lang> = ['en', 'pt']
 
 const LOAD_PATH =
   import.meta.env.VITE_PRODUCTION === 'false'
@@ -24,7 +24,7 @@ const i18n = i18next
   .use(initReactI18next)
   .init({
     partialBundledLanguages: true,
-    fallbackLng: 'pt-BR',
+    fallbackLng: 'pt',
     ns: ['default', 'errors'],
     defaultNS: 'default',
     supportedLngs: langs,

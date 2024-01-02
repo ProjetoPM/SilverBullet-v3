@@ -21,7 +21,10 @@ export const ProjectListPage = () => {
   })
 
   return (
-    <PageLayout title={title()} breadcrumbs={breadcrumbs()}>
+    <PageLayout
+      title={title()}
+      breadcrumbs={breadcrumbs({ appendTitle: true })}
+    >
       <DataTable
         ns={['projects']}
         columns={columns}

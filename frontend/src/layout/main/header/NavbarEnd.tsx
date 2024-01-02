@@ -1,6 +1,6 @@
 import { LanguageSwitcher } from '@/components/Features/LanguageSwitcher'
+import { ThemeSwitcher } from '@/components/Features/ThemeSwitcher'
 import { DashboardMenu } from '@/components/UI/Dashboard/DashboardMenu'
-import { ThemeSwitcher } from '@/components/features/ThemeSwitcher'
 import { mainSidebarItems } from '@/constants/sidebar-items'
 import { useScreen } from '@/hooks/useScreen'
 import { useDashboardStore } from '@/stores/useDashboardStore'

@@ -1,6 +1,6 @@
 import { LanguageSwitcher } from '@/components/Features/LanguageSwitcher'
 import { Logo } from '@/components/Logo'
-import { ThemeSwitcher } from '@/components/features/ThemeSwitcher'
+import { ThemeSwitcher } from '@/components/Features/ThemeSwitcher'
 
 export const AuthHeader = () => {
   return (
