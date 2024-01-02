@@ -10,7 +10,7 @@ type InputPasswordProps = InputProps & {
 }
 
 export const InputPassword = forwardRef<HTMLInputElement, InputPasswordProps>(
-  ({ icons, ...props }: InputPasswordProps, ref) => {
+  ({ icons, value, ...props }: InputPasswordProps, ref) => {
     const id = useId()
     const [isVisible, setVisible] = useState(false)
 
@@ -25,6 +25,7 @@ export const InputPassword = forwardRef<HTMLInputElement, InputPasswordProps>(
         type={isVisible ? 'text' : 'password'}
         autoComplete="current-password"
         classNames={{ inputWrapper: 'pr-1' }}
+        defaultValue={value}
         endContent={
           <TogglePasswordButton
             id={`${id}-toggle-password`}
