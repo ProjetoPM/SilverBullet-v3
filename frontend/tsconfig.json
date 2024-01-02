@@ -25,10 +25,9 @@
     "paths": {
       "@/*": ["src/*"],
       "@public/*": ["public/*"],
-      "@routes": ["src/routes/routes"],
-      "@routes-api": ["src/routes/api/routes.api"]
+      "@routes": ["src/routes/routes"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*.{ts,tsx}"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
