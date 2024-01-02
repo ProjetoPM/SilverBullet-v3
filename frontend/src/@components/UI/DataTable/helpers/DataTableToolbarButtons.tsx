@@ -26,7 +26,7 @@ export const DataTableToolbarButtons = ({
   button,
   extraButtons
 }: ToolbarProps) => {
-  const { t } = useDataTable()
+  const { t, ns } = useDataTable()
 
   return (
     <ButtonGroup variant="flat">
@@ -37,7 +37,7 @@ export const DataTableToolbarButtons = ({
         as={Link}
         href={button.href}
       >
-        {button.label ?? t('page.new')}
+        {button.label ?? t('page.new', { ns })}
       </Button>
       {extraButtons && (
         <Dropdown placement="bottom-end">

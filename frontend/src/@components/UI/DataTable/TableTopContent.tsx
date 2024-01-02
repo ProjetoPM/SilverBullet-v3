@@ -1,3 +1,4 @@
+import { ScrollShadow, cn } from '@nextui-org/react'
 import { AnimatePresence } from 'framer-motion'
 import { Search } from 'lucide-react'
 import { isValidElement, useCallback } from 'react'
@@ -12,6 +13,7 @@ import {
   ToolbarProps
 } from './helpers/DataTableToolbarButtons'
 import { DataTableViewOptions } from './helpers/DataTableViewOptions'
+import { useScreen } from '@/hooks/useScreen'
 
 export type TableTopContentProps = {
   toolbar: ToolbarProps | JSX.Element
@@ -19,6 +21,7 @@ export type TableTopContentProps = {
 
 export function TableTopContent({ toolbar }: TableTopContentProps) {
   const { t, filter, table, asyncFn, internalLogicFn } = useDataTable()
+  const { screenX } = useScreen()
 
   /**
    * Deleta os itens selecionados. Esse método só irá funcionar
@@ -77,8 +80,14 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
   return (
     <>
       <div className="space-y-3">
-        <div className="flex justify-between gap-2">
-          <div className="flex gap-2 items-center overflow-x-auto">
+        <div className="flex justify-between items-center gap-2">
+          <ScrollShadow
+            className={cn('flex items-center gap-2', {
+              'overflow-visible': screenX > 768
+            })}
+            orientation="horizontal"
+            visibility={screenX > 768 ? 'none' : 'auto'}
+          >
             <TableFilterButton />
             <AnimatePresence initial={false}>
               {filters()
@@ -89,7 +98,7 @@ export function TableTopContent({ toolbar }: TableTopContentProps) {
                   </DefaultAnimate>
                 ))}
             </AnimatePresence>
-          </div>
+          </ScrollShadow>
           {filter.actions && (
             <div className="flex self-end sm:self-auto">
               {isValidElement(toolbar) ? (
