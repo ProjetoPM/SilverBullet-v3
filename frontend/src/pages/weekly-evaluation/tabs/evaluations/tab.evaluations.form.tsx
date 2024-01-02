@@ -1,6 +1,6 @@
 import { GridLayout } from '@/components/UI/GridLayout'
 import { SubmitButton } from '@/components/UI/SubmitButton'
-import { DatePicker } from '@/components/UI/DatePicker/DatePicker'
+import { DatePicker } from '@/components/UI/DatePicker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'

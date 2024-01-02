@@ -1,6 +1,6 @@
 import { GridLayout } from '@/components/UI/GridLayout'
 import { SubmitButton } from '@/components/UI/SubmitButton'
-import { RichEditor } from '@/components/UI/RichEditor/RichEditor'
+import { RichEditor } from '@/components/UI/RichEditor'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
