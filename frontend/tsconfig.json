@@ -28,6 +28,6 @@
       "@routes": ["src/routes/routes"]
     }
   },
-  "include": ["src", "src/**/*.{js,jsx,ts,tsx}"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

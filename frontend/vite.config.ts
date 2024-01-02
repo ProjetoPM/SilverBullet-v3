@@ -1,17 +1,10 @@
 import react from '@vitejs/plugin-react'
-import path from 'path'
 import { defineConfig } from 'vite'
+import tsConfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsConfigPaths()],
   server: {
     port: 5500
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@public': path.resolve(__dirname, './public'),
-      '@routes': path.resolve(__dirname, './src/routes')
-    }
   }
 })

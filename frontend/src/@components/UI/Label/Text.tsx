@@ -1,7 +1,7 @@
 import { ComponentPropsWithRef } from 'react'
 import { usePress } from 'react-aria'
 import { TextAs, TextBaseProps } from './types'
-import { useLabel } from './use-label'
+import { useLabel } from './hook/useLabel'
 
 type TextProps<T extends TextAs> = ComponentPropsWithRef<T> & TextBaseProps
 

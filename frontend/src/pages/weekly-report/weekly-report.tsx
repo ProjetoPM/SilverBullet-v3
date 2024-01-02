@@ -1,4 +1,4 @@
-import { GradeRating } from '@/components/UI/GradeRating'
+import { GradeRating } from '@/@components/UI/GradeRating'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { WeeklyReportProvider } from './processes/context/WeeklyReportProvider'
