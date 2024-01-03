@@ -13,10 +13,13 @@ export const GuestGuard = ({ children }: GuestGuardProps) => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
     if (token) {
       navigate(frontend.workspaces.index)
     }
-    setMounted(true)
   }, [navigate, token])
 
   return <>{isMounted && children}</>

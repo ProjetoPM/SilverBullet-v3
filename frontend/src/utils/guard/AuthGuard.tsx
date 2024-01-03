@@ -17,6 +17,10 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
   const { signOut } = useAuth()
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
     if (isExpired()) {
       toast.error(t('token_expired'), {
         id: AG_EXPIRED_TOKEN_ID,
@@ -24,7 +28,6 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
       })
       signOut()
     }
-    setMounted(true)
   }, [isExpired, signOut, t])
 
   return <>{isMounted && children}</>
