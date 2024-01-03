@@ -1,7 +1,6 @@
 import { useToken } from '@/hooks/useToken'
 import { frontend } from '@/routes/routes'
-import useUpdateEffect from 'beautiful-react-hooks/useUpdateEffect'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 type GuestGuardProps = {
@@ -13,7 +12,7 @@ export const GuestGuard = ({ children }: GuestGuardProps) => {
   const { token } = useToken()
   const navigate = useNavigate()
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (token) {
       navigate(frontend.workspaces.index)
     }

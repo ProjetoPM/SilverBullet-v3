@@ -1,11 +1,11 @@
+import { Form, FormEditor, FormField } from '@/@components/Form'
 import { GridLayout } from '@/@components/UI/GridLayout'
-import { RichEditor } from '@/@components/UI/RichEditor/RichEditor'
 import { SubmitButton } from '@/@components/UI/SubmitButton'
 import { useFetch } from '@/hooks/useFetch'
+import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
+import { useForm } from 'react-hook-form'
 import { WorkspaceData, WorkspaceSchema } from './workspaces.schema'
 
 type WorkspaceFormProps = {
@@ -13,7 +13,7 @@ type WorkspaceFormProps = {
 }
 
 export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
-  const { t } = useTranslation('workspaces')
+  const { t } = usePageLayout()
 
   const form = useForm<WorkspaceData>({
     mode: 'all',
@@ -36,34 +36,31 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   }
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-3"
-      noValidate
-    >
-      <GridLayout cols="1">
-        <fieldset>
-          <Controller
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-3"
+        noValidate
+      >
+        <GridLayout cols="1">
+          <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <RichEditor
+              <FormEditor
                 {...field}
                 label={t('name.label')}
                 placeholder={t('name.placeholder')}
-                errorMessage={form.formState.errors.name?.message}
                 options={{ limit: 100 }}
                 asNormalInput
               />
             )}
           />
-        </fieldset>
-        <fieldset>
-          <Controller
+          <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
-              <RichEditor
+              <FormEditor
                 {...field}
                 label={t('description.label')}
                 placeholder={t('description.placeholder')}
@@ -73,13 +70,13 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
               />
             )}
           />
-        </fieldset>
-      </GridLayout>
-      <SubmitButton
-        isEdit={!!data}
-        fnResetButton={form.reset}
-        isLoading={create.isPending || update.isPending}
-      />
-    </form>
+        </GridLayout>
+        <SubmitButton
+          isEdit={!!data}
+          fnResetButton={form.reset}
+          isLoading={create.isPending || update.isPending}
+        />
+      </form>
+    </Form>
   )
 }

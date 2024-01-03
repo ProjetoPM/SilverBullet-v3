@@ -1,7 +1,6 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useToken } from '@/hooks/useToken'
-import useUpdateEffect from 'beautiful-react-hooks/useUpdateEffect'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
@@ -17,7 +16,7 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
   const { isExpired } = useToken()
   const { signOut } = useAuth()
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (isExpired()) {
       toast.error(t('token_expired'), {
         id: AG_EXPIRED_TOKEN_ID,

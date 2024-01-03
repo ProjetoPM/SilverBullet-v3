@@ -15,6 +15,7 @@ import {
   FormProvider,
   useFormContext
 } from 'react-hook-form'
+import { RichEditor, RichEditorProps } from '../UI/RichEditor/RichEditor'
 
 export const Form = FormProvider
 
@@ -57,7 +58,6 @@ type InputProps = InputNextUIProps & {
 export const FormInput = forwardRef<HTMLInputElement, InputProps>(
   ({ value, isControlled = false, ...props }, ref) => {
     const { error } = useFormField()
-
     return (
       <FormControl>
         <Input
@@ -74,6 +74,20 @@ export const FormInput = forwardRef<HTMLInputElement, InputProps>(
     )
   }
 )
+
+export const FormEditor = forwardRef<
+  HTMLInputElement,
+  RichEditorProps<unknown>
+>(({ errorMessage, ...props }, ref) => {
+  const { error } = useFormField()
+  return (
+    <RichEditor
+      {...props}
+      errorMessage={error ? String(error?.message) : errorMessage}
+      ref={ref}
+    />
+  )
+})
 
 export const useFormField = () => {
   const fieldContext = useContext(FormFieldContext)
