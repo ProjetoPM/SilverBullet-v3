@@ -31,7 +31,9 @@ export const ProjectListPage = () => {
         asyncFn={removeMany.mutateAsync}
         internalLogicFn={onCloseProject}
         toolbar={{
-          button: { href: frontend.projects.new }
+          button: {
+            href: frontend.projects.new
+          }
         }}
         {...list}
       />

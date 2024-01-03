@@ -146,7 +146,7 @@ export const WorkspaceInviteModal = ({
                       {t('invites.roles.admin')}
                     </SelectItem>
                   </Select>
-                  <section onDrop={() => console.log('hu')}>
+                  <section>
                     <div className="flex items-center justify-between">
                       <Text size="sm" className="font-normal" withPadding>
                         {t('invites.users_to_be_invited')}

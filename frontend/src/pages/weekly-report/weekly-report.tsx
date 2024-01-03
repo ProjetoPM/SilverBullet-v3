@@ -21,7 +21,7 @@ const data = {
 }
 
 export const WeeklyReportPage = () => {
-  const { title, breadcrumbs } = usePageUtils('weekly-report')
+  const { title, breadcrumbs, ns } = usePageUtils('weekly-report')
 
   return (
     <PageLayout
@@ -30,6 +30,7 @@ export const WeeklyReportPage = () => {
       endContent={
         <GradeRating prepend="Score: " value={4.32} scoreTimes={2} readOnly />
       }
+      ns={ns}
     >
       <WeeklyReportProvider>
         <WeeklyReportForm data={data} />

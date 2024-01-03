@@ -33,6 +33,7 @@ export const WorkspaceListPage = () => {
             href: frontend.workspaces.new
           }
         }}
+        hiddenColumns={['plan']}
         {...list}
       />
     </PageLayout>

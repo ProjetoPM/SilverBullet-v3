@@ -126,34 +126,34 @@ export const RichEditor = forwardRef<
       editor?.commands.focus()
     }, [editor])
 
+    if (!editor) {
+      return null
+    }
+
     return (
       <div className={cn('h-full flex flex-col w-full', className)}>
         {label && <RichEditorLabel htmlFor={id} label={label} />}
         <div className="relative">
-          {editor && (
+          {limit && <RichEditorChars editor={editor} limit={limit} />}
+          <input
+            id={id}
+            className="absolute h-0 w-0 opacity-0"
+            onFocus={() => editor.commands.focus()}
+            ref={ref}
+            tabIndex={-1}
+          />
+          {!asNormalInput && (
             <>
-              {limit && <RichEditorChars editor={editor} limit={limit} />}
-              <input
-                id={id}
-                className="absolute h-0 w-0 opacity-0"
-                onFocus={() => editor.commands.focus()}
-                ref={ref}
-                tabIndex={-1}
+              <FixedMenu
+                isFixed={isFixedRef.current}
+                setFixed={handleFixed}
+                editor={editor}
               />
-              {!asNormalInput && (
-                <>
-                  <FixedMenu
-                    isFixed={isFixedRef.current}
-                    setFixed={handleFixed}
-                    editor={editor}
-                  />
-                  <BubbleMenu
-                    isFixed={isFixedRef.current}
-                    setFixed={handleFixed}
-                    editor={editor}
-                  />
-                </>
-              )}
+              <BubbleMenu
+                isFixed={isFixedRef.current}
+                setFixed={handleFixed}
+                editor={editor}
+              />
             </>
           )}
           <EditorContent

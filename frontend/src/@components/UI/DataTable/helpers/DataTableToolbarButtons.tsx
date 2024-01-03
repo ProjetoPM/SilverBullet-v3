@@ -3,6 +3,7 @@ import {
   ButtonGroup,
   Dropdown,
   DropdownItem,
+  DropdownItemProps,
   DropdownMenu,
   DropdownTrigger,
   Link
@@ -15,11 +16,12 @@ export type ToolbarProps = {
     href: string
     label?: string
   }
-  extraButtons?: Array<{
-    label: string
-    href: string
-    description?: string
-  }>
+  extraButtons?: Array<
+    DropdownItemProps & {
+      label: string
+      href: string
+    }
+  >
 }
 
 export const DataTableToolbarButtons = ({
@@ -40,7 +42,7 @@ export const DataTableToolbarButtons = ({
         {button.label ?? t('page.new', { ns })}
       </Button>
       {extraButtons && (
-        <Dropdown placement="bottom-end">
+        <Dropdown placement="bottom-end" backdrop="opaque">
           <DropdownTrigger>
             <Button color="primary" variant="solid" isIconOnly>
               <ChevronDownIcon className="w-5 h-5" />
@@ -48,15 +50,14 @@ export const DataTableToolbarButtons = ({
           </DropdownTrigger>
           <DropdownMenu
             disallowEmptySelection
-            aria-label="Merge options"
+            aria-label="toolbar extra buttons"
             selectionMode="single"
-            className="max-w-[300px]"
           >
             {extraButtons.map((button) => (
               <DropdownItem
                 key={button.label}
-                href={button.href}
                 description={button.description}
+                {...button}
               >
                 {button.label}
               </DropdownItem>

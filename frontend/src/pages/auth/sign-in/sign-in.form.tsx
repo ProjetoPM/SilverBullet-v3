@@ -1,4 +1,5 @@
-import { Form, FormField, FormInput } from '@/@components/Form'
+import { Form, FormField } from '@/@components/Form/Form'
+import { FormInput } from '@/@components/Form/FormInput'
 import { InputPassword } from '@/@components/UI/Input/InputPassword'
 import { Text } from '@/@components/UI/Label/Text'
 import { useAuth } from '@/hooks/useAuth'

@@ -13,24 +13,24 @@ export const DatePickerMessage = ({
   className,
   ...props
 }: DatePickerMessageProps) => {
-  if (!errorMessage && !description) {
-    return null
-  }
+  const shouldRender = errorMessage || description
 
   return (
-    <p
-      id={`${id}-datepicker-message`}
-      className={cn(
-        'pt-1 px-1 text-xs select-none',
-        {
-          'text-danger': errorMessage,
-          'text-foreground-500': !errorMessage
-        },
-        className
-      )}
-      {...props}
-    >
-      {errorMessage ?? description}
-    </p>
+    shouldRender && (
+      <p
+        id={`${id}-datepicker-message`}
+        className={cn(
+          'pt-1 px-1 text-xs select-none',
+          {
+            'text-danger': errorMessage,
+            'text-foreground-500': !errorMessage
+          },
+          className
+        )}
+        {...props}
+      >
+        {errorMessage ?? description}
+      </p>
+    )
   )
 }
