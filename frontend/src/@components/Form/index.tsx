@@ -5,6 +5,7 @@ import {
   ElementRef,
   createContext,
   forwardRef,
+  lazy,
   useContext
 } from 'react'
 import {
@@ -15,7 +16,9 @@ import {
   FormProvider,
   useFormContext
 } from 'react-hook-form'
-import { RichEditor, RichEditorProps } from '../UI/RichEditor/RichEditor'
+import { RichEditorProps } from '../UI/RichEditor/RichEditor'
+
+const RichEditor = lazy(() => import('../UI/RichEditor/RichEditor'))
 
 export const Form = FormProvider
 

@@ -169,3 +169,5 @@ export const RichEditor = forwardRef<
     )
   }
 )
+
+export default RichEditor
