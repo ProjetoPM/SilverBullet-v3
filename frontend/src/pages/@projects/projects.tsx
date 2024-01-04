@@ -5,7 +5,7 @@ import { backend } from '@/routes/routes'
 import { ProjectForm } from './projects.form'
 import { ProjectData } from './projects.schema'
 
-export const ProjectPage = () => {
+export default function ProjectPage() {
   const { id, ns, title, breadcrumbs } = usePageUtils('projects')
 
   const { get } = useFetch<ProjectData>({

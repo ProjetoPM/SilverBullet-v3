@@ -5,7 +5,7 @@ import { backend } from '@/routes/routes'
 import { WorkspaceForm } from './workspaces.form'
 import { WorkspaceData } from './workspaces.schema'
 
-export const WorkspacePage = () => {
+export default function WorkspacePage() {
   const { id, ns, title, breadcrumbs } = usePageUtils('workspaces')
 
   const { get } = useFetch<WorkspaceData>({

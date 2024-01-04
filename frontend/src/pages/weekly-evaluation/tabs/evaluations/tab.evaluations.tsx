@@ -3,7 +3,7 @@ import { PageLayout } from '@/layout/PageLayout'
 import { frontend } from '@/routes/routes'
 import { WeeklyEvaluationForm } from './tab.evaluations.form'
 
-export const WeeklyEvaluationPage = () => {
+export default function WeeklyEvaluationPage() {
   const { t, title, breadcrumbs } = usePageUtils('weekly-report')
 
   return (

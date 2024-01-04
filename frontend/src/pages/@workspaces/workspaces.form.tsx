@@ -1,3 +1,5 @@
+import { Form, FormField } from '@/@components/Form/Form'
+import { FormEditor } from '@/@components/Form/FormEditor'
 import { GridLayout } from '@/@components/UI/GridLayout'
 import { SubmitButton } from '@/@components/UI/SubmitButton'
 import { useFetch } from '@/hooks/useFetch'
@@ -6,9 +8,6 @@ import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { WorkspaceData, WorkspaceSchema } from './workspaces.schema'
-import { Form, FormField } from '@/@components/Form/Form'
-import { FormEditor } from '@/@components/Form/FormEditor'
-import { FormDatePicker } from '@/@components/Form/FormDatePicker'
 
 type WorkspaceFormProps = {
   data?: WorkspaceData
@@ -69,20 +68,6 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
                 errorMessage={form.formState.errors.description?.message}
                 options={{ limit: 1000, minRows: 3 }}
                 asNormalInput
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="dates"
-            render={({ field }) => (
-              <FormDatePicker
-                label="Test"
-                mode="range"
-                selected={field.value}
-                onSelect={field.onChange}
-                description="Description"
-                numberOfMonths={2}
               />
             )}
           />

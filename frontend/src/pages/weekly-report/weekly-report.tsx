@@ -20,7 +20,7 @@ const data = {
   ]
 }
 
-export const WeeklyReportPage = () => {
+export default function WeeklyReportPage() {
   const { title, breadcrumbs, ns } = usePageUtils('weekly-report')
 
   return (

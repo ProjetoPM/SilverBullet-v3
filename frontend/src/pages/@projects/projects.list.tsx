@@ -6,7 +6,7 @@ import { backend, frontend } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { ProjectColumns, columns } from './table/projects.columns'
 
-export const ProjectListPage = () => {
+export default function ProjectListPage() {
   const { title, breadcrumbs } = usePageUtils('projects')
   const onCloseProject = useWorkspaceStore((state) => state.onCloseProject)
 

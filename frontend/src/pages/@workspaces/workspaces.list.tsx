@@ -6,7 +6,7 @@ import { backend, frontend } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { WorkspaceColumns, columns } from './table/workspaces.columns'
 
-export const WorkspaceListPage = () => {
+export default function WorkspaceListPage() {
   const { title, breadcrumbs } = usePageUtils('workspaces')
   const onCloseWorkspace = useWorkspaceStore((state) => state.onCloseWorkspace)
 

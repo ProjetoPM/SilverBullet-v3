@@ -2,7 +2,7 @@ import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
 import { SignInForm } from './sign-in.form'
 
-export const SignInPage = () => {
+export default function SignInPage() {
   const { t, ns } = usePageUtils('auth')
 
   return (

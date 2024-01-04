@@ -5,13 +5,7 @@ import { useFormField } from './Form'
 export const FormEditor = forwardRef<
   HTMLInputElement,
   RichEditorProps<unknown>
->(({ errorMessage, ...props }, ref) => {
+>((props, ref) => {
   const { error } = useFormField()
-  return (
-    <RichEditor
-      {...props}
-      errorMessage={error ? String(error?.message) : errorMessage}
-      ref={ref}
-    />
-  )
+  return <RichEditor errorMessage={error?.message} {...props} ref={ref} />
 })
