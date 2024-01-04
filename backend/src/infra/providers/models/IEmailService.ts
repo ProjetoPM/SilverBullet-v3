@@ -3,6 +3,6 @@ export interface IEmailService {
     to: string,
     subject: string,
     content: string,
-    html?: boolean
+    html?: boolean,
   ): Promise<void>
 }

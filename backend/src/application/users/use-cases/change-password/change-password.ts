@@ -1,10 +1,10 @@
 import { Either, left, right } from '@/core/logic/either'
 import { IUsersRepository } from '../../repositories/IUsersRepository'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
-import { IEmailService } from '@/infra/providers/models/IEmailService'
 import { User } from '../../domain/user'
 import { compare } from 'bcryptjs'
 import { CurrentPaswordDoesNotMatchError } from './errors/CurrentPasswordDoesNotMatchError'
+import { PasswordsDoesNotMatchError } from './errors/PasswordsDoesNotMatchError'
 
 type ChangePasswordRequest = {
   userId: string
@@ -13,7 +13,7 @@ type ChangePasswordRequest = {
   confirmPassword: string
 }
 
-type ChangePassWordResponse = Either<UserDoesNotExistError, null>
+type ChangePassWordResponse = Either<UserDoesNotExistError | CurrentPaswordDoesNotMatchError | PasswordsDoesNotMatchError, null>
 
 export class ChangePassword {
   constructor(
@@ -26,7 +26,7 @@ export class ChangePassword {
     password,
   }: ChangePasswordRequest): Promise<ChangePassWordResponse> {
     const userExists = await this.usersRepository.findById(userId)
-
+    
     if (!userExists) {
       return left(new UserDoesNotExistError())
     }
@@ -40,6 +40,12 @@ export class ChangePassword {
     if (!isPasswordValid) {
       return left(new CurrentPaswordDoesNotMatchError())
     }
+
+    // const passwordsMathces = await compare(currentPassword, dbPassword)
+    
+    // if (!isPasswordValid) {
+    //   return left(new CurrentPaswordDoesNotMatchError())
+    // }
 
     const userOrError = User.create({ ...userExists.props, password }, userId)
 

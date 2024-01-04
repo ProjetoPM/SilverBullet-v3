@@ -32,8 +32,8 @@ export class ChangePasswordController implements Controller {
       const error = result.value
 
       switch (error.constructor) {
-        case UserDoesNotExistError:
-          case CurrentPaswordDoesNotMatchError:
+        case CurrentPaswordDoesNotMatchError:
+          case UserDoesNotExistError:
           return clientError(error)
         default:
           return clientError(error)

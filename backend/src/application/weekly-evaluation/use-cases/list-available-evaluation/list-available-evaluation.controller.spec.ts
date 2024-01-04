@@ -80,8 +80,6 @@ describe('List available weekly evaluations (end-to-end)', () => {
       .set({ 'current-workspace-id': workspace.id })
       .auth(jwt.token, { type: 'bearer' })
 
-      console.log(response.body.dto.length);
-      
     expect(response.status).toBe(StatusCodes.OK)
     expect(response.body.dto.length == 1).toBeTruthy()
   })

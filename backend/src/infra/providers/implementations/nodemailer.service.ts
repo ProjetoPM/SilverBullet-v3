@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 import { IEmailService } from '../models/IEmailService'
-import { email } from '@/config/email'
+import { config } from '@/config'
+const { email } = config
 
 interface IMailOptions {
   from: string
@@ -9,9 +10,6 @@ interface IMailOptions {
   text?: string
   html?: string
 }
-
-
-
 
 export class NodeMailerService implements IEmailService {
   private init() {
