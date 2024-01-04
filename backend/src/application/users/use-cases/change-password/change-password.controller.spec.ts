@@ -35,8 +35,6 @@ describe('Reset password (end-to-end)', async () => {
       .auth(jwt.token, { type: 'bearer' })
       .send(data)
 
-    console.log(response.body)
-
     expect(response.status).toBe(StatusCodes.OK)
   })
 

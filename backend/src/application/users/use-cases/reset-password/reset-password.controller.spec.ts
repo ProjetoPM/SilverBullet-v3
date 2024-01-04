@@ -24,19 +24,16 @@ describe('Reset password (end-to-end)', async () => {
     const { jwt, user } = UserFactory.createAndAuthenticate()
 
     await usersRepository.create(user)
-    
+
     const data: any = {
       password: 'Bacon@1234',
-      confirmPassword: 'Bacon@1234'
+      confirmPassword: 'Bacon@1234',
     }
 
     const response = await request(app)
       .post(`/api/users/reset-password`)
       .auth(jwt.token, { type: 'bearer' })
       .send(data)
-    
-    console.log(response.body);
-    
 
     expect(response.status).toBe(StatusCodes.OK)
   })

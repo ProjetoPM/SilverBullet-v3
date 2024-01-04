@@ -1,20 +1,19 @@
 import request from 'supertest'
-
+import { Generate } from '@/core/logic/generate'
 import { prismaClient } from '@/infra/prisma/client'
 import { app } from '@infra/http/app'
 import { hash } from 'bcryptjs'
-import { v4 as uuid } from 'uuid'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 
 describe('Authenticate User (end-to-end)', () => {
   beforeAll(async () => {
     await prismaClient.user.create({
       data: {
-        id: uuid(),
+        id: Generate.id(),
         name: 'test',
         email: 'test@test-test.com',
         password: await hash('test1234567', 8),
-        email_verified: true
+        email_verified: true,
       },
     })
   })

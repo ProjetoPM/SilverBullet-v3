@@ -8,7 +8,7 @@ export const WeeklyEvaluationSchema = z.object({
   endDate: z.date(),
   type: z.nativeEnum(Types),
   status: z.nativeEnum(EvaluationStatuses),
-  workspaceId: z.string().uuid(),
+  workspaceId: z.string().cuid2(),
 })
 
 export type WeeklyEvaluationProps = z.infer<typeof WeeklyEvaluationSchema>

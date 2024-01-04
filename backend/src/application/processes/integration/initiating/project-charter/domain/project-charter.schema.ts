@@ -17,7 +17,7 @@ export const ProjectCharterSchema = z.object({
   successCriteria: z.string().min(3).max(2000).nullish(),
   projectExitCriteria: z.string().min(3).max(2000).nullish(),
   signed: z.boolean().nullish(),
-  projectId: z.string().uuid(),
+  projectId: z.string().cuid2(),
 })
 
 export type ProjectCharterProps = z.infer<typeof ProjectCharterSchema>

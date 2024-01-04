@@ -15,11 +15,7 @@ describe('Change password', () => {
     changePassword = new ChangePassword(usersRepository)
   })
   test('should be able to change password', async () => {
-    console.log('change password')
-
     const hashed = Password.create('Teste@12345', true).value as Password
-
-    console.log(await hashed.getHashedValue())
 
     const user = UserFactory.create({
       password: await hashed.getHashedValue(),
@@ -33,8 +29,6 @@ describe('Change password', () => {
       password: 'Bacon@1234',
       confirmPassword: 'Bacon@1234',
     })
-
-    console.log(response.value)
 
     expect(response.isRight()).toBeTruthy()
   })
