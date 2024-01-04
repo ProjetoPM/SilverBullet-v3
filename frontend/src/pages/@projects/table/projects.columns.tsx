@@ -1,5 +1,5 @@
 import { tableSelect } from '@/utils/helpers/select'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
 import { ProjectActions } from './projects.actions'
@@ -11,6 +11,7 @@ export type ProjectColumns = {
 }
 
 const helper = createColumnHelper<ProjectColumns>()
+const ns = 'projects'
 
 export const columns = [
   /**
@@ -22,8 +23,8 @@ export const columns = [
    */
   helper.accessor((row) => row.name, {
     id: 'name',
-    header: () => t('workspaces:form.name.label'),
-    cell: ({ row }) => clearHTMLTags(row.getValue('name')),
+    header: () => t('name.label', { ns }),
+    cell: ({ row }) => ct(row.getValue('name')),
     enableSorting: true,
     enableHiding: true
   }),
@@ -32,8 +33,8 @@ export const columns = [
    */
   helper.accessor((row) => row.description, {
     id: 'description',
-    header: () => t('workspaces:form.description.label'),
-    cell: ({ row }) => clearHTMLTags(row.getValue('description')),
+    header: () => t('description.label', { ns }),
+    cell: ({ row }) => ct(row.getValue('description')),
     enableSorting: true,
     enableHiding: true
   }),

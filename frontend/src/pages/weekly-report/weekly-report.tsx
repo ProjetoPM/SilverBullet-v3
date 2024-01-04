@@ -1,8 +1,8 @@
+import { GradeRating } from '@/@components/UI/GradeRating'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
-import { frontend } from '@/routes/routes'
-import { WeeklyReportForm } from './weekly-report.form'
 import { WeeklyReportProvider } from './processes/context/WeeklyReportProvider'
+import { WeeklyReportForm } from './weekly-report.form'
 
 const data = {
   _id: '109b84fa-afcb-4815-9600-450caad03aef',
@@ -21,18 +21,15 @@ const data = {
 }
 
 export const WeeklyReportPage = () => {
-  const { t, title, breadcrumb } = usePageUtils('weekly-report', {
-    dynamic: true
-  })
+  const { title, breadcrumbs } = usePageUtils('weekly-report')
 
   return (
     <PageLayout
-      title={title()}
-      breadcrumb={breadcrumb({
-        segments: [
-          { label: t('page.title'), link: frontend.weekly_report.index }
-        ]
-      })}
+      title={title({ dynamic: true })}
+      breadcrumbs={breadcrumbs()}
+      endContent={
+        <GradeRating prepend="Score: " value={4.32} scoreTimes={2} readOnly />
+      }
     >
       <WeeklyReportProvider>
         <WeeklyReportForm data={data} />

@@ -1,33 +1,39 @@
-import { DataTable } from '@/components/ui/table/DataTable'
+import { DataTable } from '@/@components/UI/DataTable/DataTable'
 import { useFetch } from '@/hooks/useFetch'
 import { usePageUtils } from '@/hooks/usePageUtils'
 import { PageLayout } from '@/layout/PageLayout'
-import { backend } from '@/routes/routes'
-import { ProjectToolbar } from './projects.toolbar'
+import { backend, frontend } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { ProjectColumns, columns } from './table/projects.columns'
 
 export const ProjectListPage = () => {
-  const { title, breadcrumb } = usePageUtils('projects')
+  const { title, breadcrumbs } = usePageUtils('projects')
+  const onCloseProject = useWorkspaceStore((state) => state.onCloseProject)
 
   const { list, removeMany } = useFetch<ProjectColumns[]>({
     baseUrl: backend.projects.baseUrl,
-    keys: ['projects'],
     fetch: {
-      list: {}
+      keys: ['projects'],
+      list: {
+        useWorkspaceId: true
+      }
     }
   })
 
   return (
     <PageLayout
       title={title()}
-      isLoading={list.isLoading}
-      breadcrumb={breadcrumb()}
+      breadcrumbs={breadcrumbs({ appendTitle: true })}
     >
       <DataTable
+        ns={['projects']}
         columns={columns}
-        data={list.data ?? []}
-        toolbar={<ProjectToolbar />}
         asyncFn={removeMany.mutateAsync}
+        internalLogicFn={onCloseProject}
+        toolbar={{
+          button: { href: frontend.projects.new }
+        }}
+        {...list}
       />
     </PageLayout>
   )

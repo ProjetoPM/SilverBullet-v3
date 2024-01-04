@@ -1,9 +1,9 @@
-import { GridLayout } from '@/components/ui/GridLayout'
-import { SubmitButton } from '@/components/ui/SubmitButton'
-import { RichEditor } from '@/components/ui/editor/RichEditor'
-import { Text } from '@/components/ui/label/Text'
-import { Workspace } from '@/stores/useWorkspaceStore'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
+import { GridLayout } from '@/@components/UI/GridLayout'
+import { SubmitButton } from '@/@components/UI/SubmitButton'
+import { RichEditor } from '@/@components/UI/RichEditor/RichEditor'
+import { Text } from '@/@components/UI/Label/Text'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Snippet } from '@nextui-org/react'
 import { useState } from 'react'
@@ -20,8 +20,8 @@ type WeeklyReportFormProps = {
 
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
-  const [output, setOutput] = useState('')
   const { images } = useWeeklyReport()
+  const [output, setOutput] = useState('')
 
   const form = useForm<WeeklyReportData>({
     mode: 'all',
@@ -30,9 +30,8 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyReportData) => {
-    setOutput(JSON.stringify(form, null, 2))
-    console.table(form)
     console.log(images)
+    setOutput(JSON.stringify(form, null, 2))
   }
 
   return (
@@ -45,18 +44,18 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
         <GridLayout cols="2">
           <WeeklyEvaluationSelect form={form} />
           <fieldset>
-            <Text
-              text={t('linked_project.label')}
-              size="sm"
-              className="pb-1"
-              isRequired
-            />
+            <Text size="sm" className="pb-1" isRequired>
+              {t('linked_project.label')}
+            </Text>
             <Snippet
-              classNames={{ base: 'h-unit-10 w-full hover:bg-default-200' }}
+              classNames={{
+                base: 'h-unit-10 w-full hover:bg-default-200',
+                pre: 'font-sans'
+              }}
               onCopy={() =>
                 navigator.clipboard.writeText(
                   form.getValues('projectId') ||
-                    Workspace.getWorkspace()?.id ||
+                    WorkspaceStore.getWorkspaceId() ||
                     t('linked_project.placeholder')
                 )
               }
@@ -67,7 +66,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               }}
               hideSymbol
             >
-              {clearHTMLTags(Workspace.getWorkspace()?.name || '')}
+              {ct(WorkspaceStore.getWorkspace()?.name || '')}
             </Snippet>
           </fieldset>
         </GridLayout>
@@ -78,13 +77,12 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               name="toolEvaluation"
               render={({ field }) => (
                 <RichEditor
+                  {...field}
                   label={t('tool_evaluation.label')}
                   placeholder={t('tool_evaluation.placeholder')}
                   errorMessage={form.formState.errors.toolEvaluation?.message}
-                  limit={1000}
+                  options={{ minRows: 4 }}
                   isFixed
-                  as="textarea-4"
-                  {...field}
                 />
               )}
             />
@@ -98,8 +96,8 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           fnResetButton={form.reset}
           // isLoading={create.isLoading || update.isLoading}
         />
-        <pre>{output}</pre>
       </form>
+      <pre>{output}</pre>
     </FormProvider>
   )
 }

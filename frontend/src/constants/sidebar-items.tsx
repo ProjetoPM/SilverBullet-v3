@@ -1,24 +1,19 @@
 import { frontend } from '@/routes/routes'
-import { Workspace } from '@/stores/useWorkspaceStore'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
-import { FolderOpen, Folders } from 'lucide-react'
+import { FolderOpen, Folders, UserCog } from 'lucide-react'
 
 type SidebarItem = {
   id: string
   label?: string
   children: {
     id: string
+    icon: React.ReactNode
     label: string
     description?: string
-    icon: React.ReactNode
     href: string
-    isHidden?: boolean
   }[]
 }
 
-const workspaceName = Workspace.getWorkspace()?.name
-
-export const sidebarItems: SidebarItem[] = [
+export const mainSidebarItems: SidebarItem[] = [
   {
     id: 'navigation',
     label: 'navigation.label',
@@ -27,18 +22,29 @@ export const sidebarItems: SidebarItem[] = [
         id: 'workspaces',
         icon: <Folders />,
         label: 'navigation.workspaces.label',
-        description: workspaceName
-          ? clearHTMLTags(workspaceName)
-          : 'navigation.workspaces.description',
         href: frontend.workspaces.index
       },
       {
         id: 'projects',
         icon: <FolderOpen />,
         label: 'navigation.projects.label',
-        description: 'Not implemented yet',
-        href: '#',
-        isHidden: true
+        href: frontend.projects.index
+      }
+    ]
+  }
+]
+
+export const profileSidebarItems: SidebarItem[] = [
+  {
+    id: 'settings',
+    label: 'settings.label',
+    children: [
+      {
+        id: 'account',
+        icon: <UserCog />,
+        label: 'account.label',
+        description: 'account.description',
+        href: frontend.settings.account
       }
     ]
   }

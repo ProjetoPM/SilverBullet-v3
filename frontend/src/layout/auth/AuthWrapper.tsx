@@ -7,14 +7,10 @@ type AuthWrapperProps = {
 
 export const AuthWrapper = ({ children }: AuthWrapperProps) => {
   return (
-    <>
-      <div className="h-full w-full">
-        <div className="grid grid-rows-[68px,auto,68px] h-screen">
-          <AuthHeader />
-          {children}
-          <AuthFooter />
-        </div>
-      </div>
-    </>
+    <div className="container grid h-screen grid-rows-[64px_1fr_64px] w-full">
+      <AuthHeader />
+      {children}
+      <AuthFooter />
+    </div>
   )
 }

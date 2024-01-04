@@ -1,4 +1,4 @@
-import { DefaultAnimate } from '@/components/ui/animation/DefaultAnimate'
+import { DefaultAnimate } from '@/@components/UI/Animation/DefaultAnimate'
 import { cn } from '@nextui-org/react'
 import { useProcesses } from './context/ProcessProvider'
 import { ProcessItem } from './processes.item'
@@ -16,8 +16,8 @@ export const ProcessesItems = () => {
           exit={{ scale: 0.8, opacity: 0 }}
           transition={{ type: 'spring', duration: 0.5 }}
           className={cn('relative gap-3 border border-dashed rounded-md p-4', {
-            'border-green-800 dark:bg-green-950/5': !field._id,
-            'border-blue-700 dark:bg-blue-950/5': field._id
+            'border-green-800 dark:bg-green-900/10': !field._id,
+            'border-blue-700 dark:bg-blue-900/10': field._id
           })}
         >
           <ProcessItem field={field} index={index} />

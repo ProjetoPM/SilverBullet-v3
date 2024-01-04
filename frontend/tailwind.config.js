@@ -1,6 +1,5 @@
 import { nextui } from '@nextui-org/react'
 import typography from '@tailwindcss/typography'
-import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -13,18 +12,21 @@ export default {
     container: {
       center: true,
       padding: {
-        DEFAULT: '1rem',
+        DEFAULT: '0.25rem'
       }
     },
     screens: {
-      'base': '100%',
-      'xss': { min: '420px' },
-      'xs': { min: '520px' },
-      ...defaultTheme.screens
+      xss: '420px',
+      xs: '520px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1436px',
     },
     extend: {}
   },
-  darkMode: "class",
+  darkMode: 'class',
   plugins: [
     typography,
     nextui({
@@ -33,20 +35,20 @@ export default {
         dark: {
           colors: {
             default: {
-              "50": "#141414",
-              "100": "#18181b",
-              "200": "#27272a",
-            },
+              50: '#141414',
+              100: '#18181b',
+              200: '#27272a'
+            }
           }
-        },
+        }
       },
       layout: {
         radius: {
           small: '6px',
           medium: '8px',
           large: '12px'
-        },
-      },
+        }
+      }
     })
   ]
 }

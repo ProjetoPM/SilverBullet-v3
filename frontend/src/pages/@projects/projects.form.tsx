@@ -1,10 +1,10 @@
-import { GridLayout } from '@/components/ui/GridLayout'
-import { SubmitButton } from '@/components/ui/SubmitButton'
+import { GridLayout } from '@/@components/UI/GridLayout'
+import { SubmitButton } from '@/@components/UI/SubmitButton'
+import { RichEditor } from '@/@components/UI/RichEditor/RichEditor'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-import { RichEditor } from '@/components/ui/editor/RichEditor'
 import { useTranslation } from 'react-i18next'
 import { ProjectData, ProjectSchema } from './projects.schema'
 
@@ -24,7 +24,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
   const { create, update } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
     redirectTo: frontend.projects.index,
-    keys: ['projects']
+    invalidateQueries: ['projects']
   })
 
   const onSubmit = async (form: ProjectData) => {
@@ -48,11 +48,11 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
             name="name"
             render={({ field }) => (
               <RichEditor
-                label={t('form.name.label')}
-                placeholder={t('form.name.placeholder')}
-                errorMessage={form.formState.errors.name?.message}
-                limit={100}
+                label={t('name.label')}
                 {...field}
+                placeholder={t('name.placeholder')}
+                errorMessage={form.formState.errors.name?.message}
+                options={{ limit: 64 }}
               />
             )}
           />
@@ -63,12 +63,11 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
             name="description"
             render={({ field }) => (
               <RichEditor
-                label={t('form.description.label')}
-                placeholder={t('form.description.placeholder')}
-                errorMessage={form.formState.errors.description?.message}
-                as="textarea-3"
-                limit={1000}
                 {...field}
+                label={t('description.label')}
+                placeholder={t('description.placeholder')}
+                errorMessage={form.formState.errors.description?.message}
+                options={{ limit: 1000, minRows: 3 }}
               />
             )}
           />
@@ -77,7 +76,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
       <SubmitButton
         isEdit={!!data}
         fnResetButton={form.reset}
-        isLoading={create.isLoading || update.isLoading}
+        isLoading={create.isPending || update.isPending}
       />
     </form>
   )

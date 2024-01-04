@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 export const useToken = () => {
-  const token = localStorage.getItem('token')
+  const token = sessionStorage.getItem('token') || localStorage.getItem('token')
 
   const parseJwt = useCallback((text?: string | null) => {
     if (!text) {
@@ -20,7 +20,10 @@ export const useToken = () => {
   }, [])
 
   const isExpired = (token?: string | null) => {
-    const parsed = parseJwt(token ?? localStorage.getItem('token'))
+    const parsed = parseJwt(
+      token ??
+        (sessionStorage.getItem('token') || localStorage.getItem('token'))
+    )
     const { exp } = parsed
 
     if (!parsed) {

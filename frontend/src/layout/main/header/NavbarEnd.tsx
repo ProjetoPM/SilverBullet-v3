@@ -1,41 +1,46 @@
-import { LocaleSwitcher } from '@/components/features/LocaleSwitcher'
-import { ThemeSwitcher } from '@/components/features/ThemeSwitcher'
-import { DashboardMenu } from '@/components/ui/dashboard/DashboardMenu'
-import { sidebarItems } from '@/constants/sidebar-items'
+import { LanguageSwitcher } from '@/@components/Features/LanguageSwitcher'
+import { ThemeSwitcher } from '@/@components/Features/ThemeSwitcher'
+import { DashboardMenu } from '@/@components/UI/Dashboard/DashboardMenu'
+import { mainSidebarItems } from '@/constants/sidebar-items'
 import { useScreen } from '@/hooks/useScreen'
+import { useDashboardStore } from '@/stores/useDashboardStore'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import {
   Button,
   Kbd,
   Link,
   NavbarContent,
   NavbarItem,
-  NavbarMenu,
-  useDisclosure
+  NavbarMenu
 } from '@nextui-org/react'
 import { MenuIcon } from 'lucide-react'
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import parser from 'ua-parser-js'
-import { UserDropdown } from './UserDropdown'
 import { Notifications } from '../notifications/Notifications'
+import { UserDropdown } from './UserDropdown'
 
 export const NavbarEnd = () => {
-  const { isOpen, onOpenChange } = useDisclosure()
   const { screenX } = useScreen()
   const { t } = useTranslation('sidebar')
+  const workspace = useWorkspaceStore((state) => state.workspace)
 
-  const handleOs = () => {
-    const os = parser(navigator.userAgent).os.name
+  const [isOpen, onOpenChange] = useDashboardStore((state) => [
+    state.isOpen,
+    state.onOpenChange
+  ])
 
-    switch (os) {
-      case 'Mac OS':
-        return '⌘ K'
-      case 'Windows':
-        return 'Ctrl K'
-      default:
-        return ''
+  const handleOs = useMemo(() => {
+    const os = parser(navigator.userAgent).os.name ?? ''
+
+    const select = {
+      'Mac OS': '⌘ K',
+      Windows: 'Ctrl K',
+      Linux: 'Ctrl K'
     }
-  }
+
+    return select[os]
+  }, [])
 
   return (
     <>
@@ -44,7 +49,7 @@ export const NavbarEnd = () => {
           <Notifications />
         </NavbarItem>
         <NavbarItem>
-          <LocaleSwitcher />
+          <LanguageSwitcher />
         </NavbarItem>
         <NavbarItem>
           <ThemeSwitcher />
@@ -58,15 +63,13 @@ export const NavbarEnd = () => {
           >
             <div className="hidden xs:flex gap-2 items-center">
               <span>Menu</span>
-              {!!handleOs() && (
+              {!!handleOs && (
                 <Kbd className="bg-default-100 dark:bg-default-200">
-                  {handleOs()}
+                  {handleOs}
                 </Kbd>
               )}
             </div>
-            <div className="inline-flex xs:hidden">
-              <MenuIcon size={20} />
-            </div>
+            <MenuIcon size={20} className="xs:hidden" />
           </Button>
         </NavbarItem>
         <NavbarItem>
@@ -74,7 +77,7 @@ export const NavbarEnd = () => {
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-        {sidebarItems.map((division) => (
+        {mainSidebarItems.map((division) => (
           <Fragment key={division.id}>
             <span className="pl-2 text-sm text-foreground-500">
               {t(division.label ?? '')}
@@ -84,8 +87,7 @@ export const NavbarEnd = () => {
                 <Button
                   color="default"
                   variant="flat"
-                  href={item.href}
-                  isDisabled={item.isHidden}
+                  isDisabled={item.id === 'projects' && !workspace}
                   className="w-full flex justify-start"
                 >
                   {item.icon}

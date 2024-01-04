@@ -1,8 +1,8 @@
-import { AlertModal } from '@/components/ui/AlertModal'
+import { AlertModal } from '@/@components/UI/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
-import { replaceParams } from '@/utils/replace-params'
+import { replaceParams } from '@/utils/helpers/replace-params'
 import {
   Button,
   Dropdown,
@@ -10,7 +10,6 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-  Link,
   useDisclosure
 } from '@nextui-org/react'
 import {
@@ -18,7 +17,8 @@ import {
   FileSignature,
   FolderOpen,
   MoreHorizontal,
-  Trash
+  Trash,
+  Users
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -30,22 +30,29 @@ type WorkspaceActionsProps = {
 
 export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspaces'])
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const openWorkspace = useWorkspaceStore((state) => state.openWorkspace)
+  const modal = useDisclosure()
   const navigate = useNavigate()
+
+  const [onOpenWorkspace, onCloseWorkspace] = useWorkspaceStore((state) => [
+    state.onOpenWorkspace,
+    state.onCloseWorkspace
+  ])
 
   const { removeMany } = useFetch<WorkspaceColumns>({
     baseUrl: backend.workspaces.baseUrl,
-    keys: ['workspaces']
+    invalidateQueries: ['workspaces']
   })
 
   const handleDelete = async () => {
-    await removeMany.mutateAsync(row)
+    await removeMany.mutateAsync({
+      ...row,
+      internalFn: () => onCloseWorkspace(row)
+    })
   }
 
-  const handleOpen = () => {
-    openWorkspace(row)
-    navigate(frontend.projects.index)
+  const handleOpen = async () => {
+    onOpenWorkspace(row)
+    navigate(replaceParams(frontend.projects.index, [row._id]))
   }
 
   return (
@@ -64,20 +71,29 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
                 {t('btn.open')}
               </span>
             </DropdownItem>
-            <DropdownItem textValue="edit">
-              <Link
-                href={replaceParams(frontend.workspaces.edit, [row._id])}
-                color="foreground"
-                className="flex gap-2"
-              >
+            <DropdownItem
+              textValue="edit"
+              href={replaceParams(frontend.workspaces.edit, [row._id])}
+            >
+              <div className="flex gap-2">
                 <FileSignature className="w-5 h-5" />
                 {t('btn.edit')}
-              </Link>
+              </div>
             </DropdownItem>
-            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={modal.onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
+              </span>
+            </DropdownItem>
+            <DropdownItem
+              textValue="users"
+              href={replaceParams(frontend.workspaces.users.index, [row._id])}
+              showDivider
+            >
+              <span className="flex gap-2">
+                <Users className="w-5 h-5" />
+                {t('btn.invite_users')}
               </span>
             </DropdownItem>
           </DropdownSection>
@@ -95,8 +111,8 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
       <AlertModal
         title={t('default:are_you_certain.title')}
         onAction={handleDelete}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={modal.isOpen}
+        onOpenChange={modal.onOpenChange}
       >
         {t('default:are_you_certain.description')}
       </AlertModal>

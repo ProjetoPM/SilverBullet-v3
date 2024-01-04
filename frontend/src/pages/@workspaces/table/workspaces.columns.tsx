@@ -1,6 +1,6 @@
-import { DataTableColumnHeader } from '@/components/ui/table/helpers/DataTableHeader'
+import { DataTableColumnHeader } from '@/@components/UI/DataTable/helpers/DataTableHeader'
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { tableSelect } from '@/utils/helpers/select'
-import { clearHTMLTags } from '@/utils/replace-html-tags'
 import { Chip } from '@nextui-org/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
@@ -15,6 +15,7 @@ export type WorkspaceColumns = {
 }
 
 const helper = createColumnHelper<WorkspaceColumns>()
+const ns = 'workspaces'
 
 export const columns = [
   /**
@@ -27,12 +28,9 @@ export const columns = [
   helper.accessor((row) => row.name, {
     id: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        header={t('workspaces:form.name.label')}
-      />
+      <DataTableColumnHeader column={column} header={t('name.label', { ns })} />
     ),
-    cell: ({ row }) => clearHTMLTags(row.getValue('name')),
+    cell: ({ row }) => ct(row.getValue('name')),
     enableSorting: true,
     enableHiding: true
   }),
@@ -44,10 +42,10 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={t('workspaces:form.description.label')}
+        header={t('description.label', { ns })}
       />
     ),
-    cell: ({ row }) => clearHTMLTags(row.getValue('description')),
+    cell: ({ row }) => ct(row.getValue('description')),
     enableSorting: true,
     enableHiding: true
   }),
@@ -59,7 +57,7 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={t('workspaces:form.plan_status.label')}
+        header={t('plan_status.label', { ns })}
       />
     ),
     cell: ({ row }) => {
@@ -72,7 +70,7 @@ export const columns = [
 
       return (
         <Chip color={colors[status]}>
-          {t(`workspaces:form.plan_status.options.${status?.toLowerCase()}`)}
+          {t(`plan_status.options.${status?.toLowerCase()}`, { ns })}
         </Chip>
       )
     },

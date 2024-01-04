@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 
 type SupabaseProps = {
   path: string

@@ -1,14 +1,14 @@
-import { GridLayout } from '@/components/ui/GridLayout'
-import { RichEditor } from '@/components/ui/editor/RichEditor'
-import { Text } from '@/components/ui/label/Text'
+import { GridLayout } from '@/@components/UI/GridLayout'
+import { RichEditor } from '@/@components/UI/RichEditor/RichEditor'
+import { Text } from '@/@components/UI/Label/Text'
 import { Chip } from '@nextui-org/react'
 import { Controller, FieldArrayWithId } from 'react-hook-form'
+import { toast } from 'sonner'
 import { WeeklyReportData } from '../weekly-report.schema'
 import { FilesProcess } from './actions/processes.files'
 import { RemoveProcess } from './actions/processes.remove'
 import { useProcesses } from './context/ProcessProvider'
 import { ProcessSelects } from './processes.selects'
-import toast from 'react-hot-toast'
 
 type ProcessItemProps = {
   field: FieldArrayWithId<WeeklyReportData>
@@ -41,22 +41,23 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
               render={({ field }) => (
                 <>
                   <RichEditor
+                    {...field}
                     label={t('description.label')}
                     placeholder={t('description.placeholder')}
                     errorMessage={
                       form.formState.errors.processes?.[index]?.description
                         ?.message
                     }
-                    limit={1000}
-                    as="textarea-5"
-                    {...field}
+                    options={{ limit: 1000, minRows: 5 }}
                   />
                 </>
               )}
             />
           </fieldset>
           <div className="flex flex-col" role="actions">
-            <Text text="Actions" size="sm" isRequired />
+            <Text size="sm" withPadding isRequired>
+              Actions
+            </Text>
             <div className="flex gap-2">
               <FilesProcess field={field} index={index} />
               <RemoveProcess index={index} />
@@ -64,7 +65,7 @@ export const ProcessItem = ({ field, index }: ProcessItemProps) => {
           </div>
         </div>
         <div>
-          <Text text="Files to upload" />
+          <Text withPadding>Files to upload</Text>
           <div className="flex flex-wrap gap-2 overflow-hidden hover:overflow-y-auto max-h-24">
             <Chip
               onClose={() => toast.success('Coming soon! 🚀', { id: 'chip' })}

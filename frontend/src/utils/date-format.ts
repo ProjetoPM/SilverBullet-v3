@@ -12,12 +12,16 @@ export const formatDate = (
 ) => {
   if (!date) return
 
+  let formattedDate: Date
+
   if (typeof date === 'string') {
-    date = new Date(date)
+    formattedDate = new Date(date)
+  } else {
+    formattedDate = date
   }
 
   return new Intl.DateTimeFormat(i18next.language, {
     dateStyle: 'medium',
     ...options
-  }).format(date)
+  }).format(formattedDate)
 }

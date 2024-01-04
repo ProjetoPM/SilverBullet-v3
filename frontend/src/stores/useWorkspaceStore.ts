@@ -1,5 +1,6 @@
+import { ct } from '@/utils/helpers/replace-html-tags'
 import { t } from 'i18next'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
@@ -16,8 +17,12 @@ type Workspace = {
 type WorkspaceStoreProps = {
   workspace: Workspace | null
   project: Project | null
-  openWorkspace: (workspace: Workspace) => void
-  closeWorkspace: () => void
+  onOpenWorkspace: (workspace: Workspace) => void
+  onCloseWorkspace: (workspace?: Workspace) => void
+  onUpdateWorkspace: (workspace: Workspace) => void
+  onOpenProject: (project: Project) => void
+  onCloseProject: (project?: Project) => void
+  resetStore: () => void
 }
 
 export const useWorkspaceStore = create<WorkspaceStoreProps>()(
@@ -26,8 +31,13 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
       () => ({
         workspace: null,
         project: null,
-        openWorkspace: (workspace) => openWorkspace(workspace),
-        closeWorkspace: () => closeWorkspace()
+        onOpenWorkspace: (workspace) => onOpenWorkspace(workspace),
+        onCloseWorkspace: (workspace?: Workspace) =>
+          onCloseWorkspace(workspace),
+        onUpdateWorkspace: (workspace) => onUpdateWorkspace(workspace),
+        onOpenProject: (project) => onOpenProject(project),
+        onCloseProject: (project?: Project) => onCloseProject(project),
+        resetStore: () => resetStore()
       }),
       {
         name: 'workspace',
@@ -40,20 +50,97 @@ export const useWorkspaceStore = create<WorkspaceStoreProps>()(
 /**
  * Abre um workspace.
  */
-const openWorkspace = (workspace: Workspace) => {
+const onOpenWorkspace = (workspace: Workspace) => {
   useWorkspaceStore.setState((state) => ({
     ...state,
     workspace,
     project: null
   }))
-  updateWorkspaceName()
-  toast.success(t('workspaces:actions.workspace_opened', { ns: 'workspaces' }))
+  toast.success(t('actions.open_workspace', { ns: 'workspaces' }), {
+    description: `${ct(workspace.name)}`,
+    classNames: { description: '!text-black dark:!text-white' }
+  })
+}
+
+/**
+ * Abre um projeto.
+ */
+export const onOpenProject = (project: Project) => {
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    project
+  }))
+  toast.success(t('actions.open_project', { ns: 'workspaces' }), {
+    description: `${ct(project.name)}`,
+    classNames: { description: '!text-black dark:!text-white' }
+  })
+}
+
+/**
+ * Atualizar um workspace.
+ */
+const onUpdateWorkspace = (workspace: Workspace) => {
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    workspace
+  }))
 }
 
 /**
  * Fechando um workspace.
  */
-const closeWorkspace = () => {
+const onCloseWorkspace = (workspace?: Workspace) => {
+  /**
+   * Fechar o workspace somente se o '_id' do workspace passado por
+   * parâmetro for igual ao do workspace atual.
+   */
+  if (workspace?._id) {
+    const currentWorkspaceId = getWorkspaceId()
+
+    if (currentWorkspaceId === workspace._id) {
+      onCloseWorkspace()
+    }
+    return
+  }
+
+  /**
+   * Fechando qualquer que seja o workspace se não enviado
+   * o parâmetro 'workspace'.
+   */
+  resetStore()
+}
+
+/**
+ * Fechando um projeto.
+ */
+const onCloseProject = (project?: Project) => {
+  /**
+   * Fechar o projeto somente se o '_id' do projeto passado por
+   * parâmetro for igual ao do projeto atual.
+   */
+  if (project?._id) {
+    const currentProjectId = getProjectId()
+
+    if (currentProjectId === project._id) {
+      onCloseProject()
+    }
+    return
+  }
+
+  /**
+   * Fechando qualquer que seja o projeto se não enviado
+   * o parâmetro 'project'.
+   */
+  useWorkspaceStore.setState((state) => ({
+    ...state,
+    project: null
+  }))
+}
+
+/**
+ * Resetando o store.
+ */
+const resetStore = () => {
   useWorkspaceStore.setState((state) => ({
     ...state,
     workspace: null,
@@ -62,23 +149,28 @@ const closeWorkspace = () => {
 }
 
 /**
- * Atualizar o nome do workspace no 'sidebar' da aplicação.
+ * Pegando o 'id' do workspace.
  */
-const updateWorkspaceName = () => {
-  const workspace = useWorkspaceStore.getState().workspace?.name ?? ''
-  const sidebarWorkspaces = document.getElementById('workspaces')
+const getWorkspaceId = () => {
+  return useWorkspaceStore.getState().workspace?._id ?? ''
+}
 
-  if (sidebarWorkspaces) {
-    sidebarWorkspaces.innerHTML = workspace
-  }
+/**
+ * Pegando o 'id' do projeto.
+ */
+const getProjectId = () => {
+  return useWorkspaceStore.getState().project?._id ?? ''
 }
 
 /**
  * Usando sem reatividade.
  */
-export const Workspace = {
+export const WorkspaceStore = {
   getWorkspace: () => useWorkspaceStore.getState().workspace,
-  openWorkspace: (workspace: Workspace) => openWorkspace(workspace),
-  closeWorkspace: () => closeWorkspace(),
-  updateWorkspaceName: () => updateWorkspaceName()
+  getProject: () => useWorkspaceStore.getState().project,
+  getWorkspaceId: () => getWorkspaceId(),
+  getProjectId: () => getProjectId(),
+  onCloseWorkspace: (workspace?: Workspace) => onCloseWorkspace(workspace),
+  onCloseProject: (project?: Project) => onCloseProject(project),
+  resetStore: () => resetStore()
 }

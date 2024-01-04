@@ -1,7 +1,9 @@
-import { AlertModal } from '@/components/ui/AlertModal'
+import { AlertModal } from '@/@components/UI/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
-import { replaceParams } from '@/utils/replace-params'
+import { useDashboardStore } from '@/stores/useDashboardStore'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { replaceParams } from '@/utils/helpers/replace-params'
 import {
   Button,
   Dropdown,
@@ -9,7 +11,6 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-  Link,
   useDisclosure
 } from '@nextui-org/react'
 import {
@@ -19,7 +20,6 @@ import {
   MoreHorizontal,
   Trash
 } from 'lucide-react'
-import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { ProjectColumns } from './projects.columns'
 
@@ -29,19 +29,29 @@ type ProjectActionsProps = {
 
 export const ProjectActions = ({ row }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const modal = useDisclosure()
+  const onOpenDashboard = useDashboardStore((state) => state.onOpen)
+
+  const [onOpenProject, onCloseProject] = useWorkspaceStore((state) => [
+    state.onOpenProject,
+    state.onCloseProject
+  ])
 
   const { removeMany } = useFetch<ProjectColumns>({
     baseUrl: backend.projects.baseUrl,
-    keys: ['projects']
+    invalidateQueries: ['projects']
   })
 
   const handleDelete = async () => {
-    await removeMany.mutateAsync(row)
+    await removeMany.mutateAsync({
+      ...row,
+      internalFn: () => onCloseProject(row)
+    })
   }
 
   const handleOpen = () => {
-    toast.error('Not implemented yet')
+    onOpenProject(row)
+    onOpenDashboard()
   }
 
   return (
@@ -60,17 +70,16 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
                 {t('btn.open')}
               </span>
             </DropdownItem>
-            <DropdownItem textValue="edit">
-              <Link
-                href={replaceParams(frontend.projects.edit, [row._id])}
-                color="foreground"
-                className="flex gap-2"
-              >
+            <DropdownItem
+              textValue="edit"
+              href={replaceParams(frontend.projects.edit, [row._id])}
+            >
+              <span className="flex gap-2">
                 <FileSignature className="w-5 h-5" />
                 {t('btn.edit')}
-              </Link>
+              </span>
             </DropdownItem>
-            <DropdownItem onPress={onOpen} textValue="delete" showDivider>
+            <DropdownItem onPress={modal.onOpen} textValue="delete" showDivider>
               <span className="flex gap-2 text-danger">
                 <Trash className="w-5 h-5" />
                 {t('btn.delete')}
@@ -91,8 +100,8 @@ export const ProjectActions = ({ row }: ProjectActionsProps) => {
       <AlertModal
         title={t('are_you_certain.title')}
         onAction={handleDelete}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={modal.isOpen}
+        onOpenChange={modal.onOpenChange}
       >
         {t('are_you_certain_delete.description')}
       </AlertModal>

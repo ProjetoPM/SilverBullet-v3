@@ -1,4 +1,4 @@
-import { max, message, min, required } from '@/utils/replace-html-tags'
+import { max, message, min, required } from '@/utils/helpers/replace-html-tags'
 import { z } from 'zod'
 
 export const WorkspaceSchema = z.object({

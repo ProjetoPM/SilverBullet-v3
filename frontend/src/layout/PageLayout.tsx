@@ -1,23 +1,39 @@
-import { Loading } from '@/components/Loading'
-import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { Loading } from '@/@components/Loading'
+import { Breadcrumb, BreadcrumbItemProps } from '@/@components/UI/Breadcrumb'
+import { cn } from '@/lib/utils'
+import { ReactNode } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
+import { PageLayoutProvider } from './PageLayoutProvider'
 import { description } from './meta'
 
 export type PageLayoutProps = {
   title: string
-  children?: React.ReactNode
-  breadcrumb?: Array<{ label: string; link?: string }>
-  imageSrc?: string
+  ns?: string | string[]
+  children?: ReactNode
   isLoading?: boolean
+  endContent?: ReactNode
+  isAuth?: boolean
+  className?: string
+  breadcrumbs?: BreadcrumbItemProps[]
+  breadcrumbProps?: {
+    className?: string
+  }
 }
 
 export const PageLayout = ({
   title,
-  breadcrumb,
-  imageSrc,
+  breadcrumbs,
   children,
-  isLoading = false
+  endContent,
+  className,
+  isLoading = false,
+  isAuth = false,
+  breadcrumbProps,
+  ns
 }: PageLayoutProps) => {
+  const { t } = useTranslation(ns)
+
   if (isLoading) {
     return <Loading />
   }
@@ -28,15 +44,20 @@ export const PageLayout = ({
         <title>SilverBullet {title && `| ${title}`}</title>
         <meta name="description" content={description} />
       </Helmet>
-      {breadcrumb && (
-        <Breadcrumb
-          title={title}
-          items={breadcrumb}
-          imageSrc={imageSrc ?? false}
-          className="mb-5"
-        />
+      {!isAuth && (
+        <>
+          <section className="flex flex-col flex-wrap py-4">
+            {breadcrumbs && (
+              <Breadcrumb items={breadcrumbs} {...breadcrumbProps} />
+            )}
+            <h1 className="text-2xl font-bold tracking-wide">{title}</h1>
+          </section>
+          <div className="self-end xss:self-auto">{endContent}</div>
+        </>
       )}
-      <main>{children}</main>
+      <PageLayoutProvider t={t} ns={ns}>
+        <main className={cn('w-full', className)}>{children}</main>
+      </PageLayoutProvider>
     </>
   )
 }

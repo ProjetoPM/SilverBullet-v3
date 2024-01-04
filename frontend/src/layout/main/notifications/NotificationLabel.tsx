@@ -7,7 +7,7 @@ type NotificationItemProps = {
 
 export const NotificationLabel = ({ title, color }: NotificationItemProps) => {
   return (
-    <div className="flex gap-4 items-center justify-between mb-1">
+    <div className="flex gap-4 items-center mb-1 min-w-max">
       <span className="flex flex-col text-sm">
         <span className="select-none">
           {"You're invited to join the following Workspace: "}

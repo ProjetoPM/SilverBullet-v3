@@ -1,37 +1,43 @@
 import { api } from '@/services/api'
-import { replaceParams } from '@/utils/replace-params'
-import toast from 'react-hot-toast'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
+import { replaceParams } from '@/utils/helpers/replace-params'
 import {
   UseQueryOptions,
   useMutation,
   useQuery,
   useQueryClient
-} from 'react-query'
+} from '@tanstack/react-query'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
-import { useToken } from './useToken'
 
-type CommonProps = { params?: (string | undefined)[] }
-type AppendOrParamsProps = { append?: string; params?: (string | undefined)[] }
+type Keys = [string, ...(string | undefined)[]]
+
+type CommonProps = {
+  params?: Keys
+  options?: UseQueryOptions
+  append?: string
+  useWorkspaceId?: boolean
+  useProjectId?: boolean
+}
 
 type FetchProps = {
-  get?: CommonProps & { append?: string }
+  keys: Keys
+  get?: CommonProps
   list?: CommonProps
 }
 
 type UseFetchProps = {
   baseUrl: string
-  keys: string | string[]
   fetch?: FetchProps
   redirectTo?: string
-  options?: UseQueryOptions
   invalidateQueries?: string[]
 }
 
 type MutateProps = {
   _id: string
-  asyncFn?: () => Promise<void>
-  internalAsyncFn?: () => Promise<void>
+  fn?: () => void | Promise<void>
+  internalFn?: () => void | Promise<void>
 }
 
 type RemoveProps<T> = T & MutateProps
@@ -48,72 +54,61 @@ type RemoveProps<T> = T & MutateProps
  */
 export const useFetch = <T>({
   baseUrl,
-  keys,
   fetch,
   redirectTo,
-  options,
   invalidateQueries
 }: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
   const redirect = useNavigate()
-  const { isExpired: isTokenExpired } = useToken()
+
+  const ids = useMemo(() => {
+    const workspaceId = WorkspaceStore.getWorkspaceId()
+    const projectId = WorkspaceStore.getProjectId()
+
+    const result = [
+      fetch?.get?.useWorkspaceId ? workspaceId : undefined,
+      fetch?.get?.useProjectId ? projectId : undefined,
+      fetch?.list?.useWorkspaceId ? workspaceId : undefined,
+      fetch?.list?.useProjectId ? projectId : undefined
+    ]
+
+    return result.filter((item) => !!item)
+  }, [fetch?.get, fetch?.list])
 
   /**
    * Método para buscar um registro, seja ele qual for.
    *
    * @returns Promise com o resultado da requisição.
    */
-  const get = useQuery<T>(
-    keys,
-    async () => {
+  const get = useQuery<T>({
+    queryKey: [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
+    queryFn: async () => {
       /**
        * Determinar se a rota deve ser alterada.
        */
-      let _baseUrl = ''
-
-      if (fetch?.get) {
-        _baseUrl = _useAppendOrParams(baseUrl, fetch.get)
-      }
-
-      return await api
-        .get(_baseUrl)
-        .then((res) => res.data?.dto)
-        .catch((err) => !isTokenExpired() && toast.error(err.message))
+      const _baseUrl = _useAppendOrParams(baseUrl, fetch?.get)
+      return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
-    {
-      ...(options as UseQueryOptions<T>),
-      enabled: !!fetch?.get?.append
-    }
-  )
+    enabled: !!fetch?.get?.append
+  })
 
   /**
    * Método para listar todos os registros, seja ele qual for.
    *
    * @returns Promise com o resultado da requisição.
    */
-  const list = useQuery<T>(
-    keys,
-    async () => {
+  const list = useQuery<T>({
+    queryKey: [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
+    queryFn: async () => {
       /**
        * Determinar se a rota deve ser alterada.
        */
-      let _baseUrl = ''
-
-      if (fetch?.list) {
-        _baseUrl = _useAppendOrParams(baseUrl, fetch.list)
-      }
-
-      return await api
-        .get(_baseUrl)
-        .then((res) => res.data?.dto)
-        .catch((err) => !isTokenExpired() && toast.error(err.message))
+      const _baseUrl = _useAppendOrParams(baseUrl, fetch?.list)
+      return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
-    {
-      ...(options as UseQueryOptions<T>),
-      enabled: !!fetch?.list
-    }
-  )
+    enabled: !!fetch?.list
+  })
 
   /**
    * Método para criar um novo registro, seja ele qual for.
@@ -121,23 +116,25 @@ export const useFetch = <T>({
    * @param data Dados do registro a ser criado.
    * @returns Promise com o resultado da requisição.
    */
-  const create = useMutation(
-    async (data: T & Omit<MutateProps, '_id'>) => {
+  const create = useMutation({
+    mutationFn: async (data: T & Omit<MutateProps, '_id'>) => {
       const url = `${baseUrl}/new`
-      await data.asyncFn?.()
-      return await promise(api.post(url, data))
+      const result = Promise.all([data.fn?.(), promise(api.post(url, data))])
+      return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
-        await internalAsyncFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo, { replace: true })
-        }
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   /**
    * Método para atualizar um registro, seja ele qual for.
@@ -145,23 +142,25 @@ export const useFetch = <T>({
    * @param data Dados do registro a ser atualizado.
    * @returns Promise com o resultado da requisição.
    */
-  const update = useMutation(
-    async (data: T & MutateProps) => {
+  const update = useMutation({
+    mutationFn: async (data: T & MutateProps) => {
       const url = `${baseUrl}/${data._id}/edit`
-      await data.asyncFn?.()
-      return await promise(api.put(url, data))
+      const result = Promise.all([data.fn?.(), promise(api.put(url, data))])
+      return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
-        await internalAsyncFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo, { replace: true })
-        }
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   /**
    * Método para remover um registro, seja ele qual for.
@@ -169,23 +168,25 @@ export const useFetch = <T>({
    * @param data Dados do registro a ser removido.
    * @returns Promise com o resultado da requisição.
    */
-  const remove = useMutation(
-    async (data: RemoveProps<T>) => {
+  const remove = useMutation({
+    mutationFn: async (data: RemoveProps<T>) => {
       const url = `${baseUrl}/${data._id}`
-      await data.asyncFn?.()
-      return await promise(api.delete(url))
+      const result = Promise.all([data.fn?.(), promise(api.delete(url))])
+      return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
-        await internalAsyncFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo, { replace: true })
-        }
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   /**
    * Método para remover um ou mais registros, sejam quais forem.
@@ -193,29 +194,34 @@ export const useFetch = <T>({
    * @param data Registros a serem removidos.
    * @returns Promise com o resultado da requisição.
    */
-  const removeMany = useMutation(
-    async (
+  const removeMany = useMutation({
+    mutationFn: async (
       data: (
-        | Omit<RemoveProps<T>, 'asyncFn' | 'internalAsyncFn'>
-        | Omit<RemoveProps<T>, 'asyncFn' | 'internalAsyncFn'>[]
+        | Omit<RemoveProps<T>, 'fn' | 'internalFn'>
+        | Omit<RemoveProps<T>, 'fn' | 'internalFn'>[]
       ) &
-        Pick<MutateProps, 'asyncFn' | 'internalAsyncFn'>
+        Pick<MutateProps, 'fn' | 'internalFn'>
     ) => {
       const _data = Array.isArray(data) ? data : [data._id]
-      await data.asyncFn?.()
-      return await promise(api.delete(baseUrl, { params: { ids: _data } }))
+      const result = Promise.all([
+        data.fn?.(),
+        promise(api.delete(baseUrl, { params: { ids: _data } }))
+      ])
+      return result.then((res) => res[1])
     },
-    {
-      onSuccess: async (_, { internalAsyncFn }) => {
-        await queryClient.invalidateQueries(invalidateQueries ?? keys)
-        await internalAsyncFn?.()
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
 
-        if (redirectTo) {
-          redirect(redirectTo, { replace: true })
-        }
+      if (redirectTo) {
+        redirect(redirectTo)
       }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: invalidateQueries ?? fetch?.keys
+      })
     }
-  )
+  })
 
   return { create, update, remove, removeMany, get, list }
 }
@@ -229,15 +235,17 @@ export const useFetch = <T>({
  */
 const _useAppendOrParams = (
   baseUrl: string,
-  { append, params }: AppendOrParamsProps
+  { append, params }: Omit<CommonProps, 'options'> = {}
 ) => {
+  let updateUrl = baseUrl
+
   if (params) {
-    baseUrl = replaceParams(baseUrl, params)
+    updateUrl = replaceParams(baseUrl, params)
   }
 
   if (append) {
-    baseUrl += `/${append}`
+    updateUrl += `/${append}`
   }
 
-  return baseUrl
+  return updateUrl
 }

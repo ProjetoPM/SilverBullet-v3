@@ -13,7 +13,7 @@ export const Header = () => {
         isBlurred={false}
         className="overflow-y-auto"
         classNames={{
-          wrapper: 'max-w-full md:max-w-screen-2xl mx-auto px-6'
+          wrapper: 'container md:max-w-screen-2xl'
         }}
         isBordered
       >

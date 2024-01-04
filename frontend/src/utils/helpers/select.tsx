@@ -1,5 +1,4 @@
 import { Checkbox } from '@nextui-org/react'
-import { DisplayColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
 
 export const tableSelect = {
@@ -21,4 +20,4 @@ export const tableSelect = {
   ),
   enableSorting: false,
   enableHiding: false
-} as DisplayColumnDef<any>
+}

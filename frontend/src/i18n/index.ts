@@ -5,15 +5,10 @@ import { z } from 'zod'
 import { makeZodI18nMap } from 'zod-i18n-map'
 import { languageDetector } from './language-detector'
 import { zod } from './zod'
+import { configs } from '@/configs'
 
-export type Lang = 'en-US' | 'pt-BR'
-export const langs: Array<Lang> = ['en-US', 'pt-BR']
-
-const LOAD_PATH = import.meta.env.VITE_LOAD_PATH_I18N
-
-if (!LOAD_PATH) {
-  throw new Error('LOAD_PATH_I18N not found. Check .env file.')
-}
+export type Lang = 'en' | 'pt'
+export const langs: Array<Lang> = ['en', 'pt']
 
 const i18n = i18next
   .use(HttpBackend)
@@ -21,12 +16,12 @@ const i18n = i18next
   .use(initReactI18next)
   .init({
     partialBundledLanguages: true,
-    fallbackLng: 'pt-BR',
+    fallbackLng: 'pt',
     ns: ['default', 'errors'],
     defaultNS: 'default',
     supportedLngs: langs,
     backend: {
-      loadPath: LOAD_PATH
+      loadPath: configs.i18n.loadPath,
     },
     resources: zod
   })

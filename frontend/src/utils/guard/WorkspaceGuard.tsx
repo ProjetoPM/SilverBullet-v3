@@ -1,7 +1,7 @@
 import { frontend } from '@/routes/routes'
-import { Workspace } from '@/stores/useWorkspaceStore'
+import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
@@ -12,11 +12,11 @@ type WorkspaceGuardProps = {
 }
 
 const validator = z.object({
-  id: z.string().uuid()
+  _id: z.string().uuid()
 })
 
-const validateWorkspace = () => {
-  const workspace = Workspace.getWorkspace()
+const isWorkspaceInvalid = () => {
+  const workspace = WorkspaceStore.getWorkspace()
   return !workspace || !validator.safeParse(workspace).success
 }
 
@@ -31,7 +31,7 @@ export const WorkspaceGuard = ({
   const [isMounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (validateWorkspace()) {
+    if (isWorkspaceInvalid()) {
       toast.error(t('workspace.not_found'), {
         id: WG_WORKSPACE_NOT_FOUND_ID
       })

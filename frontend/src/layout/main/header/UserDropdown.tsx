@@ -33,7 +33,7 @@ export const UserDropdown = () => {
             className="gap-3 bg-default-300/20 line-clamp-1"
             textValue="email"
             startContent={<User className="w-5 h-5" />}
-            onClick={() =>
+            onPress={() =>
               navigator.clipboard.writeText(getUser().user ?? 'error')
             }
             showDivider
@@ -62,7 +62,7 @@ export const UserDropdown = () => {
             className="gap-3"
             textValue="workspace"
             startContent={<FolderPlus className="w-5 h-5" />}
-            onClick={() => navigate(frontend.workspaces.new)}
+            onPress={() => navigate(frontend.workspaces.new)}
             showDivider
           >
             <p className="font-semibold">New Workspace</p>
