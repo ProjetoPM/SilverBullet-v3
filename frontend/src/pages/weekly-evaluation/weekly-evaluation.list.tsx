@@ -8,7 +8,7 @@ import { TabEvaluations } from './tabs/evaluations/tab.evaluations.list'
 import { TabMetrics } from './tabs/metrics/tab.metrics.list'
 import { TabSubmissions } from './tabs/submissions/tab.submissions.list'
 
-export const WeeklyEvaluationListPage = () => {
+export default function WeeklyEvaluationListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { t } = usePageUtils('weekly-evaluation')
 

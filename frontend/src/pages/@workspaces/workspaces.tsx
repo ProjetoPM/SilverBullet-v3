@@ -5,8 +5,8 @@ import { backend } from '@/routes/routes'
 import { WorkspaceForm } from './workspaces.form'
 import { WorkspaceData } from './workspaces.schema'
 
-export const WorkspacePage = () => {
-  const { id, title, breadcrumbs } = usePageUtils('workspaces')
+export default function WorkspacePage() {
+  const { id, ns, title, breadcrumbs } = usePageUtils('workspaces')
 
   const { get } = useFetch<WorkspaceData>({
     baseUrl: backend.workspaces.baseUrl,
@@ -21,8 +21,9 @@ export const WorkspacePage = () => {
   return (
     <PageLayout
       title={title({ dynamic: true })}
-      isLoading={get.isLoading}
       breadcrumbs={breadcrumbs()}
+      ns={ns}
+      {...get}
     >
       <WorkspaceForm data={get.data} />
     </PageLayout>

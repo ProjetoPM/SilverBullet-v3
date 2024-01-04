@@ -18,8 +18,8 @@ export const GradeRating = ({
   ...props
 }: GradeRatingProps) => {
   return (
-    <div className="flex flex-col" aria-label="grade">
-      <Rating className="w-36" value={value} onChange={onChange} {...props} />
+    <div className="flex flex-col w-36" aria-label="grade">
+      <Rating value={value} onChange={onChange} {...props} />
       {showScore && (
         <Text
           size="xs"

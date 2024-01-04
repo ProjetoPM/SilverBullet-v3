@@ -45,7 +45,7 @@ export const PageLayout = ({
         <meta name="description" content={description} />
       </Helmet>
       {!isAuth && (
-        <>
+        <div className="flex justify-between items-center">
           <section className="flex flex-col flex-wrap py-4">
             {breadcrumbs && (
               <Breadcrumb items={breadcrumbs} {...breadcrumbProps} />
@@ -53,7 +53,7 @@ export const PageLayout = ({
             <h1 className="text-2xl font-bold tracking-wide">{title}</h1>
           </section>
           <div className="self-end xss:self-auto">{endContent}</div>
-        </>
+        </div>
       )}
       <PageLayoutProvider t={t} ns={ns}>
         <main className={cn('w-full', className)}>{children}</main>

@@ -6,7 +6,7 @@ import { WorkspaceInviteProvider } from './context/WorkspaceInviteContext'
 import { columns } from './table/workspaces.invites.columns'
 import { WorkspaceInviteToolbar } from './workspaces.toolbar'
 
-export const WorkspacesInvitesListPage = () => {
+export default function WorkspacesInvitesListPage() {
   const { title, breadcrumbs } = usePageUtils('workspaces')
 
   return (

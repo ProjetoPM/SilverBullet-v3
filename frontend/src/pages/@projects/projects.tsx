@@ -5,8 +5,8 @@ import { backend } from '@/routes/routes'
 import { ProjectForm } from './projects.form'
 import { ProjectData } from './projects.schema'
 
-export const ProjectPage = () => {
-  const { id, title, breadcrumbs } = usePageUtils('projects')
+export default function ProjectPage() {
+  const { id, ns, title, breadcrumbs } = usePageUtils('projects')
 
   const { get } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
@@ -22,6 +22,7 @@ export const ProjectPage = () => {
     <PageLayout
       title={title({ dynamic: true })}
       breadcrumbs={breadcrumbs()}
+      ns={ns}
       {...get}
     >
       <ProjectForm data={get.data} />

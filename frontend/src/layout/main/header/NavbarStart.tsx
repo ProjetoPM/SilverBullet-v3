@@ -9,9 +9,13 @@ import {
 
 type NavbarStartProps = {
   isMenuOpen: boolean
+  shouldUseHref?: boolean
 }
 
-export const NavbarStart = ({ isMenuOpen }: NavbarStartProps) => {
+export const NavbarStart = ({
+  isMenuOpen,
+  shouldUseHref = true
+}: NavbarStartProps) => {
   return (
     <NavbarContent>
       <NavbarMenuToggle
@@ -20,7 +24,7 @@ export const NavbarStart = ({ isMenuOpen }: NavbarStartProps) => {
       />
       <NavbarBrand>
         <Link
-          href={frontend.workspaces.index}
+          href={shouldUseHref ? frontend.workspaces.index : undefined}
           color="foreground"
           className="flex gap-2 rounded-md py-2"
         >

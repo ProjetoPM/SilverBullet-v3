@@ -10,7 +10,11 @@ export const WorkspaceSchema = z.object({
   description: z
     .string()
     .refine((v) => max(v, 1000), message('max', 1000))
-    .nullish()
+    .nullish(),
+  dates: z.object({
+    from: z.coerce.date(),
+    to: z.coerce.date()
+  })
 })
 
 export type WorkspaceData = z.infer<typeof WorkspaceSchema>

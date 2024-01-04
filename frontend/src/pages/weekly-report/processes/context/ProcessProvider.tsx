@@ -1,4 +1,5 @@
-import { TFunction } from 'i18next'
+import { usePageLayout } from '@/layout/PageLayoutProvider'
+import { i18n } from 'i18next'
 import {
   Dispatch,
   SetStateAction,
@@ -7,7 +8,6 @@ import {
   useState
 } from 'react'
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { WeeklyReportData } from '../../weekly-report.schema'
 
 export type SortItem = 'ASC' | 'DESC'
@@ -15,8 +15,8 @@ export type SortItem = 'ASC' | 'DESC'
 type ProcessesContextProps = {
   form: UseFormReturn<WeeklyReportData>
   array: UseFieldArrayReturn<WeeklyReportData>
-  t: TFunction<'table', undefined>
   sorting: [Set<string>, Dispatch<SetStateAction<Set<SortItem>>>]
+  t: i18n['t']
 }
 
 type ProcessesProviderProps = {
@@ -30,7 +30,7 @@ export const ProcessesProvider = ({
   value,
   children
 }: ProcessesProviderProps) => {
-  const { t } = useTranslation('weekly-report')
+  const { t } = usePageLayout()
   const sorting = useState(new Set<SortItem>(['DESC']))
 
   return (

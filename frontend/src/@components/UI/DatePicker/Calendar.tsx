@@ -1,11 +1,8 @@
-import { Input, cn } from '@nextui-org/react'
+import { cn } from '@nextui-org/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { DayPicker } from 'react-day-picker'
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
-  timer?: string
-  setTimer?: (timer: string) => void
-}
+export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
 export const Calendar = ({
   className,
@@ -13,8 +10,6 @@ export const Calendar = ({
   showOutsideDays = true,
   ...props
 }: CalendarProps) => {
-  const { timer, setTimer, ...rest } = props
-
   return (
     <>
       <DayPicker
@@ -61,16 +56,7 @@ export const Calendar = ({
           IconLeft: () => <ChevronLeft className="h-4 w-4" />,
           IconRight: () => <ChevronRight className="h-4 w-4" />
         }}
-        {...rest}
-      />
-      <Input
-        variant="faded"
-        label="Time"
-        labelPlacement="inside"
-        placeholder='e.g. "10:00"'
-        type="time"
-        value={timer}
-        onChange={(e) => setTimer?.(e.target.value)}
+        {...props}
       />
     </>
   )

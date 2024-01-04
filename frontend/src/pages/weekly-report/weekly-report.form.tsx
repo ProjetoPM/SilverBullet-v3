@@ -1,14 +1,15 @@
+import { Form, FormField } from '@/@components/Form/Form'
+import { FormEditor } from '@/@components/Form/FormEditor'
 import { GridLayout } from '@/@components/UI/GridLayout'
-import { SubmitButton } from '@/@components/UI/SubmitButton'
-import { RichEditor } from '@/@components/UI/RichEditor/RichEditor'
 import { Text } from '@/@components/UI/Label/Text'
+import { SubmitButton } from '@/@components/UI/SubmitButton'
+import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { ct } from '@/utils/helpers/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Snippet } from '@nextui-org/react'
 import { useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
+import { useForm } from 'react-hook-form'
 import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
 import { WeeklyReportProcesses } from './processes/processes'
 import { WeeklyEvaluationSelect } from './processes/processes.select'
@@ -19,7 +20,7 @@ type WeeklyReportFormProps = {
 }
 
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
-  const { t } = useTranslation('weekly-report')
+  const { t } = usePageLayout()
   const { images } = useWeeklyReport()
   const [output, setOutput] = useState('')
 
@@ -35,7 +36,7 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   }
 
   return (
-    <FormProvider {...form}>
+    <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-3"
@@ -71,22 +72,19 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           </fieldset>
         </GridLayout>
         <GridLayout cols="1">
-          <fieldset>
-            <Controller
-              control={form.control}
-              name="toolEvaluation"
-              render={({ field }) => (
-                <RichEditor
-                  {...field}
-                  label={t('tool_evaluation.label')}
-                  placeholder={t('tool_evaluation.placeholder')}
-                  errorMessage={form.formState.errors.toolEvaluation?.message}
-                  options={{ minRows: 4 }}
-                  isFixed
-                />
-              )}
-            />
-          </fieldset>
+          <FormField
+            control={form.control}
+            name="toolEvaluation"
+            render={({ field }) => (
+              <FormEditor
+                {...field}
+                label={t('tool_evaluation.label')}
+                placeholder={t('tool_evaluation.placeholder')}
+                options={{ minRows: 4 }}
+                isFixed
+              />
+            )}
+          />
         </GridLayout>
         <GridLayout cols="1">
           <WeeklyReportProcesses />
@@ -98,6 +96,6 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
         />
       </form>
       <pre>{output}</pre>
-    </FormProvider>
+    </Form>
   )
 }

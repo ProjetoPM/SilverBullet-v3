@@ -26,6 +26,7 @@ export const TableBottomContent = () => {
             onChange={(page) => table.setPageIndex(page - 1)}
             className="flex justify-center items-center"
             classNames={{ base: 'rounded-lg' }}
+            tabIndex={-1}
           />
         )}
       </DefaultAnimate>

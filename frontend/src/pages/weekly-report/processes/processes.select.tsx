@@ -1,7 +1,8 @@
+import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
-import { Controller, UseFormReturn } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
+import { UseFormReturn } from 'react-hook-form'
 import { WeeklyReportData } from '../weekly-report.schema'
+import { FormField } from '@/@components/Form/Form'
 
 type WeeklyEvaluationSelectProps = {
   form: UseFormReturn<WeeklyReportData>
@@ -25,11 +26,11 @@ const items = [
 export const WeeklyEvaluationSelect = ({
   form
 }: WeeklyEvaluationSelectProps) => {
-  const { t } = useTranslation('weekly-report')
+  const { t } = usePageLayout()
 
   return (
     <fieldset>
-      <Controller
+      <FormField
         control={form.control}
         name="weeklyEvaluationId"
         render={({ field: { value, onChange, ...rest } }) => (
@@ -39,8 +40,8 @@ export const WeeklyEvaluationSelect = ({
             labelPlacement="outside"
             placeholder={t('weekly_evaluation.placeholder')}
             errorMessage={form.formState.errors.weeklyEvaluationId?.message}
-            selectedKey={String(value)}
-            onSelectionChange={(value) => onChange(String(value ?? ''))}
+            selectedKey={value}
+            onSelectionChange={onChange}
             {...rest}
             isRequired
           >

@@ -78,6 +78,31 @@ export const columns = [
     enableHiding: true
   }),
   /**
+   * Plan Status
+   */
+  helper.accessor((row) => row.plan, {
+    id: 'plan',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} header={t('plan.label', { ns })} />
+    ),
+    cell: ({ row }) => {
+      const plan = row.getValue('plan') as string
+
+      const colors = {
+        FREE: 'success',
+        _: 'primary'
+      }
+
+      return (
+        <Chip color={colors[plan]}>
+          {t(`plan.options.${plan.toLowerCase()}`, { ns })}
+        </Chip>
+      )
+    },
+    enableSorting: true,
+    enableHiding: true
+  }),
+  /**
    * Actions
    */
   helper.display({

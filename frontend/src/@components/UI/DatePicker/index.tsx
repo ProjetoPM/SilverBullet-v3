@@ -2,7 +2,7 @@ import { Popover, PopoverContent, useDisclosure } from '@nextui-org/react'
 import enUS from 'date-fns/locale/en-US'
 import ptBR from 'date-fns/locale/pt-BR'
 import i18next from 'i18next'
-import { useId, useState } from 'react'
+import { forwardRef, useId } from 'react'
 import { Calendar, CalendarProps } from './Calendar'
 import { DatePickerButton, DatePickerButtonProps } from './DatePickerButton'
 import { DatePickerLabel, DatePickerLabelProps } from './DatePickerLabel'
@@ -13,7 +13,7 @@ type DatePickerBaseProps = Pick<
   'label' | 'isRequired' | 'errorMessage' | 'description' | 'placeholder'
 >
 
-type DatePickerProps = CalendarProps &
+export type DatePickerProps = CalendarProps &
   DatePickerBaseProps & {
     label?: string
     isRequired?: boolean
@@ -24,64 +24,69 @@ type DatePickerProps = CalendarProps &
     messageProps?: Omit<DatePickerMessageProps, 'id'>
   }
 
-export const DatePicker = ({
-  label,
-  isRequired,
-  errorMessage,
-  description,
-  buttonProps,
-  messageProps,
-  labelProps,
-  shouldDisableAfterToday = false,
-  shouldCloseOnSelect = false,
-  placeholder,
-  ...props
-}: DatePickerProps) => {
-  const id = useId()
-  const [timer, setTimer] = useState('')
-  const { isOpen, onClose, onOpenChange } = useDisclosure()
+export const DatePicker = forwardRef<HTMLButtonElement, DatePickerProps>(
+  (
+    {
+      label,
+      isRequired,
+      errorMessage,
+      description,
+      buttonProps,
+      messageProps,
+      labelProps,
+      shouldDisableAfterToday = false,
+      shouldCloseOnSelect = false,
+      placeholder,
+      ...props
+    }: DatePickerProps,
+    ref
+  ) => {
+    const id = useId()
+    const { isOpen, onClose, onOpenChange } = useDisclosure()
 
-  return (
-    <div role="group">
-      <DatePickerLabel
-        id={id}
-        label={label}
-        isRequired={isRequired}
-        {...labelProps}
-      />
-      <Popover
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        triggerScaleOnOpen={false}
-      >
-        <DatePickerButton
+    return (
+      <div role="group">
+        <DatePickerLabel
           id={id}
-          selected={props.selected}
-          placeholder={placeholder}
-          {...buttonProps}
+          label={label}
+          isRequired={isRequired}
+          {...labelProps}
         />
-        <PopoverContent className="p-0">
-          <Calendar
-            locale={i18next.language === 'en-US' ? enUS : ptBR}
-            onDayClick={shouldCloseOnSelect ? onClose : undefined}
-            timer={timer}
-            setTimer={setTimer}
-            disabled={
-              shouldDisableAfterToday
-                ? (date) => date > new Date() || date < new Date('1900-01-01')
-                : undefined
-            }
-            initialFocus
-            {...props}
+        <Popover
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          triggerScaleOnOpen={false}
+        >
+          <DatePickerButton
+            id={id}
+            selected={props.selected}
+            placeholder={placeholder}
+            {...buttonProps}
+            ref={ref}
           />
-        </PopoverContent>
-      </Popover>
-      <DatePickerMessage
-        id={id}
-        errorMessage={errorMessage}
-        description={description}
-        {...messageProps}
-      />
-    </div>
-  )
-}
+          <PopoverContent className="p-0">
+            <Calendar
+              locale={i18next.language === 'en-US' ? enUS : ptBR}
+              onDayClick={shouldCloseOnSelect ? onClose : undefined}
+              disabled={
+                shouldDisableAfterToday
+                  ? (date) => date > new Date() || date < new Date('1900-01-01')
+                  : undefined
+              }
+              initialFocus
+              {...props}
+            />
+          </PopoverContent>
+        </Popover>
+        <DatePickerMessage
+          id={id}
+          errorMessage={errorMessage}
+          description={description}
+          {...messageProps}
+        />
+      </div>
+    )
+  }
+)
+
+export default DatePicker
