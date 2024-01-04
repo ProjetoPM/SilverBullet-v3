@@ -1,5 +1,5 @@
 import { DataTable } from '@/@components/UI/DataTable/DataTable'
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { PageLayout } from '@/layout/PageLayout'
 import { frontend } from '@/routes/routes'
 import { WorkspaceInviteProvider } from './context/WorkspaceInviteContext'
@@ -7,7 +7,7 @@ import { columns } from './table/workspaces.invites.columns'
 import { WorkspaceInviteToolbar } from './workspaces.toolbar'
 
 export default function WorkspacesInvitesListPage() {
-  const { title, breadcrumbs } = usePageUtils('workspaces')
+  const { title, breadcrumbs } = usePage('workspaces')
 
   return (
     <PageLayout

@@ -17,7 +17,7 @@ type TitleProps = {
   override?: string
 }
 
-export const usePageUtils = (
+export const usePage = (
   ns?: string | string[],
   {
     home = { label: 'Home', link: frontend.workspaces.index }

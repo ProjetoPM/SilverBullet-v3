@@ -1,12 +1,12 @@
 import { useFetch } from '@/hooks/useFetch'
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
 import { WorkspaceForm } from './workspaces.form'
 import { WorkspaceData } from './workspaces.schema'
 
 export default function WorkspacePage() {
-  const { id, ns, title, breadcrumbs } = usePageUtils('workspaces')
+  const { id, ns, title, breadcrumbs } = usePage('workspaces')
 
   const { get } = useFetch<WorkspaceData>({
     baseUrl: backend.workspaces.baseUrl,
