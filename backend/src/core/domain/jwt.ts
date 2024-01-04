@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/core/logic/either'
 import { sign, verify } from 'jsonwebtoken'
 import { User } from '../../application/users/domain/user'
-import { auth } from '@/config/auth'
+import { config } from '@/config'
 import { InvalidJWTTokenError } from './errors/InvalidJWTTokenError'
-import { log } from 'console-log-colors'
+const { auth } = config
 
 interface JWTData {
   userId: string
@@ -29,7 +29,7 @@ export class JWT {
   ): Either<InvalidJWTTokenError, JWTTokenPayload> {
     try {
       const decoded = verify(token, auth.JWT_SECRET_KEY) as JWTTokenPayload
-      
+
       return right(decoded)
     } catch (err) {
       return left(new InvalidJWTTokenError())
@@ -49,7 +49,6 @@ export class JWT {
   }
 
   static signUser(user: User): JWT {
-    
     const token = sign({}, auth.JWT_SECRET_KEY, {
       subject: user.id,
       expiresIn: auth.JWT_EXPIRES_IN,

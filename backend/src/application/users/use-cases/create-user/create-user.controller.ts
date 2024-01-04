@@ -13,6 +13,7 @@ import { UserAlreadyExistsError } from './errors/UserAlreadyExistsError'
 type CreateUserControllerRequest = {
   email: string
   name: string
+  username?: string
   password: string
   confirmPassword: string
   phone?: string

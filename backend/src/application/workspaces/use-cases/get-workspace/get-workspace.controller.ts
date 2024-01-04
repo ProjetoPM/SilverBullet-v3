@@ -26,10 +26,6 @@ export class GetWorkspaceController implements Controller {
     if (result.isLeft()) {
       const error = result.value
 
-      /**
-       * Se não houver um erro específico, deixe apenas o
-       * 'default' no switch case.
-       */
       switch (error.constructor) {
         case WorkspaceNotFoundError:
           return clientError({ type: 'info', message: error.message })

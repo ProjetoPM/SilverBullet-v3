@@ -6,6 +6,7 @@ import { UserAlreadyExistsError } from './errors/UserAlreadyExistsError'
 type CreateUserRequest = {
   email: string
   name: string
+  username?: string
   password: string
   phone?: string
 }
@@ -15,22 +16,32 @@ type CreateUserResponse = Either<UserAlreadyExistsError, User>
 export class CreateUser {
   constructor(private usersRepository: IUsersRepository) {}
 
-  async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
-    const userOrError = User.create(request)
+  async execute({
+    email,
+    username,
+    ...request
+  }: CreateUserRequest): Promise<CreateUserResponse> {
+    const userAlreadyExists = await this.usersRepository.exists(email)
+
+    if(username){
+      const usernameAlreadyTaken = await this.usersRepository.existsByUsername(username)
+
+      if (usernameAlreadyTaken) {
+        return left(new UserAlreadyExistsError())
+      }
+    }
+
+    if (userAlreadyExists) {
+      return left(new UserAlreadyExistsError())
+    }
+
+    const userOrError = User.create({ ...request, emailVerified: false, email, username })
 
     if (userOrError.isLeft()) {
       return left(userOrError.value)
     }
 
     const user = userOrError.value
-
-    const userAlreadyExists = await this.usersRepository.exists(
-      user.props.email,
-    )
-
-    if (userAlreadyExists) {
-      return left(new UserAlreadyExistsError())
-    }
 
     await this.usersRepository.create(user)
 

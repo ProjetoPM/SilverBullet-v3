@@ -8,8 +8,10 @@ export class UserMapper {
     const userOrError = User.create(
       {
         name: raw.name,
+        username: raw.username,
         email: raw.email,
         password: raw.password,
+        emailVerified: raw.email_verified
       },
       raw.id,
     )
@@ -31,9 +33,11 @@ export class UserMapper {
     return {
       id: user.id,
       name: user.props.name,
+      username: user.props.username,
       email: user.props.email,
       password: await hashed.value.getHashedValue(),
       phone: user.props.phone,
+      email_verified: user.props.emailVerified,
     }
   }
 }

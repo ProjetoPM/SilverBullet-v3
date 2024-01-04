@@ -14,13 +14,13 @@ import { PrismaWorkspacesRepository } from '../../repositories/prisma/PrismaWork
 let usersRepository: IUsersRepository
 let workspaceRepository: IWorkspacesRepository
 
-describe('Delete category (end-to-end)', async () => {
+describe('Delete workspace (end-to-end)', async () => {
   beforeAll(async () => {
     workspaceRepository = new PrismaWorkspacesRepository()
     usersRepository = new PrismaUsersRepository()
   })
 
-  test('should be able to delete an existing category', async () => {
+  test('should be able to delete an existing workspace', async () => {
     const { jwt } = UserFactory.createAndAuthenticate()
 
     const user = UserFactory.create()
@@ -41,7 +41,7 @@ describe('Delete category (end-to-end)', async () => {
     expect(response.status).toBe(StatusCodes.OK)
   })
 
-  test('should be able to delete more than one category', async () => {
+  test('should be able to delete more than one workspace', async () => {
     const { jwt } = UserFactory.createAndAuthenticate()
 
     const user = UserFactory.create()
@@ -70,11 +70,11 @@ describe('Delete category (end-to-end)', async () => {
     expect(response.status).toBe(StatusCodes.OK)
   })
 
-  test("should not be able to delete a category that doesn't exist", async () => {
+  test("should not be able to delete a workspace that doesn't exist", async () => {
     const { jwt } = UserFactory.createAndAuthenticate()
-
+    
     const response = await request(app)
-      .del(`/api/workspaces/?ids=invalid-category-id`)
+      .del(`/api/workspaces/?ids=invalid-workspace-id`)
       .auth(jwt.token, { type: 'bearer' })
 
     expect(response.status).toBe(StatusCodes.BAD_REQUEST)
