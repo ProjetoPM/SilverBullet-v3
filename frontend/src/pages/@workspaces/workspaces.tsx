@@ -22,8 +22,8 @@ export default function WorkspacePage() {
     <PageLayout
       title={title({ dynamic: true })}
       breadcrumbs={breadcrumbs()}
+      isLoading={get.isLoading}
       ns={ns}
-      {...get}
     >
       <WorkspaceForm data={get.data} />
     </PageLayout>

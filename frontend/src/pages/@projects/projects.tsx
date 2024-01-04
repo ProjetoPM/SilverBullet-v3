@@ -22,8 +22,8 @@ export default function ProjectPage() {
     <PageLayout
       title={title({ dynamic: true })}
       breadcrumbs={breadcrumbs()}
+      isLoading={get.isLoading}
       ns={ns}
-      {...get}
     >
       <ProjectForm data={get.data} />
     </PageLayout>

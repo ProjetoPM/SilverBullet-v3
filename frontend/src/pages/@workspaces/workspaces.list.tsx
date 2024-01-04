@@ -24,8 +24,10 @@ export default function WorkspaceListPage() {
       breadcrumbs={breadcrumbs({ appendTitle: true })}
     >
       <DataTable
+        data={list.data}
         ns={['workspaces']}
         columns={columns}
+        hiddenColumns={['plan']}
         asyncFn={removeMany.mutateAsync}
         internalLogicFn={onCloseWorkspace}
         toolbar={{
@@ -33,8 +35,6 @@ export default function WorkspaceListPage() {
             href: frontend.workspaces.new
           }
         }}
-        hiddenColumns={['plan']}
-        {...list}
       />
     </PageLayout>
   )

@@ -26,6 +26,7 @@ export default function ProjectListPage() {
       breadcrumbs={breadcrumbs({ appendTitle: true })}
     >
       <DataTable
+        data={list.data}
         ns={['projects']}
         columns={columns}
         asyncFn={removeMany.mutateAsync}
@@ -35,7 +36,6 @@ export default function ProjectListPage() {
             href: frontend.projects.new
           }
         }}
-        {...list}
       />
     </PageLayout>
   )
