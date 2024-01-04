@@ -1,13 +1,13 @@
 import { DataTable } from '@/@components/UI/DataTable/DataTable'
 import { useFetch } from '@/hooks/useFetch'
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend, frontend } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { WorkspaceColumns, columns } from './table/workspaces.columns'
 
 export default function WorkspaceListPage() {
-  const { title, breadcrumbs } = usePageUtils('workspaces')
+  const { title, breadcrumbs } = usePage('workspaces')
   const onCloseWorkspace = useWorkspaceStore((state) => state.onCloseWorkspace)
 
   const { list, removeMany } = useFetch<WorkspaceColumns[]>({

@@ -1,5 +1,5 @@
 import { GradeRating } from '@/@components/UI/GradeRating'
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { PageLayout } from '@/layout/PageLayout'
 import { WeeklyReportProvider } from './processes/context/WeeklyReportProvider'
 import { WeeklyReportForm } from './weekly-report.form'
@@ -21,7 +21,7 @@ const data = {
 }
 
 export default function WeeklyReportPage() {
-  const { title, breadcrumbs, ns } = usePageUtils('weekly-report')
+  const { title, breadcrumbs, ns } = usePage('weekly-report')
 
   return (
     <PageLayout

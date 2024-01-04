@@ -43,6 +43,7 @@ type DataTableProps<TData, TValue> = Pick<
   toolbar?: TableTopContentProps['toolbar']
   isLoading?: boolean
   isError?: boolean
+  withParams?: boolean
 }
 
 export const DataTable = <TData, TValue>({
@@ -54,7 +55,8 @@ export const DataTable = <TData, TValue>({
   internalLogicFn,
   isLoading = false,
   isError = false,
-  hiddenColumns
+  hiddenColumns = [],
+  withParams = false
 }: DataTableProps<TData, TValue>) => {
   const { t } = useTranslation('table')
   const [sorting, setSorting] = useState<SortingState>([])
@@ -79,15 +81,17 @@ export const DataTable = <TData, TValue>({
   )
 
   useEffect(() => {
-    setSearchParams({
-      page: String(pageIndex < 0 ? 1 : pageIndex + 1),
-      size: String(pageSize > 50 ? 50 : pageSize)
-    })
-    setPagination({
-      pageIndex: pageIndex < 0 ? 0 : pageIndex,
-      pageSize: pageSize > 50 ? 50 : pageSize
-    })
-  }, [pageIndex, pageSize, setSearchParams])
+    if (withParams) {
+      setSearchParams({
+        page: String(pageIndex < 0 ? 1 : pageIndex + 1),
+        size: String(pageSize > 50 ? 50 : pageSize)
+      })
+      setPagination({
+        pageIndex: pageIndex < 0 ? 0 : pageIndex,
+        pageSize: pageSize > 50 ? 50 : pageSize
+      })
+    }
+  }, [pageIndex, pageSize, setSearchParams, withParams])
 
   const table = useReactTable({
     data,

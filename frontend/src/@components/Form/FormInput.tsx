@@ -15,7 +15,7 @@ export const FormInput = forwardRef<HTMLInputElement, InputProps>(
         labelPlacement="outside"
         defaultValue={!isControlled ? value : undefined}
         value={isControlled ? value : undefined}
-        errorMessage={error ? String(error?.message) : props.errorMessage}
+        errorMessage={error?.message}
         classNames={{ clearButton: 'text-foreground-500' }}
         {...props}
         ref={ref}
