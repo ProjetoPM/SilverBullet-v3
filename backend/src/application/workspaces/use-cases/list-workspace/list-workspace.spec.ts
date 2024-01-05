@@ -1,16 +1,12 @@
-import { afterAll, beforeAll, describe, expect, test } from 'vitest'
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
+import { beforeAll, describe, expect, test } from 'vitest'
 import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { InMemoryUsersRepository } from '@/application/users/repositories/in-memory/InMemoryUsersRepository'
 import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 import { InMemoryWorkspacesRepository } from '../../repositories/in-memory/InMemoryWorkspacesRepository'
 
-import { Workspace } from '../../domain/workspace'
-
 import { UserFactory } from '@/tests/factories/UserFactory'
 import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
-import { Roles } from '@/application/stakeholder/initiating/stakeholders/domain/roles.enum'
 import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { ListWorkspace } from './list-workspace'
 

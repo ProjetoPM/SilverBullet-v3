@@ -23,6 +23,7 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
         UserWorkspace: {
           create: {
             user: { connect: { id: user.id } },
+            email: user.props.email,
             status,
             role,
           },
@@ -47,12 +48,12 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   async update(workspace: Workspace): Promise<void> {
     const data = await WorkspaceMapper.toPersistence(workspace)
 
-    const { metrics,...workspacePersistence } = data
+    const { metrics, ...workspacePersistence } = data
     await prismaClient.workspace
       .update({
         where: { id: workspace.id },
         data: {
-          ...workspacePersistence
+          ...workspacePersistence,
         },
       })
       .catch(() => {
@@ -108,5 +109,22 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
     })
 
     return !!data.some((item) => roles.includes(item.role as WorkspaceRoles))
+  }
+
+  async sendInvite(
+    workspaceId: string,
+    email: string,
+    role: WorkspaceRoles,
+    userId?: string | undefined,
+  ): Promise<void> {
+    await prismaClient.userWorkspace.create({
+      data: {
+        workspace_id: workspaceId,
+        email: email,
+        user_id: userId,
+        status: InviteStatuses.PENDING,
+        role,
+      },
+    })
   }
 }

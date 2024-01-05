@@ -7,6 +7,8 @@ import { makeDeleteWorkspaceController } from '../factories/controllers/workspac
 import { makeEditWorkspaceController } from '../factories/controllers/workspace/makeEditWorkspaceController'
 import { makeGetWorkspaceController } from '../factories/controllers/workspace/makeGetWorkspaceController'
 import { makeListWorkspaceController } from '../factories/controllers/workspace/makeListWorkspaceController'
+import { makeCheckRoles } from '../factories/controllers/middlewares/makeCheckRoles'
+import { makeSendInviteController } from '../factories/controllers/workspace/makeSendInviteController'
 
 export const workspace = Router()
 
@@ -17,3 +19,12 @@ workspace.put('/:workspaceId/edit', adaptRoute(makeEditWorkspaceController()))
 workspace.get('/:workspaceId', adaptRoute(makeGetWorkspaceController()))
 workspace.get('/', adaptRoute(makeListWorkspaceController()))
 workspace.delete('/', adaptRoute(makeDeleteWorkspaceController()))
+workspace.post(
+  'invite',
+  adaptMiddleware(
+    makeCheckRoles({
+      workspace: ['ADMIN'],
+    }),
+  ),
+  adaptRoute(makeSendInviteController()),
+)

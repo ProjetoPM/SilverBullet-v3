@@ -68,14 +68,15 @@ enum WorkspaceRoles {
 model UserWorkspace {
   workspace    Workspace      @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
   workspace_id String
-  user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id      String
+  user         User?          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id      String?
+  email        String
   status       InviteStatuses
   role         WorkspaceRoles
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
 
-  @@id([workspace_id, user_id])
+  @@id([workspace_id, email])
   @@map("user_workspaces")
 }
 

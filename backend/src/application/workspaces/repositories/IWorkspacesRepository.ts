@@ -21,7 +21,12 @@ export interface IWorkspacesRepository {
   list(): Promise<Workspace[]>
   findById(id: string): Promise<Workspace | null>
   deleteMany(ids: string[]): Promise<void>
-
+  sendInvite(
+    workspaceId: string,
+    email: string,
+    role: WorkspaceRoles,
+    userId?: string | null,
+  ): Promise<void>
   checkUserPermission(
     userId: string,
     workspaceId: string,

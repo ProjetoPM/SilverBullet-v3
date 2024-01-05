@@ -5,7 +5,8 @@ import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 
 type UserWorkspace = {
-  userId: string
+  userId?: string
+  email: string
   workspaceId: string
   status: InviteStatuses
   role: WorkspaceRoles
@@ -27,6 +28,7 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
     this.userWorkspaces.push({
       workspaceId: workspace.id,
       userId: user.id,
+      email: user.props.email,
       status,
       role,
     })
@@ -83,5 +85,20 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
     if (!data) return false
 
     return roles.includes(data.role)
+  }
+
+  async sendInvite(
+    workspaceId: string,
+    email: string,
+    role: WorkspaceRoles,
+    userId?: string | undefined,
+  ): Promise<void> {
+    this.userWorkspaces.push({
+      workspaceId,
+      userId,
+      email,
+      status: InviteStatuses.PENDING,
+      role,
+    })
   }
 }

@@ -31,13 +31,14 @@ CREATE TABLE `workspaces` (
 -- CreateTable
 CREATE TABLE `user_workspaces` (
     `workspace_id` VARCHAR(191) NOT NULL,
-    `user_id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NULL,
+    `email` VARCHAR(191) NOT NULL,
     `status` ENUM('PENDING', 'ACTIVE', 'BLOCKED') NOT NULL,
     `role` ENUM('ADMIN', 'USER') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    PRIMARY KEY (`workspace_id`, `user_id`)
+    PRIMARY KEY (`workspace_id`, `email`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
