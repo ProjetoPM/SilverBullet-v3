@@ -32,4 +32,5 @@ export interface IWorkspacesRepository {
     workspaceId: string,
     roles: WorkspaceRoles[],
   ): Promise<boolean>
+  listInvites(userId: string): Promise<any[]>
 }

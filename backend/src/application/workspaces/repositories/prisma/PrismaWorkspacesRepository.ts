@@ -127,4 +127,12 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
       },
     })
   }
+
+  async listInvites(userId: string): Promise<any[]> {
+    const data = await prismaClient.userWorkspace.findMany({
+      where: { user_id: userId },
+      orderBy: { created_at: 'desc' },
+    })
+    return data
+  }
 }

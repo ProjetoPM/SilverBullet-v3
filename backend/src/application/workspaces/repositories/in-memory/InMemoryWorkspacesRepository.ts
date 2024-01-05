@@ -101,4 +101,12 @@ export class InMemoryWorkspacesRepository implements IWorkspacesRepository {
       role,
     })
   }
+
+  async listInvites(userId: string): Promise<any[]> {
+    const invites = this.userWorkspaces.filter(
+      (workspace) => workspace.userId === userId,
+    )
+
+    return invites
+  }
 }
