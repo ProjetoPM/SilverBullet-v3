@@ -70,7 +70,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
                 label={t('description.label')}
                 placeholder={t('description.placeholder')}
                 errorMessage={form.formState.errors.description?.message}
-                options={{ limit: WorkspaceLimits.description, minRows: 4 }}
+                options={{ limit: WorkspaceLimits.description, minRows: 3 }}
                 asNormalInput
               />
             )}
