@@ -54,6 +54,6 @@ export class SendInviteController implements Controller {
       }
     }
 
-    return ok({ message: t('something.message') })
+    return ok({ message: t('workspace.invite') })
   }
 }
