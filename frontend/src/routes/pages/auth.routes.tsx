@@ -1,9 +1,11 @@
 import { ComponentLayout } from '@/layout/ComponentLayout'
-import { SignInPage } from '@/pages/auth/sign-in/sign-in'
-import { SignUpPage } from '@/pages/auth/sign-up/sign-up'
 import { GuestGuard } from '@/utils/guard'
 import { frontend } from '@routes'
+import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
+
+const SignInPage = lazy(() => import('@/pages/auth/sign-in/sign-in'))
+const SignUpPage = lazy(() => import('@/pages/auth/sign-up/sign-up'))
 
 export const AuthRoutes: RouteObject = {
   path: '/',

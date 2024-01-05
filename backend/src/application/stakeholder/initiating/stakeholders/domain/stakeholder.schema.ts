@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { Types } from './types.enum'
 import { Roles } from './roles.enum'
+import { Types } from './types.enum'
 
 export const StakeholderSchema = z.object({
   type: z.nativeEnum(Types),
@@ -15,8 +15,8 @@ export const StakeholderSchema = z.object({
   mainExpectations: z.string().min(3).max(2000),
   greaterInterestPhase: z.string().min(3).max(255),
   observations: z.string().min(3).max(2000),
-  projectId: z.string().uuid({ message: 'Invalid id for project' }),
-  userId: z.string().uuid({ message: 'Invalid id for user' }).nullish(),
+  projectId: z.string().cuid2({ message: 'Invalid id for project' }),
+  userId: z.string().cuid2({ message: 'Invalid id for user' }).nullish(),
 })
 
 export type StakeholderProps = z.infer<typeof StakeholderSchema>

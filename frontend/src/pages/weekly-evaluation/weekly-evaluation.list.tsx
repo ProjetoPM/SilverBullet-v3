@@ -1,4 +1,4 @@
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { Tab, Tabs } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { Key } from 'react-aria'
@@ -8,9 +8,9 @@ import { TabEvaluations } from './tabs/evaluations/tab.evaluations.list'
 import { TabMetrics } from './tabs/metrics/tab.metrics.list'
 import { TabSubmissions } from './tabs/submissions/tab.submissions.list'
 
-export const WeeklyEvaluationListPage = () => {
+export default function WeeklyEvaluationListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const { t } = usePageUtils('weekly-evaluation')
+  const { t } = usePage('weekly-evaluation')
 
   const [selected, setSelected] = useState<Key>(
     () => searchParams.get('tab') || 'evaluations'

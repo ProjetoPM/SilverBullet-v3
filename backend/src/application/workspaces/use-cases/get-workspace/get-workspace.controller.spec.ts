@@ -1,17 +1,16 @@
+import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
+import { PrismaUsersRepository } from '@/application/users/repositories/prisma/PrismaUsersRepository'
 import { app } from '@/infra/http/app'
 import { prismaClient } from '@/infra/prisma/client'
 import { UserFactory } from '@/tests/factories/UserFactory'
 import { WorkspaceFactory } from '@/tests/factories/WorkspaceFactory'
 import { StatusCodes } from 'http-status-codes'
 import request from 'supertest'
-import { v4 as uuid } from 'uuid'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
-import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
-import { PrismaWorkspacesRepository } from '../../repositories/prisma/PrismaWorkspacesRepository'
-import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
-import { PrismaUsersRepository } from '@/application/users/repositories/prisma/PrismaUsersRepository'
 import { InviteStatuses } from '../../domain/invite-statuses.enum'
 import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
+import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
+import { PrismaWorkspacesRepository } from '../../repositories/prisma/PrismaWorkspacesRepository'
 
 let workspaceRepository: IWorkspacesRepository
 let usersRepository: IUsersRepository

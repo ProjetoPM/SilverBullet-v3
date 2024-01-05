@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { Engagements } from './engagements.enum'
 
 export const StakeholderEngagementPlanSchema = z.object({
-  stakeholderId: z.string().uuid(),
+  stakeholderId: z.string().cuid2(),
   currentEngagement: z.nativeEnum(Engagements),
   desiredEngagement: z.nativeEnum(Engagements),
   interestLevel: z.number().int().gt(0).lt(100),

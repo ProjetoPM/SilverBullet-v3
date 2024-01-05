@@ -12,7 +12,7 @@ type ProjectGuardProps = {
 }
 
 const validator = z.object({
-  _id: z.string().uuid()
+  _id: z.string().cuid2()
 })
 
 const isProjectInvalid = () => {

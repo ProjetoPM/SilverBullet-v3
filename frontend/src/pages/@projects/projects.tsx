@@ -1,12 +1,12 @@
 import { useFetch } from '@/hooks/useFetch'
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { PageLayout } from '@/layout/PageLayout'
 import { backend } from '@/routes/routes'
 import { ProjectForm } from './projects.form'
 import { ProjectData } from './projects.schema'
 
-export const ProjectPage = () => {
-  const { id, title, breadcrumbs } = usePageUtils('projects')
+export default function ProjectPage() {
+  const { id, ns, title, breadcrumbs } = usePage('projects')
 
   const { get } = useFetch<ProjectData>({
     baseUrl: backend.projects.baseUrl,
@@ -22,7 +22,8 @@ export const ProjectPage = () => {
     <PageLayout
       title={title({ dynamic: true })}
       breadcrumbs={breadcrumbs()}
-      {...get}
+      isLoading={get.isLoading}
+      ns={ns}
     >
       <ProjectForm data={get.data} />
     </PageLayout>

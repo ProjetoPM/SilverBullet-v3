@@ -19,7 +19,7 @@ export const useToken = () => {
     return JSON.parse(jsonPayload)
   }, [])
 
-  const isExpired = (token?: string | null) => {
+  const isExpired = useCallback(() => {
     const parsed = parseJwt(
       token ??
         (sessionStorage.getItem('token') || localStorage.getItem('token'))
@@ -34,7 +34,7 @@ export const useToken = () => {
     const now = new Date()
 
     return old < now
-  }
+  }, [parseJwt, token])
 
   return { token, isExpired, parseJwt }
 }

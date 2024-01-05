@@ -1,11 +1,11 @@
 import { DataTable } from '@/@components/UI/DataTable/DataTable'
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { PageLayout } from '@/layout/PageLayout'
 import { columns } from '@/pages/@projects/table/projects.columns'
 import { frontend } from '@/routes/routes'
 
 export const TabMetrics = () => {
-  const { t, title, breadcrumbs } = usePageUtils('weekly-evaluation')
+  const { t, title, breadcrumbs } = usePage('weekly-evaluation')
 
   return (
     <PageLayout

@@ -2,7 +2,6 @@ import { LanguageSwitcher } from '@/@components/Features/LanguageSwitcher'
 import { ThemeSwitcher } from '@/@components/Features/ThemeSwitcher'
 import { DashboardMenu } from '@/@components/UI/Dashboard/DashboardMenu'
 import { mainSidebarItems } from '@/constants/sidebar-items'
-import { useScreen } from '@/hooks/useScreen'
 import { useDashboardStore } from '@/stores/useDashboardStore'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import {
@@ -16,14 +15,15 @@ import {
 import { MenuIcon } from 'lucide-react'
 import { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMediaQuery } from 'react-responsive'
 import parser from 'ua-parser-js'
 import { Notifications } from '../notifications/Notifications'
 import { UserDropdown } from './UserDropdown'
 
 export const NavbarEnd = () => {
-  const { screenX } = useScreen()
   const { t } = useTranslation('sidebar')
   const workspace = useWorkspaceStore((state) => state.workspace)
+  const isXs = useMediaQuery({ query: '(max-width: 520px)' })
 
   const [isOpen, onOpenChange] = useDashboardStore((state) => [
     state.isOpen,
@@ -31,15 +31,14 @@ export const NavbarEnd = () => {
   ])
 
   const handleOs = useMemo(() => {
-    const os = parser(navigator.userAgent).os.name ?? ''
-
     const select = {
       'Mac OS': '⌘ K',
       Windows: 'Ctrl K',
-      Linux: 'Ctrl K'
+      Linux: 'Ctrl K',
+      _: null
     }
 
-    return select[os]
+    return select[parser(navigator.userAgent).os.name ?? '_']
   }, [])
 
   return (
@@ -59,11 +58,11 @@ export const NavbarEnd = () => {
             color="default"
             variant="flat"
             onPress={onOpenChange}
-            isIconOnly={screenX < 520}
+            isIconOnly={isXs}
           >
             <div className="hidden xs:flex gap-2 items-center">
               <span>Menu</span>
-              {!!handleOs && (
+              {!isXs && (
                 <Kbd className="bg-default-100 dark:bg-default-200">
                   {handleOs}
                 </Kbd>

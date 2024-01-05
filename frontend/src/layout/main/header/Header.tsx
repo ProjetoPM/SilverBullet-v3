@@ -2,7 +2,11 @@ import { Navbar, useDisclosure } from '@nextui-org/react'
 import { NavbarEnd } from './NavbarEnd'
 import { NavbarStart } from './NavbarStart'
 
-export const Header = () => {
+type HeaderProps = {
+  shouldShowEnd?: boolean
+}
+
+export const Header = ({ shouldShowEnd = true }: HeaderProps) => {
   const { isOpen, onOpenChange } = useDisclosure()
 
   return (
@@ -17,8 +21,8 @@ export const Header = () => {
         }}
         isBordered
       >
-        <NavbarStart isMenuOpen={isOpen} />
-        <NavbarEnd />
+        <NavbarStart isMenuOpen={isOpen} shouldUseHref={shouldShowEnd} />
+        {shouldShowEnd && <NavbarEnd />}
       </Navbar>
     </header>
   )

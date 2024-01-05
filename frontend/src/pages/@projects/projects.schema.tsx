@@ -2,7 +2,7 @@ import { max, message, min, required } from '@/utils/helpers/replace-html-tags'
 import { z } from 'zod'
 
 export const ProjectSchema = z.object({
-  _id: z.string().uuid().nullish(),
+  _id: z.string().cuid2().nullish(),
   name: z
     .string()
     .refine(min, required)

@@ -4,24 +4,12 @@ import { frontend } from '@routes'
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
 
-const WorkspacePage = lazy(() =>
-  import('@/pages/@workspaces/workspaces').then(({ WorkspacePage }) => ({
-    default: WorkspacePage
-  }))
+const WorkspacePage = lazy(() => import('@/pages/@workspaces/workspaces'))
+const WorkspaceListPage = lazy(
+  () => import('@/pages/@workspaces/workspaces.list')
 )
-const WorkspaceListPage = lazy(() =>
-  import('@/pages/@workspaces/workspaces.list').then(
-    ({ WorkspaceListPage }) => ({
-      default: WorkspaceListPage
-    })
-  )
-)
-const WorkspacesInvitesListPage = lazy(() =>
-  import('@/pages/@workspaces/invites/workspaces.invites').then(
-    ({ WorkspacesInvitesListPage }) => ({
-      default: WorkspacesInvitesListPage
-    })
-  )
+const WorkspacesInvitesListPage = lazy(
+  () => import('@/pages/@workspaces/invites/workspaces.invites')
 )
 
 export const WorkspaceRoutes: RouteObject = {

@@ -1,11 +1,11 @@
 import { DataTable } from '@/@components/UI/DataTable/DataTable'
-import { usePageUtils } from '@/hooks/usePageUtils'
+import { usePage } from '@/hooks/usePage'
 import { PageLayout } from '@/layout/PageLayout'
 import { columns } from '@/pages/@projects/table/projects.columns'
 import { useEffect } from 'react'
 
 export const TabEvaluations = () => {
-  const { title, breadcrumbs } = usePageUtils('weekly-evaluation')
+  const { title, breadcrumbs } = usePage('weekly-evaluation')
 
   useEffect(() => {
     console.log('evaluations')

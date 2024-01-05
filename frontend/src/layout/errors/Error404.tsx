@@ -1,3 +1,4 @@
+import { useToken } from '@/hooks/useToken'
 import { Header } from '@/layout/main/header/Header'
 import { frontend } from '@/routes/routes'
 import { Button, Link } from '@nextui-org/react'
@@ -5,13 +6,14 @@ import { MoveLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-export const Error404 = () => {
+export default function Error404() {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { isExpired } = useToken()
 
   return (
     <div className="grid grid-rows-[64px_1fr] h-screen">
-      <Header />
+      <Header shouldShowEnd={!isExpired()} />
       <section className="bg-background">
         <div className="flex flex-col items-center justify-center h-full">
           <div className="mx-5">
@@ -31,9 +33,11 @@ export const Error404 = () => {
                 <MoveLeft className="h-5 w-5" />
                 {t('btn.go_back')}
               </Button>
-              <Button as={Link} href={frontend.workspaces.index}>
-                {t('btn.take_me_home')}
-              </Button>
+              {!isExpired() && (
+                <Button as={Link} href={frontend.workspaces.index}>
+                  {t('btn.take_me_home')}
+                </Button>
+              )}
             </div>
           </div>
         </div>
