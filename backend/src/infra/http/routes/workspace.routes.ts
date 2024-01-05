@@ -9,6 +9,7 @@ import { makeGetWorkspaceController } from '../factories/controllers/workspace/m
 import { makeListWorkspaceController } from '../factories/controllers/workspace/makeListWorkspaceController'
 import { makeCheckRoles } from '../factories/controllers/middlewares/makeCheckRoles'
 import { makeSendInviteController } from '../factories/controllers/workspace/makeSendInviteController'
+import { makeListInviteController } from '../factories/controllers/workspace/makeListInviteController'
 
 export const workspace = Router()
 
@@ -28,3 +29,4 @@ workspace.post(
   ),
   adaptRoute(makeSendInviteController()),
 )
+workspace.get('invites', adaptRoute(makeListInviteController()))
