@@ -7,7 +7,11 @@ import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { WorkspaceData, WorkspaceSchema } from './workspaces.schema'
+import {
+  WorkspaceData,
+  WorkspaceLimits,
+  WorkspaceSchema
+} from './workspaces.schema'
 
 type WorkspaceFormProps = {
   data?: WorkspaceData
@@ -52,7 +56,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
                 {...field}
                 label={t('name.label')}
                 placeholder={t('name.placeholder')}
-                options={{ limit: 100 }}
+                options={{ limit: WorkspaceLimits.name }}
                 asNormalInput
               />
             )}
@@ -66,7 +70,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
                 label={t('description.label')}
                 placeholder={t('description.placeholder')}
                 errorMessage={form.formState.errors.description?.message}
-                options={{ limit: 1000, minRows: 3 }}
+                options={{ limit: WorkspaceLimits.description, minRows: 4 }}
                 asNormalInput
               />
             )}

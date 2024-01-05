@@ -7,7 +7,7 @@ import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { backend, frontend } from '@/routes/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { ProjectData, ProjectSchema } from './projects.schema'
+import { ProjectData, ProjectLimits, ProjectSchema } from './projects.schema'
 
 type ProjectFormProps = {
   data?: ProjectData
@@ -52,7 +52,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
                 {...field}
                 label={t('name.label')}
                 placeholder={t('name.placeholder')}
-                options={{ limit: 64 }}
+                options={{ limit: ProjectLimits.name }}
                 asNormalInput
               />
             )}
@@ -65,7 +65,7 @@ export const ProjectForm = ({ data }: ProjectFormProps) => {
                 {...field}
                 label={t('description.label')}
                 placeholder={t('description.placeholder')}
-                options={{ limit: 1000, minRows: 3 }}
+                options={{ limit: ProjectLimits.description, minRows: 3 }}
                 asNormalInput
               />
             )}
