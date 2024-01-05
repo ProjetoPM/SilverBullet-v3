@@ -1,11 +1,18 @@
 import { z } from 'zod'
 
-import { PlanTypes } from './plan-types.enum'
+import { max, min } from '@/utils/clear-html-tags'
 import { PlanStatuses } from './plan-statuses.enum'
+import { PlanTypes } from './plan-types.enum'
 
 export const WorkspaceSchema = z.object({
-  name: z.string().min(3).max(64),
-  description: z.string().min(3).max(500).nullish(),
+  name: z
+    .string()
+    .refine(min)
+    .refine((v) => max(v, 50)),
+  description: z
+    .string()
+    .refine((v) => max(v, 500))
+    .nullish(),
   plan: z.nativeEnum(PlanTypes),
   planStatus: z.nativeEnum(PlanStatuses),
 })

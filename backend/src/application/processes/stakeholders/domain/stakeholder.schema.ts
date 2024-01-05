@@ -5,7 +5,7 @@ import { Roles } from './roles.enum'
 export const StakeholderSchema = z.object({
   type: z.nativeEnum(Types),
   mainProjectRole: z.nativeEnum(Roles),
-  email: z.string().min(3).max(255),
+  email: z.string().email().min(1).max(255),
   organization: z.string().min(3).max(255),
   organizationPosition: z.string().min(3).max(255),
   mainProjectResponsibility: z.string().min(3).max(255),

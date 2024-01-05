@@ -47,7 +47,7 @@ enum PlanTypes {
 model Workspace {
   id               String             @id
   name             String
-  description      String?            @db.VarChar(500)
+  description      String?            @db.Text
   plan             PlanTypes
   plan_status      PlanStatuses
   created_at       DateTime           @default(now())
