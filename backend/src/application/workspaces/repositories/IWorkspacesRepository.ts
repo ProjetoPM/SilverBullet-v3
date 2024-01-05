@@ -2,6 +2,7 @@ import { Workspace } from '../domain/workspace'
 import { User } from '@/application/users/domain/user'
 import { WorkspaceRoles } from '../domain/workspace-roles.schema'
 import { InviteStatuses } from '../domain/invite-statuses.enum'
+import { UserWorkspace } from '../domain/user-workspace.type'
 
 export interface IWorkspacesRepository {
   create(
@@ -32,5 +33,5 @@ export interface IWorkspacesRepository {
     workspaceId: string,
     roles: WorkspaceRoles[],
   ): Promise<boolean>
-  listInvites(userId: string): Promise<any[]>
+  listInvites(userId: string): Promise<UserWorkspace[]>
 }

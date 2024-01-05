@@ -5,6 +5,7 @@ import { Workspace } from '../../domain/workspace'
 import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { WorkspaceMapper } from '../../mappers/workspace-mapper'
 import { IWorkspacesRepository } from '../IWorkspacesRepository'
+import { UserWorkspace } from '../../domain/user-workspace.type'
 
 export class PrismaWorkspacesRepository implements IWorkspacesRepository {
   async create(
@@ -128,11 +129,12 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
     })
   }
 
-  async listInvites(userId: string): Promise<any[]> {
+  async listInvites(userId: string): Promise<UserWorkspace[]> {
     const data = await prismaClient.userWorkspace.findMany({
       where: { user_id: userId },
       orderBy: { created_at: 'desc' },
     })
-    return data
+
+    return data.map(WorkspaceMapper.toDomainUserWorkspace)
   }
 }

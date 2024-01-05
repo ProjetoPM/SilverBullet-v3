@@ -1,9 +1,13 @@
-import { Workspace as PersistenceWorkspace } from '@prisma/client'
+import {
+  Workspace as PersistenceWorkspace,
+  UserWorkspace as PersistenceUserWorkspace,
+} from '@prisma/client'
 import { Workspace } from '../domain/workspace'
 import { t } from 'i18next'
 import { PlanTypes } from '../domain/plan-types.enum'
 import { PlanStatuses } from '../domain/plan-statuses.enum'
 import { MetricMapper } from './metric-mapper'
+import { UserWorkspace } from '../domain/user-workspace.type'
 
 export class WorkspaceMapper {
   static toDomain(raw: PersistenceWorkspace) {
@@ -15,7 +19,6 @@ export class WorkspaceMapper {
         planStatus: raw.plan_status as PlanStatuses,
       },
       raw.id,
-    
     )
 
     if (workspaceOrError.isLeft()) {
@@ -39,6 +42,16 @@ export class WorkspaceMapper {
             ),
           )
         : [],
+    }
+  }
+
+  static toDomainUserWorkspace(raw: PersistenceUserWorkspace): UserWorkspace {
+    return {
+      userId: raw.user_id,
+      workspaceId: raw.workspace_id,
+      email: raw.email,
+      status: raw.status,
+      role: raw.role,
     }
   }
 }

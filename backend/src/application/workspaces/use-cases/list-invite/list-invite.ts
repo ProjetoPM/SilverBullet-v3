@@ -1,6 +1,7 @@
+import { UserWorkspace } from '../../domain/user-workspace.type'
 import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
 
-type ListInviteResponse = any[]
+type ListInviteResponse = UserWorkspace[]
 type ListInviteRequest = {
   userId: string
 }
