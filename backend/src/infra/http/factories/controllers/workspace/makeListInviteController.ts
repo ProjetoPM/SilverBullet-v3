@@ -5,7 +5,6 @@ import { ListInviteController } from '@/application/workspaces/use-cases/list-in
 
 export function makeListInviteController(): Controller {
   const prismaWorkspacesRepository = new PrismaWorkspacesRepository()
-
   const listInvite = new ListInvite(prismaWorkspacesRepository)
 
   return new ListInviteController(listInvite)

@@ -12,8 +12,6 @@ export class ListInviteController implements Controller {
     currentUserId: userId,
   }: ListInviteControllerRequest): Promise<HttpResponse> {
     const invites = await this.listInvite.execute({ userId })
-    return ok({
-      invites,
-    })
+    return ok({ invites })
   }
 }

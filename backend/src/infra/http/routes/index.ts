@@ -1,12 +1,13 @@
 import { Router } from 'express'
 import { auth } from './auth.routes'
-import { workspace } from './workspace.routes'
-import { project } from './project.routes'
-import { stakeholder } from './stakeholder.routes'
-import { stakeholderEngagementPlan } from './stakeholder-engagement-plan.routes'
+import { invites } from './invites.routes'
 import { projectCharter } from './project-charter.routes'
-import { weeklyEvaluation } from './weekly-evaluation.routes'
+import { project } from './project.routes'
+import { stakeholderEngagementPlan } from './stakeholder-engagement-plan.routes'
+import { stakeholder } from './stakeholder.routes'
 import { user } from './user.routes'
+import { weeklyEvaluation } from './weekly-evaluation.routes'
+import { workspace } from './workspace.routes'
 
 export const router = Router()
 
@@ -18,3 +19,4 @@ router.use('/stakeholders', stakeholder)
 router.use('/stakeholder-engagement-plans', stakeholderEngagementPlan)
 router.use('/project-charters', projectCharter)
 router.use('/weekly-evaluations', weeklyEvaluation)
+router.use('/invites', invites)

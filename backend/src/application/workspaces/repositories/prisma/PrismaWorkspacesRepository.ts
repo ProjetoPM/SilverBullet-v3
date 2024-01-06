@@ -121,8 +121,8 @@ export class PrismaWorkspacesRepository implements IWorkspacesRepository {
     await prismaClient.userWorkspace.create({
       data: {
         workspace_id: workspaceId,
-        email: email,
         user_id: userId,
+        email,
         status: InviteStatuses.PENDING,
         role,
       },

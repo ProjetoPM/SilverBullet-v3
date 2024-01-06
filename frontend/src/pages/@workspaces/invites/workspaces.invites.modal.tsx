@@ -54,7 +54,12 @@ export const WorkspaceInviteModal = ({
   })
 
   const onSubmit = async (fn?: () => void) => {
-    await generic.mutateAsync({ data: Array.from(invites) })
+    try {
+      await generic.mutateAsync({ data: Array.from(invites) })
+      setInvites(new Set())
+    } catch (e) {
+      console.error(e)
+    }
     fn?.()
   }
 
@@ -171,8 +176,8 @@ export const WorkspaceInviteModal = ({
                     classNames={{ label: 'text-foreground' }}
                     disallowEmptySelection
                   >
-                    <SelectItem key="STUDENT">
-                      {t('invites.roles.student')}
+                    <SelectItem key="USER">
+                      {t('invites.roles.user')}
                     </SelectItem>
                     <SelectItem key="ADMIN">
                       {t('invites.roles.admin')}
@@ -196,9 +201,7 @@ export const WorkspaceInviteModal = ({
                       {Array.from(invites).map((invite) => (
                         <Chip
                           key={invite.email}
-                          color={
-                            invite.role === 'STUDENT' ? 'success' : 'warning'
-                          }
+                          color={invite.role === 'USER' ? 'success' : 'warning'}
                           variant="dot"
                           radius="md"
                           onClose={() => onRemove(invite)}

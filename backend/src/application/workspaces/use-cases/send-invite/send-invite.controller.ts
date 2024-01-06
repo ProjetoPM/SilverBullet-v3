@@ -2,10 +2,9 @@ import { Controller } from '@/core/infra/controller'
 import { HttpResponse, clientError, ok } from '@/core/infra/http-response'
 import { Validator } from '@/core/infra/validator'
 import { t } from 'i18next'
-import { SendInvite } from './send-invite'
 import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
 import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
-import { request } from 'http'
+import { SendInvite } from './send-invite'
 
 type Emails = {
   email: string
@@ -37,6 +36,7 @@ export class SendInviteController implements Controller {
     if (validated.isLeft()) {
       return clientError(validated.value)
     }
+
     const result = await this.sendInvite.execute({
       userId: currentUserId,
       workspaceId: currentWorkspaceId,

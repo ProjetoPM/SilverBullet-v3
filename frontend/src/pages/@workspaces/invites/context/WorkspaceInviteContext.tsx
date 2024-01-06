@@ -12,7 +12,7 @@ type WorkspaceInviteContextProps = {
 const WorkspaceInviteContext =
   createContext<WorkspaceInviteContextProps | null>(null)
 
-export type WorkspaceRoles = 'STUDENT' | 'ADMIN'
+export type WorkspaceRoles = 'USER' | 'ADMIN'
 
 export type WorkspaceInvites = {
   email: string
@@ -28,7 +28,7 @@ export const WorkspaceInviteProvider = ({
 }: WorkspaceInviteProviderProps) => {
   const { t } = usePageLayout()
   const invites = useState<Set<WorkspaceInvites>>(new Set())
-  const roles = useState<Set<WorkspaceRoles>>(new Set(['STUDENT']))
+  const roles = useState<Set<WorkspaceRoles>>(new Set(['USER']))
   const input = useState('')
 
   return (

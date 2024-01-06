@@ -1,8 +1,8 @@
+import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
 import { Either, left, right } from '@/core/logic/either'
 import { WorkspaceRoles } from '../../domain/workspace-roles.schema'
-import { IUsersRepository } from '@/application/users/repositories/IUsersRepository'
-import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 import { IWorkspacesRepository } from '../../repositories/IWorkspacesRepository'
+import { UserDoesNotExistError } from './errors/UserDoesNotExistError'
 
 type Emails = {
   email: string
@@ -37,13 +37,16 @@ export class SendInvite {
     for (const item of data) {
       const { email, role } = item
       const user = await this.usersRepository.findByEmail(email)
-      const userId = user == null ? null : user.id
+
+      if (!user) {
+        continue
+      }
 
       await this.workspaceRepository.sendInvite(
         workspaceId,
         email,
         role,
-        userId,
+        user.id,
       )
     }
 
