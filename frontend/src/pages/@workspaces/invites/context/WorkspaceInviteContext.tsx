@@ -1,10 +1,10 @@
+import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { TFunction } from 'i18next'
 import { createContext, useContext, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 type WorkspaceInviteContextProps = {
   t: TFunction
-  invites: [WorkspaceInvites[], (invites: WorkspaceInvites[]) => void]
+  invites: [Set<WorkspaceInvites>, (invites: Set<WorkspaceInvites>) => void]
   roles: [Set<WorkspaceRoles>, (role: Set<WorkspaceRoles>) => void]
   input: [string, (input: string) => void]
 }
@@ -26,8 +26,8 @@ type WorkspaceInviteProviderProps = {
 export const WorkspaceInviteProvider = ({
   children
 }: WorkspaceInviteProviderProps) => {
-  const { t } = useTranslation('workspaces')
-  const invites = useState<WorkspaceInvites[]>([])
+  const { t } = usePageLayout()
+  const invites = useState<Set<WorkspaceInvites>>(new Set())
   const roles = useState<Set<WorkspaceRoles>>(new Set(['STUDENT']))
   const input = useState('')
 

@@ -16,7 +16,7 @@ import {
 import { DataTableViewOptions } from './helpers/DataTableViewOptions'
 
 export type TableTopContentProps = {
-  toolbar: ToolbarProps | JSX.Element
+  toolbar: ToolbarProps | React.ReactNode
 }
 
 export function TableTopContent({ toolbar }: TableTopContentProps) {

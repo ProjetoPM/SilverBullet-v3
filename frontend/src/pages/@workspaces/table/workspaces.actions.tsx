@@ -55,6 +55,11 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
     navigate(replaceParams(frontend.projects.index, [row._id]))
   }
 
+  const handleInvite = () => {
+    onOpenWorkspace(row)
+    navigate(replaceParams(frontend.workspaces.users.index, [row._id]))
+  }
+
   return (
     <>
       <Dropdown>
@@ -86,11 +91,7 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
                 {t('btn.delete')}
               </span>
             </DropdownItem>
-            <DropdownItem
-              textValue="users"
-              href={replaceParams(frontend.workspaces.users.index, [row._id])}
-              showDivider
-            >
+            <DropdownItem textValue="users" onPress={handleInvite} showDivider>
               <span className="flex gap-2">
                 <Users className="w-5 h-5" />
                 {t('btn.invite_users')}

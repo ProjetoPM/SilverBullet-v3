@@ -7,31 +7,34 @@ import {
   useQuery,
   useQueryClient
 } from '@tanstack/react-query'
-import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
+import { useEffect } from 'react'
 
 type Keys = [string, ...(string | undefined)[]]
+
+type AppendKeys = {
+  workspace?: boolean
+  project?: boolean
+}
 
 type CommonProps = {
   params?: Keys
   options?: UseQueryOptions
   append?: string
-  useWorkspaceId?: boolean
-  useProjectId?: boolean
-}
-
-type FetchProps = {
-  keys: Keys
-  get?: CommonProps
-  list?: CommonProps
+  keys?: AppendKeys
 }
 
 type UseFetchProps = {
   baseUrl: string
-  fetch?: FetchProps
   redirectTo?: string
-  invalidateQueries?: string[]
+  invalidateQueries?: Keys
+  fetch?: {
+    keys: Keys
+    get?: CommonProps
+    list?: Omit<CommonProps, 'enable'>
+  }
+  mutate?: Pick<CommonProps, 'keys'>
 }
 
 type MutateProps = {
@@ -55,26 +58,37 @@ type RemoveProps<T> = T & MutateProps
 export const useFetch = <T>({
   baseUrl,
   fetch,
+  mutate,
   redirectTo,
   invalidateQueries
 }: UseFetchProps) => {
   const { promise } = useMutate()
   const queryClient = useQueryClient()
   const redirect = useNavigate()
+  const workspaceId = WorkspaceStore.getWorkspaceId()
+  const projectId = WorkspaceStore.getProjectId()
 
-  const ids = useMemo(() => {
-    const workspaceId = WorkspaceStore.getWorkspaceId()
-    const projectId = WorkspaceStore.getProjectId()
+  const fetchQueryKeys = () => {
+    return [
+      fetch?.get?.keys?.workspace && workspaceId,
+      fetch?.get?.keys?.project && projectId,
+      fetch?.list?.keys?.workspace && workspaceId,
+      fetch?.list?.keys?.project && projectId,
+      ...(fetch?.keys ?? ['disabled'])
+    ].filter(Boolean) as string[]
+  }
 
-    const result = [
-      fetch?.get?.useWorkspaceId ? workspaceId : undefined,
-      fetch?.get?.useProjectId ? projectId : undefined,
-      fetch?.list?.useWorkspaceId ? workspaceId : undefined,
-      fetch?.list?.useProjectId ? projectId : undefined
-    ]
+  const mutateQueryKeys = () => {
+    return [
+      mutate?.keys?.workspace && workspaceId,
+      mutate?.keys?.project && projectId,
+      ...(invalidateQueries ?? [])
+    ].filter(Boolean) as string[]
+  }
 
-    return result.filter((item) => !!item)
-  }, [fetch?.get, fetch?.list])
+  useEffect(() => {
+    console.log(fetch?.keys)
+  }, [fetch?.keys])
 
   /**
    * Método para buscar um registro, seja ele qual for.
@@ -82,7 +96,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const get = useQuery<T>({
-    queryKey: [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
+    queryKey: [...fetchQueryKeys()],
     queryFn: async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -90,7 +104,7 @@ export const useFetch = <T>({
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.get)
       return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
-    enabled: !!fetch?.get?.append
+    enabled: !!fetch?.keys && !!fetch?.get?.append
   })
 
   /**
@@ -99,7 +113,7 @@ export const useFetch = <T>({
    * @returns Promise com o resultado da requisição.
    */
   const list = useQuery<T>({
-    queryKey: [...(fetch?.keys ?? []).filter((key) => !!key), ...ids],
+    queryKey: [...fetchQueryKeys()],
     queryFn: async () => {
       /**
        * Determinar se a rota deve ser alterada.
@@ -107,7 +121,7 @@ export const useFetch = <T>({
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.list)
       return await api.get(_baseUrl).then((res) => res.data?.dto)
     },
-    enabled: !!fetch?.list
+    enabled: !!fetch?.keys && !!fetch?.list
   })
 
   /**
@@ -131,7 +145,7 @@ export const useFetch = <T>({
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: invalidateQueries ?? fetch?.keys
+        queryKey: mutateQueryKeys()
       })
     }
   })
@@ -157,7 +171,7 @@ export const useFetch = <T>({
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: invalidateQueries ?? fetch?.keys
+        queryKey: mutateQueryKeys()
       })
     }
   })
@@ -183,7 +197,7 @@ export const useFetch = <T>({
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: invalidateQueries ?? fetch?.keys
+        queryKey: mutateQueryKeys()
       })
     }
   })
@@ -218,12 +232,32 @@ export const useFetch = <T>({
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: invalidateQueries ?? fetch?.keys
+        queryKey: mutateQueryKeys()
       })
     }
   })
 
-  return { create, update, remove, removeMany, get, list }
+  const generic = useMutation({
+    mutationFn: async (data: T & Omit<MutateProps, '_id'>) => {
+      const url = baseUrl
+      const result = Promise.all([data.fn?.(), promise(api.post(url, data))])
+      return result.then((res) => res[1])
+    },
+    onSuccess: async (_, { internalFn }) => {
+      await internalFn?.()
+
+      if (redirectTo) {
+        redirect(redirectTo)
+      }
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: mutateQueryKeys()
+      })
+    }
+  })
+
+  return { create, update, remove, generic, removeMany, get, list }
 }
 
 /**

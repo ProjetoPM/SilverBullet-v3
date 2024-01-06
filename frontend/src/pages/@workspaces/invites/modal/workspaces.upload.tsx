@@ -27,16 +27,19 @@ export const WorkspaceUploadButton = () => {
               if (data && data.length > 0) {
                 const uniqueEmails = data.filter(
                   (email) =>
-                    !invites.some((invite) => invite.email === email.email)
+                    !Array.from(invites).some(
+                      (invite) => invite.email === email.email
+                    )
                 )
                 const normalizeInvites = uniqueEmails.map((invite) => ({
                   ...invite,
                   role: invite.role.toUpperCase()
                 }))
 
-                setInvites([...invites, ...normalizeInvites])
+                setInvites(new Set([...invites, ...normalizeInvites]))
               }
             },
+            fastMode: true,
             header: true
           })
           /**

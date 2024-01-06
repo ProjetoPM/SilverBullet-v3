@@ -1,4 +1,5 @@
 import { Text } from '@/@components/UI/Label/Text'
+import { useFetch } from '@/hooks/useFetch'
 import {
   Button,
   Chip,
@@ -14,7 +15,9 @@ import {
 } from '@nextui-org/react'
 import { ListRestart, UserPlus2 } from 'lucide-react'
 import { KeyboardEvent, useCallback } from 'react'
+import { z } from 'zod'
 import {
+  WorkspaceInvites,
   WorkspaceRoles,
   useWorkspaceInvites
 } from './context/WorkspaceInviteContext'
@@ -25,6 +28,14 @@ type WorkspaceInviteModalProps = {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
 }
+
+type SendInvite = {
+  data: WorkspaceInvites[]
+}
+
+const validate = z.object({
+  email: z.string().email()
+})
 
 export const WorkspaceInviteModal = ({
   isOpen,
@@ -37,25 +48,48 @@ export const WorkspaceInviteModal = ({
     invites: [invites, setInvites]
   } = useWorkspaceInvites()
 
+  const { generic } = useFetch<SendInvite>({
+    baseUrl: '/invites/workspace',
+    invalidateQueries: ['workspace', 'invites']
+  })
+
+  const onSubmit = async (fn?: () => void) => {
+    await generic.mutateAsync({ data: Array.from(invites) })
+    fn?.()
+  }
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Enter' && emails.trim() !== '') {
         e.preventDefault()
 
+        const alreadyInvited = new Set(
+          Array.from(invites).map((invite) => invite.email)
+        )
+
         const split = emails
           .toLowerCase()
           .split(',')
           .map((email) => email.trim())
+          .filter(
+            (email) =>
+              !alreadyInvited.has(email) &&
+              validate.safeParse({ email }).success
+          )
 
-        /**
-         * Filtering the emails that do not yet exist in the list,
-         * to avoid duplicates
-         */
-        const uniqueEmails = split.filter(
-          (email) => !invites.some((invite) => invite.email === email)
-        )
-        for (const email of uniqueEmails) {
-          invites.push({ email, role: role.values().next().value })
+        for (const email of split) {
+          let emailExists = false
+
+          for (const invite of invites) {
+            if (invite.email === email) {
+              emailExists = true
+              break
+            }
+          }
+
+          if (!emailExists) {
+            invites.add({ email, role: role.values().next().value })
+          }
         }
         setEmails('')
       }
@@ -63,13 +97,10 @@ export const WorkspaceInviteModal = ({
     [emails, role, invites, setEmails]
   )
 
-  const onRemove = useCallback(
-    (index: number) => {
-      const updatedEmails = invites.filter((_, i) => i !== index)
-      setInvites(updatedEmails)
-    },
-    [invites, setInvites]
-  )
+  const onRemove = (invite: WorkspaceInvites) => {
+    invites.delete(invite)
+    setInvites(new Set(invites))
+  }
 
   return (
     <>
@@ -78,6 +109,7 @@ export const WorkspaceInviteModal = ({
         onOpenChange={onOpenChange}
         backdrop="blur"
         scrollBehavior="inside"
+        size="lg"
         shouldBlockScroll
       >
         <ModalContent>
@@ -116,9 +148,9 @@ export const WorkspaceInviteModal = ({
                     <Tooltip content={'Reset'}>
                       <Button
                         variant="bordered"
-                        onPress={() => setInvites([])}
+                        onPress={() => setInvites(new Set())}
                         className="border-medium border-default-200 hover:border-default-400"
-                        isDisabled={invites.length === 0}
+                        isDisabled={invites.size === 0}
                         isIconOnly
                       >
                         <ListRestart className="w-5 h-5" />
@@ -153,7 +185,7 @@ export const WorkspaceInviteModal = ({
                       </Text>
                     </div>
                     <div className="flex gap-2 border border-dashed border-default-300 rounded-lg flex-wrap p-2 max-h-72 overflow-y-auto">
-                      {invites.length === 0 && (
+                      {invites.size === 0 && (
                         <Text
                           size="sm"
                           className="text-foreground-400 font-normal px-1"
@@ -161,7 +193,7 @@ export const WorkspaceInviteModal = ({
                           {t('invites.no_invites')}
                         </Text>
                       )}
-                      {invites.map((invite, index) => (
+                      {Array.from(invites).map((invite) => (
                         <Chip
                           key={invite.email}
                           color={
@@ -169,7 +201,7 @@ export const WorkspaceInviteModal = ({
                           }
                           variant="dot"
                           radius="md"
-                          onClose={() => onRemove(index)}
+                          onClose={() => onRemove(invite)}
                         >
                           {invite.email}
                         </Chip>
@@ -179,7 +211,13 @@ export const WorkspaceInviteModal = ({
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" fullWidth onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={() => onSubmit(onClose)}
+                  isLoading={generic.isPending}
+                  isDisabled={generic.isPending || invites.size === 0}
+                  fullWidth
+                >
                   {t('invites.submit')}
                 </Button>
               </ModalFooter>

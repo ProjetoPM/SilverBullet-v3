@@ -59,7 +59,11 @@ export const frontend = {
 
 export const backend = {
   workspaces: {
-    baseUrl: '/workspaces'
+    baseUrl: '/workspaces',
+    invites: {
+      send: '/workspaces/invite',
+      list: '/workspaces/invites'
+    }
   },
   projects: {
     baseUrl: '/projects'

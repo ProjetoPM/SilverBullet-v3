@@ -13,7 +13,10 @@ export default function ProjectPage() {
     fetch: {
       keys: ['projects', id],
       get: {
-        append: id
+        append: id,
+        keys: {
+          workspace: true
+        }
       }
     }
   })

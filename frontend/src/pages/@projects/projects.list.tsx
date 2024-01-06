@@ -15,7 +15,9 @@ export default function ProjectListPage() {
     fetch: {
       keys: ['projects'],
       list: {
-        useWorkspaceId: true
+        keys: {
+          workspace: true
+        }
       }
     }
   })
