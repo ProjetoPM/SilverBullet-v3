@@ -47,7 +47,7 @@ dependencies:
 
 devDependencies:
   '@prisma/client':
-    specifier: ^5.4.2
+    specifier: ^5.7.1
     version: 5.7.1(prisma@5.7.1)
   '@types/cors':
     specifier: ^2.8.15
