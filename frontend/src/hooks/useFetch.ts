@@ -9,7 +9,6 @@ import {
 } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { useMutate } from './useMutate'
-import { useEffect } from 'react'
 
 type Keys = [string, ...(string | undefined)[]]
 
@@ -82,13 +81,9 @@ export const useFetch = <T>({
     return [
       mutate?.keys?.workspace && workspaceId,
       mutate?.keys?.project && projectId,
-      ...(invalidateQueries ?? [])
+      ...(invalidateQueries ?? ['disabled'])
     ].filter(Boolean) as string[]
   }
-
-  useEffect(() => {
-    console.log(fetch?.keys)
-  }, [fetch?.keys])
 
   /**
    * Método para buscar um registro, seja ele qual for.
@@ -102,7 +97,9 @@ export const useFetch = <T>({
        * Determinar se a rota deve ser alterada.
        */
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.get)
-      return await api.get(_baseUrl).then((res) => res.data?.dto)
+      return await api
+        .get(_baseUrl)
+        .then((res) => res.data?.dto ?? res.data ?? 'no-data')
     },
     enabled: !!fetch?.keys && !!fetch?.get?.append
   })
@@ -119,7 +116,9 @@ export const useFetch = <T>({
        * Determinar se a rota deve ser alterada.
        */
       const _baseUrl = _useAppendOrParams(baseUrl, fetch?.list)
-      return await api.get(_baseUrl).then((res) => res.data?.dto)
+      return await api
+        .get(_baseUrl)
+        .then((res) => res.data?.dto ?? res.data ?? 'no-data')
     },
     enabled: !!fetch?.keys && !!fetch?.list
   })

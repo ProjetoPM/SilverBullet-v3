@@ -1,12 +1,6 @@
 import { Table } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useState
-} from 'react'
+import { ReactNode, createContext, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type FilterProps = {
@@ -52,17 +46,19 @@ export const DataTableProvider = <T,>({
     actions: true
   })
 
-  const toggleFilter = useCallback((filter: keyof FilterProps) => {
-    _setFilter((prev) => ({ ...prev, [filter]: !prev[filter] }))
-  }, [])
-
-  const setFilter = useCallback((filter: keyof FilterProps, value: boolean) => {
-    _setFilter((prev) => ({ ...prev, [filter]: value }))
-  }, [])
-
   return (
     <DataTableContext.Provider
-      value={{ ...value, t, filter, toggleFilter, setFilter }}
+      value={{
+        ...value,
+        t,
+        filter,
+        toggleFilter: (filter: keyof FilterProps) => {
+          _setFilter((prev) => ({ ...prev, [filter]: !prev[filter] }))
+        },
+        setFilter: (filter: keyof FilterProps, value: boolean) => {
+          _setFilter((prev) => ({ ...prev, [filter]: value }))
+        }
+      }}
     >
       {children}
     </DataTableContext.Provider>
