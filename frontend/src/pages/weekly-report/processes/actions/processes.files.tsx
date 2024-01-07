@@ -18,7 +18,7 @@ export const FilesProcess = ({ field, index }: UploadProcess) => {
 
   const filesFolder = useMemo(() => {
     return field.filesFolder ?? Generate.id()
-  }, [field])
+  }, [field.filesFolder])
 
   const handleUpload = () => {
     document.getElementById(`processes.${index}.hidden`)?.click()

@@ -69,7 +69,7 @@ export const columns = [
       }
 
       return (
-        <Chip color={colors[status]}>
+        <Chip color={colors[status]} variant="flat">
           {t(`plan_status.options.${status?.toLowerCase()}`, { ns })}
         </Chip>
       )
@@ -94,7 +94,7 @@ export const columns = [
       }
 
       return (
-        <Chip color={colors[plan]}>
+        <Chip color={colors[plan]} variant="flat">
           {t(`plan.options.${plan.toLowerCase()}`, { ns })}
         </Chip>
       )
