@@ -2,7 +2,8 @@ import { useContext } from 'react'
 import { InviteContextProps } from '../provider/@types'
 import { InviteContext } from '../provider/InvitesProvider'
 
-export type WorkspaceRoles = 'ADMIN' | 'USER'
+export const workspaceRoles = ['ADMIN', 'USER'] as const
+export type WorkspaceRoles = (typeof workspaceRoles)[number]
 
 export const useWorkspaceInvites = () => {
   const context = useContext(

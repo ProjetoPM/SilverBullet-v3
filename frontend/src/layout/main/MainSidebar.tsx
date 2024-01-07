@@ -80,3 +80,5 @@ export const MainSidebar = () => {
     </Listbox>
   )
 }
+
+export default MainSidebar

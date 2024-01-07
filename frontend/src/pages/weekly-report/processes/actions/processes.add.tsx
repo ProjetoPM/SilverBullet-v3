@@ -9,7 +9,7 @@ export const AddProcesses = () => {
 
   const handleAddProcess = () => {
     if (array.fields.length === 10) {
-      toast.error(t('process.limit'), { id: 'process-limit' })
+      toast.info(t('process.limit'), { id: 'process-limit' })
       return
     }
 

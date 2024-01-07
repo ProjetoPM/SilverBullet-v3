@@ -46,7 +46,12 @@ export const PageLayout = ({
       </Helmet>
       {!isAuth && (
         <div className="flex justify-between items-center">
-          <section className="flex flex-col flex-wrap py-4">
+          <section
+            className={cn(
+              'flex flex-col flex-wrap py-5',
+              breadcrumbProps?.className
+            )}
+          >
             {breadcrumbs && (
               <Breadcrumb items={breadcrumbs} {...breadcrumbProps} />
             )}

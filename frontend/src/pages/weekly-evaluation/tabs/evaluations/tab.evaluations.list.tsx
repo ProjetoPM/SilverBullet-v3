@@ -18,7 +18,7 @@ export const TabEvaluations = () => {
         appendTitle: true
       })}
       breadcrumbProps={{
-        className: 'pt-2'
+        className: 'pt-0.5'
       }}
     >
       <DataTable columns={columns} data={[]} />

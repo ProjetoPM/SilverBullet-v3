@@ -42,3 +42,5 @@ export const ProfileSidebar = () => {
     </Listbox>
   )
 }
+
+export default ProfileSidebar

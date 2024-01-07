@@ -6,7 +6,7 @@ import { frontend } from '@/routes/routes'
 import { useEffect } from 'react'
 
 export const TabSubmissions = () => {
-  const { title, breadcrumbs } = usePage('weekly-evaluation')
+  const { t, title, breadcrumbs } = usePage('weekly-evaluation')
 
   useEffect(() => {
     console.log('submissions')
@@ -18,14 +18,14 @@ export const TabSubmissions = () => {
       breadcrumbs={breadcrumbs({
         segments: [
           {
-            label: title(),
+            label: t('tabs.evaluations.label'),
             link: frontend.weekly_evaluation.tabs.evaluations
           }
         ],
         appendTitle: true
       })}
       breadcrumbProps={{
-        className: 'pt-2'
+        className: 'pt-0.5'
       }}
     >
       <DataTable columns={columns} data={[]} />

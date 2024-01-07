@@ -3,7 +3,8 @@ import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { Chip, Select, SelectItem } from '@nextui-org/react'
 import {
   WorkspaceRoles,
-  useWorkspaceInvites
+  useWorkspaceInvites,
+  workspaceRoles
 } from '../../shared/hooks/useWorkspaceInvites'
 import { Invites } from '../../shared/provider/@types'
 
@@ -33,7 +34,7 @@ export const WorkspaceModalSelect = () => {
         classNames={{ label: 'text-foreground' }}
         disallowEmptySelection
       >
-        {Object.values<WorkspaceRoles>(['USER', 'ADMIN']).map((role) => (
+        {workspaceRoles.map((role) => (
           <SelectItem key={role}>
             {t(`invites.roles.${role.toLowerCase()}`)}
           </SelectItem>

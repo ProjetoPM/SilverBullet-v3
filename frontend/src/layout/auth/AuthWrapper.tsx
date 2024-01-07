@@ -14,3 +14,5 @@ export const AuthWrapper = ({ children }: AuthWrapperProps) => {
     </div>
   )
 }
+
+export default AuthWrapper

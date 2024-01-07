@@ -27,3 +27,5 @@ export const Header = ({ shouldShowEnd = true }: HeaderProps) => {
     </header>
   )
 }
+
+export default Header
