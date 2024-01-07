@@ -34,9 +34,7 @@ export const LanguageSwitcher = () => {
   const { i18n } = useTranslation()
 
   const resetZodErrors = () => {
-    const elements = document.querySelectorAll(
-      '[id^="react-aria"].text-tiny.text-danger'
-    )
+    const elements = document.querySelectorAll('[data-slot="error-message"]')
     for (const element of elements) {
       element.innerHTML = ''
     }

@@ -24,7 +24,11 @@ export default {
       xl: '1280px',
       '2xl': '1436px',
     },
-    extend: {}
+    extend: {
+      opacity: {
+        '01': '0.01',
+      }
+    }
   },
   darkMode: 'class',
   plugins: [

@@ -1,8 +1,8 @@
+import { FormField } from '@/@components/Form/Form'
 import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 import { UseFormReturn } from 'react-hook-form'
 import { WeeklyReportData } from '../weekly-report.schema'
-import { FormField } from '@/@components/Form/Form'
 
 type WeeklyEvaluationSelectProps = {
   form: UseFormReturn<WeeklyReportData>
@@ -40,8 +40,8 @@ export const WeeklyEvaluationSelect = ({
             labelPlacement="outside"
             placeholder={t('weekly_evaluation.placeholder')}
             errorMessage={form.formState.errors.weeklyEvaluationId?.message}
-            selectedKey={value}
-            onSelectionChange={onChange}
+            defaultSelectedKey={value}
+            onSelectionChange={(value) => onChange(value ?? '')}
             {...rest}
             isRequired
           >
