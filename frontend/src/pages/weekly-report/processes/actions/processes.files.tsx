@@ -1,3 +1,4 @@
+import { Generate } from '@/lib/generate-id'
 import { Button } from '@nextui-org/react'
 import { UploadIcon } from 'lucide-react'
 import { ChangeEvent, useCallback, useMemo } from 'react'
@@ -16,7 +17,7 @@ export const FilesProcess = ({ field, index }: UploadProcess) => {
   const { addImages } = useWeeklyReport()
 
   const filesFolder = useMemo(() => {
-    return field.filesFolder ?? field.id
+    return field.filesFolder ?? Generate.id()
   }, [field])
 
   const handleUpload = () => {

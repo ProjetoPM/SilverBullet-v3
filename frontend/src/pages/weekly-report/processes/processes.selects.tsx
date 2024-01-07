@@ -1,7 +1,7 @@
+import { FormField } from '@/components/Form/Form'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useProcesses } from './context/ProcessProvider'
-import { FormField } from '@/components/Form/Form'
 
 type ProcessSelectsProps = {
   index: number
@@ -9,15 +9,15 @@ type ProcessSelectsProps = {
 
 const items = [
   {
-    id: '109b84fa-afcb-4815-9600-450caad03aef',
+    id: 'wjfazn7qnd',
     label: 'Integration'
   },
   {
-    id: '6ad9b93c-6541-4be5-a090-24ed5fcdb9dc',
+    id: 'cerhuy9499',
     label: 'Scope'
   },
   {
-    id: '4c435da4-310b-4462-a747-c1a6b3b4690a',
+    id: 'itp2u4ozr4',
     label: 'Planning'
   }
 ]

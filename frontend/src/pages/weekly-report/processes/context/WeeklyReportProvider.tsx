@@ -9,6 +9,7 @@ type WeeklyReportContextProps = {
   images: Item[]
   addImages: (filesFolder: string, images: FileList) => void
   removeImage: (index: number) => void
+  clearImages: () => void
 }
 
 type WeeklyReportProviderProps = {
@@ -45,12 +46,18 @@ export const WeeklyReportProvider = ({
     ])
   }
 
+  const clearImages = () => {
+    setImages([])
+  }
+
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index))
   }
 
   return (
-    <WeeklyReportContext.Provider value={{ images, addImages, removeImage }}>
+    <WeeklyReportContext.Provider
+      value={{ images, addImages, removeImage, clearImages }}
+    >
       {children}
     </WeeklyReportContext.Provider>
   )

@@ -3,12 +3,13 @@ import { FormEditor } from '@/components/Form/FormEditor'
 import { GridLayout } from '@/components/UI/GridLayout'
 import { Text } from '@/components/UI/Label/Text'
 import { SubmitButton } from '@/components/UI/SubmitButton'
+import { useSupabase } from '@/hooks/useSupabase'
 import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { WorkspaceStore } from '@/stores/useWorkspaceStore'
 import { ct } from '@/utils/helpers/replace-html-tags'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Snippet } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useWeeklyReport } from './processes/context/WeeklyReportProvider'
 import { WeeklyReportProcesses } from './processes/processes'
@@ -21,8 +22,9 @@ type WeeklyReportFormProps = {
 
 export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = usePageLayout()
-  const { images } = useWeeklyReport()
+  const { images, clearImages } = useWeeklyReport()
   const [output, setOutput] = useState('')
+  const { uploadImage } = useSupabase()
 
   const form = useForm<WeeklyReportData>({
     mode: 'all',
@@ -30,10 +32,26 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
     defaultValues: data
   })
 
-  const onSubmit = async (form: WeeklyReportData) => {
-    console.log(images)
-    setOutput(JSON.stringify(form, null, 2))
+  const handleImages = async () => {
+    for (const image of images) {
+      for (const file of image.files) {
+        await uploadImage({
+          file,
+          from: 'weekly-report',
+          path: `processes/${file.name}`
+        })
+      }
+    }
   }
+
+  const onSubmit = async (form: WeeklyReportData) => {
+    setOutput(JSON.stringify(form, null, 2))
+    handleImages()
+  }
+
+  useEffect(() => {
+    console.log(form.formState.errors)
+  })
 
   return (
     <Form {...form}>
@@ -91,8 +109,10 @@ export const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
         </GridLayout>
         <SubmitButton
           isEdit={!!data}
-          fnResetButton={form.reset}
-          // isLoading={create.isLoading || update.isLoading}
+          fnResetButton={() => {
+            form.reset()
+            clearImages()
+          }}
         />
       </form>
       <pre>{output}</pre>

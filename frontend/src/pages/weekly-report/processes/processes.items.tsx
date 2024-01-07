@@ -1,5 +1,5 @@
 import { cn } from '@nextui-org/react'
-import { motion } from 'react-magic-motion'
+import { motion } from 'framer-motion'
 import { useProcesses } from './context/ProcessProvider'
 import { ProcessItem } from './processes.item'
 
