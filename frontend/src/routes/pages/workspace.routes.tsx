@@ -9,7 +9,7 @@ const WorkspaceListPage = lazy(
   () => import('@/pages/@workspaces/workspaces.list')
 )
 const WorkspacesInvitesListPage = lazy(
-  () => import('@/pages/@workspaces/invites/workspaces.invites')
+  () => import('@/pages/@invites/@workspaces/workspaces.invites')
 )
 
 export const WorkspaceRoutes: RouteObject = {

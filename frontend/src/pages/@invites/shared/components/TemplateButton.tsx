@@ -1,20 +1,22 @@
+import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { Button } from '@nextui-org/react'
 import { Download } from 'lucide-react'
-import { useCallback } from 'react'
-import { template } from './template'
-import { useWorkspaceInvites } from '../context/WorkspaceInviteContext'
 
-export const WorkspaceTemplateButton = () => {
-  const { t } = useWorkspaceInvites()
+type TemplateButtonProps = {
+  template: string
+}
 
-  const downloadTemplate = useCallback(() => {
+export const TemplateButton = ({ template }: TemplateButtonProps) => {
+  const { t } = usePageLayout()
+
+  const downloadTemplate = () => {
     const blob = new Blob([template], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
     link.download = 'template.csv'
     link.click()
-  }, [])
+  }
 
   return (
     <>

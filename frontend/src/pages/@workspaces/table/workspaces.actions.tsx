@@ -1,7 +1,7 @@
 import { AlertModal } from '@/@components/UI/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { WorkspaceStore, useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/helpers/replace-params'
 import {
   Button,
@@ -56,7 +56,9 @@ export const WorkspaceActions = ({ row }: WorkspaceActionsProps) => {
   }
 
   const handleInvite = () => {
-    onOpenWorkspace(row)
+    if (row._id !== WorkspaceStore.getWorkspaceId()) {
+      onOpenWorkspace(row)
+    }
     navigate(replaceParams(frontend.workspaces.users.index, [row._id]))
   }
 

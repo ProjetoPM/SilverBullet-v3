@@ -1,18 +1,19 @@
+import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { Button } from '@nextui-org/react'
 import { Upload } from 'lucide-react'
 import Papa from 'papaparse'
 import { ChangeEvent, useCallback } from 'react'
-import {
-  WorkspaceInvites,
-  useWorkspaceInvites
-} from '../context/WorkspaceInviteContext'
 import { toast } from 'sonner'
+import { InviteContextProps, Invites } from '../provider/@types'
 
-export const WorkspaceUploadButton = () => {
-  const {
-    t,
-    invites: [invites, setInvites]
-  } = useWorkspaceInvites()
+type UploadButtonProps = {
+  invites: InviteContextProps['invites']
+}
+
+export const UploadButton = ({
+  invites: [invites, setInvites]
+}: UploadButtonProps) => {
+  const { t } = usePageLayout()
 
   const handleFileUpload = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +23,7 @@ export const WorkspaceUploadButton = () => {
         if (file) {
           Papa.parse(file, {
             complete: (result) => {
-              const data = result.data.slice(0) as WorkspaceInvites[]
+              const data = result.data.slice(0) as Invites[]
 
               if (data && data.length > 0) {
                 const uniqueEmails = data.filter(

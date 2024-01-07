@@ -1,7 +1,7 @@
 import { Button, useDisclosure } from '@nextui-org/react'
 import { PlusIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { WorkspaceInviteModal } from './workspaces.invites.modal'
+import { WorkspaceInviteModal } from './modal/workspace.modal'
 
 export const WorkspaceInviteToolbar = () => {
   const modal = useDisclosure()
