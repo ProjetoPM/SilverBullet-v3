@@ -1,4 +1,4 @@
-import { Text } from '@/@components/UI/Label/Text'
+import { Text } from '@/components/UI/Label/Text'
 import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { Chip, Select, SelectItem } from '@nextui-org/react'
 import {

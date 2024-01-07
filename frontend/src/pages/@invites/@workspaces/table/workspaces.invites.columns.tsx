@@ -1,4 +1,4 @@
-import { DataTableColumnHeader } from '@/@components/UI/DataTable/helpers/DataTableHeader'
+import { DataTableColumnHeader } from '@/components/UI/DataTable/helpers/DataTableHeader'
 import { ct } from '@/utils/helpers/replace-html-tags'
 import { tableSelect } from '@/utils/helpers/select'
 import { createColumnHelper } from '@tanstack/react-table'
@@ -6,6 +6,7 @@ import { t } from 'i18next'
 import { WorkspaceActions } from './workspaces.invites.actions'
 
 export type WorkspaceInviteColumns = {
+  _id: string
   name: string
   email: string
   role: string

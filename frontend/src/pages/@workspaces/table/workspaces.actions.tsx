@@ -1,4 +1,4 @@
-import { AlertModal } from '@/@components/UI/AlertModal'
+import { AlertModal } from '@/components/UI/AlertModal'
 import { useFetch } from '@/hooks/useFetch'
 import { backend, frontend } from '@/routes/routes'
 import { WorkspaceStore, useWorkspaceStore } from '@/stores/useWorkspaceStore'

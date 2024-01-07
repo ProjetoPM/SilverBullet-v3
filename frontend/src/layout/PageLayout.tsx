@@ -1,5 +1,5 @@
-import { Loading } from '@/@components/Loading'
-import { Breadcrumb, BreadcrumbItemProps } from '@/@components/UI/Breadcrumb'
+import { Loading } from '@/components/Loading'
+import { Breadcrumb, BreadcrumbItemProps } from '@/components/UI/Breadcrumb'
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 import { Helmet } from 'react-helmet-async'

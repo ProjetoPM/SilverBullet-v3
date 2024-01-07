@@ -1,5 +1,5 @@
-import { InputPassword } from '@/@components/UI/Input/InputPassword'
-import { Text } from '@/@components/UI/Label/Text'
+import { InputPassword } from '@/components/UI/Input/InputPassword'
+import { Text } from '@/components/UI/Label/Text'
 import { useAuth } from '@/hooks/useAuth'
 import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { frontend } from '@/routes/routes'

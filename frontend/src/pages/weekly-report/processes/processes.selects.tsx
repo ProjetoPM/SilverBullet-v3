@@ -1,7 +1,7 @@
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useProcesses } from './context/ProcessProvider'
-import { FormField } from '@/@components/Form/Form'
+import { FormField } from '@/components/Form/Form'
 
 type ProcessSelectsProps = {
   index: number

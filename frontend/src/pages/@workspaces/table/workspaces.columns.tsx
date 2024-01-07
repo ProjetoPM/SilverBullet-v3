@@ -1,4 +1,4 @@
-import { DataTableColumnHeader } from '@/@components/UI/DataTable/helpers/DataTableHeader'
+import { DataTableColumnHeader } from '@/components/UI/DataTable/helpers/DataTableHeader'
 import { ct } from '@/utils/helpers/replace-html-tags'
 import { tableSelect } from '@/utils/helpers/select'
 import { Chip } from '@nextui-org/react'

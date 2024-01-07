@@ -1,4 +1,4 @@
-import { FormField } from '@/@components/Form/Form'
+import { FormField } from '@/components/Form/Form'
 import { usePageLayout } from '@/layout/PageLayoutProvider'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 import { UseFormReturn } from 'react-hook-form'

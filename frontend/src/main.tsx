@@ -8,11 +8,11 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider } from 'react-router-dom'
-import { Loading } from './@components/Loading'
+import { Loading } from './components/Loading'
 import { ThemeProvider } from './contexts/theme-provider'
 import { queryClient } from './lib/react-query'
 import { router } from './routes'
-import { ToastSonner } from './@components/Toast/Sonner'
+import { ToastSonner } from './components/Toast/Sonner'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
